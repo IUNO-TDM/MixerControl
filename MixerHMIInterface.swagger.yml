@@ -1,0 +1,190 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: trupunsch HMI Interface
+paths:
+
+  /machinestate:
+    get:
+      description: gets the machineState
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/MachineState'
+    put:
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/MachineState'
+      responses:
+        '200':
+          description: Successful response
+            
+  
+  /recipes:
+    get:
+      description: gets all recipes
+      parameters:
+        - name: after
+          in: query
+          description: createdDate
+          required: false
+          type: string
+        - name: ingredients
+          in: query
+          description: array of possible ingredients
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Recipe'
+    post:
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Recipe'
+      responses:
+        '201':
+          description: Operation successful
+          headers:
+            location:
+              description: The path to the projector
+              type: string
+  '/recipes/{recipeId}':
+    get:
+      description: gets one recipes
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Recipe'
+    put:
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Recipe'
+      responses:
+        '200':
+          description: Successful response
+    delete:
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+  
+  '/users/{userId}':
+    get:
+      parameters:
+        - in: path
+          name: userId
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+definitions:
+  Price:
+    type: object
+    properties:
+      amount:
+        type: number
+        format: double
+      currency:
+        type: string
+  
+  Rating:
+    type: object
+    properties:
+      value:
+        type: number
+      min:
+        type: number
+      max:
+        type: number
+      count:
+        type: number
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      email:
+        type: string
+      thumbnail:
+        type: string
+        description: The Thumbnail jpg in base64
+      imageRef:
+        type: string
+        description: The reference to the image
+  Recipe:
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      description:
+        type: string
+      thumbnail:
+        type: string
+        format: byte
+        description: The Thumbnail jpg in base64
+      imageRef:
+        type: string
+        description: The reference to the image
+      authorId:
+        type: string
+      createdAt:
+        type: string
+        format: date
+      updatedAt:
+        type: string
+        format: date
+      rating:
+        $ref: '#/definitions/Rating'
+      retailPrice:
+        $ref: '#/definitions/Price'
+ 
+  
+  MachineState:
+    type: string
+    default: idle
+    enum:
+      - disabled
+      - idle
+      - pay
+      - producing
+      - error
+      - needsrefill
+      - service
