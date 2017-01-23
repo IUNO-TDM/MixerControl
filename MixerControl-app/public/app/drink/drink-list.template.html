@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <h1>Drinks</h1>
+
+    <div *ngIf="drinks">
+      Anzahl an Drinks: {{drinks.length}}
+    </div>
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Beschreibung</th>
+            <th>AuthorId</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let drink of drinks">
+            <td>{{drink.title}}</td>
+            <td>{{drink.description}}</td>
+            <td>{{drink.authorId}}</td>
+            <td><a [routerLink]="['/drinks', drink.id]">Details anzeigen</a></td>
+
+        </tr>
+
+        </tbody>
+    </table>
+
+
+</div>
+
+
+<!--
+<li ng-repeat="task in $ctrl.tasks ">
+    <a href="#!/tasks/{{task.id}}">{{task.name}}</a>
+</li>
+-->

@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: 0.0.1
-  title: trupunsch HMI Interface
+  title: payment
 paths:
 
   /machinestate:
@@ -24,9 +24,9 @@ paths:
           description: Successful response
             
   
-  /recipes:
+  /drinks:
     get:
-      description: gets all recipes
+      description: gets all drinks
       parameters:
         - name: after
           in: query
@@ -45,26 +45,13 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Recipe'
-    post:
-      parameters:
-        - in: body
-          name: body
-          required: true
-          schema:
-            $ref: '#/definitions/Recipe'
-      responses:
-        '201':
-          description: Operation successful
-          headers:
-            location:
-              description: The path to the projector
-              type: string
-  '/recipes/{recipeId}':
+              $ref: '#/definitions/Drink'
+    
+  '/drinks/{drinkId}':
     get:
       description: gets one recipes
       parameters:
-        - name: recipeId
+        - name: drinkId
           in: path
           required: true
           type: string
@@ -72,31 +59,8 @@ paths:
         '200':
           description: Successful response
           schema:
-            $ref: '#/definitions/Recipe'
-    put:
-      parameters:
-        - name: recipeId
-          in: path
-          required: true
-          type: string
-        - in: body
-          name: body
-          required: true
-          schema:
-            $ref: '#/definitions/Recipe'
-      responses:
-        '200':
-          description: Successful response
-    delete:
-      parameters:
-        - name: recipeId
-          in: path
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Successful response
-  
+            $ref: '#/definitions/Drink'
+    
   '/users/{userId}':
     get:
       parameters:
@@ -147,7 +111,7 @@ definitions:
       imageRef:
         type: string
         description: The reference to the image
-  Recipe:
+  Drink:
     type: object
     properties:
       id:

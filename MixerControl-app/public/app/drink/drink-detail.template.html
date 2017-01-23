@@ -1,0 +1,16 @@
+<div class="container-fluid">
+
+    <div *ngIf="drink">
+      <h1>{{drink.title}}</h1>
+    </div>
+    <div *ngIf="drink">
+      <h2>Beschreibung:</h2>
+      <p>{{drink.description}}</p>
+      <img src="{{drink.thumbnail}}">
+    </div>
+    <div *ngIf="user">
+      <h2>Erstellt von:</h2>
+      <p>{{user.firstname}} {{ user.lastname}}</p>
+    </div>
+
+</div>
