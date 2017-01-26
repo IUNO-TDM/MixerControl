@@ -3,26 +3,7 @@ info:
   version: 0.0.1
   title: payment
 paths:
-
-  /machinestate:
-    get:
-      description: gets the machineState
-      responses:
-        '200':
-          description: Successful response
-          schema:
-            $ref: '#/definitions/MachineState'
-    put:
-      parameters:
-        - in: body
-          name: body
-          required: true
-          schema:
-            $ref: '#/definitions/MachineState'
-      responses:
-        '200':
-          description: Successful response
-            
+  
   
   /drinks:
     get:
@@ -73,6 +54,37 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/User'
+            
+  /orders:
+    post:
+      produces:
+          - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Order'
+      responses:
+        '200':
+          description: Order succesfully placed
+          headers:
+            location:
+              description: The Order ID
+              type: string
+  '/orders/{id}/state':
+    get:
+      produces:
+        - text/plain
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: State available
+          
 definitions:
   Price:
     type: object
@@ -139,16 +151,13 @@ definitions:
         $ref: '#/definitions/Rating'
       retailPrice:
         $ref: '#/definitions/Price'
- 
-  
-  MachineState:
-    type: string
-    default: idle
-    enum:
-      - disabled
-      - idle
-      - pay
-      - producing
-      - error
-      - needsrefill
-      - service
+
+  Order:
+    type: object
+    properties:
+      recipeId:
+        type: string
+      customerName:
+        type: string
+      
+        

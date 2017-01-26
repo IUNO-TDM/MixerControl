@@ -10,4 +10,10 @@
  * Do not edit the class manually.
  */
 "use strict";
+var Rating = (function () {
+    function Rating() {
+    }
+    return Rating;
+}());
+exports.Rating = Rating;
 //# sourceMappingURL=Rating.js.map

@@ -10,4 +10,10 @@
  * Do not edit the class manually.
  */
 "use strict";
+var Price = (function () {
+    function Price() {
+    }
+    return Price;
+}());
+exports.Price = Price;
 //# sourceMappingURL=Price.js.map

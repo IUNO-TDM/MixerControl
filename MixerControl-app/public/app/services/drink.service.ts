@@ -19,7 +19,7 @@ export class DrinkService {
       .catch(this.handleError);
   }
 
-  getDrink(id: string): Promise<Drink> {
+  getDrink(id: string): Promise<string> {
     let url = `${this.drinksUrl}/${id}`;
     return this.http
       .get(url)

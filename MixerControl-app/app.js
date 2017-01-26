@@ -7,9 +7,11 @@ var bodyParser = require('body-parser');
 
 var drinks = require('./routes/drinks');
 var users = require('./routes/users');
-
+var orders = require('./routes/orders');
 var app = express();
 
+var OSM = require('./models/order-state-machine');
+var OrderDB = require('./database/orderDB');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
@@ -31,6 +33,7 @@ app.use('/scripts', express.static(__dirname + '/public/scripts'));
 
 app.use('/api/drinks', drinks);
 app.use('/api/users', users);
+app.use('/api/orders', orders);
 
 app.all('/api/*', function(req, res, next) {
   res.sendStatus(404);
@@ -62,6 +65,44 @@ if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('Something broke!');
+  });
+}
+
+
+
+var io = require('socket.io')();
+app.io = io;
+var orderNamespace = io.of('/orders');
+
+orderNamespace.on('connection', onIOConnect);
+function onTransition(data){
+  console.log("sent statechange " + data.toState + " for OrderNumber " + data.orderNumber);
+  orderNamespace.to(data.client.orderNumber).emit("state",{"fromState": data.fromState, "toState": data.toState});
+}
+OSM.on("transition", onTransition);
+
+function onIOConnect(socket){
+  // socket.on("test", function (msg) {
+  //     var order = OrderDB.getOrder(msg);
+  //     if (typeof order !== 'undefined'){
+  //       orderNamespace.to(socket.id).emit("state",{"orderNumber": order.orderNumber, "toState": order.state});
+  //
+  //     }
+  // });
+  console.log('a user connected: ' + socket.id);
+  socket.on('room', function(room){
+    socket.join(room);
+    var order = OrderDB.getOrder(room);
+    if (typeof order !== 'undefined'){
+
+      var state = OSM.compositeState(order);
+      orderNamespace.to(order.orderNumber).emit("state",{"toState": state});
+    }
+  });
+
+
+  socket.on('disconnect', function () {
+    console.log('a user disconnected: ' + socket.id);
   });
 }
 

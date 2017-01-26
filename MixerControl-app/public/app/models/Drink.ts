@@ -2,7 +2,7 @@
 
 import * as models from './models';
 
-export interface Drink {
+export class Drink {
   id?: string;
 
   title?: string;
