@@ -68,6 +68,16 @@ if (app.get('env') === 'development') {
   });
 }
 
+var pumpcontrol_service = require('./services/pumpcontrol_service');
+
+pumpcontrol_service.on('message', function (message) {
+  console.log("Received message from pumpControl: " + message);
+});
+pumpcontrol_service.on('state', function (state) {
+  console.log("PumpControlService has new state: " + state);
+});
+pumpcontrol_service.init();
+
 
 
 var io = require('socket.io')();
