@@ -3,6 +3,7 @@
  */
 
 var machina = require('machina');
+var production_queue = require('../models/production_queue');
 var stateMachine = new machina.BehavioralFsm({
     initialize: function( options ) {
         // your setup code goes here...
@@ -22,7 +23,7 @@ var stateMachine = new machina.BehavioralFsm({
             console.log("Ordernumber " + client.orderNumber + " is now state waitingOffer ");
             this.timer = setTimeout( function() {
               this.handle(client, "offerReceived" );
-            }.bind( this ), 15000 );
+            }.bind( this ), 5000 );
             //getOfferAtTDM
           },
           offerReceived: "waitingPaymentRequest"
@@ -32,7 +33,7 @@ var stateMachine = new machina.BehavioralFsm({
             console.log("Ordernumber " + client.orderNumber + " is now state waitingPaymentRequest ");
             this.timer = setTimeout( function() {
               this.handle(client, "paymentRequestReceived" );
-            }.bind( this ), 30000 );
+            }.bind( this ), 5000 );
           },
           paymentRequestReceived: "waitingPayment"
         },
@@ -51,46 +52,35 @@ var stateMachine = new machina.BehavioralFsm({
             //??sendPaymentToMarketplace??
             this.timer = setTimeout( function() {
               this.handle(client, "licenseArrived" );
-            }.bind( this ), 15000 );
+            }.bind( this ), 5000 );
           },
           licenseArrived: "enqueuedForProduction"
         },
         enqueuedForProduction: {
           _onEnter: function (client) {
             //enqueueForProduction
-            this.timer = setTimeout( function() {
-              this.handle(client, "dequeued" );
-            }.bind( this ), 30000 );
+            production_queue.addOrderToQueue(client);
           },
-          dequeued: "readyForProduction",
+          readyForProduction: "readyForProduction",
           pause: "orderPaused"
         },
         readyForProduction: {
           _onEnter: function (client) {
-            //startPumpControl
-            this.timer = setTimeout( function() {
-              this.handle(client, "productionStarted" );
-            }.bind( this ), 60000 );
           },
           productionStarted: "inProduction"
         },
         inProduction: {
           _onEnter: function (client) {
-            //startPumpControl
-            this.timer = setTimeout( function() {
-              this.handle(client, "productionFinished" );
-            }.bind( this ), 120000 );
           },
           productionFinished: "productionFinished"
         },
         productionFinished: {
           onEnter: function (client) {
-            //dequeue next order
           }
         },
         orderPaused: {
           _onEnter: function (client) {
-            //remove from ProductionQueue
+            production_queue.removeOrderFromQueue(client);
           },
           resume: "enqueuedForProduction"
         }
@@ -110,8 +100,8 @@ var stateMachine = new machina.BehavioralFsm({
     licenseArrived: function (client) {
       this.handle(client, "licenseArrived");
     },
-    dequeued: function (client) {
-      this.handle(client, "dequeued");
+    readyForProduction: function (client) {
+      this.handle(client, "readyForProduction");
     },
     productionStarted: function (client) {
       this.handle(client, "productionStarted");
@@ -127,5 +117,19 @@ var stateMachine = new machina.BehavioralFsm({
   }
 
 });
+
+production_queue.on('state', function (state, order) {
+  if (typeof order !== 'undefined'){
+    if(state == 'waitingStart'){
+      stateMachine.readyForProduction(order);
+    }else if(state == 'processingOrder'){
+      stateMachine.productionStarted(order);
+    }else if(state == 'finished'){
+      stateMachine.productionFinished(order);
+    }
+  }
+});
+
+
 
 module.exports = stateMachine;

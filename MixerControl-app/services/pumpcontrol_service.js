@@ -96,22 +96,40 @@ var state_machine = new machina.Fsm({
 });
 
 
+var onWebSocketMessage = function (message) {
+
+  if(message.type == 'utf8'){
+    var messageObject = JSON.parse(message.utf8Data);
+    if(messageObject.hasOwnProperty('mode')){
+      pumpcontrol_service.emit('pumpControlState', messageObject.mode);
+    }else if(messageObject.hasOwnProperty('progressUpdate')){
+      pumpcontrol_service.emit('pumpControlProgress',messageObject.progressUpdate);
+    }else if(messageObject.hasOwnProperty('programEnded')){
+      pumpcontrol_service.emit('pumpControlProgramEnd',messageObject.programEnded);
+    }else{
+      console.log("Unrecognized message from PumpControl: " + message);
+    }
+  }else{
+    console.log("Got non text message from PumpControl");
+  }
+  pumpcontrol_service.emit('message',message.utf8Data);
+};
+
 wsclient.on('connect',function (webSocketConnection) {
   // console.log('Connection successful');
   pumpcontrol_service.wsconnection = webSocketConnection;
   state_machine.connectSuccess();
-  webSocketConnection.on('message', function (message) {
-    // console.log('New message: ' + message.utf8Data);
-    pumpcontrol_service.emit('message',message.utf8Data);
-  });
+  webSocketConnection.on('message', onWebSocketMessage);
   webSocketConnection.on('close', function (reasonCode, description) {
     // console.log('Connection closed: ' + reasonCode + " : " + description);
+    state_machine.connectionLoss();
   });
   webSocketConnection.on('error', function (error) {
     // console.log('Error: ' + error);
     state_machine.connectionLoss();
   });
 });
+
 wsclient.on('connectFailed',function (errorDescription) {
   // console.log('Connection failed: ' + errorDescription);
   state_machine.connectFail();
@@ -122,7 +140,7 @@ wsclient.on('httpResponse',function (response, webSocketClient) {
 
 state_machine.on('transition', function (data) {
   // console.log("PumpControl statechange " + data.toState );
-  pumpcontrol_service.emit('state',data.toState);
+  pumpcontrol_service.emit('serviceState',data.toState);
 });
 
 pumpcontrol_service.init = function () {
@@ -147,7 +165,6 @@ pumpcontrol_service.setServiceMode = function(on) {
     }
   ).end(body);
 };
-
 pumpcontrol_service.setServicePump = function(pumpNumber,on) {
   var body;
   if(on){
@@ -167,7 +184,6 @@ pumpcontrol_service.setServicePump = function(pumpNumber,on) {
     }
   ).end(body);
 };
-
 pumpcontrol_service.getPumpList = function (callback) {
   var options = {
     hostname: 'localhost',
@@ -185,7 +201,6 @@ pumpcontrol_service.getPumpList = function (callback) {
     }
   ).end();
 };
-
 pumpcontrol_service.getIngredient = function (pumpNumber,callback) {
   var options = {
     hostname: 'localhost',
@@ -203,7 +218,6 @@ pumpcontrol_service.getIngredient = function (pumpNumber,callback) {
     }
   ).end();
 };
-
 pumpcontrol_service.setIngredient = function (pumpNumber,ingredient) {
   var options = {
     hostname: 'localhost',
@@ -217,7 +231,17 @@ pumpcontrol_service.setIngredient = function (pumpNumber,ingredient) {
     }
   ).end(ingredient);
 };
-
-
-
+pumpcontrol_service.startProgram = function(program){
+    var options = {
+    hostname: 'localhost',
+    port: 9002,
+    path: '/program',
+    agent: false,
+    method: 'PUT'
+  };
+  var req = http.request(options, function (res) {
+      console.log(res.statusCode + ' ' + res.statusMessage);
+    }
+  ).end(JSON.stringify(program));
+};
 module.exports = pumpcontrol_service;

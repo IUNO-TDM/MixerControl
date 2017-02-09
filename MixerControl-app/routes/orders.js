@@ -6,26 +6,24 @@ var router = express.Router();
 var logger = require('../global/logger');
 var helper = require('../services/helper_service');
 var Order = require('../models/order');
-var OSM = require('../models/order-state-machine');
 var OrderDB = require('../database/orderDB');
-
+var pumpcontrol_service = require('../services/pumpcontrol_service');
 
 
 router.post('/', function (req, res, next) {
   // Validation
   if (!req.body || !helper.isObject(req.body) || !Object.keys(req.body).length) {
     res.sendStatus(400);
-    return
+    return;
   }
   var data = req.body;
   logger.debug(data);
-
+  // var jsonData = JSON.parse(data);
   //generate order
 
   var orderNumber = OrderDB.generateNewOrderNumber();
-  var order = new Order(orderNumber);
+  var order = new Order(orderNumber, data.customerName, data.drinkID);
   OrderDB.addOrder(order);
-  OSM.init(order);
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   res.set('Location', fullUrl + orderNumber);
   res.sendStatus(201);
@@ -35,15 +33,6 @@ router.post('/', function (req, res, next) {
 router.get('/:id/state', function (req, res, next) {
 
   var orderId = req.params['id'];
-
-  res.send('hereCouldBeYourOrderState')
-});
-
-
-router.get('/:id/state', function (req, res, next) {
-
-  var orderId = req.params['id'];
-
   res.send('hereCouldBeYourOrderState')
 });
 

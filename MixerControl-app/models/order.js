@@ -5,12 +5,13 @@
  * Created by goergch on 24.01.17.
  */
 var timer = require('timers');
-var osm = require('./order-state-machine');
+var osm = require('./order_state_machine');
 // Constructor
-function order(number) {
+function order(number, ordername, drinkId) {
   // always initialize all instance properties
   this.orderNumber = number;
-
+  this.orderName = ordername;
+  this.drinkId = drinkId;
   osm.init(this);
 }
 // export the class

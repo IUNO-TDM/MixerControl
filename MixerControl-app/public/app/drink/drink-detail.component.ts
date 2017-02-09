@@ -22,7 +22,7 @@ export class DrinkDetailComponent implements OnInit {
   user: User;
   error: any;
   orderState: string;
-
+  progress: number;
   orderURL = "NULL";
 
   constructor(private route: ActivatedRoute,
@@ -52,6 +52,7 @@ export class DrinkDetailComponent implements OnInit {
       this.orderURL = orderLocation;
       let orderNumber = this.orderURL.split('/').pop();
       this.socketService.get("/orders",orderNumber, "state").subscribe(state => this.orderState = state.toState);
+      this.socketService.get("/orders", orderNumber, "progress").subscribe(progress => this.progress = progress.progress);
       // this.router.navigateByUrl(`/orders/${orderNumber}`);
     });
   }

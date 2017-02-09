@@ -8,9 +8,10 @@ var bodyParser = require('body-parser');
 var drinks = require('./routes/drinks');
 var users = require('./routes/users');
 var orders = require('./routes/orders');
+var admin = require('./routes/admin');
 var app = express();
 
-var OSM = require('./models/order-state-machine');
+var OSM = require('./models/order_state_machine');
 var OrderDB = require('./database/orderDB');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,6 +35,7 @@ app.use('/scripts', express.static(__dirname + '/public/scripts'));
 app.use('/api/drinks', drinks);
 app.use('/api/users', users);
 app.use('/api/orders', orders);
+app.use('/api/admin', admin);
 
 app.all('/api/*', function(req, res, next) {
   res.sendStatus(404);
@@ -70,35 +72,42 @@ if (app.get('env') === 'development') {
 
 var pumpcontrol_service = require('./services/pumpcontrol_service');
 
-pumpcontrol_service.on('message', function (message) {
-  console.log("Received message from pumpControl: " + message);
+pumpcontrol_service.on('pumpControlState', function (state) {
+  console.log("New PumpControl state: " + state);
 });
-pumpcontrol_service.on('state', function (state) {
+pumpcontrol_service.on('pumpControlProgress', function (progUpdate) {
+  console.log("PumpControl Progress: " + progUpdate.progress + "\% ("+progUpdate.orderName + ")");
+});
+pumpcontrol_service.on('pumpControlProgramEnd', function (progName) {
+  console.log("PumpControl Program end: " + progName.orderName);
+});
+pumpcontrol_service.on('serviceState', function (state) {
   console.log("PumpControlService has new state: " + state);
 });
 pumpcontrol_service.init();
-
-
+var production_queue = require('./models/production_queue');
+production_queue.on('state', function (state) {
+  console.log("ProductionQueue statechange: " + state);
+});
+production_queue.init();
 
 var io = require('socket.io')();
 app.io = io;
 var orderNamespace = io.of('/orders');
 
 orderNamespace.on('connection', onIOConnect);
-function onTransition(data){
-  console.log("sent statechange " + data.toState + " for OrderNumber " + data.orderNumber);
+
+OSM.on("transition", function (data) {
+  console.log("sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
   orderNamespace.to(data.client.orderNumber).emit("state",{"fromState": data.fromState, "toState": data.toState});
-}
-OSM.on("transition", onTransition);
+});
+production_queue.on('progress', function (order, progress) {
+  orderNamespace.to(order.orderNumber).emit("progress",{"progress":progress});
+});
+
+
 
 function onIOConnect(socket){
-  // socket.on("test", function (msg) {
-  //     var order = OrderDB.getOrder(msg);
-  //     if (typeof order !== 'undefined'){
-  //       orderNamespace.to(socket.id).emit("state",{"orderNumber": order.orderNumber, "toState": order.state});
-  //
-  //     }
-  // });
   console.log('a user connected: ' + socket.id);
   socket.on('room', function(room){
     socket.join(room);

@@ -44,6 +44,7 @@ var DrinkDetailComponent = (function () {
             _this.orderURL = orderLocation;
             var orderNumber = _this.orderURL.split('/').pop();
             _this.socketService.get("/orders", orderNumber, "state").subscribe(function (state) { return _this.orderState = state.toState; });
+            _this.socketService.get("/orders", orderNumber, "progress").subscribe(function (progress) { return _this.progress = progress.progress; });
             // this.router.navigateByUrl(`/orders/${orderNumber}`);
         });
     };
