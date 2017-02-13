@@ -2,8 +2,9 @@
 import * as models from './models';
 
 export class Order {
-  drinkID: string;
+  drinkId: string;
 
-  customerName?: string;
+  orderName?: string;
+  orderNumber?: string;
 
 }

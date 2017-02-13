@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="container-fluid">
+  <div *ngIf="order">
+    <p>Auftragsnummer: {{order.orderNumber}}</p>
+    <p>Auftraggeber: {{order.orderName}}</p>
+  </div>
+  <div *ngIf="orderState">
+    <p>Auftragsstatus: {{orderState.toState}}</p>
+    <div *ngIf="orderState.toState == 'inProduction'">
+      <p>Fortschritt: {{progress}}%</p>
+    </div>
+  </div>
+  <div *ngIf="drink">
+    <p>Bestellter Drink: {{drink.description}}</p>
+  </div>
+  <div *ngIf="user">
+    <p>Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
+  </div>
 
-</body>
-</html>
+</div>

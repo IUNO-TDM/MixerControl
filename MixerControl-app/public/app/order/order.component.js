@@ -14,32 +14,48 @@ require('rxjs/add/operator/switchMap');
 var drink_service_1 = require('../services/drink.service');
 var user_service_1 = require('../services/user.service');
 var order_service_1 = require('../services/order.service');
+var socketio_service_1 = require("../services/socketio.service");
 var OrderComponent = (function () {
-    function OrderComponent(route, router, drinkService, userService, orderService) {
+    function OrderComponent(route, router, drinkService, userService, orderService, socketService) {
         this.route = route;
         this.router = router;
         this.drinkService = drinkService;
         this.userService = userService;
         this.orderService = orderService;
+        this.socketService = socketService;
         this.orderURL = "NULL";
     }
     OrderComponent.prototype.ngOnInit = function () {
-        // this.route.params.
-        // switchMap((params: Params) => this.drinkService.getDrink(params['id']))
-        //   .subscribe(drink => {
-        //     this.drink = drink;
-        //     this.userService.getUser(this.drink.authorId).then(user => this.user = user)
-        //       .catch(error=> this.error = error);
-        //   });
+        var _this = this;
+        this.route.params.
+            switchMap(function (params) { return _this.socketService.get("/orders", params['id'], "state"); })
+            .subscribe(function (state) {
+            _this.orderState = state;
+        });
+        this.route.params.
+            switchMap(function (params) { return _this.socketService.get("/orders", params['id'], "progress"); })
+            .subscribe(function (progress) {
+            _this.progress = progress['progress'];
+        });
+        this.route.params.
+            switchMap(function (params) { return _this.orderService.getOrder(params['id']); })
+            .subscribe(function (order) {
+            _this.order = order;
+            _this.drinkService.getDrink(order.drinkId).then(function (drink) {
+                _this.drink = drink;
+                _this.userService.getUser(_this.drink.authorId).then(function (user) { return _this.user = user; })
+                    .catch(function (error) { return _this.error = error; });
+            });
+        });
     };
     OrderComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'my-order',
             templateUrl: 'order.template.html',
-            providers: [drink_service_1.DrinkService, user_service_1.UserService, order_service_1.OrderService]
+            providers: [drink_service_1.DrinkService, user_service_1.UserService, order_service_1.OrderService, socketio_service_1.SocketService]
         }), 
-        __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, drink_service_1.DrinkService, user_service_1.UserService, order_service_1.OrderService])
+        __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, drink_service_1.DrinkService, user_service_1.UserService, order_service_1.OrderService, socketio_service_1.SocketService])
     ], OrderComponent);
     return OrderComponent;
 }());

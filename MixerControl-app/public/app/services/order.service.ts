@@ -10,15 +10,7 @@ export class OrderService {
   private ordersUrl = 'api/orders/';  // URL to web api
 
   constructor(private http: Http) { }
-  //
-  // getDrinks(): Promise<Drink[]> {
-  //   return this.http
-  //     .get(this.drinksUrl)
-  //     .toPromise()
-  //     .then(response => response.json() as Drink[])
-  //     .catch(this.handleError);
-  // }
-  //
+
   getOrder(id: string): Promise<Order> {
     let url = `${this.ordersUrl}/${id}`;
     return this.http

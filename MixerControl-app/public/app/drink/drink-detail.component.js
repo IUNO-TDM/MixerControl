@@ -38,14 +38,12 @@ var DrinkDetailComponent = (function () {
     DrinkDetailComponent.prototype.onClickMe = function () {
         var _this = this;
         var order = new Order_1.Order();
-        order.drinkID = "4711";
-        order.customerName = "Detlef Drinker";
+        order.drinkId = this.drink.id;
+        order.orderName = "Detlef Drinker";
         this.orderService.createOrder(order).then(function (orderLocation) {
             _this.orderURL = orderLocation;
             var orderNumber = _this.orderURL.split('/').pop();
-            _this.socketService.get("/orders", orderNumber, "state").subscribe(function (state) { return _this.orderState = state.toState; });
-            _this.socketService.get("/orders", orderNumber, "progress").subscribe(function (progress) { return _this.progress = progress.progress; });
-            // this.router.navigateByUrl(`/orders/${orderNumber}`);
+            _this.router.navigateByUrl("/orders/" + orderNumber);
         });
     };
     DrinkDetailComponent = __decorate([

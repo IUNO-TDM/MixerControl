@@ -165,6 +165,7 @@ pumpcontrol_service.on('pumpControlState', function (state) {
 });
 pumpcontrol_service.on('pumpControlProgress', function (progUpdate) {
   // console.log("PumpControl Progress: " + progUpdate.progress + "\% ("+progUpdate.orderName + ")");
+  queue[0].progress = progUpdate.progress;
   production_queue.emit('progress', queue[0],progUpdate.progress);
 });
 pumpcontrol_service.on('pumpControlProgramEnd', function (progName) {

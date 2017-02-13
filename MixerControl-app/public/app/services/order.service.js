@@ -16,15 +16,6 @@ var OrderService = (function () {
         this.http = http;
         this.ordersUrl = 'api/orders/'; // URL to web api
     }
-    //
-    // getDrinks(): Promise<Drink[]> {
-    //   return this.http
-    //     .get(this.drinksUrl)
-    //     .toPromise()
-    //     .then(response => response.json() as Drink[])
-    //     .catch(this.handleError);
-    // }
-    //
     OrderService.prototype.getOrder = function (id) {
         var url = this.ordersUrl + "/" + id;
         return this.http

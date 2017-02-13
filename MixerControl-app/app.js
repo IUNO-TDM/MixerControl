@@ -116,6 +116,9 @@ function onIOConnect(socket){
 
       var state = OSM.compositeState(order);
       orderNamespace.to(order.orderNumber).emit("state",{"toState": state});
+      if (typeof  order.progress !== 'undefined'){
+        orderNamespace.to(order.orderNumber).emit("progress",{"progress":order.progress})
+      }
     }
   });
 

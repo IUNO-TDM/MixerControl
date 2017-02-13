@@ -21,8 +21,6 @@ export class DrinkDetailComponent implements OnInit {
   drink: Drink;
   user: User;
   error: any;
-  orderState: string;
-  progress: number;
   orderURL = "NULL";
 
   constructor(private route: ActivatedRoute,
@@ -46,14 +44,14 @@ export class DrinkDetailComponent implements OnInit {
 
   onClickMe() {
     var order = new Order();
-    order.drinkID = "4711";
-    order.customerName = "Detlef Drinker";
+    order.drinkId = this.drink.id;
+    order.orderName = "Detlef Drinker";
     this.orderService.createOrder(order).then(orderLocation => {
+
       this.orderURL = orderLocation;
       let orderNumber = this.orderURL.split('/').pop();
-      this.socketService.get("/orders",orderNumber, "state").subscribe(state => this.orderState = state.toState);
-      this.socketService.get("/orders", orderNumber, "progress").subscribe(progress => this.progress = progress.progress);
-      // this.router.navigateByUrl(`/orders/${orderNumber}`);
+
+      this.router.navigateByUrl(`/orders/${orderNumber}`);
     });
   }
 }

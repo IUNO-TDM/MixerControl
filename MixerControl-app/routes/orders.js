@@ -18,22 +18,30 @@ router.post('/', function (req, res, next) {
   }
   var data = req.body;
   logger.debug(data);
-  // var jsonData = JSON.parse(data);
-  //generate order
 
   var orderNumber = OrderDB.generateNewOrderNumber();
-  var order = new Order(orderNumber, data.customerName, data.drinkID);
+  var order = new Order(orderNumber, data.orderName, data.drinkId);
   OrderDB.addOrder(order);
   var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   res.set('Location', fullUrl + orderNumber);
   res.sendStatus(201);
 });
 
-
-router.get('/:id/state', function (req, res, next) {
+router.get('/:id', function (req, res, next) {
 
   var orderId = req.params['id'];
-  res.send('hereCouldBeYourOrderState')
+  var order = OrderDB.getOrder(orderId);
+
+
+  if(typeof  order !== 'undefined'){
+    var cleanedOrder = {};
+    cleanedOrder['orderNumber'] = order['orderNumber'];
+    cleanedOrder['orderName'] = order['orderName'];
+    cleanedOrder['drinkId'] = order['drinkId'];
+    res.send(JSON.stringify(cleanedOrder));
+  }else {
+    res.sendStatus(404);
+  }
 });
 
 
