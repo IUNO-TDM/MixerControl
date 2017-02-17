@@ -33,6 +33,37 @@ export class OrderService {
       toPromise().then(response => response.headers.get("Location"));
   }
 
+  getPaymentRequest(id: string): Promise<string> {
+    let url = `${this.ordersUrl}${id}/PaymentRequest`;
+    return this.http
+      .get(url)
+      .toPromise()
+      .then(response => {
+        let paymentRequest =  response.text();
+        console.log(paymentRequest);
+        return paymentRequest;
+      })
+      .catch(this.handleError);
+  }
+
+  sendPayment(id: string, payment: string): Promise<string>{
+    let headers = new Headers({ 'Content-Type': 'text/plain' });
+    let options = new RequestOptions({ headers: headers });
+    let url = `${this.ordersUrl}${id}/Payment`;
+
+    return this.http.put(url,payment, options).toPromise();
+  }
+
+  sendProductionStart(id: string): Promise<string>{
+    let headers = new Headers({ 'Content-Type': 'text/plain' });
+    let options = new RequestOptions({ headers: headers });
+    let url = `${this.ordersUrl}${id}/productionStart`;
+
+    return this.http.put(url,"true", options).toPromise();
+  }
+
+
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error.message || error);

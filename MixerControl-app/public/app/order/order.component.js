@@ -48,6 +48,12 @@ var OrderComponent = (function () {
             });
         });
     };
+    OrderComponent.prototype.ProductionStart = function () {
+        var _this = this;
+        this.route.params.
+            switchMap(function (params) { return _this.orderService.sendProductionStart(params['id']); })
+            .subscribe(function (response) { return console.log(response); });
+    };
     OrderComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

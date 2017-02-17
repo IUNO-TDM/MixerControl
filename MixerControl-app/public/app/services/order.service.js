@@ -35,6 +35,30 @@ var OrderService = (function () {
         return this.http.post(this.ordersUrl, body, options).
             toPromise().then(function (response) { return response.headers.get("Location"); });
     };
+    OrderService.prototype.getPaymentRequest = function (id) {
+        var url = "" + this.ordersUrl + id + "/PaymentRequest";
+        return this.http
+            .get(url)
+            .toPromise()
+            .then(function (response) {
+            var paymentRequest = response.text();
+            console.log(paymentRequest);
+            return paymentRequest;
+        })
+            .catch(this.handleError);
+    };
+    OrderService.prototype.sendPayment = function (id, payment) {
+        var headers = new http_1.Headers({ 'Content-Type': 'text/plain' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var url = "" + this.ordersUrl + id + "/Payment";
+        return this.http.put(url, payment, options).toPromise();
+    };
+    OrderService.prototype.sendProductionStart = function (id) {
+        var headers = new http_1.Headers({ 'Content-Type': 'text/plain' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var url = "" + this.ordersUrl + id + "/productionStart";
+        return this.http.put(url, "true", options).toPromise();
+    };
     OrderService.prototype.handleError = function (error) {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);

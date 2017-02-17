@@ -40,9 +40,9 @@ var stateMachine = new machina.BehavioralFsm({
         waitingPayment: {
           _onEnter: function (client) {
             console.log("Ordernumber " + client.orderNumber + " is now state waitingPayment ");
-            this.timer = setTimeout( function() {
-              this.handle(client, "paymentArrived" );
-            }.bind( this ), 5000 );
+            // this.timer = setTimeout( function() {
+            //   this.handle(client, "paymentArrived" );
+            // }.bind( this ), 5000 );
             //display PR QR Code
           },
           paymentArrived: "waitingLicense"

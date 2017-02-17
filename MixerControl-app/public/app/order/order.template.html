@@ -8,6 +8,12 @@
     <div *ngIf="orderState.toState == 'inProduction'">
       <p>Fortschritt: {{progress}}%</p>
     </div>
+    <div *ngIf="orderState.toState == 'waitingPayment'">
+      <my-payment></my-payment>
+    </div>
+    <div *ngIf="orderState.toState == 'readyForProduction'">
+      <button (click)="ProductionStart()">Start Pumping</button>
+    </div>
   </div>
   <div *ngIf="drink">
     <p>Bestellter Drink: {{drink.description}}</p>
@@ -15,5 +21,6 @@
   <div *ngIf="user">
     <p>Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
   </div>
+
 
 </div>

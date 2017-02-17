@@ -1,0 +1,9 @@
+<div class="container-fluid">
+
+  <p>Pay with this: </p>
+  <div *ngIf="paymentRequest">
+    <qr-code [value]="paymentRequest" [size]="150"></qr-code>
+  </div>
+  <p>or scan here</p>
+  <qr-scanner [facing]="'front'" (onRead)="onRead($event)"></qr-scanner>
+</div>

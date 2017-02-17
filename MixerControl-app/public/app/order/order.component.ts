@@ -9,7 +9,6 @@ import {UserService} from '../services/user.service'
 import {OrderService} from '../services/order.service'
 import {SocketService} from "../services/socketio.service";
 
-
 @Component({
   moduleId: module.id,
   selector: 'my-order',
@@ -61,6 +60,12 @@ export class OrderComponent implements OnInit {
         })
       });
 
+  }
+
+  ProductionStart(){
+    this.route.params.
+    switchMap((params: Params) => this.orderService.sendProductionStart(params['id']))
+      .subscribe(response => console.log(response));
   }
 
 }

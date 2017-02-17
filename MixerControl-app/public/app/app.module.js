@@ -12,8 +12,11 @@ var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
+var payment_component_1 = require('./order/payment.component');
 var app_component_1 = require('./app.component');
 var app_routing_module_1 = require('./app-routing.module');
+var angular2_qrcode_1 = require('angular2-qrcode');
+var angular2_qrscanner_1 = require('angular2-qrscanner');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -23,10 +26,13 @@ var AppModule = (function () {
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 app_routing_module_1.AppRoutingModule,
-                http_1.HttpModule
+                http_1.HttpModule,
+                angular2_qrcode_1.QRCodeModule,
+                angular2_qrscanner_1.QrScannerModule
             ],
             declarations: [
                 app_component_1.AppComponent,
+                payment_component_1.PaymentComponent,
                 app_routing_module_1.routedComponents
             ],
             bootstrap: [app_component_1.AppComponent]

@@ -26,7 +26,11 @@
       // other libraries
       'rxjs':                      'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
-      "socket.io-client": 'npm:socket.io-client/socket.io.js'
+      "socket.io-client": 'npm:socket.io-client/socket.io.js',
+      'angular2-qrcode': 'npm:angular2-qrcode/angular2-qrcode.js',
+      'qrious': 'npm:qrious/dist/umd/qrious.js',
+      'angular2-qrscanner': 'npm:angular2-qrscanner'
+
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -38,6 +42,18 @@
         defaultExtension: 'js'
       },
       "socket.io-client": {
+        defaultExtension: 'js'
+      }
+      ,
+      "angular2-qrcode": {
+        defaultExtension: 'js'
+      }
+      ,
+      "qrious": {
+        defaultExtension: 'js'
+      },
+      'angular2-qrscanner': {
+        main: 'dist/index.js',
         defaultExtension: 'js'
       }
     }

@@ -195,8 +195,19 @@ production_queue.resumeProduction = function () {
   state_machine.resumeProduction();
 };
 
-production_queue.startConfirmed = function () {
-  state_machine.startConfirmed();
+production_queue.startConfirmed = function (order) {
+  if(!order){
+    console.log("admin confirmed the first order start");
+    state_machine.startConfirmed();
+  }
+  if(queue[0] == order){
+    state_machine.startConfirmed();
+    return true;
+  }else {
+    console.log("order cannot be confirmed because it is not the first element at the queue");
+    return false;
+  }
+
 };
 
 production_queue.init = function () {
