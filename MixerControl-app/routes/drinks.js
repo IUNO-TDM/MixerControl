@@ -44,7 +44,48 @@ var recipes_mock = [ {
   },
   "updatedAt" : "2017-01-22"
 }
+,{
+  "updatedAt" : "2017-01-22",
+  "thumbnail" : "",
+  "rating" : {
+    "min" : 1,
+    "max" : 5,
+    "count" : 1,
+    "value" : 5
+  },
+  "description" : "Der Klassiker2 von Douglas Adams",
+  "id" : "2",
+  "imageRef" : "",
+  "title" : "Pangalaktischer Donnergurgler",
+  "authorId" : "1",
+  "retailPrice" : {
+    "amount" : 8,
+    "currency" : "IUNO"
+  },
+  "updatedAt" : "2017-01-22"
+}
+,{
+  "updatedAt" : "2017-01-22",
+  "thumbnail" : "",
+  "rating" : {
+    "min" : 1,
+    "max" : 5,
+    "count" : 1,
+    "value" : 5
+  },
+  "description" : "Der Klassiker3 von Douglas Adams",
+  "id" : "3",
+  "imageRef" : "",
+  "title" : "Pangalaktischer Donnergurgler",
+  "authorId" : "1",
+  "retailPrice" : {
+    "amount" : 8,
+    "currency" : "IUNO"
+  },
+  "updatedAt" : "2017-01-22"
+}
 ];
+
 
 
 /**
