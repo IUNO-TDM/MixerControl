@@ -28,6 +28,7 @@ app.use('/js', express.static(__dirname + '/public/js'));
 app.use('/app', express.static(__dirname + '/public/app'));
 app.use('/img', express.static(__dirname + '/public/img'));
 app.use('/css', express.static(__dirname + '/public/css'));
+app.use('/fonts', express.static(__dirname + '/public/fonts'));
 app.use('/partials', express.static(__dirname + '/public/partials'));
 app.use('/templates', express.static(__dirname + '/public/templates'));
 app.use('/scripts', express.static(__dirname + '/public/scripts'));
