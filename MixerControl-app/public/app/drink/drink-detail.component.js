@@ -35,6 +35,9 @@ var DrinkDetailComponent = (function () {
                 .catch(function (error) { return _this.error = error; });
         });
     };
+    DrinkDetailComponent.prototype.getBack = function () {
+        this.router.navigateByUrl("/");
+    };
     DrinkDetailComponent.prototype.onClickMe = function () {
         var _this = this;
         var order = new Order_1.Order();

@@ -28,6 +28,9 @@ export class DrinkListComponent implements OnInit {
       .catch(error=> this.error = error);
     return;
   }
+  getBack(): void{
+      this.router.navigateByUrl("/");
+  }
 
   ngOnInit(): void{
     this.getDrinks();

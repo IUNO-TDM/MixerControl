@@ -1,10 +1,12 @@
-<div class="container-fluid">
-  <div *ngIf="order">
-    <p>Auftragsnummer: {{order.orderNumber}}</p>
-    <p>Auftraggeber: {{order.orderName}}</p>
-  </div>
-  <div *ngIf="orderState">
-    <p>Auftragsstatus: {{orderState.toState}}</p>
+<div class="row title">
+    <h1>Bestellabwicklung</h1>
+
+</div>
+
+<div class="row">
+   <div class="one-half column">
+ <div *ngIf="orderState">
+    <h3>Auftragsstatus: {{orderState.toState}}</h3>
     <div *ngIf="orderState.toState == 'inProduction'">
       <p>Fortschritt: {{progress}}%</p>
     </div>
@@ -15,12 +17,34 @@
       <button (click)="ProductionStart()">Start Pumping</button>
     </div>
   </div>
-  <div *ngIf="drink">
-    <p>Bestellter Drink: {{drink.description}}</p>
-  </div>
+   </div>
+<div class="one-half column" >
+    
+    <h3>Auftragsdetails</h3>
+    <table>
+      <thead>
+        <tr>
+        <th>Auftragsnummer</th>
+        </tr>
+      </thead>
+
+    </table>
+
+
+   <div *ngIf="order">
+    <h5>Auftragsnummer</h5>{{order.orderNumber}}
+    <p>Auftraggeber: {{order.orderName}}</p>
+   </div> 
+    <div *ngIf="drink">
+      <p>Bestellter Drink: {{drink.description}}</p>
+    </div>
   <div *ngIf="user">
     <p>Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
   </div>
+</div>
+
+ 
 
 
 </div>
+

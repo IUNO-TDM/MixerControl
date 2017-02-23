@@ -1,5 +1,7 @@
 @import 'fonts.css';
 
+
+
 html {
   font-size: 50%; }
 }
@@ -8,6 +10,14 @@ body{
     font-family: 'open_sansregular';
 }
 
+a {
+  color: #000; }
+a:hover {
+  color: #000; }
+
+.container{
+    width: 95%;
+}
 header {
     background-image: url('../img/header.png');
      background-size: cover;
@@ -16,11 +26,10 @@ header {
 header .projectTitle{
      font-size: 2.4rem;
      color: #fff;
-     padding: 10px;
+     padding-left: 5%;
      font-family: 'open_sanslight';
-    
-
-}
+     text-decoration: none;
+ }
 .loader {
     background-position: center center;
     background-repeat: no-repeat;
@@ -29,16 +38,46 @@ header .projectTitle{
     width: 100%;
 }
 
+.row.title {
+      border-bottom: 1px solid #000;
+      padding-top:  1em;
+      padding-bottom:  0.5em;
+      margin-bottom: 2em; 
+}
+.row.title h1, 
+.row.title h4{
+    display: inline;
+    padding-right: 1em;
+ }
+.row.title button {
+    float: right;
+}
+
+
 .tileDrink{
-    border: 1px solid #000;
+    width: 48%; 
+    border: 1px solid #999;
     padding: 1em;
-    margin: 0.5em;
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+    float:left;
+    display: inline;
+    box-sizing: border-box;
+    overflow: hidden;
+    
 }
 .tileDrink .inner{
     padding-left: 120px;
-    
+    min-height: 200px;
+}
+.tileDrink button{
+    margin-left: 120px;
 }
 .tileDrink img{
     float: left;
+    
 }
+.one-half .tileDrink{
+    width: 100%;
+    border: none;
 }

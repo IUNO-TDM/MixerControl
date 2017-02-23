@@ -1,19 +1,22 @@
+<div class="row title">
+  <h1>Detailseite</h1>
+  <button (click)="getBack()">zurück</button>
+</div>    
 <div class="row">
-
-    <div *ngIf="drink">
-      <h1>{{drink.title}}</h1>
+    <div class="one-half column">
+        <div class="tileDrink" *ngIf="drink">
+            <img src="{{drink.thumbnail}}" *ngIf="drink.thumbnail" />
+            <div class="inner">
+                <h3> {{drink.title}}</h3>
+                <p>{{drink.description}}</p>
+                <p *ngIf="user">Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
+            </div>
+                 <button (click)="onClickMe()">Bestellen</button>
+        </div>
+      </div>
+    <div class="one-half column">
+      <h3>was hier eigentlich passiert:</h3>
+      
+      lorem iüpsum dolor sit
     </div>
-    <div *ngIf="drink">
-      <h2>Beschreibung:</h2>
-      <p>{{drink.description}}</p>
-      <img src="{{drink.thumbnail}}">
-    </div>
-    <div *ngIf="user">
-      <h2>Erstellt von:</h2>
-      <p>{{user.firstname}} {{ user.lastname}}</p>
-    </div>
-    <button (click)="onClickMe()">Order me!</button>
-    <p>{{orderURL}}</p>
-    <p>{{orderState}}</p>
-    <p>{{progress}}</p>
 </div>
