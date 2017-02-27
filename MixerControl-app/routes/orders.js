@@ -88,4 +88,19 @@ router.put('/:id/productionStart', function (req, res, next) {
 });
 
 
+router.put('/:id/resume', function (req, res, next) {
+
+    var orderId = req.params['id'];
+
+    var order = OrderDB.getOrder(orderId);
+    if(order){
+        var success = osm.resume(order);
+        res.sendStatus(201);
+    }else {
+        res.sendStatus(404);
+    }
+
+
+});
+
 module.exports = router;

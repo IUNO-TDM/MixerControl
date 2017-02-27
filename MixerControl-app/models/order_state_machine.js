@@ -4,6 +4,7 @@
 
 var machina = require('machina');
 var production_queue = require('../models/production_queue');
+
 var stateMachine = new machina.BehavioralFsm({
     initialize: function( options ) {
         // your setup code goes here...
@@ -67,7 +68,9 @@ var stateMachine = new machina.BehavioralFsm({
         readyForProduction: {
           _onEnter: function (client) {
           },
-          productionStarted: "inProduction"
+          productionStarted: "inProduction",
+          enqueuedForProduction: "enqueuedForProduction",
+          error: "error"
         },
         inProduction: {
           _onEnter: function (client) {
@@ -82,6 +85,9 @@ var stateMachine = new machina.BehavioralFsm({
           _onEnter: function (client) {
             production_queue.removeOrderFromQueue(client);
           },
+          resume: "enqueuedForProduction"
+        },
+        error: {
           resume: "enqueuedForProduction"
         }
     },
@@ -113,8 +119,14 @@ var stateMachine = new machina.BehavioralFsm({
       this.handle(client, "pause");
     },
     resume: function (client) {
-      this.handle(client, "resume");
-  }
+        this.handle(client, "resume");
+    },
+    error: function (client) {
+        this.handle(client, "error");
+    },
+    productionPaused: function(client){
+        this.handle(client, "enqueuedForProduction");
+    }
 
 });
 
@@ -126,6 +138,12 @@ production_queue.on('state', function (state, order) {
       stateMachine.productionStarted(order);
     }else if(state == 'finished'){
       stateMachine.productionFinished(order);
+    }else if(state == 'error'){
+        stateMachine.productionFinished(order);
+    }else if(state == 'waitingPump' || state == 'productionPaused'){
+        stateMachine.productionPaused(order);
+    }else if(state == 'errorProcessing'){
+        stateMachine.error(order);
     }
   }
 });

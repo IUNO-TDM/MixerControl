@@ -2,6 +2,8 @@ var machina = require('machina');
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 
+var pumpcontrol_service = require('../services/pumpcontrol_service');
+
 const prog = {
   "orderName": "Christians Drink",
   "recipe": {
@@ -84,16 +86,17 @@ var state_machine = new machina.Fsm({
   states: {
     uninitialized: {
       _init: function () {
-        this.transition("init");
+        pumpcontrol_service.init();
+        this.transition("waitingPump");
       }
     },
-    init: {
-      _onEnter: function () {
-        if(queue.length == 0){
-          this.transition("waitingOrder");
-        }else{
-          this.transition("waitingStart");
-        }
+    waitingPump:{
+      pumpControlConnected: function(){
+          if(queue.length == 0){
+              this.transition("waitingOrder");
+          }else{
+              this.transition("waitingStart");
+          }
       }
     },
     waitingOrder: {
@@ -103,21 +106,31 @@ var state_machine = new machina.Fsm({
         }
       },
       orderEnqueued: "waitingStart",
-      productionPause: "productionPaused"
+      productionPause: "productionPaused",
+      pumpControlDisconnected: "waitingPump"
     },
     waitingStart:{
       // _onEnter: function () {
       // },
-      startConfirmed: "processingOrder",
-      productionPause: "productionPaused"
+      startConfirmed: "startProcessing",
+      productionPause: "productionPaused",
+      pumpControlDisconnected: "waitingPump"
+    },
+    startProcessing:{
+        _onEnter: function () {
+            var p = prog;
+            p.orderName = queue[0].orderName;
+            pumpcontrol_service.startProgram(p);
+        },
+        startedProcessing: "processingOrder",
+        errorProcessing: "errorProcessing",
+        pumpControlDisconnected: "waitingPump"
+
     },
     processingOrder: {
-      _onEnter: function () {
-        var p = prog;
-        p.orderName = queue[0].orderName;
-        pumpcontrol_service.startProgram(p);
-      },
-      programEnded: "finished"
+
+      programEnded: "finished",
+      pumpControlDisconnected: "waitingPump"
     },
     finished: {
       _onEnter: function () {
@@ -127,16 +140,32 @@ var state_machine = new machina.Fsm({
         }else{
           this.transition("waitingStart");
         }
-      }
+      },
+      pumpControlDisconnected: "waitingPump"
+    },
+    errorProcessing:{
+      _onEnter: function(){
+        queue.shift();
+        if(queue.length == 0){
+            this.transition("waitingOrder");
+        }else{
+            this.transition("waitingStart");
+        }
+      },
+      pumpControlDisconnected: "waitingPump"
     },
     productionPaused: {
+      _onEnter: function(){
+
+      },
       productionResume: function () {
         if(queue.length == 0){
           this.transition("waitingOrder");
         }else{
           this.transition("waitingStart");
         }
-      }
+      },
+      pumpControlDisconnected: "waitingPump"
     }
   },
   pauseProduction: function () {
@@ -148,6 +177,9 @@ var state_machine = new machina.Fsm({
   orderEnqueued: function () {
     this.handle("orderEnqueued");
   },
+  programStarted: function(){
+    this.handle("startedProcessing")
+  },
   programEnded: function () {
     this.handle("programEnded");
   },
@@ -155,7 +187,16 @@ var state_machine = new machina.Fsm({
     this.handle("startConfirmed");
   },
   init: function () {
-    this.handle("_init");
+      this.handle("_init");
+  },
+  pumpControlConnected: function(){
+    this.handle("pumpControlConnected");
+  },
+  pumpControlDisconnected: function(){
+      this.handle("pumpControlDisconnected");
+  },
+  errorProcessing: function () {
+      this.handle("errorProcessing");
   }
 
 });
@@ -167,52 +208,15 @@ pumpcontrol_service.on('pumpControlProgress', function (progUpdate) {
   // console.log("PumpControl Progress: " + progUpdate.progress + "\% ("+progUpdate.orderName + ")");
   queue[0].progress = progUpdate.progress;
   production_queue.emit('progress', queue[0],progUpdate.progress);
+  state_machine.programStarted();
 });
 pumpcontrol_service.on('pumpControlProgramEnd', function (progName) {
   // console.log("PumpControl Program end: " + progName.orderName);
   state_machine.programEnded();
 });
-pumpcontrol_service.on('serviceState', function (state) {
-  // console.log("PumpControlService has new state: " + state);
-  // if()
+pumpcontrol_service.on('pumpControlError', function (error) {
+    state_machine.errorProcessing();
 });
-
-production_queue.addOrderToQueue = function(order){
-  queue.push(order);
-  state_machine.orderEnqueued();
-};
-production_queue.removeOrderFromQueue = function (order) {
-  //TODO: check that order can be safely removed
-  queue.delete(order);
-};
-
-
-production_queue.pauseProduction = function () {
-  state_machine.pauseProduction();
-};
-
-production_queue.resumeProduction = function () {
-  state_machine.resumeProduction();
-};
-
-production_queue.startConfirmed = function (order) {
-  if(!order){
-    console.log("admin confirmed the first order start");
-    state_machine.startConfirmed();
-  }
-  if(queue[0] == order){
-    state_machine.startConfirmed();
-    return true;
-  }else {
-    console.log("order cannot be confirmed because it is not the first element at the queue");
-    return false;
-  }
-
-};
-
-production_queue.init = function () {
-  state_machine.init();
-};
 
 state_machine.on('transition', function (data) {
   // console.log("ProductionQueue statechange " + data.toState );
@@ -220,6 +224,49 @@ state_machine.on('transition', function (data) {
 
 });
 
+pumpcontrol_service.on('serviceState', function (state) {
+    if(state == 'connected'){
+        state_machine.pumpControlConnected();
+    }else{
+        state_machine.pumpControlDisconnected();
+    }
+});
+production_queue.addOrderToQueue = function(order){
+    queue.push(order);
+    state_machine.orderEnqueued();
+};
+production_queue.removeOrderFromQueue = function (order) {
+    //TODO: check that order can be safely removed
+    queue.delete(order);
+};
+
+
+production_queue.pauseProduction = function () {
+    state_machine.pauseProduction();
+};
+
+production_queue.resumeProduction = function () {
+    state_machine.resumeProduction();
+};
+
+production_queue.startConfirmed = function (order) {
+    if(!order){
+        console.log("admin confirmed the first order start");
+        state_machine.startConfirmed();
+    }
+    if(queue[0] == order){
+        state_machine.startConfirmed();
+        return true;
+    }else {
+        console.log("order cannot be confirmed because it is not the first element at the queue");
+        return false;
+    }
+
+};
+
+production_queue.init = function () {
+    state_machine.init();
+};
 
 
 module.exports = production_queue;

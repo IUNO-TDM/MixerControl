@@ -12,6 +12,17 @@ router.post('/startConfirm', function (req, res, next) {
   res.sendStatus(200);
 });
 
+router.put('/pauseProduction', function (req, res, next){
+    production_queue.pauseProduction();
+    res.sendStatus(201);
+
+});
+router.put('/resumeProduction', function (req, res, next){
+    production_queue.resumeProduction();
+    res.sendStatus(201);
+
+});
+
 //
 // router.post('/', function (req, res, next) {
 //   // Validation

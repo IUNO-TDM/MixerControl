@@ -81,10 +81,14 @@ pumpcontrol_service.on('pumpControlProgress', function (progUpdate) {
 pumpcontrol_service.on('pumpControlProgramEnd', function (progName) {
   console.log("PumpControl Program end: " + progName.orderName);
 });
+
+pumpcontrol_service.on('pumpControlError', function (error) {
+    console.log("PumpControl error: " + JSON.stringify(error));
+});
 pumpcontrol_service.on('serviceState', function (state) {
   console.log("PumpControlService has new state: " + state);
 });
-pumpcontrol_service.init();
+
 var production_queue = require('./models/production_queue');
 production_queue.on('state', function (state) {
   console.log("ProductionQueue statechange: " + state);
