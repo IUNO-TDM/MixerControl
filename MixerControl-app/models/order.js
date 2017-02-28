@@ -7,13 +7,15 @@
 var timer = require('timers');
 var osm = require('./order_state_machine');
 // Constructor
-function order(number, ordername, drinkId) {
+function Order(number, orderName, drinkId, offerId) {
   // always initialize all instance properties
   this.orderNumber = number;
-  this.orderName = ordername;
+  this.orderName = orderName;
   this.drinkId = drinkId;
+  this.offerId = offerId;
+
   osm.init(this);
 }
 // export the class
-module.exports = order;
+module.exports = Order;
 

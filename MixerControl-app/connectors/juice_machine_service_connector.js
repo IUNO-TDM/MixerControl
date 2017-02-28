@@ -12,7 +12,7 @@ var helper = require('../services/helper_service');
 var ingredients = require('../global/ingredient_configuration').INGREDIENT_IDS;
 
 
-function buildOptionsForRequest (method, protocol, host, port, path, qs) {
+function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
     return {
         method: method,
@@ -36,8 +36,8 @@ self.getAllRecipes = function (callback) {
         {'ingredients': ingredients}
     );
 
-    request.get(options, function(e, r, jsonData) {
-        logger.info('Response:' + jsonData);
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
 
         if (e) {
             console.error(e);
@@ -48,12 +48,12 @@ self.getAllRecipes = function (callback) {
         }
 
         if (r.statusCode != 200) {
-            logger.crit('Call not successful');
+            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.crit(err);
+            logger.warn(err);
             callback(err);
 
             return;
@@ -75,7 +75,7 @@ self.getAllRecipes = function (callback) {
     });
 };
 
-self.getRecipeForId = function(id, callback) {
+self.getRecipeForId = function (id, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
@@ -84,8 +84,8 @@ self.getRecipeForId = function(id, callback) {
         '/recipes/' + id
     );
 
-    request.get(options, function(e, r, jsonData) {
-        logger.info('Response:' + jsonData);
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
 
         if (e) {
             console.error(e);
@@ -95,13 +95,13 @@ self.getRecipeForId = function(id, callback) {
             }
         }
 
-        if (r.statusCode != 200) {
-            logger.crit('Call not successful');
+        if (r.statusCode >= 400) {
+            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.crit(err);
+            logger.warn(err);
             callback(err);
 
             return;
@@ -123,7 +123,7 @@ self.getRecipeForId = function(id, callback) {
     });
 };
 
-self.getUserForId = function(id, callback) {
+self.getUserForId = function (id, callback) {
     var options = buildOptionsForRequest(
         'GET',
         'http',
@@ -132,8 +132,8 @@ self.getUserForId = function(id, callback) {
         '/users/' + id
     );
 
-    request.get(options, function(e, r, jsonData) {
-        logger.info('Response:' + jsonData);
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
 
         if (e) {
             console.error(e);
@@ -143,13 +143,13 @@ self.getUserForId = function(id, callback) {
             }
         }
 
-        if (r.statusCode != 200) {
-            logger.crit('Call not successful');
+        if (r.statusCode >= 400) {
+            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.crit(err);
+            logger.warn(err);
             callback(err);
 
             return;
@@ -167,6 +167,153 @@ self.getUserForId = function(id, callback) {
         if (typeof(callback) == 'function') {
 
             callback(null, jsonData);
+        }
+    });
+};
+
+
+self.requestOfferForOrders = function (orderList, callback) {
+    var options = buildOptionsForRequest(
+        'POST',
+        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/offers'
+    );
+
+
+    options.body = {
+        items: orderList,
+        hsmId: 'hsmID'
+    };
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
+
+        if (e) {
+            console.error(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r.statusCode >= 400) {
+            logger.warn('Call not successful');
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
+
+            return;
+        }
+
+        if (!helper.isObject(jsonData)) {
+            callback({
+                status: 500,
+                message: 'Expected object. But did get something different: ' + jsonData
+            });
+            return;
+        }
+
+        //TODO: Parse json data into objects to validate the content
+        if (typeof(callback) == 'function') {
+
+            callback(null, jsonData);
+        }
+    });
+};
+
+self.getOfferForId = function (id, callback) {
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/offers/' + id
+    );
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
+
+        if (e) {
+            console.error(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r.statusCode >= 400) {
+            logger.warn('Call not successful');
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
+
+            return;
+        }
+
+        if (!helper.isObject(jsonData)) {
+            callback({
+                status: 500,
+                message: 'Expected object. But did get something different: ' + jsonData
+            });
+            return;
+        }
+
+        //TODO: Parse json data into objects to validate the content
+        if (typeof(callback) == 'function') {
+
+            callback(null, jsonData);
+        }
+    });
+};
+
+self.savePaymentForOffer = function (offerId, bip70, callback) {
+    var options = buildOptionsForRequest(
+        'POST',
+        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/offers/' + offerId + '/payment'
+    );
+
+
+    options.body = {
+        paymentBIP70: bip70
+    };
+
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + jsonData);
+
+        if (e) {
+            console.error(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r.statusCode >= 400) {
+            logger.warn('Call not successful');
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn(err);
+            callback(err);
+
+            return;
+        }
+
+        if (typeof(callback) == 'function') {
+
+            callback(null);
         }
     });
 };

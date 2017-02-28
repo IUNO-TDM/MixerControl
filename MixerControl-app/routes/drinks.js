@@ -21,7 +21,7 @@ router.get('/', function (req, res, next) {
 
         if (e) {
             logger.crit(e);
-            res.sendStatus(500);
+            next(e);
             return;
         }
 
@@ -37,7 +37,7 @@ router.get('/:id', function (req, res, next) {
     jms_connector.getRecipeForId(recipeId, function (e, recipe) {
         if (e) {
             logger.crit(e);
-            res.sendStatus(500);
+            next(e);
             return;
         }
 
