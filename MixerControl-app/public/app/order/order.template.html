@@ -22,29 +22,23 @@
     
     <h3>Auftragsdetails</h3>
     <table>
-      <thead>
-        <tr>
-        <th>Auftragsnummer</th>
-        </tr>
-      </thead>
-
+      <tr *ngIf="order">
+        <td>Auftragsnummer</td>
+        <td>{{order.orderNumber}}</td>
+      </tr>
+      <tr *ngIf="order">
+        <td>Auftraggeber</td>
+        <td>{{order.orderName}}</td>
+      </tr>
+      <tr *ngIf="drink">
+        <td>Bestellter Drink</td>
+        <td>{{drink.description}}</td>
+      </tr>
+      <tr *ngIf="user">
+        <td>Rezepthersteller</td>
+        <td>{{user.firstname}} {{user.lastname}}</td>
+      </tr>
     </table>
-
-
-   <div *ngIf="order">
-    <h5>Auftragsnummer</h5>{{order.orderNumber}}
-    <p>Auftraggeber: {{order.orderName}}</p>
-   </div> 
-    <div *ngIf="drink">
-      <p>Bestellter Drink: {{drink.description}}</p>
-    </div>
-  <div *ngIf="user">
-    <p>Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
-  </div>
 </div>
-
- 
-
-
 </div>
 

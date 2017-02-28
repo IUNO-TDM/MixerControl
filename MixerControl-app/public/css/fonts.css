@@ -22,3 +22,15 @@
 
 }
 
+@font-face {
+    font-family: 'blokletters_viltstifviltstift';
+    src: url('../fonts/Blokletters-Viltstift-webfont.eot');
+    src: url('../fonts/Blokletters-Viltstift-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/Blokletters-Viltstift-webfont.woff') format('woff'),
+         url('../fonts/Blokletters-Viltstift-webfont.ttf') format('truetype'),
+         url('../fonts/Blokletters-Viltstift-webfont.svg#blokletters_viltstifviltstift') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
