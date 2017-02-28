@@ -55,21 +55,32 @@ var stateMachine = new machina.BehavioralFsm({
               this.handle(client, "licenseArrived" );
             }.bind( this ), 5000 );
           },
-          licenseArrived: "enqueuedForProduction"
+          licenseArrived: "enqueueForProduction"
         },
-        enqueuedForProduction: {
-          _onEnter: function (client) {
-            //enqueueForProduction
-            production_queue.addOrderToQueue(client);
-          },
-          readyForProduction: "readyForProduction",
-          pause: "orderPaused"
+
+        enqueueForProduction: {
+            _onEnter: function(client){
+                if (production_queue.addOrderToQueue(client)){
+                    this.transition(client, "waitForProduction");
+                }else{
+                    this.transition(client, "error");
+                }
+            },
+            readyForProduction: function (client) {
+                this.deferUntilTransition( client,"waitForProduction" );
+            }
+
+        },
+        waitForProduction:{
+
+            readyForProduction: "readyForProduction",
+            pause: "orderPaused"
         },
         readyForProduction: {
           _onEnter: function (client) {
           },
           productionStarted: "inProduction",
-          enqueuedForProduction: "enqueuedForProduction",
+            productionPaused: "waitForProduction",
           error: "error"
         },
         inProduction: {
@@ -85,10 +96,10 @@ var stateMachine = new machina.BehavioralFsm({
           _onEnter: function (client) {
             production_queue.removeOrderFromQueue(client);
           },
-          resume: "enqueuedForProduction"
+          resume: "enqueueForProduction"
         },
         error: {
-          resume: "enqueuedForProduction"
+          resume: "waitForProduction"
         }
     },
     init: function (client) {
@@ -125,7 +136,7 @@ var stateMachine = new machina.BehavioralFsm({
         this.handle(client, "error");
     },
     productionPaused: function(client){
-        this.handle(client, "enqueuedForProduction");
+        this.handle(client, "productionPaused");
     }
 
 });

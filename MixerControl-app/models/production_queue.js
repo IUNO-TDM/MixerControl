@@ -16,54 +16,18 @@ const prog = {
             [
               {
                 "ingredient":"Orangensaft",
-                "amount":25
+                "amount":5
               },
               {
                 "ingredient":"Apfelsaft",
-                "amount":25
+                "amount":5
               },
               {
                 "ingredient":"Johannisbeersaft",
-                "amount":25
+                "amount":5
               }
             ],
-          "timing":3,
-          "sleep":0
-        },
-        {
-          "components":
-            [
-
-              {
-                "ingredient":"Kirschsaft",
-                "amount":25
-              },
-              {
-                "ingredient":"Bananensaft",
-                "amount":25
-              },
-              {
-                "ingredient":"Sprudel",
-                "amount":25
-              }
-            ],
-          "timing":0,
-          "sleep":5000
-        },
-        {
-          "components":
-            [
-
-              {
-                "ingredient":"Cola",
-                "amount":25
-              },
-              {
-                "ingredient":"Fanta",
-                "amount":25
-              }
-            ],
-          "timing":3,
+          "timing":1,
           "sleep":0
         }
       ]
@@ -134,18 +98,19 @@ var state_machine = new machina.Fsm({
     },
     finished: {
       _onEnter: function () {
-        queue.shift();
+        order = queue.shift();
+        console.log("ProductionQueueFinished: Removed first order: " + order.orderNumber);
         if(queue.length == 0){
           this.transition("waitingOrder");
         }else{
           this.transition("waitingStart");
         }
-      },
-      pumpControlDisconnected: "waitingPump"
+      }
     },
     errorProcessing:{
       _onEnter: function(){
-        queue.shift();
+        var order = queue.shift();
+        console.log("ProductionQueueError: Removed first order: " + order.orderNumber);
         if(queue.length == 0){
             this.transition("waitingOrder");
         }else{
@@ -206,9 +171,12 @@ pumpcontrol_service.on('pumpControlState', function (state) {
 });
 pumpcontrol_service.on('pumpControlProgress', function (progUpdate) {
   // console.log("PumpControl Progress: " + progUpdate.progress + "\% ("+progUpdate.orderName + ")");
-  queue[0].progress = progUpdate.progress;
-  production_queue.emit('progress', queue[0],progUpdate.progress);
-  state_machine.programStarted();
+    if (queue[0]){
+        queue[0].progress = progUpdate.progress;
+        production_queue.emit('progress', queue[0],progUpdate.progress);
+        state_machine.programStarted();
+    }
+
 });
 pumpcontrol_service.on('pumpControlProgramEnd', function (progName) {
   // console.log("PumpControl Program end: " + progName.orderName);
@@ -232,8 +200,14 @@ pumpcontrol_service.on('serviceState', function (state) {
     }
 });
 production_queue.addOrderToQueue = function(order){
-    queue.push(order);
-    state_machine.orderEnqueued();
+    if(queue.indexOf(order) != -1){
+        console.log("Order with ordernumber " + order.orderNumber + " is already in queue");
+        return false;
+    }else {
+        queue.push(order);
+        state_machine.orderEnqueued();
+        return true;
+    }
 };
 production_queue.removeOrderFromQueue = function (order) {
     //TODO: check that order can be safely removed

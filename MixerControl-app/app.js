@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -90,8 +90,12 @@ pumpcontrol_service.on('serviceState', function (state) {
 });
 
 var production_queue = require('./models/production_queue');
-production_queue.on('state', function (state) {
-  console.log("ProductionQueue statechange: " + state);
+production_queue.on('state', function (state, order) {
+  var orderNumber = 'X';
+  if(order){
+    orderNumber = order.orderNumber;
+  }
+  console.log("ProductionQueue statechange: " + state + " ordernumber: " + orderNumber);
 });
 production_queue.init();
 
