@@ -9,6 +9,12 @@ var debug = require('debug')('MixerControl-app:server');
 var http = require('http');
 
 var timer = require('timers');
+
+if (app.get('env') === 'development') {
+    console.warn(' -- RUNNING DEVELOPMENT MODE --');
+}
+
+
 /**
  * Get port from environment and store in Express.
  */
@@ -92,4 +98,16 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+}
+
+
+/**
+ * Don't crash on errors during production
+ */
+
+if (app.get('env') != 'development') {
+    process.on('uncaughtException', function (err) {
+        // handle the error safely
+        console.error(err);
+    });
 }

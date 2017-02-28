@@ -6,6 +6,12 @@ const self = {
     CONFIG: {
         DATABASE_NAME: 'MIXERCONTROL_DB',
         LOG_LEVEL: 'debug'
+    },
+    HOST_SETTINGS: {
+        JUICE_MACHINE_SERVICE: {
+            HOST: 'localhost',
+            PORT: 3001
+        }
     }
 };
 
