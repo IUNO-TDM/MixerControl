@@ -24,28 +24,14 @@ router.post('/', function (req, res, next) {
     var data = req.body;
     logger.debug(data);
 
-    jms_connector.requestOfferForOrders([
-        {
-            recipeId: data.drinkId,
-            amount: 1
-        }
-    ], function (e, offer) {
-        logger.debug(offer);
-        if (e) {
-            logger.crit(e);
-            next(e);
 
-            return;
-        }
+    var orderNumber = OrderDB.generateNewOrderNumber();
+    var order = new Order(orderNumber, data.orderName, data.drinkId);
+    OrderDB.addOrder(order);
 
-        var orderNumber = OrderDB.generateNewOrderNumber();
-        var order = new Order(orderNumber, data.orderName, data.drinkId, offer.id);
-        OrderDB.addOrder(order);
-
-        var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-        res.set('Location', fullUrl + orderNumber);
-        res.sendStatus(201);
-    });
+    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    res.set('Location', fullUrl + orderNumber);
+    res.sendStatus(201);
 
 
 });

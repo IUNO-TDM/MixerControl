@@ -172,7 +172,7 @@ self.getUserForId = function (id, callback) {
 };
 
 
-self.requestOfferForOrders = function (orderList, callback) {
+self.requestOfferForOrders = function (hsmId,orderList, callback) {
     var options = buildOptionsForRequest(
         'POST',
         'http',
@@ -184,7 +184,7 @@ self.requestOfferForOrders = function (orderList, callback) {
 
     options.body = {
         items: orderList,
-        hsmId: 'hsmID'
+        hsmId: hsmId
     };
 
     request(options, function (e, r, jsonData) {

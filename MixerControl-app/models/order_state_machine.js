@@ -4,7 +4,8 @@
 
 var machina = require('machina');
 var production_queue = require('../models/production_queue');
-
+var jms_connector = require('../connectors/juice_machine_service_connector');
+var logger = require('../global/logger');
 var stateMachine = new machina.BehavioralFsm({
     initialize: function( options ) {
         // your setup code goes here...
@@ -22,10 +23,29 @@ var stateMachine = new machina.BehavioralFsm({
         waitingOffer: {
           _onEnter: function (client) {
             console.log("Ordernumber " + client.orderNumber + " is now state waitingOffer ");
-            this.timer = setTimeout( function() {
-              this.handle(client, "offerReceived" );
-            }.bind( this ), 5000 );
-            //getOfferAtTDM
+            // this.timer = setTimeout( function() {
+            //   this.handle(client, "offerReceived" );
+            // }.bind( this ), 5000 );
+            // //getOfferAtTD
+          var self = this;
+          jms_connector.requestOfferForOrders("TW552HSM",[
+              {
+                  recipeId: client.drinkId,
+                  amount: 1
+              }
+          ], function (e, offer) {
+              logger.debug(offer);
+              if (e) {
+                  logger.crit(e);
+                  next(e);
+
+                  return;
+              }
+              client.offerId = offer.id;
+              self.handle(client,"offerReceived");
+
+
+          });
           },
           offerReceived: "waitingPaymentRequest"
         },
