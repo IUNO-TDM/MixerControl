@@ -96,17 +96,14 @@ router.put('/:id/payment', function (req, res, next) {
     var orderId = req.params['id'];
     var order = OrderDB.getOrder(orderId);
 
-    //TODO: replace against call to paymentService
-
-
-    jms_connector.savePaymentForOffer(order.offerId, 'BIP70-STRING', function (e) {
+    jms_connector.savePaymentForOffer(order.offerId, 'BIP-STRING', function (e) {
         if (e) {
             log.crit(e);
             next(e);
 
             return;
         }
-
+        //TODO: replace against call to paymentService
         osm.paymentArrived(order);
         res.sendStatus(201);
     });
