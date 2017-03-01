@@ -1,1 +1,19 @@
-<p>orders...</p>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>OrderNumber</th>
+        <th>DrinkId</th>
+        <th>OrderName</th>
+        <th>State</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of orders">
+        <td>{{order.orderNumber}}</td>
+        <td>{{order.drinkId}}</td>
+        <td>{{order.orderName}}</td>
+        <td>{{states[order.orderNumber]}}</td>
+    </tr>
+
+    </tbody>
+</table>

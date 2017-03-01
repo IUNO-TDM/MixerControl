@@ -23,6 +23,9 @@ export class SocketService {
     socket.emit('room',room);
     return Observable.create((observer: any) => {
       socket.on(subject, (item: any) => observer.next(item));
+      return () => {
+        socket.disconnect();
+      };
     });
   }
 }

@@ -55,6 +55,16 @@ paths:
             $ref: '#/definitions/User'
             
   /orders:
+    get:
+      produces:
+        - application/json
+      responses:
+       '200':
+          description: the requested order
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Order"
     post:
       produces:
           - application/json

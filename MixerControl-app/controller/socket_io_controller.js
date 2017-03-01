@@ -8,23 +8,39 @@ var production_queue = require('../models/production_queue');
 var OSM = require('../models/order_state_machine');
 var OrderDB = require('../database/orderDB');
 
-
 function onIOConnect(socket) {
     logger.info('a user connected: ' + socket.id);
 
     socket.on('room', function (orderId) {
         socket.join(orderId);
 
-        var order = OrderDB.getOrder(orderId);
-        // If order already exists send the current state and progress to client
-        if (typeof order !== 'undefined') {
+        if (orderId == 'allOrders') {
+            const orderDict = OrderDB.getOrders();
+            for(var key in orderDict){
+                var order = orderDict[key];
+                if (typeof order !== 'undefined') {
+                    socket.emit("add", order.stringify());
+                    var state = OSM.compositeState(order);
+                    socket.emit("state", {"orderNumber": order.orderNumber,"toState": state});
 
-            var state = OSM.compositeState(order);
-            socket.emit("state", {"toState": state});
+                    if (typeof  order.progress !== 'undefined') {
 
-            if (typeof  order.progress !== 'undefined') {
+                        socket.emit("progress", {"orderNumber": order.orderNumber,"progress": order.progress})
+                    }
+                }
+            }
+        } else {
+            var order = OrderDB.getOrder(orderId);
+            // If order already exists send the current state and progress to client
+            if (typeof order !== 'undefined') {
 
-                socket.emit("progress", {"progress": order.progress})
+                var state = OSM.compositeState(order);
+                socket.emit("state", {"toState": state});
+
+                if (typeof  order.progress !== 'undefined') {
+
+                    socket.emit("progress", {"progress": order.progress})
+                }
             }
         }
     });
@@ -65,6 +81,7 @@ function registerPumpControlEvents(orderNamespace) {
 
     production_queue.on('progress', function (order, progress) {
         orderNamespace.to(order.orderNumber).emit("progress", {"progress": progress});
+        orderNamespace.to('allOrders').emit("progress", {"orderNumber": order.orderNumber,"progress": progress});
     });
 
     production_queue.init();
@@ -77,8 +94,19 @@ function registerStateMachineEvents(orderNamespace) {
             "fromState": data.fromState,
             "toState": data.toState
         });
+        orderNamespace.to('allOrders').emit("state", {
+            "orderNumber": data.client.orderNumber,
+            "fromState": data.fromState,
+            "toState": data.toState
+        });
     });
 }
+function registerOrderDbEvents(orderNamespace){
+    OrderDB.on("add", function (order) {
+        orderNamespace.to('allOrders').emit("add", order.stringify());
+    })
+}
+
 
 module.exports = function (io) {
     var orderNamespace = io.of('/orders');
@@ -86,5 +114,6 @@ module.exports = function (io) {
 
     registerPumpControlEvents(orderNamespace);
     registerStateMachineEvents(orderNamespace);
+    registerOrderDbEvents(orderNamespace);
 
 };
