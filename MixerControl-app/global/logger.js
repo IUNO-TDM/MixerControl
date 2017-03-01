@@ -1,8 +1,9 @@
 /**
  * Created by beuttlerma on 02.12.16.
  */
+
+
 var winston = require('winston');
-var _ = require('lodash');
 var config = require('../global/constants').CONFIG;
 
 // Set up logger
@@ -49,4 +50,8 @@ logger.log = function (level, msg) {
     }
 };
 
+/**
+ Exports an instance of a winston logger with the additional members described below.
+ @see {@link https://github.com/winstonjs/winston}
+ */
 module.exports = logger;

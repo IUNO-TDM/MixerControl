@@ -10,9 +10,6 @@ var users = require('./routes/users');
 var orders = require('./routes/orders');
 var admin = require('./routes/admin');
 var app = express();
-
-var OSM = require('./models/order_state_machine');
-var OrderDB = require('./database/orderDB');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
@@ -67,72 +64,6 @@ if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('Something broke!');
-  });
-}
-
-var pumpcontrol_service = require('./services/pumpcontrol_service');
-
-pumpcontrol_service.on('pumpControlState', function (state) {
-  console.log("New PumpControl state: " + state);
-});
-pumpcontrol_service.on('pumpControlProgress', function (progUpdate) {
-  console.log("PumpControl Progress: " + progUpdate.progress + "\% ("+progUpdate.orderName + ")");
-});
-pumpcontrol_service.on('pumpControlProgramEnd', function (progName) {
-  console.log("PumpControl Program end: " + progName.orderName);
-});
-
-pumpcontrol_service.on('pumpControlError', function (error) {
-    console.log("PumpControl error: " + JSON.stringify(error));
-});
-pumpcontrol_service.on('serviceState', function (state) {
-  console.log("PumpControlService has new state: " + state);
-});
-
-var production_queue = require('./models/production_queue');
-production_queue.on('state', function (state, order) {
-  var orderNumber = 'X';
-  if(order){
-    orderNumber = order.orderNumber;
-  }
-  console.log("ProductionQueue statechange: " + state + " ordernumber: " + orderNumber);
-});
-production_queue.init();
-
-var io = require('socket.io')();
-app.io = io;
-var orderNamespace = io.of('/orders');
-
-orderNamespace.on('connection', onIOConnect);
-
-OSM.on("transition", function (data) {
-  console.log("sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
-  orderNamespace.to(data.client.orderNumber).emit("state",{"fromState": data.fromState, "toState": data.toState});
-});
-production_queue.on('progress', function (order, progress) {
-  orderNamespace.to(order.orderNumber).emit("progress",{"progress":progress});
-});
-
-
-
-function onIOConnect(socket){
-  console.log('a user connected: ' + socket.id);
-  socket.on('room', function(room){
-    socket.join(room);
-    var order = OrderDB.getOrder(room);
-    if (typeof order !== 'undefined'){
-
-      var state = OSM.compositeState(order);
-      orderNamespace.to(order.orderNumber).emit("state",{"toState": state});
-      if (typeof  order.progress !== 'undefined'){
-        orderNamespace.to(order.orderNumber).emit("progress",{"progress":order.progress})
-      }
-    }
-  });
-
-
-  socket.on('disconnect', function () {
-    console.log('a user disconnected: ' + socket.id);
   });
 }
 
