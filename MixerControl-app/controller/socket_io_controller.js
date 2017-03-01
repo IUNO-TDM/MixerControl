@@ -16,14 +16,15 @@ function onIOConnect(socket) {
         socket.join(orderId);
 
         var order = OrderDB.getOrder(orderId);
+        // If order already exists send the current state and progress to client
         if (typeof order !== 'undefined') {
 
             var state = OSM.compositeState(order);
-            orderNamespace.to(order.orderNumber).emit("state", {"toState": state});
+            socket.emit("state", {"toState": state});
 
             if (typeof  order.progress !== 'undefined') {
 
-                orderNamespace.to(order.orderNumber).emit("progress", {"progress": order.progress})
+                socket.emit("progress", {"progress": order.progress})
             }
         }
     });
