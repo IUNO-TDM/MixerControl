@@ -25,6 +25,9 @@ var SocketService = (function () {
         socket.emit('room', room);
         return Rx_1.Observable.create(function (observer) {
             socket.on(subject, function (item) { return observer.next(item); });
+            return function () {
+                socket.disconnect();
+            };
         });
     };
     SocketService = __decorate([

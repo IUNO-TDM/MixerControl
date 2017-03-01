@@ -29,6 +29,8 @@ router.post('/', function (req, res, next) {
     var order = new Order(orderNumber, data.orderName, data.drinkId);
     OrderDB.addOrder(order);
 
+    osm.init(order);
+
     var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     res.set('Location', fullUrl + orderNumber);
     res.sendStatus(201);

@@ -12,16 +12,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var socketio_service_1 = require("../services/socketio.service");
 var AdminOrdersComponent = (function () {
-    function AdminOrdersComponent() {
+    function AdminOrdersComponent(socketService) {
+        this.socketService = socketService;
+        this.states = {};
+        this.orders = new Array();
     }
+    AdminOrdersComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.addConnection = this.socketService.get("/orders", "allOrders", "add")
+            .subscribe(function (order) {
+            return _this.orders.push(JSON.parse(order));
+        });
+        this.stateConnection = this.socketService.get("/orders", "allOrders", "state")
+            .subscribe(function (o) {
+            return _this.states[o.orderNumber] = o.toState;
+        });
+    };
+    AdminOrdersComponent.prototype.ngOnDestroy = function () {
+        this.addConnection.unsubscribe();
+    };
     AdminOrdersComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'my-admin-orders',
-            templateUrl: 'admin-orders.template.html'
+            templateUrl: 'admin-orders.template.html',
+            providers: [socketio_service_1.SocketService]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [socketio_service_1.SocketService])
     ], AdminOrdersComponent);
     return AdminOrdersComponent;
 }());
