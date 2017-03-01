@@ -42,6 +42,12 @@ const production_queue = new ProductionQueue();
 util.inherits(ProductionQueue, EventEmitter);
 var queue = [];
 var pumpcontrol_service = require('../services/pumpcontrol_service');
+
+var sendProductionQueueUpdate = function(){
+    production_queue.emit('queueChange', production_queue.getStrippedQueue());
+};
+
+
 var state_machine = new machina.Fsm({
 
   namespace: "productionqueue",
@@ -99,6 +105,7 @@ var state_machine = new machina.Fsm({
     finished: {
       _onEnter: function () {
         order = queue.shift();
+        sendProductionQueueUpdate();
         console.log("ProductionQueueFinished: Removed first order: " + order.orderNumber);
         if(queue.length == 0){
           this.transition("waitingOrder");
@@ -110,6 +117,7 @@ var state_machine = new machina.Fsm({
     errorProcessing:{
       _onEnter: function(){
         var order = queue.shift();
+        sendProductionQueueUpdate();
         console.log("ProductionQueueError: Removed first order: " + order.orderNumber);
         if(queue.length == 0){
             this.transition("waitingOrder");
@@ -205,6 +213,7 @@ production_queue.addOrderToQueue = function(order){
         return false;
     }else {
         queue.push(order);
+        sendProductionQueueUpdate();
         state_machine.orderEnqueued();
         return true;
     }
@@ -241,6 +250,22 @@ production_queue.startConfirmed = function (order) {
 production_queue.init = function () {
     state_machine.init();
 };
+
+production_queue.getQueue = function () {
+    return queue;
+}
+
+production_queue.getStrippedQueue = function () {
+    var rv = [];
+    for(var i = 0; i < queue.length;i++){
+        rv.push(queue[i].strip());
+    }
+    return rv;
+}
+
+production_queue.getState = function () {
+    return state_machine.compositeState();
+}
 
 
 module.exports = production_queue;

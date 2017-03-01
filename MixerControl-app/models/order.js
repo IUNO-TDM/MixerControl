@@ -13,11 +13,14 @@ function Order(number, orderName, drinkId) {
   this.drinkId = drinkId;
 
   this.stringify = function(){
-    var order = {};
-    order.orderNumber = this.orderNumber;
-    order.orderName = this.orderName;
-    order.drinkId = this.drinkId;
-    return JSON.stringify(order);
+    return JSON.stringify(this.strip());
+  }
+  this.strip = function () {
+      var order = {};
+      order.orderNumber = this.orderNumber;
+      order.orderName = this.orderName;
+      order.drinkId = this.drinkId;
+      return order;
   }
 }
 

@@ -28,7 +28,7 @@ export class AdminOrdersComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.addConnection = this.socketService.get("/orders", "allOrders", "add")
             .subscribe(order =>
-                this.orders.push(JSON.parse(order) as Order));
+                this.orders.push(order as Order));
         this.stateConnection = this.socketService.get("/orders", "allOrders", "state")
             .subscribe(o =>
                 this.states[o.orderNumber] = o.toState);
@@ -36,6 +36,7 @@ export class AdminOrdersComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.addConnection.unsubscribe();
+        this.stateConnection.unsubscribe();
     }
 
 

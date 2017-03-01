@@ -1,1 +1,19 @@
-<p>production queue...</p>
+<p>Production queue state: {{state}}</p>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>OrderNumber</th>
+        <th>DrinkId</th>
+        <th>OrderName</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of queue">
+        <td>{{order.orderNumber}}</td>
+        <td>{{order.drinkId}}</td>
+        <td>{{order.orderName}}</td>
+    </tr>
+
+    </tbody>
+</table>
