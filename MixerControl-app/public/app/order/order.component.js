@@ -54,6 +54,9 @@ var OrderComponent = (function () {
             switchMap(function (params) { return _this.orderService.sendProductionStart(params['id']); })
             .subscribe(function (response) { return console.log(response); });
     };
+    OrderComponent.prototype.Home = function () {
+        this.router.navigateByUrl("/");
+    };
     OrderComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

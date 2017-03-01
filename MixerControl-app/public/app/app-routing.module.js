@@ -13,6 +13,7 @@ var router_1 = require('@angular/router');
 var drink_list_component_1 = require('./drink/drink-list.component');
 var drink_detail_component_1 = require('./drink/drink-detail.component');
 var order_component_1 = require('./order/order.component');
+var admin_component_1 = require('./admin/admin.component');
 var routes = [
     {
         path: '',
@@ -30,6 +31,10 @@ var routes = [
     {
         path: 'orders/:id',
         component: order_component_1.OrderComponent
+    },
+    {
+        path: 'admin',
+        component: admin_component_1.AdminComponent
     }
 ];
 var AppRoutingModule = (function () {
@@ -45,5 +50,5 @@ var AppRoutingModule = (function () {
     return AppRoutingModule;
 }());
 exports.AppRoutingModule = AppRoutingModule;
-exports.routedComponents = [drink_list_component_1.DrinkListComponent, drink_detail_component_1.DrinkDetailComponent, order_component_1.OrderComponent];
+exports.routedComponents = [drink_list_component_1.DrinkListComponent, drink_detail_component_1.DrinkDetailComponent, order_component_1.OrderComponent, admin_component_1.AdminComponent];
 //# sourceMappingURL=app-routing.module.js.map
