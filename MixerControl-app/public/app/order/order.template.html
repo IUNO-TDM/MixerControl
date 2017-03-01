@@ -1,29 +1,48 @@
-<div class="container-fluid">
-  <div *ngIf="order">
-    <p>Auftragsnummer: {{order.orderNumber}}</p>
-    <p>Auftraggeber: {{order.orderName}}</p>
-  </div>
-  <div *ngIf="orderState">
-    <p>Auftragsstatus: {{orderState.toState}}</p>
-    <div *ngIf="orderState.toState == 'inProduction'">
-      <p>Fortschritt: {{progress}}%</p>
-    </div>
-    <div *ngIf="orderState.toState == 'waitingPayment'">
-      <my-payment></my-payment>
-    </div>
-    <div *ngIf="orderState.toState == 'readyForProduction'">
-      <button (click)="ProductionStart()">Start Pumping</button>
-    </div>
-    <div *ngIf="orderState.toState == 'productionFinished'">
-      <button (click)="Home()">Home</button>
-    </div>
-  </div>
-  <div *ngIf="drink">
-    <p>Bestellter Drink: {{drink.title}}</p>
-  </div>
-  <div *ngIf="user">
-    <p>Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
-  </div>
-
+<div class="row title">
+    <h1>Bestellabwicklung</h1>
 
 </div>
+
+<div class="row">
+   <div class="one-half column">
+     <div *ngIf="orderState">
+        <h3>Auftragsstatus: {{orderState.toState}}</h3>
+        <div *ngIf="orderState.toState == 'inProduction'">
+          <p>Fortschritt: {{progress}}%</p>
+        </div>
+        <div *ngIf="orderState.toState == 'waitingPayment'">
+          <my-payment></my-payment>
+        </div>
+        <div *ngIf="orderState.toState == 'readyForProduction'">
+          <button (click)="ProductionStart()">Start Pumping</button>
+        </div>
+        <div *ngIf="orderState.toState == 'productionFinished'">
+          <button (click)="Home()">Home</button>
+        </div>
+      </div>
+    </div>
+  <div class="one-half column" >
+    
+    <h3>Auftragsdetails</h3>
+    <table>
+      <tr *ngIf="order">
+        <td>Auftragsnummer</td>
+        <td>{{order.orderNumber}}</td>
+      </tr>
+      <tr *ngIf="order">
+        <td>Auftraggeber</td>
+        <td>{{order.orderName}}</td>
+      </tr>
+      <tr *ngIf="drink">
+        <td>Bestellter Drink</td>
+        <td>{{drink.title}}</td>
+      </tr>
+      <tr *ngIf="user">
+        <td>Rezepthersteller</td>
+        <td>{{user.firstname}} {{user.lastname}}</td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+

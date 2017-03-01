@@ -1,0 +1,132 @@
+@import 'fonts.css';
+
+
+
+html {
+  font-size: 50%; }
+}
+body{
+    background: #fff;
+    font-family: 'open_sansregular';
+}
+
+a {
+  color: #000; }
+a:hover {
+  color: #000; }
+
+.container{
+    width: 95%;
+}
+header {
+    background-image: url('../img/header.png');
+     background-size: cover;
+    height: 80px;
+}
+header .projectTitle{
+     font-size: 2.4rem;
+     color: #fff;
+     padding-left: 5%;
+     font-family: 'open_sanslight';
+     text-decoration: none;
+ }
+.loader {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url('../img/loader.gif');  
+    height: 50rem;
+    width: 100%;
+}
+
+.row.title {
+      border-bottom: 1px solid #000;
+      padding-top:  1em;
+      padding-bottom:  0.5em;
+      margin-bottom: 2em; 
+}
+.row.title h1, 
+.row.title h4{
+    display: inline;
+    padding-right: 1em;
+ }
+.row.title button {
+    float: right;
+}
+
+
+.tileDrink{
+    width: 48%; 
+    border: 1px solid #999;
+    padding: 1em;
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+    float:left;
+    display: inline;
+    box-sizing: border-box;
+    overflow: hidden;
+    
+}
+.tileDrink .inner{
+    padding-left: 120px;
+    min-height: 200px;
+}
+.tileDrink button{
+    margin-left: 120px;
+}
+.tileDrink img{
+    float: left;
+    
+}
+.one-half .tileDrink{
+    width: 100%;
+    border: none;
+}
+
+.note {
+background:#fefabc; 
+padding:15px; 
+font-family: 'blokletters_viltstifviltstift', cursive; 
+
+color: #000; 
+width:200px; 
+min-height:200px; 
+
+-moz-transform: rotate(-3deg);
+-webkit-transform: rotate(-3deg);
+-o-transform: rotate(-3deg);
+-ms-transform: rotate(-3deg);
+transform: rotate(-3deg);
+
+box-shadow: 0px 4px 6px #333;
+-moz-box-shadow: 0px 4px 6px #333;
+-webkit-box-shadow: 0px 4px 6px #333;
+
+}
+
+.modal {
+  transition: all 0.3s;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  overflow: hidden;
+  padding: 2rem;
+}
+.modal__dialog {
+  background: white;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 90rem;
+  border-radius: 0.3rem;
+  overflow: hidden;
+  padding: 2em;
+}
+
+#qr-canvas {
+    width: 50% !important;
+}

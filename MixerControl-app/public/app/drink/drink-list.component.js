@@ -24,6 +24,9 @@ var DrinkListComponent = (function () {
             .catch(function (error) { return _this.error = error; });
         return;
     };
+    DrinkListComponent.prototype.getBack = function () {
+        this.router.navigateByUrl("/");
+    };
     DrinkListComponent.prototype.ngOnInit = function () {
         this.getDrinks();
     };

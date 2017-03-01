@@ -41,6 +41,9 @@ export class DrinkDetailComponent implements OnInit {
       });
 
   }
+   getBack(): void{
+      this.router.navigateByUrl("/")
+  }
 
   onClickMe() {
     var order = new Order();

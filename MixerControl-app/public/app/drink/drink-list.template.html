@@ -1,35 +1,25 @@
-<div class="container-fluid">
+<div class="row title">
     <h1>Drinks</h1>
-
-    <div *ngIf="drinks">
+    <h4 *ngIf="drinks">
       Anzahl an Drinks: {{drinks.length}}
-    </div>
-
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Beschreibung</th>
-            <th>AuthorId</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let drink of drinks">
-            <td>{{drink.title}}</td>
-            <td>{{drink.description}}</td>
-            <td>{{drink.authorId}}</td>
-            <td><a [routerLink]="['/drinks', drink.id]">Details anzeigen</a></td>
-
-        </tr>
-
-        </tbody>
-    </table>
-
-
+    </h4>
 </div>
 
+<div class="drinks"  >
+
+          <a [routerLink]="['/drinks', drink.id]" *ngFor="let drink of drinks">
+          <div class="tileDrink" >
+            <img src="{{drink.thumbnail}}" *ngIf="drink.thumbnail" />
+            <div class="inner">
+                <h3> {{drink.title}}</h3>
+                <p>{{drink.description}}</p>
+                <h5>{{drink.authorId}}</h5>
+            </div>
+                <button>Details anzeigen</button>  
+            </div>
+        </a>        
+
+</div>
 
 <!--
 <li ng-repeat="task in $ctrl.tasks ">
