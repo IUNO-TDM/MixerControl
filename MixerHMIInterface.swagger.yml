@@ -4,7 +4,6 @@ info:
   title: payment
 paths:
   
-  
   /drinks:
     get:
       description: gets all drinks
@@ -72,7 +71,36 @@ paths:
             location:
               description: The Order ID
               type: string
-  '/orders/{id}/state':
+  /order/{id}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+       '200':
+          description: the requested order
+          schema:
+            $ref: "#/definitions/Order"
+            
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+       '200':
+          description: the requested order
+          schema:
+            $ref: "#/definitions/Order"
+  
+  '/orders/{id}/paymentRequest':
     get:
       produces:
         - text/plain
@@ -83,9 +111,178 @@ paths:
           type: string
       responses:
         '200':
-          description: State available
+          description: the payment Request
+          
+  '/order/{id}/payment':
+    put:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            type: string
+          required: true
+      responses:
+       '200':
+          description: ok
+          
+  '/order/{id}/productionStart':
+    put:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+       '200':
+          description: ok
+       '500':
+          description: Order is not in correct state
+       '404':
+          description: Order Id is not listed
+          
+  '/order/{id}/resume':
+    put:
+      description:
+        Used to resume the production for this order in case of an errror
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+       '200':
+          description: ok
+       '404':
+          description: Order Id is not listed
+          
+          
+  '/admin/startConfirm':
+    post:
+      description:
+        Used to confirm the production start for the first order in the order queue
+        
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ok
+  '/admin/production/pause':
+    post:
+      description:
+        Used to pause the production. can only be applied, when the machine is not pumping
+        
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ok
+          
+  '/admin/production/resume':
+    post:
+      description:
+        Used to resume the production. can only be applied, when the machine is in pause mode
+        
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ok
+          
+  '/components':
+    get:
+      description:
+        gets the available components for the pumps
+      produces:
+        - application/json
+        
+      responses:
+        '200':
+          description: The list of components
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Component"
+  
+  '/admin/pumps':
+    get:
+      description:
+        gets the current configuration for the pumps
+      produces:
+        - application/json
+        
+      responses:
+        '200':
+          description: The list of components
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Pump"
+              
+  '/admin/pumps/{nr}':
+    put:
+      description:
+        change the component for the given pump nr
+      parameters:
+        - in: path
+          name: nr
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/Component"
+      responses:
+        '201':
+          description: ok
+  '/admin/pumps/{nr}/active':
+    put:
+      description:
+        activate or deactivate a pump in service mode by sending true or false
+      parameters:
+        - in: path
+          name: nr
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ok
+          
           
 definitions:
+  
+    
+  Component:
+    type: object
+    properties:
+      id: 
+        type: string
+      name:
+        type: string
+        
+  Pump:
+    type: object
+    properties:
+      nr:
+        type: number
+      component:
+        $ref: "#/definitions/Component"
+        
   Price:
     type: object
     properties:

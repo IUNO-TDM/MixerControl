@@ -106,7 +106,7 @@ router.put('/:id/productionStart', function (req, res, next) {
     if (order) {
         var success = production_queue.startConfirmed(order);
         if (success) {
-            res.sendStatus(201);
+            res.sendStatus(200);
         } else {
             res.sendStatus(500);
         }
