@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DrinkListComponent } from './drink/drink-list.component';
 import { DrinkDetailComponent } from './drink/drink-detail.component';
 import { OrderComponent } from './order/order.component';
+import {AdminComponent} from './admin/admin.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'orders/:id',
     component: OrderComponent
+  },
+  {
+    path: 'admin',
+    component: AdminComponent
   }
 ];
 
@@ -31,4 +36,4 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 
-export const routedComponents = [DrinkListComponent, DrinkDetailComponent, OrderComponent];
+export const routedComponents = [DrinkListComponent, DrinkDetailComponent, OrderComponent, AdminComponent];

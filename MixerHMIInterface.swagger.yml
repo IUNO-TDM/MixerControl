@@ -213,6 +213,23 @@ paths:
             items:
               $ref: "#/definitions/Component"
   
+  '/admin/pumps/service':
+    post:
+      description:
+        Used to activate the service mode for the pumps true on false off
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ok
+  
+  
   '/admin/pumps':
     get:
       description:

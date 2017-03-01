@@ -14,9 +14,12 @@
     <div *ngIf="orderState.toState == 'readyForProduction'">
       <button (click)="ProductionStart()">Start Pumping</button>
     </div>
+    <div *ngIf="orderState.toState == 'productionFinished'">
+      <button (click)="Home()">Home</button>
+    </div>
   </div>
   <div *ngIf="drink">
-    <p>Bestellter Drink: {{drink.description}}</p>
+    <p>Bestellter Drink: {{drink.title}}</p>
   </div>
   <div *ngIf="user">
     <p>Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>

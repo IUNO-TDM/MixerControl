@@ -68,4 +68,8 @@ export class OrderComponent implements OnInit {
       .subscribe(response => console.log(response));
   }
 
+  Home(){
+    this.router.navigateByUrl(`/`);
+  }
+
 }
