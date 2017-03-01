@@ -19,7 +19,9 @@ var AdminComponent = (function () {
         core_1.Component({
             moduleId: module.id,
             selector: 'my-admin',
-            templateUrl: 'admin.template.html'
+            templateUrl: 'admin.template.html',
+            styleUrls: ['../../css/bootstrap/dist/css/bootstrap.css'],
+            encapsulation: core_1.ViewEncapsulation.Native
         }), 
         __metadata('design:paramtypes', [])
     ], AdminComponent);
