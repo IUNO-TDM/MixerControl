@@ -8,6 +8,7 @@ const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 const http = require('http');
 
+
 var PumpControlService = function(){
   console.log('a new instance of pumpControlservice');
 };
@@ -106,6 +107,8 @@ var onWebSocketMessage = function (message) {
       pumpcontrol_service.emit('pumpControlProgress',messageObject.progressUpdate);
     }else if(messageObject.hasOwnProperty('programEnded')){
       pumpcontrol_service.emit('pumpControlProgramEnd',messageObject.programEnded);
+    }else if(messageObject.hasOwnProperty('error')){
+        pumpcontrol_service.emit('pumpControlError',messageObject.error);
     }else{
       console.log("Unrecognized message from PumpControl: " + message);
     }

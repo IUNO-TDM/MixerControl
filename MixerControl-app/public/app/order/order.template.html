@@ -5,20 +5,23 @@
 
 <div class="row">
    <div class="one-half column">
- <div *ngIf="orderState">
-    <h3>Auftragsstatus: {{orderState.toState}}</h3>
-    <div *ngIf="orderState.toState == 'inProduction'">
-      <p>Fortschritt: {{progress}}%</p>
+     <div *ngIf="orderState">
+        <h3>Auftragsstatus: {{orderState.toState}}</h3>
+        <div *ngIf="orderState.toState == 'inProduction'">
+          <p>Fortschritt: {{progress}}%</p>
+        </div>
+        <div *ngIf="orderState.toState == 'waitingPayment'">
+          <my-payment></my-payment>
+        </div>
+        <div *ngIf="orderState.toState == 'readyForProduction'">
+          <button (click)="ProductionStart()">Start Pumping</button>
+        </div>
+        <div *ngIf="orderState.toState == 'productionFinished'">
+          <button (click)="Home()">Home</button>
+        </div>
+      </div>
     </div>
-    <div *ngIf="orderState.toState == 'waitingPayment'">
-      <my-payment></my-payment>
-    </div>
-    <div *ngIf="orderState.toState == 'readyForProduction'">
-      <button (click)="ProductionStart()">Start Pumping</button>
-    </div>
-  </div>
-   </div>
-<div class="one-half column" >
+  <div class="one-half column" >
     
     <h3>Auftragsdetails</h3>
     <table>
@@ -32,13 +35,14 @@
       </tr>
       <tr *ngIf="drink">
         <td>Bestellter Drink</td>
-        <td>{{drink.description}}</td>
+        <td>{{drink.title}}</td>
       </tr>
       <tr *ngIf="user">
         <td>Rezepthersteller</td>
         <td>{{user.firstname}} {{user.lastname}}</td>
       </tr>
     </table>
-</div>
+
+  </div>
 </div>
 
