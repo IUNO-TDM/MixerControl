@@ -171,7 +171,7 @@ production_queue.on('state', function (state, order) {
             stateMachine.productionFinished(order);
         } else if (state == 'error') {
             stateMachine.productionFinished(order);
-        } else if (state == 'waitingPump' || state == 'productionPaused') {
+        } else if (state == 'waitingPump' || state == 'productionPaused' || state == 'pumpControlServiceMode') {
             stateMachine.productionPaused(order);
         } else if (state == 'errorProcessing') {
             stateMachine.error(order);
