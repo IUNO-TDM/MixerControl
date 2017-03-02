@@ -60,6 +60,10 @@ function onProductionNamespaceConnect(socket) {
             socket.emit("queueChange",production_queue.getStrippedQueue());
         }else if(roomId == "state"){
             socket.emit("stateChange",production_queue.getState());
+        }else if(roomId == "pumpControlMode"){
+            socket.emit("modeChange",pumpControl_service.getMode());
+        }else if(roomId == "pumpControlService"){
+            socket.emit("stateChange",pumpControl_service.getServiceState());
         }
 
     });
@@ -134,7 +138,14 @@ function registerProductionEvents(productionNamespace){
 
     production_queue.on('queueChange', function (queue) {
         productionNamespace.to('queue').emit("queueChange",queue);
-    })
+    });
+
+    pumpControl_service.on('serviceState', function(state){
+        productionNamespace.to('pumpControlService').emit("stateChange",state);
+    });
+    pumpControl_service.on('pumpControlMode', function(state){
+        productionNamespace.to('pumpControlMode').emit("modeChange",state);
+    });
 
 }
 

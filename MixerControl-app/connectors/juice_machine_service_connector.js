@@ -9,8 +9,49 @@ var request = require('request');
 var logger = require('../global/logger');
 var HOST_SETTINGS = require('../global/constants').HOST_SETTINGS;
 var helper = require('../services/helper_service');
-var ingredients = require('../global/ingredient_configuration').INGREDIENT_IDS;
+var ingredientConfiguration = require('../global/ingredient_configuration').INGREDIENT_CONFIGURATION;
 
+const components = [
+    {
+        id: 1,
+        name: 'Sprudel'
+    },
+    {
+        id: 2,
+        name: 'Orangensaft'
+    },
+
+    {
+        id: 3,
+        name: 'Apfelsaft'
+    },
+
+    {
+        id: 4,
+        name: 'Kirschsaft'
+    },
+
+    {
+        id: 5,
+        name: 'Bananensaft'
+    },
+    {
+        id: 6,
+        name: 'Johannisbeersaft'
+    },
+    {
+        id: 7,
+        name: 'Cola'
+    },
+    {
+        id: 8,
+        name: 'Fanta'
+    },
+    {
+        id: 9,
+        name: 'Ginger Ale'
+    },
+];
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
@@ -27,6 +68,12 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
 
 self.getAllRecipes = function (callback) {
+    var ingredients = [];
+    for(var i=0; i< ingredientConfiguration.length;i++){
+        var key = Object.keys(ingredientConfiguration[i])[0];
+        ingredients.push(ingredientConfiguration[i][key]);
+    }
+
     var options = buildOptionsForRequest(
         'GET',
         'http',
@@ -73,6 +120,57 @@ self.getAllRecipes = function (callback) {
             callback(null, jsonData);
         }
     });
+};
+
+
+self.getAllComponents = function (callback) {
+    // var options = buildOptionsForRequest(
+    //     'GET',
+    //     'http',
+    //     HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+    //     HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+    //     '/recipes',
+    //     {'ingredients': ingredients}
+    // );
+    //
+    // request(options, function (e, r, jsonData) {
+    //     logger.debug('Response:' + jsonData);
+    //
+    //     if (e) {
+    //         console.error(e);
+    //         if (typeof(callback) == 'function') {
+    //
+    //             callback(e);
+    //         }
+    //     }
+    //
+    //     if (r.statusCode != 200) {
+    //         logger.warn('Call not successful');
+    //         var err = {
+    //             status: r.statusCode,
+    //             message: jsonData
+    //         };
+    //         logger.warn(err);
+    //         callback(err);
+    //
+    //         return;
+    //     }
+    //
+    //     if (!helper.isArray(jsonData)) {
+    //         callback({
+    //             status: 500,
+    //             message: 'Expected object. But did get something different: ' + jsonData
+    //         });
+    //         return;
+    //     }
+    //
+    //     //TODO: Parse json data into objects to validate the content
+    //     if (typeof(callback) == 'function') {
+    //
+    //         callback(null, jsonData);
+    //     }
+    // });
+    callback(null,components);
 };
 
 self.getRecipeForId = function (id, callback) {

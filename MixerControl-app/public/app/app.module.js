@@ -19,9 +19,10 @@ var angular2_qrcode_1 = require('angular2-qrcode');
 var angular2_qrscanner_1 = require('angular2-qrscanner');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 var admin_orders_component_1 = require('./admin/admin-orders.component');
-var admin_service_component_1 = require('./admin/admin-service.component');
+var admin_component_service_component_1 = require('./admin/admin-component.service.component');
 var admin_production_component_1 = require('./admin/admin-production.component');
 var admin_status_component_1 = require('./admin/admin-status.component');
+var component_matches_pipe_1 = require('./admin/component-matches.pipe');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -41,9 +42,10 @@ var AppModule = (function () {
                 payment_component_1.PaymentComponent,
                 app_routing_module_1.routedComponents,
                 admin_orders_component_1.AdminOrdersComponent,
-                admin_service_component_1.AdminServiceComponent,
+                admin_component_service_component_1.AdminComponentComponent,
                 admin_production_component_1.AdminProductionComponent,
-                admin_status_component_1.AdminStatusComponent
+                admin_status_component_1.AdminStatusComponent,
+                component_matches_pipe_1.ComponentMatchesPipe
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

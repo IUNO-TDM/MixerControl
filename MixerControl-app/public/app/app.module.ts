@@ -11,9 +11,10 @@ import {QrScannerModule} from 'angular2-qrscanner';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {AdminOrdersComponent} from './admin/admin-orders.component';
-import {AdminServiceComponent} from './admin/admin-service.component';
+import {AdminComponentComponent} from './admin/admin-component.component';
 import {AdminProductionComponent} from './admin/admin-production.component';
 import {AdminStatusComponent} from './admin/admin-status.component';
+import {ComponentMatchesPipe} from './admin/component-matches.pipe'
 
 @NgModule({
     imports: [
@@ -31,9 +32,10 @@ import {AdminStatusComponent} from './admin/admin-status.component';
         PaymentComponent,
         routedComponents,
         AdminOrdersComponent,
-        AdminServiceComponent,
+        AdminComponentComponent,
         AdminProductionComponent,
-        AdminStatusComponent
+        AdminStatusComponent,
+        ComponentMatchesPipe
     ],
     bootstrap: [AppComponent]
 })

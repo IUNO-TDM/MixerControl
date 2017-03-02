@@ -39,6 +39,26 @@ var AdminService = (function () {
         return this.http.post(url, body, options).
             toPromise().then(function (response) { return response.status; });
     };
+    AdminService.prototype.getPumps = function () {
+        var url = this.adminUrl + "pumps";
+        return this.http
+            .get(url)
+            .toPromise()
+            .then(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
+    AdminService.prototype.setPump = function (pumpId, componentId) {
+        var url = this.adminUrl + "pumps/" + pumpId;
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+        // let options = new RequestOptions({ headers: headers });
+        var body = componentId;
+        return this.http.put(url, body, null).
+            toPromise().then(function (response) { return response.status; });
+    };
+    AdminService.prototype.handleError = function (error) {
+        console.error('An error occurred', error);
+        return Promise.reject(error.message || error);
+    };
     AdminService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
