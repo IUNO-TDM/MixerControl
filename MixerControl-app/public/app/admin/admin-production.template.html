@@ -1,5 +1,13 @@
 <p>Production queue state: {{state}}</p>
-
+<div *ngIf="state == 'waitingOrder' || state == 'waitingStart'">
+    <button (click)="PauseProduction()">Pause Production</button>
+</div>
+<div *ngIf="state == 'productionPaused'">
+    <button (click)="ResumeProduction()">Resume Production</button>
+</div>
+<div *ngIf="state == 'waitingStart'">
+    <button (click)="StartProcessing()">Start Processing</button>
+</div>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -14,6 +22,7 @@
         <td>{{order.drinkId}}</td>
         <td>{{order.orderName}}</td>
     </tr>
+
 
     </tbody>
 </table>

@@ -13,9 +13,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var socketio_service_1 = require("../services/socketio.service");
+var admin_service_1 = require("../services/admin.service");
 var AdminProductionComponent = (function () {
-    function AdminProductionComponent(socketService) {
+    function AdminProductionComponent(socketService, adminService) {
         this.socketService = socketService;
+        this.adminService = adminService;
         this.state = "";
         this.queue = new Array();
         this.orders = new Array();
@@ -35,14 +37,23 @@ var AdminProductionComponent = (function () {
         this.queueConnection.unsubscribe();
         this.stateConnection.unsubscribe();
     };
+    AdminProductionComponent.prototype.ResumeProduction = function () {
+        this.adminService.resumeProduction();
+    };
+    AdminProductionComponent.prototype.PauseProduction = function () {
+        this.adminService.pauseProduction();
+    };
+    AdminProductionComponent.prototype.StartProcessing = function () {
+        this.adminService.startProcessing();
+    };
     AdminProductionComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'my-admin-production',
             templateUrl: 'admin-production.template.html',
-            providers: [socketio_service_1.SocketService]
+            providers: [socketio_service_1.SocketService, admin_service_1.AdminService]
         }), 
-        __metadata('design:paramtypes', [socketio_service_1.SocketService])
+        __metadata('design:paramtypes', [socketio_service_1.SocketService, admin_service_1.AdminService])
     ], AdminProductionComponent);
     return AdminProductionComponent;
 }());

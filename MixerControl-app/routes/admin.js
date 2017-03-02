@@ -7,7 +7,7 @@ var logger = require('../global/logger');
 var production_queue = require('../models/production_queue');
 
 
-router.post('/startConfirm', function (req, res, next) {
+router.post('/production/startConfirm', function (req, res, next) {
   production_queue.startConfirmed();
   res.sendStatus(200);
 });

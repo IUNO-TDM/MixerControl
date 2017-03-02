@@ -223,6 +223,18 @@ paths:
             items:
               $ref: "#/definitions/Component"
   
+  '/admin/pumps/state':
+    get:
+      description:
+        returns the state of the pumpcontrol
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ok
+          schema:
+            type: string
+  
   '/admin/pumps/service':
     post:
       description:

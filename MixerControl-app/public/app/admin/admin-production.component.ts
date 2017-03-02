@@ -5,13 +5,14 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 
 import {SocketService} from "../services/socketio.service";
+import {AdminService} from "../services/admin.service"
 import {Subscription} from "rxjs";
 import {Order} from "../models/models"
 @Component({
     moduleId: module.id,
     selector: 'my-admin-production',
     templateUrl: 'admin-production.template.html',
-    providers: [SocketService]
+    providers: [SocketService, AdminService]
 })
 
 export class AdminProductionComponent implements OnInit, OnDestroy {
@@ -22,7 +23,7 @@ export class AdminProductionComponent implements OnInit, OnDestroy {
 
     orders = new Array<Order>();
 
-    constructor(private socketService: SocketService) {
+    constructor(private socketService: SocketService, private adminService: AdminService) {
     }
 
 
@@ -38,6 +39,18 @@ export class AdminProductionComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.queueConnection.unsubscribe();
         this.stateConnection.unsubscribe();
+    }
+
+    ResumeProduction(): void {
+        this.adminService.resumeProduction();
+    }
+
+    PauseProduction(): void {
+        this.adminService.pauseProduction();
+    }
+
+    StartProcessing(): void {
+        this.adminService.startProcessing();
     }
 
 
