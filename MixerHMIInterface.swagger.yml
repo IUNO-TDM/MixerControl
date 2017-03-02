@@ -223,17 +223,6 @@ paths:
             items:
               $ref: "#/definitions/Component"
   
-  '/admin/pumps/state':
-    get:
-      description:
-        returns the state of the pumpcontrol
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: ok
-          schema:
-            type: string
   
   '/admin/pumps/service':
     post:
@@ -280,12 +269,12 @@ paths:
           name: body
           required: true
           schema:
-            $ref: "#/definitions/Component"
+            type: number
       responses:
         '201':
           description: ok
   '/admin/pumps/{nr}/active':
-    put:
+    post:
       description:
         activate or deactivate a pump in service mode by sending true or false
       parameters:

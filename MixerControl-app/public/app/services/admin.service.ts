@@ -36,6 +36,18 @@ export class AdminService {
         toPromise().then(response => response.status);
     }
 
+    setServiceMode(active: boolean):Promise<Number>{
+        let url = `${this.adminUrl}pumps/service`;
+
+        let body = "false";
+        if(active){
+            body = "true";
+        }
+
+        return this.http.post(url, body, null).
+        toPromise().then(response => response.status);
+    }
+
     getPumps():Promise<Pump[]>{
         let url = `${this.adminUrl}pumps`;
         return this.http
@@ -50,6 +62,15 @@ export class AdminService {
         // let options = new RequestOptions({ headers: headers });
         let body = componentId;
         return this.http.put(url, body, null).
+        toPromise().then(response => response.status);
+    }
+
+    activatePump(pumpId: string, activate: boolean){
+        let url = `${this.adminUrl}pumps/${pumpId}/active`;
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+        // let options = new RequestOptions({ headers: headers });
+        let body = activate?'true':'false';
+        return this.http.post(url, body, null).
         toPromise().then(response => response.status);
     }
 

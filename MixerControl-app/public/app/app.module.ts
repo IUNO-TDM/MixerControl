@@ -14,7 +14,7 @@ import {AdminOrdersComponent} from './admin/admin-orders.component';
 import {AdminComponentComponent} from './admin/admin-component.component';
 import {AdminProductionComponent} from './admin/admin-production.component';
 import {AdminStatusComponent} from './admin/admin-status.component';
-import {ComponentMatchesPipe} from './admin/component-matches.pipe'
+import {AdminServiceComponent} from './admin/admin-service.component';
 
 @NgModule({
     imports: [
@@ -35,7 +35,7 @@ import {ComponentMatchesPipe} from './admin/component-matches.pipe'
         AdminComponentComponent,
         AdminProductionComponent,
         AdminStatusComponent,
-        ComponentMatchesPipe
+        AdminServiceComponent
     ],
     bootstrap: [AppComponent]
 })

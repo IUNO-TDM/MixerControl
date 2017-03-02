@@ -67,4 +67,37 @@ router.put('/pumps/:id', function (req, res, next) {
     });
 });
 
+router.post('/pumps/:id/active', function (req, res, next) {
+    if (!req.body || (req.body != 'true' &&req.body != 'false')) {
+        res.sendStatus(400);
+        return;
+    }
+    const id = req.params['id'];
+    if(req.body == 'true'){
+        pumpcontrol_service.setServicePump(id,true);
+    }else {
+        pumpcontrol_service.setServicePump(id,false);
+    }
+
+
+    res.sendStatus(200);
+
+});
+
+
+router.post('/pumps/service', function (req, res, next) {
+    if (!req.body || (req.body != 'true' && req.body != 'false')) {
+        res.sendStatus(400);
+        return;
+    }
+    if(req.body == 'true'){
+        pumpcontrol_service.setServiceMode(true);
+    }else {
+        pumpcontrol_service.setServiceMode(false);
+    }
+
+
+    res.sendStatus(200);
+
+});
 module.exports = router;

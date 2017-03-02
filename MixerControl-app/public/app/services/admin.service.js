@@ -39,6 +39,15 @@ var AdminService = (function () {
         return this.http.post(url, body, options).
             toPromise().then(function (response) { return response.status; });
     };
+    AdminService.prototype.setServiceMode = function (active) {
+        var url = this.adminUrl + "pumps/service";
+        var body = "false";
+        if (active) {
+            body = "true";
+        }
+        return this.http.post(url, body, null).
+            toPromise().then(function (response) { return response.status; });
+    };
     AdminService.prototype.getPumps = function () {
         var url = this.adminUrl + "pumps";
         return this.http
@@ -53,6 +62,14 @@ var AdminService = (function () {
         // let options = new RequestOptions({ headers: headers });
         var body = componentId;
         return this.http.put(url, body, null).
+            toPromise().then(function (response) { return response.status; });
+    };
+    AdminService.prototype.activatePump = function (pumpId, activate) {
+        var url = this.adminUrl + "pumps/" + pumpId + "/active";
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+        // let options = new RequestOptions({ headers: headers });
+        var body = activate ? 'true' : 'false';
+        return this.http.post(url, body, null).
             toPromise().then(function (response) { return response.status; });
     };
     AdminService.prototype.handleError = function (error) {

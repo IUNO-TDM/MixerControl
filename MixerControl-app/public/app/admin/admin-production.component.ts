@@ -5,7 +5,7 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 
 import {SocketService} from "../services/socketio.service";
-import {AdminService} from "../services/admin.service"
+import {AdminService} from "../services/admin.service";
 import {Subscription} from "rxjs";
 import {Order} from "../models/models"
 @Component({
