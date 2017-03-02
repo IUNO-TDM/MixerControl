@@ -1,5 +1,4 @@
 <div class="container-fluid">
-    <p>huuhuuu</p>
     <ngb-tabset>
         <ngb-tab>
             <template ngbTabTitle>Orders</template>
@@ -14,15 +13,21 @@
             </template>
         </ngb-tab>
         <ngb-tab>
-            <template ngbTabTitle>Production</template>
+            <template ngbTabTitle>Component</template>
             <template ngbTabContent>
-                <my-admin-service></my-admin-service>
+                <my-admin-component></my-admin-component>
             </template>
         </ngb-tab>
         <ngb-tab>
             <template ngbTabTitle>Status</template>
             <template ngbTabContent>
                 <my-admin-status></my-admin-status>
+            </template>
+        </ngb-tab>
+        <ngb-tab>
+            <template ngbTabTitle>Service</template>
+            <template ngbTabContent>
+                <my-admin-service></my-admin-service>
             </template>
         </ngb-tab>
     </ngb-tabset>

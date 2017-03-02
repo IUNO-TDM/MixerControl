@@ -1,0 +1,25 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>PumpNr</th>
+        <th>Component</th>
+        <th>Change Component</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let pump of pumps">
+        <td>{{pump.nr}}</td>
+        <td>{{pump.component.name}}</td>
+        <td>
+            <select [(ngModel)]="pump.component" (change)="onPumpChange($event, pump.nr)">
+
+                <!--<option selected [ngValue]="pump.component">{{pump.component.name}}</option>-->
+                <option *ngFor="let c of components " [ngValue]="c" [selected]="c.id == pump.component.id">{{c.name}}</option>
+            </select>
+
+        </td>
+    </tr>
+
+
+    </tbody>
+</table>

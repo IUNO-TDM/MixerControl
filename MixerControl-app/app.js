@@ -9,6 +9,7 @@ var drinks = require('./routes/drinks');
 var users = require('./routes/users');
 var orders = require('./routes/orders');
 var admin = require('./routes/admin');
+var components = require('./routes/components');
 var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -17,6 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 // app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -33,6 +35,7 @@ app.use('/api/drinks', drinks);
 app.use('/api/users', users);
 app.use('/api/orders', orders);
 app.use('/api/admin', admin);
+app.use('/api/components', components);
 
 app.all('/api/*', function(req, res, next) {
   res.sendStatus(404);

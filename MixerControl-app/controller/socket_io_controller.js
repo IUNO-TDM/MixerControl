@@ -8,7 +8,7 @@ var production_queue = require('../models/production_queue');
 var OSM = require('../models/order_state_machine');
 var OrderDB = require('../database/orderDB');
 
-function onIOConnect(socket) {
+function onOrderNamespaceConnect(socket) {
     logger.info('a user connected: ' + socket.id);
 
     socket.on('room', function (orderId) {
@@ -19,7 +19,7 @@ function onIOConnect(socket) {
             for(var key in orderDict){
                 var order = orderDict[key];
                 if (typeof order !== 'undefined') {
-                    socket.emit("add", order.stringify());
+                    socket.emit("add", order.strip());
                     var state = OSM.compositeState(order);
                     socket.emit("state", {"orderNumber": order.orderNumber,"toState": state});
 
@@ -43,6 +43,29 @@ function onIOConnect(socket) {
                 }
             }
         }
+    });
+
+    socket.on('disconnect', function () {
+        logger.info('a user disconnected: ' + socket.id);
+    });
+}
+
+function onProductionNamespaceConnect(socket) {
+    logger.info('a user connected: ' + socket.id);
+
+    socket.on('room', function (roomId) {
+        socket.join(roomId);
+
+        if(roomId == "queue"){
+            socket.emit("queueChange",production_queue.getStrippedQueue());
+        }else if(roomId == "state"){
+            socket.emit("stateChange",production_queue.getState());
+        }else if(roomId == "pumpControlMode"){
+            socket.emit("modeChange",pumpControl_service.getMode());
+        }else if(roomId == "pumpControlService"){
+            socket.emit("stateChange",pumpControl_service.getServiceState());
+        }
+
     });
 
     socket.on('disconnect', function () {
@@ -87,7 +110,7 @@ function registerPumpControlEvents(orderNamespace) {
     production_queue.init();
 }
 
-function registerStateMachineEvents(orderNamespace) {
+function registerOrderStateEvents(orderNamespace) {
     OSM.on("transition", function (data) {
         logger.info("sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
         orderNamespace.to(data.client.orderNumber).emit("state", {
@@ -103,17 +126,39 @@ function registerStateMachineEvents(orderNamespace) {
 }
 function registerOrderDbEvents(orderNamespace){
     OrderDB.on("add", function (order) {
-        orderNamespace.to('allOrders').emit("add", order.stringify());
+        orderNamespace.to('allOrders').emit("add", order.strip());
     })
 }
 
 
+function registerProductionEvents(productionNamespace){
+    production_queue.on('state',function (state, topOrder) {
+        productionNamespace.to('state').emit("stateChange",state);
+    });
+
+    production_queue.on('queueChange', function (queue) {
+        productionNamespace.to('queue').emit("queueChange",queue);
+    });
+
+    pumpControl_service.on('serviceState', function(state){
+        productionNamespace.to('pumpControlService').emit("stateChange",state);
+    });
+    pumpControl_service.on('pumpControlMode', function(state){
+        productionNamespace.to('pumpControlMode').emit("modeChange",state);
+    });
+
+}
+
 module.exports = function (io) {
     var orderNamespace = io.of('/orders');
-    orderNamespace.on('connection', onIOConnect);
+    orderNamespace.on('connection', onOrderNamespaceConnect);
 
     registerPumpControlEvents(orderNamespace);
-    registerStateMachineEvents(orderNamespace);
+    registerOrderStateEvents(orderNamespace);
     registerOrderDbEvents(orderNamespace);
+
+    var productionNamespace = io.of('/production');
+    productionNamespace.on('connection', onProductionNamespaceConnect);
+    registerProductionEvents(productionNamespace);
 
 };

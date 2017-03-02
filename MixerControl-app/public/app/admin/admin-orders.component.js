@@ -23,7 +23,7 @@ var AdminOrdersComponent = (function () {
         var _this = this;
         this.addConnection = this.socketService.get("/orders", "allOrders", "add")
             .subscribe(function (order) {
-            return _this.orders.push(JSON.parse(order));
+            return _this.orders.push(order);
         });
         this.stateConnection = this.socketService.get("/orders", "allOrders", "state")
             .subscribe(function (o) {
@@ -32,6 +32,7 @@ var AdminOrdersComponent = (function () {
     };
     AdminOrdersComponent.prototype.ngOnDestroy = function () {
         this.addConnection.unsubscribe();
+        this.stateConnection.unsubscribe();
     };
     AdminOrdersComponent = __decorate([
         core_1.Component({

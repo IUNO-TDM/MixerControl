@@ -26,16 +26,25 @@ var OrderComponent = (function () {
         this.orderURL = "NULL";
     }
     OrderComponent.prototype.ngOnInit = function () {
+        // this.route.params.
+        // switchMap((params: Params) => this.socketService.get("/orders", params['id'], "state"))
+        //   .subscribe(state => {
+        //     this.orderState = state;
+        //   });
+        // this.route.params.
+        // switchMap((params: Params) => this.socketService.get("/orders", params['id'], "progress"))
+        //   .subscribe(progress => {
+        //     this.progress = progress['progress'];
+        //   });
         var _this = this;
-        this.route.params.
-            switchMap(function (params) { return _this.socketService.get("/orders", params['id'], "state"); })
-            .subscribe(function (state) {
-            _this.orderState = state;
-        });
-        this.route.params.
-            switchMap(function (params) { return _this.socketService.get("/orders", params['id'], "progress"); })
-            .subscribe(function (progress) {
-            _this.progress = progress['progress'];
+        this.route.params.subscribe(function (params) {
+            _this.orderProgressConnection =
+                _this.orderProgressConnection =
+                    _this.socketService.get("/orders", params['id'], "progress")
+                        .subscribe(function (progress) { return _this.progress = progress['progress']; });
+            _this.orderStateConnection =
+                _this.socketService.get("/orders", params['id'], "state")
+                    .subscribe(function (state) { return _this.orderState = state; });
         });
         this.route.params.
             switchMap(function (params) { return _this.orderService.getOrder(params['id']); })
@@ -47,6 +56,10 @@ var OrderComponent = (function () {
                     .catch(function (error) { return _this.error = error; });
             });
         });
+    };
+    OrderComponent.prototype.ngOnDestroy = function () {
+        this.orderProgressConnection.unsubscribe();
+        this.orderStateConnection.unsubscribe();
     };
     OrderComponent.prototype.ProductionStart = function () {
         var _this = this;
