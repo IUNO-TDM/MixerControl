@@ -6,6 +6,8 @@ var machina = require('machina');
 var production_queue = require('../models/production_queue');
 var jms_connector = require('../connectors/juice_machine_service_connector');
 var logger = require('../global/logger');
+var payment_service = require('../services/payment_service');
+var orderDB = require('../database/orderDB')
 var stateMachine = new machina.BehavioralFsm({
     initialize: function (options) {
         // your setup code goes here...
@@ -23,10 +25,6 @@ var stateMachine = new machina.BehavioralFsm({
         waitingOffer: {
             _onEnter: function (client) {
                 console.log("Ordernumber " + client.orderNumber + " is now state waitingOffer ");
-                // this.timer = setTimeout( function() {
-                //   this.handle(client, "offerReceived" );
-                // }.bind( this ), 5000 );
-                // //getOfferAtTD
                 var self = this;
                 jms_connector.requestOfferForOrders("TW552HSM", [
                     {
@@ -42,6 +40,24 @@ var stateMachine = new machina.BehavioralFsm({
                         return;
                     }
                     client.offerId = offer.id;
+                    client.invoice = offer.invoice;
+                    client.invoice.totalAmount = client.recipe.retailPrice.amount;
+
+                    //TODO replace, when marketplace api and paymentservice api are synchronous
+                    var expDate = new Date();
+                    expDate.setHours(expDate.getHours()+1);
+                    const inv = {
+                        totalAmount: 100000,
+                        expiration: expDate,
+                        referenceId: client.orderNumber,
+                        transfers:[{
+                            address: 'mvGXYeuze85kyK1HJ443rVjotMCCvAaYkb',
+                            coin: 90000
+                        }]
+
+                    }
+                    client.invoice = inv;
+
                     self.handle(client, "offerReceived");
 
 
@@ -51,10 +67,20 @@ var stateMachine = new machina.BehavioralFsm({
         },
         waitingPaymentRequest: {
             _onEnter: function (client) {
-                console.log("Ordernumber " + client.orderNumber + " is now state waitingPaymentRequest ");
-                this.timer = setTimeout(function () {
-                    this.handle(client, "paymentRequestReceived");
-                }.bind(this), 5000);
+                var self = this;
+                payment_service.createLocalInvoice(client.invoice,function(e,invoice){
+                    client.invoice = invoice;
+                    payment_service.getBip21(invoice, function (e, bip21) {
+                        client.paymentRequest = bip21;
+                        self.handle(client,'paymentRequestReceived')
+                    })
+                });
+                // console.log("Ordernumber " + client.orderNumber + " is now state waitingPaymentRequest ");
+                // this.timer = setTimeout(function () {
+                //     this.handle(client, "paymentRequestReceived");
+                // }.bind(this), 5000);
+
+
             },
             paymentRequestReceived: "waitingPayment"
         },
@@ -71,6 +97,7 @@ var stateMachine = new machina.BehavioralFsm({
         waitingLicense: {
             _onEnter: function (client) {
                 //??sendPaymentToMarketplace??
+                payment_service.unregisterStateChangeUpdates(client.invoice.invoiceId);
                 this.timer = setTimeout(function () {
                     this.handle(client, "licenseArrived");
                 }.bind(this), 5000);
@@ -178,6 +205,15 @@ production_queue.on('state', function (state, order) {
         }
     }
 });
+
+payment_service.on('StateChange', function(state){
+    if(state.state == 'pending' || state.state == 'building'){
+        orderNumber = state.referenceId;
+        order = orderDB.getOrder(orderNumber);
+        stateMachine.paymentArrived(order);
+    }
+
+})
 
 
 module.exports = stateMachine;

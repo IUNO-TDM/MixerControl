@@ -6,12 +6,12 @@
  */
 var timer = require('timers');
 // Constructor
-function Order(number, orderName, drinkId) {
+function Order(number, orderName, drinkId, recipe) {
   // always initialize all instance properties
   this.orderNumber = number;
   this.orderName = orderName;
   this.drinkId = drinkId;
-
+  this.recipe = recipe;
   this.stringify = function(){
     return JSON.stringify(this.strip());
   }

@@ -24,18 +24,22 @@ router.post('/', function (req, res, next) {
     var data = req.body;
     logger.debug(data);
 
+    jms_connector.getRecipeForId(data.drinkId, function (e, recipe) {
+        if(e){
+            res.sendStatus(500);
+        }else{
+            var orderNumber = OrderDB.generateNewOrderNumber();
+            var order = new Order(orderNumber, data.orderName, data.drinkId, recipe);
+            OrderDB.addOrder(order);
 
-    var orderNumber = OrderDB.generateNewOrderNumber();
-    var order = new Order(orderNumber, data.orderName, data.drinkId);
-    OrderDB.addOrder(order);
+            osm.init(order);
 
-    osm.init(order);
+            var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+            res.set('Location', fullUrl + orderNumber);
+            res.sendStatus(201);
+        }
 
-    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-    res.set('Location', fullUrl + orderNumber);
-    res.sendStatus(201);
-
-
+    });
 });
 
 router.get('/:id', function (req, res, next) {
@@ -65,15 +69,21 @@ router.get('/:id/paymentRequest', function (req, res, next) {
         return;
     }
 
-    jms_connector.getOfferForId(order.offerId, function (e, offer) {
-        if (!helper.isObject(offer) || !Object.keys(offer).length) {
-            res.sendStatus(404);
-            return;
-        }
+    if(order.paymentRequest != undefined){
+        res.send(order.paymentRequest);
+    }else {
+        res.sendStatus(404);
+    }
 
-        //TODO: Call the payment service to generate the payment request.
-        res.send('bitcoin:n1Q5Tpn5gqD8EwjT3tUsydpSct86eZsRAQ?amount=0.05000000')
-    });
+    // jms_connector.getOfferForId(order.offerId, function (e, offer) {
+    //     if (!helper.isObject(offer) || !Object.keys(offer).length) {
+    //         res.sendStatus(404);
+    //         return;
+    //     }
+    //
+    //     //TODO: Call the payment service to generate the payment request.
+    //     res.send('bitcoin:n1Q5Tpn5gqD8EwjT3tUsydpSct86eZsRAQ?amount=0.05000000')
+    // });
 
 
 });
