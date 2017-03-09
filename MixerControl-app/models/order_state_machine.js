@@ -216,10 +216,22 @@ payment_service.on('StateChange', function(state){
     }
 
 });
+getOrderWithOfferId = function(offerId){
+    for(var order in orderDB.getOrders()){
+        if(order.offerId == offerId){
+            return order;
+        }
+    };
+    return undefined;
+};
 
-license_service.on('updateAvailable', function (offerId, orderId) {
+//TODO change, when licenses can be downloaded. This is two early...
+license_service.on('updateAvailable', function (offerId, hsmId) {
+    var order = getOrderWithOfferId(offerId);
+    if(order != undefined){
+        stateMachine.licenseArrived(order);
+    }
 
 });
-
 
 module.exports = stateMachine;

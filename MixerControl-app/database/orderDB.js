@@ -23,7 +23,7 @@ orderDB.getOrder = function (orderNumber) {
 
 orderDB.getOrders = function (){
     return orderDB.orderDict;
-}
+};
 
 
 orderDB.generateNewOrderNumber = function () {

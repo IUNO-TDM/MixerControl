@@ -8,11 +8,19 @@ const http = require('http');
 
 var logger = require('../global/logger');
 var io = require('socket.io-client');
+
+var registeredInvoiceIds = [];
+
 socket = io('http://localhost:8080/invoices',{transports: ['websocket']});
 
 socket.connect();
 socket.on('connect', function(){
     logger.debug("connected to paymentservice");
+    for(var invoiceId in registeredInvoiceIds){
+        socket.emit('room', registeredInvoiceIds);
+    }
+
+
 });
 
 socket.on('StateChange', function(data){
@@ -73,13 +81,26 @@ payment_service.getBip21 = function(invoice, callback){
     ).end();
 };
 
+addInvoiceIdToList = function(invoiceId){
+    if(registeredInvoiceIds.find(invoiceId) == undefined){
+        registeredInvoiceIds.push(invoiceId);
+    }
+};
 
+removeInvoiceIdFromList = function (invoiceId) {
+    var index = registeredInvoiceIds.findIndex(invoiceId);
+    if(index != -1){
+        registeredInvoiceIds.splice(index,1);
+    }
+};
 
 payment_service.registerStateChangeUpdates = function(invoiceId){
     socket.emit('room',invoiceId);
+    addInvoiceIdToList(invoiceId);
 };
 payment_service.unregisterStateChangeUpdates = function(invoiceId){
     socket.emit('leave',invoiceId);
+    removeInvoiceIdFromList(invoiceId);
 };
 
 module.exports = payment_service;
