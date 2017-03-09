@@ -7,7 +7,7 @@ const util = require('util');
 var logger = require('../global/logger');
 var io = require('socket.io-client');
 const constants = require('../global/constants');
-
+var LicenseService = function () {};
 const license_service = new LicenseService();
 util.inherits(LicenseService, EventEmitter);
 
@@ -34,3 +34,4 @@ license_service.registerUpdates = function (hsmId) {
 license_service.unregisterUpdates = function (hsmId) {
     socket.emit('leave',hsmId);
 };
+module.exports = license_service;
