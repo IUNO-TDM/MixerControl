@@ -7,7 +7,8 @@ var production_queue = require('../models/production_queue');
 var jms_connector = require('../connectors/juice_machine_service_connector');
 var logger = require('../global/logger');
 var payment_service = require('../services/payment_service');
-var orderDB = require('../database/orderDB')
+var orderDB = require('../database/orderDB');
+var license_service = require('../services/license_service');
 var stateMachine = new machina.BehavioralFsm({
     initialize: function (options) {
         // your setup code goes here...
@@ -25,6 +26,7 @@ var stateMachine = new machina.BehavioralFsm({
         waitingOffer: {
             _onEnter: function (client) {
                 console.log("Ordernumber " + client.orderNumber + " is now state waitingOffer ");
+                license_service.registerUpdates('TW552HSM');
                 var self = this;
                 jms_connector.requestOfferForOrders("TW552HSM", [
                     {
@@ -55,7 +57,7 @@ var stateMachine = new machina.BehavioralFsm({
                             coin: 90000
                         }]
 
-                    }
+                    };
                     client.invoice = inv;
 
                     self.handle(client, "offerReceived");
@@ -213,7 +215,11 @@ payment_service.on('StateChange', function(state){
         stateMachine.paymentArrived(order);
     }
 
-})
+});
+
+license_service.on('updateAvailable', function (offerId, orderId) {
+
+});
 
 
 module.exports = stateMachine;

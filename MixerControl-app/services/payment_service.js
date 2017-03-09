@@ -74,6 +74,7 @@ payment_service.getBip21 = function(invoice, callback){
 };
 
 
+
 payment_service.registerStateChangeUpdates = function(invoiceId){
     socket.emit('room',invoiceId);
 };
