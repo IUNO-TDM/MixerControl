@@ -91,6 +91,7 @@ self.getAllRecipes = function (callback) {
             if (typeof(callback) == 'function') {
 
                 callback(e);
+                return;
             }
         }
 
@@ -288,7 +289,7 @@ self.requestOfferForOrders = function (hsmId,orderList, callback) {
     request(options, function (e, r, jsonData) {
         logger.debug('Response:' + jsonData);
 
-        if (e) {
+        if  (e) {
             console.error(e);
             if (typeof(callback) == 'function') {
 

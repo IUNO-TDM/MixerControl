@@ -82,7 +82,7 @@ payment_service.getBip21 = function(invoice, callback){
 };
 
 addInvoiceIdToList = function(invoiceId){
-    if(registeredInvoiceIds.find(invoiceId) == undefined){
+    if(registeredInvoiceIds.findIndex(invoiceId) != -1){
         registeredInvoiceIds.push(invoiceId);
     }
 };

@@ -37,28 +37,27 @@ var stateMachine = new machina.BehavioralFsm({
                     logger.debug(offer);
                     if (e) {
                         logger.crit(e);
-                        next(e);
 
                         return;
                     }
                     client.offerId = offer.id;
                     client.invoice = offer.invoice;
-                    client.invoice.totalAmount = client.recipe.retailPrice.amount;
+                    client.invoice.totalAmount *= 1.5;
 
                     //TODO replace, when marketplace api and paymentservice api are synchronous
-                    var expDate = new Date();
-                    expDate.setHours(expDate.getHours()+1);
-                    const inv = {
-                        totalAmount: 100000,
-                        expiration: expDate,
-                        referenceId: client.orderNumber,
-                        transfers:[{
-                            address: 'mvGXYeuze85kyK1HJ443rVjotMCCvAaYkb',
-                            coin: 90000
-                        }]
-
-                    };
-                    client.invoice = inv;
+                    // var expDate = new Date();
+                    // expDate.setHours(expDate.getHours()+1);
+                    // const inv = {
+                    //     totalAmount: 100000,
+                    //     expiration: expDate,
+                    //     referenceId: client.orderNumber,
+                    //     transfers:[{
+                    //         address: 'mvGXYeuze85kyK1HJ443rVjotMCCvAaYkb',
+                    //         coin: 90000
+                    //     }]
+                    //
+                    // };
+                    // client.invoice = inv;
 
                     self.handle(client, "offerReceived");
 
