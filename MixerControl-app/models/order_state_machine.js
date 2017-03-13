@@ -211,7 +211,10 @@ payment_service.on('StateChange', function(state){
     if(state.state == 'pending' || state.state == 'building'){
         orderNumber = state.referenceId;
         order = orderDB.getOrder(orderNumber);
-        stateMachine.paymentArrived(order);
+        if(order != undefined){
+            stateMachine.paymentArrived(order);
+        }
+
     }
 
 });

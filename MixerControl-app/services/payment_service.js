@@ -11,27 +11,7 @@ var io = require('socket.io-client');
 
 var registeredInvoiceIds = [];
 
-socket = io('http://localhost:8080/invoices',{transports: ['websocket']});
 
-socket.connect();
-socket.on('connect', function(){
-    logger.debug("connected to paymentservice");
-    for(var invoiceId in registeredInvoiceIds){
-        socket.emit('room', registeredInvoiceIds);
-    }
-
-
-});
-
-socket.on('StateChange', function(data){
-    logger.debug("StateChange",data);
-    payment_service.emit('StateChange', JSON.parse(data));
-});
-
-
-socket.on('disconnect', function(){
-    logger.debug("disconnect");
-});
 var PaymentService = function () {
     console.log('a new instance of PaymentService');
 
@@ -39,6 +19,29 @@ var PaymentService = function () {
 
 const payment_service = new PaymentService();
 util.inherits(PaymentService, EventEmitter);
+
+
+
+payment_service.socket =  io.connect('http://localhost:8080/invoices',{transports: ['websocket']});
+
+payment_service.socket.on('connect', function(){
+    logger.debug("connected to paymentservice");
+    for(var invoiceId in registeredInvoiceIds){
+        payment_servicesocket.socket.emit('room', registeredInvoiceIds);
+    }
+
+
+});
+
+payment_service.socket.on('StateChange', function(data){
+    logger.debug("StateChange",data);
+    payment_service.emit('StateChange', JSON.parse(data));
+});
+
+
+payment_service.socket.on('disconnect', function(){
+    logger.debug("disconnect");
+});
 
 payment_service.createLocalInvoice = function(invoice, callback){
     body = JSON.stringify(invoice);
@@ -82,24 +85,24 @@ payment_service.getBip21 = function(invoice, callback){
 };
 
 addInvoiceIdToList = function(invoiceId){
-    if(registeredInvoiceIds.findIndex(invoiceId) != -1){
+     if(registeredInvoiceIds.indexOf(invoiceId) != -1){
         registeredInvoiceIds.push(invoiceId);
     }
 };
 
 removeInvoiceIdFromList = function (invoiceId) {
-    var index = registeredInvoiceIds.findIndex(invoiceId);
+    var index = registeredInvoiceIds.indexOf(invoiceId);
     if(index != -1){
         registeredInvoiceIds.splice(index,1);
     }
 };
 
 payment_service.registerStateChangeUpdates = function(invoiceId){
-    socket.emit('room',invoiceId);
+    payment_service.socket.emit('room',invoiceId);
     addInvoiceIdToList(invoiceId);
 };
 payment_service.unregisterStateChangeUpdates = function(invoiceId){
-    socket.emit('leave',invoiceId);
+    payment_service.socket.emit('leave',invoiceId);
     removeInvoiceIdFromList(invoiceId);
 };
 

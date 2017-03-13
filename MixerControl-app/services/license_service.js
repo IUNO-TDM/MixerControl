@@ -11,27 +11,27 @@ var LicenseService = function () {};
 const license_service = new LicenseService();
 util.inherits(LicenseService, EventEmitter);
 
-socket =  io('http://' + constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
+license_service.socket = io.connect('http://' + constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
     + ":" + constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT +  "/licenses",{transports: ['websocket']});
-socket.connect();
-socket.on('connect', function(){
+
+license_service.socket.on('connect', function(){
     logger.debug("connected to license SocketIO at Marketplace");
 });
 
-socket.on('disconnect', function () {
+license_service.socket.on('disconnect', function () {
     logger.debug("disconnected from license SocketIO at Marketplace");
 });
 
-socket.on('updateAvailable', function (data) {
+license_service.socket.on('updateAvailable', function (data) {
     license_service.emit('updateAvailable', data.offerId, data.hsmId);
 });
 
 
 license_service.registerUpdates = function (hsmId) {
-    socket.emit('room',hsmId);
+    license_service.socket.emit('room',hsmId);
 };
 
 license_service.unregisterUpdates = function (hsmId) {
-    socket.emit('leave',hsmId);
+    license_service.socket.emit('leave',hsmId);
 };
 module.exports = license_service;
