@@ -16,16 +16,16 @@ function onOrderNamespaceConnect(socket) {
 
         if (orderId == 'allOrders') {
             const orderDict = OrderDB.getOrders();
-            for(var key in orderDict){
+            for (var key in orderDict) {
                 var order = orderDict[key];
                 if (typeof order !== 'undefined') {
                     socket.emit("add", order.strip());
                     var state = OSM.compositeState(order);
-                    socket.emit("state", {"orderNumber": order.orderNumber,"toState": state});
+                    socket.emit("state", {"orderNumber": order.orderNumber, "toState": state});
 
                     if (typeof  order.progress !== 'undefined') {
 
-                        socket.emit("progress", {"orderNumber": order.orderNumber,"progress": order.progress})
+                        socket.emit("progress", {"orderNumber": order.orderNumber, "progress": order.progress})
                     }
                 }
             }
@@ -56,14 +56,14 @@ function onProductionNamespaceConnect(socket) {
     socket.on('room', function (roomId) {
         socket.join(roomId);
 
-        if(roomId == "queue"){
-            socket.emit("queueChange",production_queue.getStrippedQueue());
-        }else if(roomId == "state"){
-            socket.emit("stateChange",production_queue.getState());
-        }else if(roomId == "pumpControlMode"){
-            socket.emit("modeChange",pumpControl_service.getMode());
-        }else if(roomId == "pumpControlService"){
-            socket.emit("stateChange",pumpControl_service.getServiceState());
+        if (roomId == "queue") {
+            socket.emit("queueChange", production_queue.getStrippedQueue());
+        } else if (roomId == "state") {
+            socket.emit("stateChange", production_queue.getState());
+        } else if (roomId == "pumpControlMode") {
+            socket.emit("modeChange", pumpControl_service.getMode());
+        } else if (roomId == "pumpControlService") {
+            socket.emit("stateChange", pumpControl_service.getServiceState());
         }
 
     });
@@ -104,7 +104,7 @@ function registerPumpControlEvents(orderNamespace) {
 
     production_queue.on('progress', function (order, progress) {
         orderNamespace.to(order.orderNumber).emit("progress", {"progress": progress});
-        orderNamespace.to('allOrders').emit("progress", {"orderNumber": order.orderNumber,"progress": progress});
+        orderNamespace.to('allOrders').emit("progress", {"orderNumber": order.orderNumber, "progress": progress});
     });
 
     production_queue.init();
@@ -124,27 +124,27 @@ function registerOrderStateEvents(orderNamespace) {
         });
     });
 }
-function registerOrderDbEvents(orderNamespace){
+function registerOrderDbEvents(orderNamespace) {
     OrderDB.on("add", function (order) {
         orderNamespace.to('allOrders').emit("add", order.strip());
     })
 }
 
 
-function registerProductionEvents(productionNamespace){
-    production_queue.on('state',function (state, topOrder) {
-        productionNamespace.to('state').emit("stateChange",state);
+function registerProductionEvents(productionNamespace) {
+    production_queue.on('state', function (state, topOrder) {
+        productionNamespace.to('state').emit("stateChange", state);
     });
 
     production_queue.on('queueChange', function (queue) {
-        productionNamespace.to('queue').emit("queueChange",queue);
+        productionNamespace.to('queue').emit("queueChange", queue);
     });
 
-    pumpControl_service.on('serviceState', function(state){
-        productionNamespace.to('pumpControlService').emit("stateChange",state);
+    pumpControl_service.on('serviceState', function (state) {
+        productionNamespace.to('pumpControlService').emit("stateChange", state);
     });
-    pumpControl_service.on('pumpControlMode', function(state){
-        productionNamespace.to('pumpControlMode').emit("modeChange",state);
+    pumpControl_service.on('pumpControlMode', function (state) {
+        productionNamespace.to('pumpControlMode').emit("modeChange", state);
     });
 
 }

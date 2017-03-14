@@ -6,6 +6,9 @@ var machina = require('machina');
 var production_queue = require('../models/production_queue');
 var jms_connector = require('../connectors/juice_machine_service_connector');
 var logger = require('../global/logger');
+var payment_service = require('../services/payment_service');
+var orderDB = require('../database/orderDB');
+var license_service = require('../services/license_service');
 var stateMachine = new machina.BehavioralFsm({
     initialize: function (options) {
         // your setup code goes here...
@@ -23,10 +26,7 @@ var stateMachine = new machina.BehavioralFsm({
         waitingOffer: {
             _onEnter: function (client) {
                 console.log("Ordernumber " + client.orderNumber + " is now state waitingOffer ");
-                // this.timer = setTimeout( function() {
-                //   this.handle(client, "offerReceived" );
-                // }.bind( this ), 5000 );
-                // //getOfferAtTD
+                license_service.registerUpdates('TW552HSM');
                 var self = this;
                 jms_connector.requestOfferForOrders("TW552HSM", [
                     {
@@ -37,11 +37,35 @@ var stateMachine = new machina.BehavioralFsm({
                     logger.debug(offer);
                     if (e) {
                         logger.crit(e);
-                        next(e);
 
                         return;
                     }
+                    //TODO: Parse result into object before using it
                     client.offerId = offer.id;
+                    client.invoice = offer.invoice;
+                    var totalAmount = 0;
+                    for (var key in client.invoice.transfers) {
+                        var transfer = client.invoice.transfers[key];
+                        totalAmount += transfer.coin;
+                    }
+                    client.invoice.totalAmount = totalAmount * 1.5;
+                    client.invoice.referenceId = client.orderNumber;
+
+                    //TODO replace, when marketplace api and paymentservice api are synchronous
+                    // var expDate = new Date();
+                    // expDate.setHours(expDate.getHours()+1);
+                    // const inv = {
+                    //     totalAmount: 100000,
+                    //     expiration: expDate,
+                    //     referenceId: client.orderNumber,
+                    //     transfers:[{
+                    //         address: 'mvGXYeuze85kyK1HJ443rVjotMCCvAaYkb',
+                    //         coin: 90000
+                    //     }]
+                    //
+                    // };
+                    // client.invoice = inv;
+
                     self.handle(client, "offerReceived");
 
 
@@ -51,10 +75,20 @@ var stateMachine = new machina.BehavioralFsm({
         },
         waitingPaymentRequest: {
             _onEnter: function (client) {
-                console.log("Ordernumber " + client.orderNumber + " is now state waitingPaymentRequest ");
-                this.timer = setTimeout(function () {
-                    this.handle(client, "paymentRequestReceived");
-                }.bind(this), 5000);
+                var self = this;
+                payment_service.createLocalInvoice(client.invoice, function (e, invoice) {
+                    client.invoice = invoice;
+                    payment_service.getBip21(invoice, function (e, bip21) {
+                        client.paymentRequest = bip21;
+                        self.handle(client, 'paymentRequestReceived')
+                    })
+                });
+                // console.log("Ordernumber " + client.orderNumber + " is now state waitingPaymentRequest ");
+                // this.timer = setTimeout(function () {
+                //     this.handle(client, "paymentRequestReceived");
+                // }.bind(this), 5000);
+
+
             },
             paymentRequestReceived: "waitingPayment"
         },
@@ -71,6 +105,7 @@ var stateMachine = new machina.BehavioralFsm({
         waitingLicense: {
             _onEnter: function (client) {
                 //??sendPaymentToMarketplace??
+                payment_service.unregisterStateChangeUpdates(client.invoice.invoiceId);
                 this.timer = setTimeout(function () {
                     this.handle(client, "licenseArrived");
                 }.bind(this), 5000);
@@ -179,5 +214,37 @@ production_queue.on('state', function (state, order) {
     }
 });
 
+payment_service.on('StateChange', function (state) {
+    if (state.state == 'pending' || state.state == 'building') {
+        var orderNumber = state.referenceId;
+        var order = orderDB.getOrder(orderNumber);
+        if (order != undefined) {
+            stateMachine.paymentArrived(order);
+        }
+
+    }
+
+});
+var getOrderWithOfferId = function (offerId) {
+    var orderDict = orderDB.getOrders();
+    for (var key in orderDict) {
+        var order = orderDict[key];
+
+        if (order.offerId == offerId) {
+            return order;
+        }
+    }
+
+    return undefined;
+};
+
+//TODO change, when licenses can be downloaded. This is too early...
+license_service.on('updateAvailable', function (offerId, hsmId) {
+    var order = getOrderWithOfferId(offerId);
+    if (order) {
+        stateMachine.licenseArrived(order);
+    }
+
+});
 
 module.exports = stateMachine;

@@ -24,7 +24,7 @@
     "@types/socket.io-client": "^1.4.29",
     "angular-in-memory-web-api": "~0.2.4",
     "angular2-qrcode": "^2.0.0",
-    "angular2-qrscanner": "^0.1.0",
+    "angular2-qrscanner": "^0.1.1",
     "async": "^2.1.5",
     "body-parser": "~1.15.2",
     "bootstrap": "^4.0.0-alpha.6",
