@@ -23,6 +23,7 @@ license_service.socket.on('disconnect', function () {
 });
 
 license_service.socket.on('updateAvailable', function (data) {
+    logger.debug("License update available for ", data);
     license_service.emit('updateAvailable', data.offerId, data.hsmId);
 });
 

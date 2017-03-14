@@ -11,7 +11,7 @@ var pumpcontrol_service = require('../services/pumpcontrol_service');
 var osm = require('../models/order_state_machine');
 var production_queue = require('../models/production_queue');
 var jms_connector = require('../connectors/juice_machine_service_connector');
-
+var payment_service = require('../services/payment_service');
 
 router.post('/', function (req, res, next) {
     //TODO: Validate body using json schema
@@ -93,18 +93,20 @@ router.put('/:id/payment', function (req, res, next) {
 
     var orderId = req.params['id'];
     var order = OrderDB.getOrder(orderId);
+    const invoice = order.invoice;
 
-    jms_connector.savePaymentForOffer(order.offerId, 'BIP-STRING', function (e) {
-        if (e) {
-            log.crit(e);
-            next(e);
-
-            return;
+    const data = req.body;
+    if (invoice != undefined){
+        if(data != undefined){
+            payment_service.redeemCoupon(invoice,data, function(statusCode){
+                res.sendStatus(statusCode);
+            });
+        }else{
+            res.sendStatus(400);
         }
-        //TODO: replace against call to paymentService
-        osm.paymentArrived(order);
-        res.sendStatus(201);
-    });
+    }else {
+        res.sendStatus(400);
+    }
 
 
 });

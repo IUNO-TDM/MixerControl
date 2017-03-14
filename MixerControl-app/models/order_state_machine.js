@@ -100,7 +100,12 @@ var stateMachine = new machina.BehavioralFsm({
                 // }.bind( this ), 5000 );
                 //display PR QR Code
             },
-            paymentArrived: "waitingLicense"
+            paymentArrived: "waitingLicense",
+            licenseArrived: function (client) {
+                this.deferUntilTransition(client,'waitingLicense');
+                this.transition(client,'waitingLicense' );
+
+            }
         },
         waitingLicense: {
             _onEnter: function (client) {

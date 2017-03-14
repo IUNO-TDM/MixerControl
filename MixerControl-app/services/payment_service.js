@@ -84,7 +84,23 @@ payment_service.getBip21 = function(invoice, callback){
     ).end();
 };
 
-var addInvoiceIdToList = function(invoiceId){
+payment_service.redeemCoupon = function (invoice, couponKey, callback) {
+    var options = {
+        hostname: 'localhost',
+        port: 8080,
+        path: '/v1/invoices/' + invoice.invoiceId + '/coupons',
+        agent: false,
+        method: 'POST'
+    };
+    var req = http.request(options, function (res) {
+            console.log(res.statusCode + ' ' + res.statusMessage);
+            callback(res.statusCode);
+        }
+    ).end(couponKey);
+}
+
+
+addInvoiceIdToList = function(invoiceId){
      if(registeredInvoiceIds.indexOf(invoiceId) != -1){
         registeredInvoiceIds.push(invoiceId);
     }
