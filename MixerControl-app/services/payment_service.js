@@ -34,7 +34,7 @@ payment_service.socket.on('connect', function(){
 });
 
 payment_service.socket.on('StateChange', function(data){
-    logger.debug("StateChange",data);
+    logger.debug("StateChange: " + data);
     payment_service.emit('StateChange', JSON.parse(data));
 });
 
@@ -44,7 +44,7 @@ payment_service.socket.on('disconnect', function(){
 });
 
 payment_service.createLocalInvoice = function(invoice, callback){
-    body = JSON.stringify(invoice);
+    var body = JSON.stringify(invoice);
     var options = {
         hostname: 'localhost',
         port: 8080,
@@ -84,13 +84,13 @@ payment_service.getBip21 = function(invoice, callback){
     ).end();
 };
 
-addInvoiceIdToList = function(invoiceId){
+var addInvoiceIdToList = function(invoiceId){
      if(registeredInvoiceIds.indexOf(invoiceId) != -1){
         registeredInvoiceIds.push(invoiceId);
     }
 };
 
-removeInvoiceIdFromList = function (invoiceId) {
+var removeInvoiceIdFromList = function (invoiceId) {
     var index = registeredInvoiceIds.indexOf(invoiceId);
     if(index != -1){
         registeredInvoiceIds.splice(index,1);

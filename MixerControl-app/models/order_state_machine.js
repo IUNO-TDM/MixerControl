@@ -40,9 +40,16 @@ var stateMachine = new machina.BehavioralFsm({
 
                         return;
                     }
+                    //TODO: Parse result into object before using it
                     client.offerId = offer.id;
                     client.invoice = offer.invoice;
-                    client.invoice.totalAmount *= 1.5;
+                    var totalAmount = 0;
+                    for (var key in client.invoice.transfers) {
+                        var transfer = client.invoice.transfers[key];
+                        totalAmount += transfer.coin;
+                    }
+                    client.invoice.totalAmount = totalAmount * 1.5;
+                    client.invoice.referenceId = client.orderNumber;
 
                     //TODO replace, when marketplace api and paymentservice api are synchronous
                     // var expDate = new Date();
@@ -69,11 +76,11 @@ var stateMachine = new machina.BehavioralFsm({
         waitingPaymentRequest: {
             _onEnter: function (client) {
                 var self = this;
-                payment_service.createLocalInvoice(client.invoice,function(e,invoice){
+                payment_service.createLocalInvoice(client.invoice, function (e, invoice) {
                     client.invoice = invoice;
                     payment_service.getBip21(invoice, function (e, bip21) {
                         client.paymentRequest = bip21;
-                        self.handle(client,'paymentRequestReceived')
+                        self.handle(client, 'paymentRequestReceived')
                     })
                 });
                 // console.log("Ordernumber " + client.orderNumber + " is now state waitingPaymentRequest ");
@@ -207,30 +214,34 @@ production_queue.on('state', function (state, order) {
     }
 });
 
-payment_service.on('StateChange', function(state){
-    if(state.state == 'pending' || state.state == 'building'){
-        orderNumber = state.referenceId;
-        order = orderDB.getOrder(orderNumber);
-        if(order != undefined){
+payment_service.on('StateChange', function (state) {
+    if (state.state == 'pending' || state.state == 'building') {
+        var orderNumber = state.referenceId;
+        var order = orderDB.getOrder(orderNumber);
+        if (order != undefined) {
             stateMachine.paymentArrived(order);
         }
 
     }
 
 });
-getOrderWithOfferId = function(offerId){
-    for(var order in orderDB.getOrders()){
-        if(order.offerId == offerId){
+var getOrderWithOfferId = function (offerId) {
+    var orderDict = orderDB.getOrders();
+    for (var key in orderDict) {
+        var order = orderDict[key];
+
+        if (order.offerId == offerId) {
             return order;
         }
-    };
+    }
+
     return undefined;
 };
 
-//TODO change, when licenses can be downloaded. This is two early...
+//TODO change, when licenses can be downloaded. This is too early...
 license_service.on('updateAvailable', function (offerId, hsmId) {
     var order = getOrderWithOfferId(offerId);
-    if(order != undefined){
+    if (order) {
         stateMachine.licenseArrived(order);
     }
 
