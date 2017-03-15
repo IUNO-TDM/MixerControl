@@ -8,7 +8,7 @@
  <div *ngIf="orderState">
 
 
-   /* 
+ <!--  /* 
      waitingOffer | waitingPaymentRequest : Preisanfrage
      waitingPayment: Dialog, wenn möglich Schritte in Dialog anzeigen?
      waitingLicense : Lizenzabruf
@@ -19,7 +19,7 @@
      productionPaused: Auftrag Pausiert
      error: Fehler
 
-     */
+     */ -->
    
     <div class="orderSteps" *ngIf="orderState.toState == 'inProduction'">
       <div class="step order ">Lizenzanfrage</div>
