@@ -102,7 +102,7 @@ var stateMachine = new machina.BehavioralFsm({
             },
             paymentArrived: "waitingLicense",
             licenseArrived: function (client) {
-                this.deferUntilTransition(client,'waitingLicense');
+                this.deferUntilTransition(client);
                 this.transition(client,'waitingLicense' );
 
             }
@@ -111,9 +111,9 @@ var stateMachine = new machina.BehavioralFsm({
             _onEnter: function (client) {
                 //??sendPaymentToMarketplace??
                 payment_service.unregisterStateChangeUpdates(client.invoice.invoiceId);
-                this.timer = setTimeout(function () {
-                    this.handle(client, "licenseArrived");
-                }.bind(this), 5000);
+                // this.timer = setTimeout(function () {
+                //     this.handle(client, "licenseArrived");
+                // }.bind(this), 5000);
             },
             licenseArrived: "enqueueForProduction"
         },
