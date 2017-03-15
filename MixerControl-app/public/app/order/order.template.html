@@ -6,6 +6,20 @@
 <div class="row">
    <div class="one-half column">
  <div *ngIf="orderState">
+
+
+   /* 
+     waitingOffer | waitingPaymentRequest : Preisanfrage
+     waitingPayment: Dialog, wenn möglich Schritte in Dialog anzeigen?
+     waitingLicense : Lizenzabruf
+     enqueForProduction | waitForProduction : Produktionswarteschlange
+     readyForProduction : Produktionsbereit -> Start Pumping
+     inProduction : progress: 0-100
+     productionFinished: Guten Appetit! 
+     productionPaused: Auftrag Pausiert
+     error: Fehler
+
+     */
    
     <div class="orderSteps" *ngIf="orderState.toState == 'inProduction'">
       <div class="step order ">Lizenzanfrage</div>
