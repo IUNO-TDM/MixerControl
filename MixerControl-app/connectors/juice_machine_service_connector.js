@@ -298,7 +298,7 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
             }
         }
 
-        if (r.statusCode >= 400) {
+        if (r && r.statusCode >= 400) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
