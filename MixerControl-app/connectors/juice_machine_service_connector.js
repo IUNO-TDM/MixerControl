@@ -48,7 +48,7 @@ self.getAllRecipes = function (callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
             console.error(e);
@@ -60,12 +60,11 @@ self.getAllRecipes = function (callback) {
         }
 
         if (r.statusCode != 200) {
-            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -99,7 +98,7 @@ self.getAllComponents = function (callback) {
     // );
     //
     // request(options, function (e, r, jsonData) {
-    //     logger.debug('Response:' + jsonData);
+    //     logger.debug('Response:' + JSON.stringify(jsonData));
     //
     //     if (e) {
     //         console.error(e);
@@ -110,12 +109,12 @@ self.getAllComponents = function (callback) {
     //     }
     //
     //     if (r.statusCode != 200) {
-    //         logger.warn('Call not successful');
+    //
     //         var err = {
     //             status: r.statusCode,
     //             message: jsonData
     //         };
-    //         logger.warn(err);
+    //         logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
     //         callback(err);
     //
     //         return;
@@ -188,7 +187,7 @@ self.getRecipeForId = function (id, callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
             console.error(e);
@@ -199,12 +198,11 @@ self.getRecipeForId = function (id, callback) {
         }
 
         if (r.statusCode >= 400) {
-            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -236,7 +234,7 @@ self.getUserForId = function (id, callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
             console.error(e);
@@ -246,13 +244,12 @@ self.getUserForId = function (id, callback) {
             }
         }
 
-        if (r.statusCode >= 400) {
-            logger.warn('Call not successful');
+        if (r && r.statusCode >= 400) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -291,7 +288,7 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
     };
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
             console.error(e);
@@ -302,12 +299,11 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
         }
 
         if (r.statusCode >= 400) {
-            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -339,7 +335,7 @@ self.getOfferForId = function (id, callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
             console.error(e);
@@ -350,12 +346,11 @@ self.getOfferForId = function (id, callback) {
         }
 
         if (r.statusCode >= 400) {
-            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
@@ -392,7 +387,7 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
     };
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + jsonData);
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
         if (e) {
             console.error(e);
@@ -403,12 +398,11 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
         }
 
         if (r.statusCode >= 400) {
-            logger.warn('Call not successful');
             var err = {
                 status: r.statusCode,
                 message: jsonData
             };
-            logger.warn(err);
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
             callback(err);
 
             return;
