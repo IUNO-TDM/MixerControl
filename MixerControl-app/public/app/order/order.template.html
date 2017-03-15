@@ -5,23 +5,33 @@
 
 <div class="row">
    <div class="one-half column">
-     <div *ngIf="orderState">
-        <h3>Auftragsstatus: {{orderState.toState}}</h3>
-        <div *ngIf="orderState.toState == 'inProduction'">
-          <p>Fortschritt: {{progress}}%</p>
-        </div>
-        <div *ngIf="orderState.toState == 'waitingPayment'">
-          <my-payment></my-payment>
-        </div>
-        <div *ngIf="orderState.toState == 'readyForProduction'">
-          <button (click)="ProductionStart()">Start Pumping</button>
-        </div>
-        <div *ngIf="orderState.toState == 'productionFinished'">
-          <button (click)="Home()">Home</button>
-        </div>
-      </div>
+ <div *ngIf="orderState">
+   
+    <div class="orderSteps" *ngIf="orderState.toState == 'inProduction'">
+      <div class="step order ">Lizenzanfrage</div>
+      <div class="step payment off">Bezahlung</div>
+      <div class="step production off">Produktion</div>
     </div>
-  <div class="one-half column" >
+
+    <div class="orderSteps" *ngIf="orderState.toState == 'waitingPayment'">
+    
+      <div class="step order done">Lizenzanfrage</div>
+      <div class="step payment ">Bezahlung</div>
+      <div class="step production off">Produktion</div>
+
+      <my-payment></my-payment>
+    </div>
+    <div class="orderSteps" *ngIf="orderState.toState == 'readyForProduction'">
+      
+      <div class="step order done">Lizenzanfrage</div>
+      <div class="step payment done">Bezahlung</div>
+      <div class="step production ">Produktion</div>
+
+      <button (click)="ProductionStart()">Start Pumping</button>
+    </div>
+  </div>
+   </div>
+<div class="one-half column" >
     
     <h3>Auftragsdetails</h3>
     <table>
@@ -35,14 +45,13 @@
       </tr>
       <tr *ngIf="drink">
         <td>Bestellter Drink</td>
-        <td>{{drink.title}}</td>
+        <td>{{drink.description}}</td>
       </tr>
       <tr *ngIf="user">
         <td>Rezepthersteller</td>
         <td>{{user.firstname}} {{user.lastname}}</td>
       </tr>
     </table>
-
-  </div>
+</div>
 </div>
 

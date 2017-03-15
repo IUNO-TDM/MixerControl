@@ -7,7 +7,6 @@ html {
 }
 body{
     background: #fff;
-    font-family: 'open_sansregular';
 }
 
 a {
@@ -20,16 +19,32 @@ a:hover {
 }
 header {
     background-image: url('../img/header.png');
-     background-size: cover;
+    background-size: cover;
     height: 80px;
 }
 header .projectTitle{
-     font-size: 2.4rem;
-     color: #fff;
-     padding-left: 5%;
-     font-family: 'open_sanslight';
-     text-decoration: none;
+    font-size: 2.4rem;
+    color: #fff;
+    padding-left: 5%;
+    font-family: 'open_sanslight';
+    text-decoration: none;
  }
+
+footer {
+    background: white;
+    background-image: url('../img/powered_by_axoom_vertical.svg');
+    background-size: auto 30px;
+    background-repeat: no-repeat;
+    background-position: right center;  
+    height: 50px;
+    border-top: 1px solid slategrey;
+    position: fixed;
+    
+    bottom: 0px; 
+    left: 5%;
+    width: 90%;
+}
+
 .loader {
     background-position: center center;
     background-repeat: no-repeat;
@@ -88,8 +103,8 @@ padding:15px;
 font-family: 'blokletters_viltstifviltstift', cursive; 
 
 color: #000; 
-width:200px; 
-min-height:200px; 
+width:240px; 
+min-height:240px; 
 
 -moz-transform: rotate(-3deg);
 -webkit-transform: rotate(-3deg);
@@ -116,6 +131,7 @@ box-shadow: 0px 4px 6px #333;
   justify-content: space-around;
   overflow: hidden;
   padding: 2rem;
+  z-index: 100;
 }
 .modal__dialog {
   background: white;
@@ -125,8 +141,41 @@ box-shadow: 0px 4px 6px #333;
   border-radius: 0.3rem;
   overflow: hidden;
   padding: 2em;
+   z-index: 101;
 }
 
-#qr-canvas {
-    width: 50% !important;
+#v {
+    width: 80%;
+}
+
+.orderSteps {
+    font-size: 4rem;
+    font-family: 'open_sanslight'; 
+}
+
+.orderSteps .step {
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding-left: 1.5em;  
+    background-size: 4rem ;
+}
+
+.orderSteps .order{
+    background-image: url('../img/lnr-license.svg');  
+}
+.orderSteps .payment{
+    background-image: url('../img/lnr-cart.svg');
+}
+.orderSteps .production{
+    background-image: url('../img/lnr-coffee-cup.svg');
+}
+
+.orderSteps  .off{
+    opacity: 0.2;
+}
+
+.orderSteps .done::after{
+    content: " ✓";
+    padding-left: 0.1em; 
+    color: limegreen;
 }
