@@ -9,48 +9,17 @@ var request = require('request');
 var logger = require('../global/logger');
 var HOST_SETTINGS = require('../global/constants').HOST_SETTINGS;
 var helper = require('../services/helper_service');
-var ingredientConfiguration = require('../global/ingredient_configuration').INGREDIENT_CONFIGURATION;
+var component_config = require('../global/ingredient_configuration').INGREDIENT_CONFIGURATION;
 
-const components = [
-    {
-        id: 1,
-        name: 'Sprudel'
-    },
-    {
-        id: 2,
-        name: 'Orangensaft'
-    },
-
-    {
-        id: 3,
-        name: 'Apfelsaft'
-    },
-
-    {
-        id: 4,
-        name: 'Kirschsaft'
-    },
-
-    {
-        id: 5,
-        name: 'Bananensaft'
-    },
-    {
-        id: 6,
-        name: 'Johannisbeersaft'
-    },
-    {
-        id: 7,
-        name: 'Cola'
-    },
-    {
-        id: 8,
-        name: 'Fanta'
-    },
-    {
-        id: 9,
-        name: 'Ginger Ale'
-    },
+var component_uuids = [
+    '8f0bc514-7219-46d2-999d-c45c930c3e7c',
+    '570a5df0-a044-4e22-b6e6-b10af872d75c',
+    '198f1571-4846-4467-967a-00427ab0208d',
+    'f6d361a9-5a6f-42ad-bff7-0913750809e4',
+    'fac1ee6f-185f-47fb-8c56-af57cd428aa8',
+    '0476e3d6-ab8e-4d38-9348-4a308c2b5fc0',
+    '0425393d-5b84-4815-8eda-1c27d35766cf',
+    '4cfa2890-6abd-4e21-a7ab-17613ed9a5c9'
 ];
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
@@ -68,11 +37,6 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
 
 self.getAllRecipes = function (callback) {
-    var ingredients = [];
-    for(var i=0; i< ingredientConfiguration.length;i++){
-        var key = Object.keys(ingredientConfiguration[i])[0];
-        ingredients.push(ingredientConfiguration[i][key]);
-    }
 
     var options = buildOptionsForRequest(
         'GET',
@@ -80,7 +44,7 @@ self.getAllRecipes = function (callback) {
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes',
-        {'ingredients': ingredients}
+        {'ingredients': component_uuids}
     );
 
     request(options, function (e, r, jsonData) {
@@ -171,7 +135,47 @@ self.getAllComponents = function (callback) {
     //         callback(null, jsonData);
     //     }
     // });
-    callback(null,components);
+    callback(null, [
+        {
+            id: 1,
+            name: 'Sprudel'
+        },
+        {
+            id: 2,
+            name: 'Orangensaft'
+        },
+
+        {
+            id: 3,
+            name: 'Apfelsaft'
+        },
+
+        {
+            id: 4,
+            name: 'Kirschsaft'
+        },
+
+        {
+            id: 5,
+            name: 'Bananensaft'
+        },
+        {
+            id: 6,
+            name: 'Johannisbeersaft'
+        },
+        {
+            id: 7,
+            name: 'Cola'
+        },
+        {
+            id: 8,
+            name: 'Fanta'
+        },
+        {
+            id: 9,
+            name: 'Ginger Ale'
+        },
+    ]);
 };
 
 self.getRecipeForId = function (id, callback) {
@@ -271,7 +275,7 @@ self.getUserForId = function (id, callback) {
 };
 
 
-self.requestOfferForOrders = function (hsmId,orderList, callback) {
+self.requestOfferForOrders = function (hsmId, orderList, callback) {
     var options = buildOptionsForRequest(
         'POST',
         'http',
@@ -289,7 +293,7 @@ self.requestOfferForOrders = function (hsmId,orderList, callback) {
     request(options, function (e, r, jsonData) {
         logger.debug('Response:' + jsonData);
 
-        if  (e) {
+        if (e) {
             console.error(e);
             if (typeof(callback) == 'function') {
 
