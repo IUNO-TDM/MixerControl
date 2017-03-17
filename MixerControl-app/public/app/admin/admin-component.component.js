@@ -14,16 +14,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var component_service_1 = require('../services/component.service');
 var admin_service_1 = require('../services/admin.service');
+var socketio_service_1 = require('../services/socketio.service');
 var AdminComponentComponent = (function () {
-    function AdminComponentComponent(componentService, adminService) {
+    function AdminComponentComponent(componentService, adminService, socketService) {
         this.componentService = componentService;
         this.adminService = adminService;
+        this.socketService = socketService;
+        this.warnings = {};
         this.selectedValue = null;
     }
     AdminComponentComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.componentService.getComponents().then(function (components) { return _this.components = components; });
         this.adminService.getPumps().then(function (pumps) { return _this.pumps = pumps; });
+        this.amountWarningConnection = this.socketService.get("/production", "amountWarning", "warning").subscribe(function (warning) {
+            return _this.warnings[warning.pumpNr] = warning.amountLeft;
+        });
     };
     AdminComponentComponent.prototype.ngOnDestroy = function () {
     };
@@ -44,9 +50,9 @@ var AdminComponentComponent = (function () {
             moduleId: module.id,
             selector: 'my-admin-component',
             templateUrl: 'admin-component.template.html',
-            providers: [component_service_1.ComponentService, admin_service_1.AdminService]
+            providers: [component_service_1.ComponentService, admin_service_1.AdminService, socketio_service_1.SocketService]
         }), 
-        __metadata('design:paramtypes', [component_service_1.ComponentService, admin_service_1.AdminService])
+        __metadata('design:paramtypes', [component_service_1.ComponentService, admin_service_1.AdminService, socketio_service_1.SocketService])
     ], AdminComponentComponent);
     return AdminComponentComponent;
 }());
