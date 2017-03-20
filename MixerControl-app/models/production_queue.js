@@ -2,6 +2,7 @@ var machina = require('machina');
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 
+var logger = require('../global/logger');
 var pumpcontrol_service = require('../services/pumpcontrol_service');
 
 const prog = {
@@ -213,6 +214,9 @@ pumpcontrol_service.on('pumpControlProgramEnd', function (progName) {
 });
 pumpcontrol_service.on('pumpControlError', function (error) {
     state_machine.errorProcessing();
+});
+pumpcontrol_service.on('amountWarning', function (amountWarning) {
+    logger.debug("Amount Warning: "+JSON.stringify(amountWarning));
 });
 
 state_machine.on('transition', function (data) {
