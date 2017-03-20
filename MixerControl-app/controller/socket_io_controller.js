@@ -146,6 +146,9 @@ function registerProductionEvents(productionNamespace) {
     pumpControl_service.on('pumpControlMode', function (state) {
         productionNamespace.to('pumpControlMode').emit("modeChange", state);
     });
+    pumpControl_service.on('amountWarning', function (warning) {
+        productionNamespace.to('amountWarning').emit("warning", warning);
+    });
 
 }
 

@@ -59,7 +59,7 @@ self.getAllRecipes = function (callback) {
             }
         }
 
-        if (r.statusCode != 200) {
+        if (r && r.statusCode != 200) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -197,7 +197,7 @@ self.getRecipeForId = function (id, callback) {
             }
         }
 
-        if (r.statusCode >= 400) {
+        if (r && r.statusCode >= 400) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -298,7 +298,7 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
             }
         }
 
-        if (r.statusCode >= 400) {
+        if (r && r.statusCode >= 400) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -345,7 +345,7 @@ self.getOfferForId = function (id, callback) {
             }
         }
 
-        if (r.statusCode >= 400) {
+        if (r && r.statusCode >= 400) {
             var err = {
                 status: r.statusCode,
                 message: jsonData
@@ -397,7 +397,7 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
             }
         }
 
-        if (r.statusCode >= 400) {
+        if (r && r.statusCode >= 400) {
             var err = {
                 status: r.statusCode,
                 message: jsonData

@@ -28,6 +28,11 @@ var initIngredients = function () {
                 const key = Object.keys(item)[0]
                 updateIngredient(key, componentNameForId(components,item[key]), callback);
             });
+            async.eachSeries(ingredient_configuration.INGREDIENT_CONFIGURATION, function iterate(item, callback) {
+                const key = Object.keys(item)[0]
+                pumpcontrol_service.setPumpAmount(key,105,callback);
+                // updateIngredient(key, componentNameForId(components,item[key]), callback);
+            });
         }
     });
 };
@@ -151,6 +156,8 @@ var onWebSocketMessage = function (message) {
             pumpcontrol_service.emit('pumpControlProgramEnd', messageObject.programEnded);
         } else if (messageObject.hasOwnProperty('error')) {
             pumpcontrol_service.emit('pumpControlError', messageObject.error);
+        } else if (messageObject.hasOwnProperty('amountWarning')) {
+            pumpcontrol_service.emit('amountWarning', messageObject.amountWarning);
         } else {
             console.log("Unrecognized message from PumpControl: " + message);
         }
@@ -280,6 +287,21 @@ pumpcontrol_service.setIngredient = function (pumpNumber, ingredient, callback) 
             updateIngredient(pumpNumber,componentNameForId(components,ingredient),callback);
         }
     });
+
+};
+pumpcontrol_service.setPumpAmount = function (pumpNumber, amount, callback) {
+    var options = {
+        hostname: 'localhost',
+        port: 9002,
+        path: '/ingredients/' + pumpNumber + '/amount',
+        agent: false,
+        method: 'PUT'
+    };
+    var req = http.request(options, function (res) {
+            console.log(res.statusCode + ' ' + res.statusMessage);
+            callback();
+        }
+    ).end(amount.toString());
 
 };
 pumpcontrol_service.startProgram = function (program) {
