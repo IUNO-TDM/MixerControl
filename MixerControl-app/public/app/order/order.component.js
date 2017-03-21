@@ -23,6 +23,7 @@ var OrderComponent = (function () {
         this.userService = userService;
         this.orderService = orderService;
         this.socketService = socketService;
+        this.orderState = "error";
         this.orderURL = "NULL";
     }
     OrderComponent.prototype.ngOnInit = function () {

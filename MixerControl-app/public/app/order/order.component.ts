@@ -23,6 +23,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   user: User;
   error: any;
   orderState: string;
+  orderState = "error";
   progress: number;
   orderStateConnection: Subscription;
   orderProgressConnection: Subscription;
