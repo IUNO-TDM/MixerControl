@@ -94,6 +94,7 @@ router.put('/:id/payment', function (req, res, next) {
     var orderId = req.params['id'];
     var order = OrderDB.getOrder(orderId);
     const invoice = order.invoice;
+    //TODO remove this logging later
     logger.debug("PaymentString: " + req.body);
 
     const data = req.body;

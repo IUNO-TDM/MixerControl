@@ -90,13 +90,19 @@ payment_service.redeemCoupon = function (invoice, couponKey, callback) {
         port: 8080,
         path: '/v1/invoices/' + invoice.invoiceId + '/coupons',
         agent: false,
-        method: 'POST'
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     };
+    var body = {"coupon": couponKey};
+    //TODO remove this logging later
+    logger.debug("Redeem Coupon: " + JSON.stringify(body));
     var req = http.request(options, function (res) {
             console.log(res.statusCode + ' ' + res.statusMessage);
             callback(res.statusCode);
         }
-    ).end(couponKey);
+    ).end(JSON.stringify(body));
 }
 
 

@@ -32,6 +32,8 @@ export class PaymentComponent implements OnInit{
   }
 
   onRead(text: string){
+    //TODO remove this logging later
+    console.log("Scanned QR-Code: " + text);
     this.route.params.
     switchMap((params: Params) => this.orderService.sendPayment(params['id'], text))
       .subscribe(response => this.response = response);
