@@ -29,6 +29,7 @@ var PaymentComponent = (function () {
     };
     PaymentComponent.prototype.onRead = function (text) {
         var _this = this;
+        //TODO remove this logging later
         console.log("Scanned QR-Code: " + text);
         this.route.params.
             switchMap(function (params) { return _this.orderService.sendPayment(params['id'], text); })

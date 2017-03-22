@@ -1,51 +1,99 @@
 <div class="row title">
     <h1>Bestellabwicklung</h1>
-
+    
 </div>
 
 <div class="row">
-   <div class="one-half column">
- <div *ngIf="orderState">
+
+      <div *ngIf="orderState">
+          <div [ngSwitch]="orderState.toState">
 
 
+              <!--  /*
+                  waitingOffer | waitingPaymentRequest : Preisanfrage
+                  waitingPayment: Dialog, wenn möglich Schritte in Dialog anzeigen?
+                  waitingLicense : Lizenzabruf
+                  enqueForProduction | waitForProduction : Produktionswarteschlange
+                  readyForProduction : Produktionsbereit -> Start Pumping
+                  inProduction : progress: 0-100
+                  productionFinished: Guten Appetit!
+                  productionPaused: Auftrag Pausiert
+                  error: Fehler
 
-     <!--waitingOffer | waitingPaymentRequest : Preisanfrage-->
-     <!--waitingPayment: Dialog, wenn möglich Schritte in Dialog anzeigen?-->
-     <!--waitingLicense : Lizenzabruf-->
-     <!--enqueForProduction | waitForProduction : Produktionswarteschlange-->
-     <!--readyForProduction : Produktionsbereit -> Start Pumping-->
-     <!--inProduction : progress: 0-100-->
-     <!--productionFinished: Guten Appetit! -->
-     <!--productionPaused: Auftrag Pausiert-->
-     <!--error: Fehler-->
+                  */ -->
 
-    <div class="orderSteps" *ngIf="orderState.toState == 'inProduction'">
-      <div class="step order ">Lizenzanfrage</div>
-      <div class="step payment off">Bezahlung</div>
-      <div class="step production off">Produktion</div>
-    </div>
 
-    <div class="orderSteps" *ngIf="orderState.toState == 'waitingPayment'">
-    
-      <div class="step order done">Lizenzanfrage</div>
-      <div class="step payment ">Bezahlung</div>
-      <div class="step production off">Produktion</div>
+              <div class="orderSteps" *ngSwitchCase="'waitingOffer'">
+                  <div class="step order">Lizenzanfrage</div>
+                  <div class="step payment off">Bezahlung</div>
+                  <div class="step production off">Produktion</div>
+              </div>
 
-      <my-payment></my-payment>
-    </div>
-    <div class="orderSteps" *ngIf="orderState.toState == 'readyForProduction'">
-      
-      <div class="step order done">Lizenzanfrage</div>
-      <div class="step payment done">Bezahlung</div>
-      <div class="step production ">Produktion</div>
+              <div class="orderSteps" *ngSwitchCase="'waitingLicense'">
+                  <div class="step order ">Lizenzanfrage</div>
+                  <div class="step payment off">Bezahlung</div>
+                  <div class="step production off">Produktion</div>
+              </div>
 
-      <button (click)="ProductionStart()">Start Pumping</button>
-    </div>
-  </div>
-   </div>
-<div class="one-half column" >
+              <div class="orderSteps" *ngSwitchCase="'waitingPayment'">
+                  <div class="step order done">Lizenzanfrage</div>
+                  <div class="step payment ">Bezahlung</div>
+                  <div class="step production off">Produktion</div>
+
+                  <my-payment></my-payment>
+              </div>
+              <div class="orderSteps" *ngSwitchCase="'waitForProduction'">
+                  <div class="step order done">Lizenzanfrage</div>
+                  <div class="step payment done">Bezahlung</div>
+                  <div class="step production ">Produktion</div>
+
+                  <p> Auftrag in der Warteschlange.</p>
+              </div>
+              <div class="orderSteps" *ngSwitchCase="'readyForProduction'">
+                  <div class="step order done">Lizenzanfrage</div>
+                  <div class="step payment done">Bezahlung</div>
+                  <div class="step production ">Produktion</div>
+
+                  <button (click)="ProductionStart()">Start Pumping</button>
+              </div>
+
+              <div class="orderSteps" *ngSwitchCase="'startProduction'">
+                  <div class="step order done">Lizenzanfrage</div>
+                  <div class="step payment done">Bezahlung</div>
+                  <div class="step production ">Produktion</div>
+                  <p> Produktion wird gestartet.</p>
+                  <!-- <tek-progress-bar mode="vertical" ng-model="progressVal""></tek-progress-bar> -->
+              </div>
+              <div class="orderSteps" *ngSwitchCase="'inProduction'">
+                  <div class="step order done">Lizenzanfrage</div>
+                  <div class="step payment done">Bezahlung</div>
+                  <div class="step production ">Produktion</div>
+                  <progress value="{{progress}}" max="100"></progress>
+                  <!--<ks-line-progress #myLineProgress [options]="lineOptions"></ks-line-progress>-->
+                  <!-- <tek-progress-bar mode="vertical" ng-model="progressVal""></tek-progress-bar> -->
+              </div>
+              <div class="orderSteps" *ngSwitchCase="'productionFinished'">
+                  <div class="step order done">Lizenzanfrage</div>
+                  <div class="step payment done">Bezahlung</div>
+                  <div class="step production done">Produktion</div>
+                  <p>Getränk ist zubereitet.</p>
+                  <button (click)="Home()">Neues Getränk bestellen</button>
+                  <!-- <tek-progress-bar mode="vertical" ng-model="progressVal""></tek-progress-bar> -->
+              </div>
+
+
+              <div class="orderSteps" *ngSwitchDefault>
+                  <div class="step order off">Lizenzanfrage</div>
+                  <div class="step payment off">Bezahlung</div>
+                  <div class="step production off">Produktion</div>
+              </div>
+          </div>
+      </div>
+
+<div class="row details" >
     
     <h3>Auftragsdetails</h3>
+    <!--<p>{{orderState.toState}}</p>-->
     <table>
       <tr *ngIf="order">
         <td>Auftragsnummer</td>
@@ -65,5 +113,5 @@
       </tr>
     </table>
 </div>
-</div>
+
 
