@@ -1,13 +1,15 @@
-<div class="row title">
-  <h1>Detailseite</h1>
-  <button (click)="getBack()">zurück</button>
+<div class="container">
+  <div class="row title">
+    <h1>Detailseite</h1>
+    <button (click)="getBack()">zurück</button>
 </div>    
-<div class="row">
+  <div class="row">
     <div class="one-half column">
         <div class="tileDrink detail" *ngIf="drink">
-            <img src="{{drink.imageRef}}" *ngIf="drink.imageRef" />
+           
             <div class="inner">
                 <h3> {{drink.title}}</h3>
+                <img src="{{drink.imageRef}}" *ngIf="drink.imageRef" />
                 <p>{{drink.description}}</p>
                 <p *ngIf="user">Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
             </div>
@@ -21,4 +23,5 @@
         - Anforderung eines Datesatzes im verschlüsslten uswusf..
       </div>
     </div>
+  </div>
 </div>

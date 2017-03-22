@@ -20,6 +20,7 @@ a:hover {
 header {
     background-image: url('../img/header.png');
     background-size: cover;
+    background-color: blue;
     height: 80px;
 }
 header .projectTitle{
@@ -84,18 +85,26 @@ footer {
     
 }
 .tileDrink .inner{
-    padding-left: 120px;
-    min-height: 200px;
+    height: 200px;
+    overflow: hidden;
 }
 .tileDrink button{
-    margin-left: 120px;
+
 }
 .tileDrink img{
-    float: left;
     width: 100px;
+    float: left;
+    margin-right: 10px;
 }
 
-   
+.detail.tileDrink .inner {
+    height: auto;
+}
+
+.detail.tileDrink img{
+    width: 300px;
+    float: none;
+}
 
 
 .one-half .tileDrink{
@@ -125,6 +134,9 @@ box-shadow: 0px 4px 6px #333;
 -webkit-box-shadow: 0px 4px 6px #333;
 
 }
+
+/* -------------  Payment ----------------- */
+
 
 .modal {
   transition: all 0.3s;
@@ -156,9 +168,15 @@ box-shadow: 0px 4px 6px #333;
     width: 80%;
 }
 
+
+/* -------------  Order ----------------- */
+
+
+
 .orderSteps {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-family: 'open_sanslight'; 
+    padding-bottom: 2em;
 }
 
 .orderSteps .step {
@@ -167,6 +185,7 @@ box-shadow: 0px 4px 6px #333;
     padding-left: 1.5em;  
     background-size: 4rem ;
     text-decoration: underline;
+
 }
 
 .orderSteps .order{
@@ -192,4 +211,9 @@ box-shadow: 0px 4px 6px #333;
     content: " ✓";
     padding-left: 0.1em; 
     color: limegreen;
+}
+
+.orderSteps p {
+    padding-top: 1em;
+    font-size: 2rem;
 }
