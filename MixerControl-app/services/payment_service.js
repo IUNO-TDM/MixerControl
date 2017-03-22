@@ -27,7 +27,7 @@ payment_service.socket =  io.connect('http://localhost:8080/invoices',{transport
 payment_service.socket.on('connect', function(){
     logger.debug("connected to paymentservice");
     for(var invoiceId in registeredInvoiceIds){
-        payment_servicesocket.socket.emit('room', registeredInvoiceIds);
+        payment_service.socket.emit('room', invoiceId);
     }
 
 
