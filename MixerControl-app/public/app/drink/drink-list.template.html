@@ -15,6 +15,7 @@
                     <p>{{drink.description}}</p>
                     <!--<div >-->
                         <h5 *ngIf="users && users[drink.authorId]">{{users[drink.authorId].firstname}} {{users[drink.authorId].lastname}}</h5>
+                    <img src="/api/users/{{drink.authorId}}/image"/>
                     <!--</div>-->
                 </div>
                 <button>Details anzeigen</button>  
