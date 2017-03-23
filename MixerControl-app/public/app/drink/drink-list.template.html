@@ -13,7 +13,9 @@
                 <div class="inner">
                     <h3> {{drink.title}}</h3>
                     <p>{{drink.description}}</p>
-                    <h5>{{drink.authorId}}</h5>
+                    <!--<div >-->
+                        <h5 *ngIf="users && users[drink.authorId]">{{users[drink.authorId].firstname}} {{users[drink.authorId].lastname}}</h5>
+                    <!--</div>-->
                 </div>
                 <button>Details anzeigen</button>  
             </div>

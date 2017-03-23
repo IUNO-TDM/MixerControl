@@ -47,14 +47,14 @@
                   <div class="step payment done">Bezahlung</div>
                   <div class="step production ">Produktion</div>
 
-                  <p> Auftrag in der Warteschlange.</p>
+                  <p>Auftrag ist in der Warteschlange.</p>
               </div>
               <div class="orderSteps" *ngSwitchCase="'readyForProduction'">
                   <div class="step order done">Lizenzanfrage</div>
                   <div class="step payment done">Bezahlung</div>
                   <div class="step production ">Produktion</div>
 
-                  <button (click)="ProductionStart()">Start Pumping</button>
+                  <button (click)="ProductionStart()">Getränk zubereiten!</button>
               </div>
 
               <div class="orderSteps" *ngSwitchCase="'startProduction'">

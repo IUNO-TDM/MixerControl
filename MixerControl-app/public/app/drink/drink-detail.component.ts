@@ -22,7 +22,6 @@ export class DrinkDetailComponent implements OnInit {
   user: User;
   error: any;
   orderURL = "NULL";
-
   constructor(private route: ActivatedRoute,
               private router: Router,
               private drinkService: DrinkService,
@@ -57,4 +56,6 @@ export class DrinkDetailComponent implements OnInit {
       this.router.navigateByUrl(`/orders/${orderNumber}`);
     });
   }
+
+
 }

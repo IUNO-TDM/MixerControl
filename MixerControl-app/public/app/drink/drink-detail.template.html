@@ -9,7 +9,10 @@
             <div class="inner">
                 <h3> {{drink.title}}</h3>
                 <p>{{drink.description}}</p>
+                <p>Verkaufspreis: {{drink.retailPrice}} IUNOs</p>
                 <p *ngIf="user">Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
+                <img src="/api/users/{{drink.authorId}}/image"/>
+
             </div>
                  <button (click)="onClickMe()">Bestellen</button>
         </div>
