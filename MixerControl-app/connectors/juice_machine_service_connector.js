@@ -88,52 +88,6 @@ self.getAllRecipes = function (callback) {
 
 
 self.getAllComponents = function (callback) {
-    // var options = buildOptionsForRequest(
-    //     'GET',
-    //     'http',
-    //     HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-    //     HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-    //     '/recipes',
-    //     {'ingredients': ingredients}
-    // );
-    //
-    // request(options, function (e, r, jsonData) {
-    //     logger.debug('Response:' + JSON.stringify(jsonData));
-    //
-    //     if (e) {
-    //         console.error(e);
-    //         if (typeof(callback) == 'function') {
-    //
-    //             callback(e);
-    //         }
-    //     }
-    //
-    //     if (r.statusCode != 200) {
-    //
-    //         var err = {
-    //             status: r.statusCode,
-    //             message: jsonData
-    //         };
-    //         logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-    //         callback(err);
-    //
-    //         return;
-    //     }
-    //
-    //     if (!helper.isArray(jsonData)) {
-    //         callback({
-    //             status: 500,
-    //             message: 'Expected object. But did get something different: ' + jsonData
-    //         });
-    //         return;
-    //     }
-    //
-    //     //TODO: Parse json data into objects to validate the content
-    //     if (typeof(callback) == 'function') {
-    //
-    //         callback(null, jsonData);
-    //     }
-    // });
     callback(null, [
         {
             id: 1,
@@ -220,6 +174,47 @@ self.getRecipeForId = function (id, callback) {
         if (typeof(callback) == 'function') {
 
             callback(null, jsonData);
+        }
+    });
+};
+
+self.getRecipeImageForId = function (id, callback) {
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/recipes/' + id + '/image'
+    );
+
+    options.encoding = null;
+
+    request(options, function (e, r, data) {
+        if (e) {
+            logger.crit(e);
+            if (typeof(callback) == 'function') {
+
+                callback(e);
+            }
+        }
+
+        if (r && r.statusCode != 200) {
+            var err = {
+                status: r.statusCode,
+                message: data
+            };
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        if (typeof(callback) == 'function') {
+
+            callback(null, {
+                imageBuffer: data,
+                contentType: r.headers['content-type']
+            });
         }
     });
 };

@@ -5,7 +5,7 @@
 <div class="row">
     <div class="one-half column">
         <div class="tileDrink detail" *ngIf="drink">
-            <img src="{{drink.thumbnail}}" *ngIf="drink.thumbnail" />
+            <img src="/api/drinks/{{drink.id}}/image"/>
             <div class="inner">
                 <h3> {{drink.title}}</h3>
                 <p>{{drink.description}}</p>
