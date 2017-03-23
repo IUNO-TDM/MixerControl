@@ -48,7 +48,7 @@ var stateMachine = new machina.BehavioralFsm({
                         var transfer = client.invoice.transfers[key];
                         totalAmount += transfer.coin;
                     }
-                    client.invoice.totalAmount = totalAmount * 1.5;
+                    client.invoice.totalAmount = client.recipe.retailPrice;
                     client.invoice.referenceId = client.orderNumber;
 
                     //TODO replace, when marketplace api and paymentservice api are synchronous

@@ -95,43 +95,39 @@ self.getAllComponents = function (callback) {
     callback(null, [
         {
             id: 1,
-            name: 'Sprudel'
+            name: 'Mineralwasser'
         },
         {
             id: 2,
-            name: 'Orangensaft'
-        },
-
-        {
-            id: 3,
             name: 'Apfelsaft'
         },
 
         {
+            id: 3,
+            name: 'Orangensaft'
+        },
+
+        {
             id: 4,
-            name: 'Kirschsaft'
+            name: 'Mangosaft'
         },
 
         {
             id: 5,
-            name: 'Bananensaft'
+            name: 'Kirschsaft'
         },
         {
             id: 6,
-            name: 'Johannisbeersaft'
+            name: 'Bananensaft'
         },
         {
             id: 7,
-            name: 'Cola'
+            name: 'Maracujasaft'
         },
         {
             id: 8,
-            name: 'Fanta'
-        },
-        {
-            id: 9,
-            name: 'Ginger Ale'
-        },
+            name: 'Ananassaft'
+        }
     ]);
 };
 
