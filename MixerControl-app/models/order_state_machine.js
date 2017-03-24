@@ -159,7 +159,7 @@ var stateMachine = new machina.BehavioralFsm({
             resume: "enqueueForProduction"
         },
         error: {
-            resume: "waitForProduction"
+            resume: "enqueueForProduction"
         }
     },
     init: function (client) {
