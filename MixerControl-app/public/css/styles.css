@@ -73,9 +73,10 @@ footer {
 /* -------------  DRINK ----------------- */
 
 .tileDrink{
-    width: 48%; 
+    width: 47%; 
     border: 1px solid #999;
     padding: 1em;
+    padding-right: 40px;
     margin: 0.5em;
     float:left;
     display: inline;
@@ -104,8 +105,8 @@ footer {
     position: absolute;
     top: 0.5em;
     right: 0;
-    width: 70px !important;
-    height: 70px;
+    width: 40px !important;
+    height: 40px;
     border: 1px solid grey;
     border-radius: 50%;
 }
