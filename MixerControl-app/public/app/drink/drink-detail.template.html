@@ -9,13 +9,21 @@
            
             <div class="inner">
                 <h3> {{drink.title}}</h3>
-                <img src="/api/drinks/{{drink.id}}/image"/>
-
+                <img src="/api/drinks/{{drink.id}}/image"/>   
                 <p>{{drink.description}}</p>
-                <p>Verkaufspreis: {{drink.retailPrice}} IUNOs</p>
 
-                <p *ngIf="user">Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
-                <img src="/api/users/{{drink.authorId}}/image"/>
+                <table>
+                <tr>
+                    <td>Verkaufspreis:</td>
+                    <td>{{drink.retailPrice}} IUNOs</td>
+                </tr>
+                  <tr *ngIf="user">
+                    <td>Rezepthersteller:</td>
+                    <td>{{user.firstname}} {{user.lastname}}</td>
+                </tr>
+                </table>
+
+                   <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
 
             </div>
                  <button (click)="onClickMe()">Bestellen</button>

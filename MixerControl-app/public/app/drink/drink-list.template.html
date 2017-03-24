@@ -13,9 +13,9 @@
                     <h4> {{drink.title}}</h4>
                     <img src="/api/drinks/{{drink.id}}/image"/>
                     <p>{{drink.description}}</p>
-                    <h5 *ngIf="users && users[drink.authorId]">{{users[drink.authorId].firstname}}
-                        {{users[drink.authorId].lastname}}</h5>
-                    <img src="/api/users/{{drink.authorId}}/image"/>
+                    <h6 *ngIf="users && users[drink.authorId]">Rezepthersteller: {{users[drink.authorId].firstname}}
+                        {{users[drink.authorId].lastname}}</h6>
+                    <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
                 </div>
                 <button>Details anzeigen</button>
             </div>

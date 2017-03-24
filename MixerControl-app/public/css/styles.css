@@ -76,18 +76,21 @@ footer {
     width: 48%; 
     border: 1px solid #999;
     padding: 1em;
-    margin-right: 0.5em;
-    margin-bottom: 0.5em;
+    margin: 0.5em;
     float:left;
     display: inline;
     box-sizing: border-box;
     overflow: hidden;
+    position:relative;
     
 }
 .tileDrink .inner{
     height: 200px;
     overflow: hidden;
 }
+
+
+
 .tileDrink button{
 
 }
@@ -97,6 +100,17 @@ footer {
     margin-right: 10px;
 }
 
+.tileDrink img.userImg{
+    position: absolute;
+    top: 0.5em;
+    right: 0;
+    width: 70px !important;
+    height: 70px;
+    border: 1px solid grey;
+    border-radius: 50%;
+}
+
+
 .detail.tileDrink .inner {
     height: auto;
 }
@@ -104,6 +118,7 @@ footer {
 .detail.tileDrink img{
     width: 300px;
     float: none;
+    margin-bottom: 1em;
 }
 
 
