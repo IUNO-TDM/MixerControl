@@ -1,26 +1,14 @@
+<div class="container">
 <div class="row title">
     <h1>Bestellabwicklung</h1>
-    
 </div>
 
-<div class="row">
-
+  <div class="row">
+    <div class="one-half column">
       <div *ngIf="orderState">
           <div [ngSwitch]="orderState.toState">
+                <h4>&nbsp;</h4>
 
-
-              <!--  /*
-                  waitingOffer | waitingPaymentRequest : Preisanfrage
-                  waitingPayment: Dialog, wenn möglich Schritte in Dialog anzeigen?
-                  waitingLicense : Lizenzabruf
-                  enqueForProduction | waitForProduction : Produktionswarteschlange
-                  readyForProduction : Produktionsbereit -> Start Pumping
-                  inProduction : progress: 0-100
-                  productionFinished: Guten Appetit!
-                  productionPaused: Auftrag Pausiert
-                  error: Fehler
-
-                  */ -->
 
 
               <div class="orderSteps" *ngSwitchCase="'waitingOffer'">
@@ -47,30 +35,29 @@
                   <div class="step payment done">Bezahlung</div>
                   <div class="step production ">Produktion</div>
 
-                  <p>Auftrag ist in der Warteschlange.</p>
+                  <p> Auftrag in der Warteschlange.</p>
               </div>
               <div class="orderSteps" *ngSwitchCase="'readyForProduction'">
                   <div class="step order done">Lizenzanfrage</div>
                   <div class="step payment done">Bezahlung</div>
                   <div class="step production ">Produktion</div>
 
-                  <button (click)="ProductionStart()">Getränk zubereiten!</button>
+                  <button (click)="ProductionStart()">Start Pumping</button>
               </div>
 
               <div class="orderSteps" *ngSwitchCase="'startProduction'">
                   <div class="step order done">Lizenzanfrage</div>
                   <div class="step payment done">Bezahlung</div>
                   <div class="step production ">Produktion</div>
-                  <p> Produktion wird gestartet.</p>
-                  <!-- <tek-progress-bar mode="vertical" ng-model="progressVal""></tek-progress-bar> -->
+                  <p>Produktion wird gestartet.</p>
+
               </div>
               <div class="orderSteps" *ngSwitchCase="'inProduction'">
                   <div class="step order done">Lizenzanfrage</div>
                   <div class="step payment done">Bezahlung</div>
                   <div class="step production ">Produktion</div>
                   <progress value="{{progress}}" max="100"></progress>
-                  <!--<ks-line-progress #myLineProgress [options]="lineOptions"></ks-line-progress>-->
-                  <!-- <tek-progress-bar mode="vertical" ng-model="progressVal""></tek-progress-bar> -->
+
               </div>
               <div class="orderSteps" *ngSwitchCase="'productionFinished'">
                   <div class="step order done">Lizenzanfrage</div>
@@ -78,7 +65,7 @@
                   <div class="step production done">Produktion</div>
                   <p>Getränk ist zubereitet.</p>
                   <button (click)="Home()">Neues Getränk bestellen</button>
-                  <!-- <tek-progress-bar mode="vertical" ng-model="progressVal""></tek-progress-bar> -->
+
               </div>
 
 
@@ -88,30 +75,31 @@
                   <div class="step production off">Produktion</div>
               </div>
           </div>
-      </div>
+     </div> 
+    </div>  
 
-<div class="row details" >
-    
-    <h3>Auftragsdetails</h3>
-    <!--<p>{{orderState.toState}}</p>-->
-    <table>
-      <tr *ngIf="order">
-        <td>Auftragsnummer</td>
-        <td>{{order.orderNumber}}</td>
-      </tr>
-      <tr *ngIf="order">
-        <td>Auftraggeber</td>
-        <td>{{order.orderName}}</td>
-      </tr>
-      <tr *ngIf="drink">
-        <td>Bestellter Drink</td>
-        <td>{{drink.title}}</td>
-      </tr>
-      <tr *ngIf="user">
-        <td>Rezepthersteller</td>
-        <td>{{user.firstname}} {{user.lastname}}</td>
-      </tr>
-    </table>
+    <div class="one-half column details" >
+        <h4 *ngIf="order">Auftragsdetails</h4>
+        <!--<p>{{orderState.toState}}</p>-->
+        <table>
+        <tr *ngIf="order">
+            <td>Auftragsnummer</td>
+            <td>{{order.orderNumber}}</td>
+        </tr>
+        <tr *ngIf="order">
+            <td>Auftraggeber</td>
+            <td>{{order.orderName}}</td>
+        </tr>
+        <tr *ngIf="drink">
+            <td>Bestellter Drink</td>
+            <td>{{drink.title}}</td>
+        </tr>
+        <tr *ngIf="user">
+            <td>Rezepthersteller</td>
+            <td>{{user.firstname}} {{user.lastname}}</td>
+        </tr>
+        </table>
+   </div>
 </div>
 
 

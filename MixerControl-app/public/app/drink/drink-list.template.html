@@ -1,29 +1,27 @@
-<div class="row title">
-    <h1>Drinks</h1>
-    <h4 *ngIf="drinks">
-      Anzahl an Drinks: {{drinks.length}}
-    </h4>
-</div>
+<div class="container">
+    <div class="row title">
+        <h1>Drinks</h1>
+        <h4 *ngIf="drinks">
+            Anzahl an Drinks: {{drinks.length}}
+        </h4>
+    </div>
 
-<div class="drinks"  >
-
-          <a [routerLink]="['/drinks', drink.id]" *ngFor="let drink of drinks">
-          <div class="tileDrink" >
-                <img src="/api/drinks/{{drink.id}}/image"/>
+    <div class="row drinks">
+        <a [routerLink]="['/drinks', drink.id]" *ngFor="let drink of drinks">
+            <div class="tileDrink">
                 <div class="inner">
-                    <h3> {{drink.title}}</h3>
+                    <h4> {{drink.title}}</h4>
+                    <img src="/api/drinks/{{drink.id}}/image"/>
                     <p>{{drink.description}}</p>
-                    <!--<div >-->
-                        <h5 *ngIf="users && users[drink.authorId]">{{users[drink.authorId].firstname}} {{users[drink.authorId].lastname}}</h5>
+                    <h5 *ngIf="users && users[drink.authorId]">{{users[drink.authorId].firstname}}
+                        {{users[drink.authorId].lastname}}</h5>
                     <img src="/api/users/{{drink.authorId}}/image"/>
-                    <!--</div>-->
                 </div>
-                <button>Details anzeigen</button>  
+                <button>Details anzeigen</button>
             </div>
-        </a>        
-
+        </a>
+    </div>
 </div>
-
 <!--
 <li ng-repeat="task in $ctrl.tasks ">
     <a href="#!/tasks/{{task.id}}">{{task.name}}</a>

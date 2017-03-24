@@ -1,12 +1,12 @@
 <div class="modal">
   <div class="row modal__dialog">
-     <div class="three columns">
+     <div class="five columns">
         <h4>Pay with this: </h4>
         <div *ngIf="paymentRequest">
           <qr-code [value]="paymentRequest" [size]="250"></qr-code>
         </div>
      </div>
-     <div class="nine columns">
+     <div class="seven columns">
         <h4>or scan here</h4>
         <qr-scanner [facing]="'front'" (onRead)="onRead($event)"></qr-scanner>
      </div>

@@ -9,7 +9,7 @@ const self = {
     },
     HOST_SETTINGS: {
         JUICE_MACHINE_SERVICE: {
-            HOST: 'localhost',
+            HOST: 'test-tdm',
             PORT: 3001
         }
     }
