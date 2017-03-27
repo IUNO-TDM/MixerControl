@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var orders = require('./routes/orders');
 var admin = require('./routes/admin');
 var components = require('./routes/components');
+
 var app = express();
 
 var ifttt_controller = require('./controller/ifttt_controller');
@@ -24,7 +25,7 @@ app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-var CACHE_MAX_AGE = 86400000;
+var CACHE_MAX_AGE = 60*60*24;
 
 app.use(express.static(path.join(__dirname, 'public'), {maxAge: CACHE_MAX_AGE}));
 app.use('/js', express.static(__dirname + '/public/js', {maxAge: CACHE_MAX_AGE}));
@@ -34,13 +35,6 @@ app.use('/css', express.static(__dirname + '/public/css', {maxAge: CACHE_MAX_AGE
 app.use('/partials', express.static(__dirname + '/public/partials', {maxAge: CACHE_MAX_AGE}));
 app.use('/templates', express.static(__dirname + '/public/templates', {maxAge: CACHE_MAX_AGE}));
 app.use('/scripts', express.static(__dirname + '/public/scripts', {maxAge: CACHE_MAX_AGE}));
-
-
-// set cache control for all responses
-app.use(function (req, res, next) {
-    res.set('Cache-Control', 'public, max-age=' + CACHE_MAX_AGE);
-    next();
-});
 
 app.use('/api/drinks', drinks);
 app.use('/api/users', users);
