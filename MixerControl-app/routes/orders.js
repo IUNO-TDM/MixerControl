@@ -12,6 +12,7 @@ var osm = require('../models/order_state_machine');
 var production_queue = require('../models/production_queue');
 var jms_connector = require('../connectors/juice_machine_service_connector');
 var payment_service = require('../services/payment_service');
+var cache = require('../services/cache_middleware');
 
 router.post('/', function (req, res, next) {
     //TODO: Validate body using json schema
@@ -42,7 +43,7 @@ router.post('/', function (req, res, next) {
     });
 });
 
-router.get('/:id', function (req, res, next) {
+router.get('/:id', cache(60), function (req, res, next) {
 
     var orderId = req.params['id'];
     var order = OrderDB.getOrder(orderId);

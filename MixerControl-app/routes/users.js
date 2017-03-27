@@ -3,6 +3,7 @@ var router = express.Router();
 var logger = require('../global/logger');
 var helper = require('../services/helper_service');
 var jms_connector = require('../connectors/juice_machine_service_connector');
+var cache = require('../services/cache_middleware');
 
 /**
  * Functions
@@ -17,7 +18,7 @@ String.prototype.format = function () {
 
 
 
-router.get('/:id', function (req, res, next) {
+router.get('/:id', cache(60), function (req, res, next) {
     var userId = req.params['id'];
 
     jms_connector.getUserForId(userId, function (e, user) {
@@ -32,7 +33,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 
-router.get('/:id/image', function (req, res, next) {
+router.get('/:id/image', cache(60*60), function (req, res, next) {
     var userId = req.params['id'];
 
     jms_connector.getUserImageForId(userId, function (err, data) {
