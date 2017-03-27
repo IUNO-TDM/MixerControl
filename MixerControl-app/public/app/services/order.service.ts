@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
+import { Observable } from "rxjs/Rx";
 
 import {Order} from '../models/Order';
 
@@ -46,12 +47,14 @@ export class OrderService {
       .catch(this.handleError);
   }
 
-  sendPayment(id: string, payment: string): Promise<string>{
+  sendPayment(id: string, payment: string): Promise<Response>{
     let headers = new Headers({ 'Content-Type': 'text/plain' });
     let options = new RequestOptions({ headers: headers });
     let url = `${this.ordersUrl}${id}/Payment`;
 
-    return this.http.put(url,payment, options).toPromise();
+    return this.http.put(url,payment, options).toPromise().then(response => {
+      return response;
+    }).catch(this.handleError)
   }
 
   sendProductionStart(id: string): Promise<string>{

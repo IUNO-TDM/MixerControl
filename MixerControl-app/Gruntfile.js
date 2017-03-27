@@ -27,6 +27,7 @@ module.exports = function(grunt) {
       			{expand: true, cwd: 'node_modules/', src: ['tether/dist/css/**'], dest: 'public/css/'},
       			{expand: true, cwd: 'node_modules/', src: ['bootstrap/**'], dest: 'public/scripts/'},
       			{expand: true, cwd: 'node_modules/', src: ['bootstrap/dist/css/**'], dest: 'public/css/'},
+      			{expand: true, cwd: 'node_modules/', src: ['angular2-notifications/**'], dest: 'public/scripts/'},
     			],
   			},
 		},
