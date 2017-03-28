@@ -25,12 +25,19 @@ var DrinkDetailComponent = (function () {
         this.orderService = orderService;
         this.socketService = socketService;
         this.orderURL = "NULL";
+        this.components = "";
     }
     DrinkDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.route.params.switchMap(function (params) { return _this.drinkService.getDrink(params['id']); })
             .subscribe(function (drink) {
             _this.drink = drink;
+            var _components = [];
+            for (var _i = 0, _a = _this.drink.components; _i < _a.length; _i++) {
+                var entry = _a[_i];
+                _components.push(entry.name);
+            }
+            _this.components = _components.join(', ');
             _this.userService.getUser(_this.drink.authorId).then(function (user) { return _this.user = user; })
                 .catch(function (error) { return _this.error = error; });
         });

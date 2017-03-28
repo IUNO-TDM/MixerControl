@@ -22,6 +22,7 @@ export class DrinkDetailComponent implements OnInit {
   user: User;
   error: any;
   orderURL = "NULL";
+  components = "";
   constructor(private route: ActivatedRoute,
               private router: Router,
               private drinkService: DrinkService,
@@ -35,6 +36,11 @@ export class DrinkDetailComponent implements OnInit {
     this.route.params.switchMap((params: Params) => this.drinkService.getDrink(params['id']))
       .subscribe(drink => {
         this.drink = drink;
+        let _components: string[] = [];
+        for (let entry of this.drink.components) {
+            _components.push(entry.name);
+        }
+        this.components = _components.join(', ');
         this.userService.getUser(this.drink.authorId).then(user => this.user = user)
           .catch(error => this.error = error);
       });
