@@ -60,9 +60,33 @@ router.put('/pumps/:id', function (req, res, next) {
         return;
     }
     const id = req.params['id'];
-    var componentId = Number.parseInt(req.body);
-    // var ingredientId = Number.parseInt(req.body;);
+    var componentId = req.body
     pumpcontrol_service.setIngredient(id,componentId,function(){
+        res.sendStatus(200);
+    });
+});
+
+
+router.put('/pumps/:id/amount', function (req, res, next) {
+    if (!req.body) {
+        res.sendStatus(400);
+        return;
+    }
+    const id = req.params['id'];
+    var amount = Number.parseInt(req.body);
+    pumpcontrol_service.setPumpAmount(id, amount, function () {
+        res.sendStatus(200);
+    });
+});
+
+router.put('/pumps/:id/standardAmount', function (req, res, next) {
+    if (!req.body) {
+        res.sendStatus(400);
+        return;
+    }
+    const id = req.params['id'];
+    var amount = Number.parseInt(req.body);
+    pumpcontrol_service.setPumpStandardAmount(id, amount, function () {
         res.sendStatus(200);
     });
 });

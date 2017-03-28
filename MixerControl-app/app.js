@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+const storage = require('node-persist');storage.initSync();
 var drinks = require('./routes/drinks');
 var users = require('./routes/users');
 var orders = require('./routes/orders');

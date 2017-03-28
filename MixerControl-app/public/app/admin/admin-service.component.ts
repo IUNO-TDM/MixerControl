@@ -30,7 +30,7 @@ export class AdminServiceComponent implements OnInit,OnDestroy {
     ngOnInit() {
         this.pqStateConnection = this.socketService.get("/production","state","stateChange")
             .subscribe(state => this.pqState = state);
-        this.pcServiceStateConnection = this.socketService.get("/production","pumpControlService","stateChange")
+        this.pcServiceStateConnection = this.socketService.get("/production","pumpControlService","serviceStateChange")
             .subscribe(state => this.pcServiceState = state);
         this.pcModeConnection = this.socketService.get("/production","pumpControlMode","modeChange")
             .subscribe(state => this.pcMode = state);
