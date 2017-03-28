@@ -36,14 +36,13 @@ footer {
     background-image: url('../img/powered_by_axoom_vertical.svg');
     background-size: auto 30px;
     background-repeat: no-repeat;
-    background-position: right center;  
+    background-position: center center;  
     height: 50px;
-    border-top: 1px solid slategrey;
     position: fixed;
     
     bottom: 0px; 
-    left: 5%;
-    width: 90%;
+    right: 5%;
+    width: 120px;
 }
 
 .loader {
