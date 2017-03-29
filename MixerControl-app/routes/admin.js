@@ -7,7 +7,7 @@ var logger = require('../global/logger');
 var production_queue = require('../models/production_queue');
 var pumpcontrol_service = require('../services/pumpcontrol_service');
 var ingredient_configuration = require('../global/ingredient_configuration');
-
+const async = require('async');
 var jms_connector = require('../connectors/juice_machine_service_connector');
 router.post('/production/startConfirm', function (req, res, next) {
     production_queue.startConfirmed();
@@ -39,14 +39,20 @@ router.get('/pumps', function (req, res, next) {
                 return undefined;
             };
             var comps =[];
-            const ingr = ingredient_configuration.INGREDIENT_CONFIGURATION;
-            for(var i = 0; i < ingr.length;i++) {
-                const key = Object.keys(ingr[i])[0];
-                const val = ingr[i][key];
-                comps.push({nr: key,component:{id: val, name: componentNameForId(components,val)}});
-            }
-            res.json(comps);
+            const pumps = pumpcontrol_service.getPumpNumbers();
+            async.eachSeries(pumps, function(pumpNr, callback){
+                const comp =  pumpcontrol_service.getStorageIngredient(pumpNr);
+                comps.push({nr: pumpNr, component:{id:comp, name:  componentNameForId(components,comp)}});
+                callback();
+            },function(err){
 
+                if (!err){
+                    res.json(comps)
+                }else{
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+            });
         }else{
             res.sendStatus(500);
         }
@@ -60,7 +66,7 @@ router.put('/pumps/:id', function (req, res, next) {
         return;
     }
     const id = req.params['id'];
-    var componentId = req.body
+    var componentId = req.body;
     pumpcontrol_service.setIngredient(id,componentId,function(){
         res.sendStatus(200);
     });
@@ -86,10 +92,34 @@ router.put('/pumps/:id/standardAmount', function (req, res, next) {
     }
     const id = req.params['id'];
     var amount = Number.parseInt(req.body);
-    pumpcontrol_service.setPumpStandardAmount(id, amount, function () {
-        res.sendStatus(200);
-    });
+    pumpcontrol_service.setPumpStandardAmount(id, amount);
+    res.sendStatus(200);
 });
+
+router.get('/pumps/:id/standardAmount', function (req, res, next) {
+    const id = req.params['id'];
+    res.send(pumpcontrol_service.getPumpStandardAmount(id).toString());
+
+});
+
+router.get('/pumps/standardAmount', function (req, res, next) {
+    var amounts ={};
+    const pumps = pumpcontrol_service.getPumpNumbers();
+    async.forEach(pumps, function(pumpNr,callback){
+        amounts[pumpNr] = pumpcontrol_service.getPumpStandardAmount(pumpNr);
+        callback();
+    },function (err) {
+        if(!err){
+            res.json(amounts);
+        }else{
+            res.sendStatus(500);
+        }
+    });
+
+
+});
+
+
 
 router.post('/pumps/:id/active', function (req, res, next) {
     if (!req.body || (req.body != 'true' &&req.body != 'false')) {

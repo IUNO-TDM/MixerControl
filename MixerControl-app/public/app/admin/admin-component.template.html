@@ -5,12 +5,16 @@
         <th></th>
         <th>Component</th>
         <th>Change Component</th>
+        <th>Standard Amount</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let pump of pumps">
         <td>{{pump.nr}}</td>
-        <td><div *ngIf="warnings[pump.nr]!=undefined">{{warnings[pump.nr]}}</div></td>
+        <td>
+            <div *ngIf="warnings[pump.nr] && warnings[pump.nr].amountWarningLimit"><{{warnings[pump.nr].amountWarningLimit}}ml</div>
+        </td>
         <td>{{pump.component.name}}</td>
         <td>
             <select [(ngModel)]="pump.component" (change)="onPumpChange($event, pump.nr)">
@@ -20,6 +24,8 @@
             </select>
 
         </td>
+        <td><div *ngIf="standardAmounts && standardAmounts[pump.nr]">{{standardAmounts[pump.nr]}}ml</div> </td>
+        <td><button (click)="ResetAmount(pump.nr)">Refill</button> </td>
     </tr>
 
 

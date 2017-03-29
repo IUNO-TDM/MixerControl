@@ -21,6 +21,7 @@ export class AdminComponentComponent implements OnInit,OnDestroy {
     components: models.Component[];
     pumps: models.Pump[];
     amountWarningConnection: Subscription;
+    standardAmounts = {};
     warnings = {};
 
     selectedValue: Component[] = null;
@@ -29,8 +30,11 @@ export class AdminComponentComponent implements OnInit,OnDestroy {
     ngOnInit(): void{
         this.componentService.getComponents().then(components => this.components = components);
         this.adminService.getPumps().then(pumps => this.pumps = pumps);
-        this.amountWarningConnection = this.socketService.get("/production","amountWarning","warning").subscribe(warning=>
-            this.warnings[warning.pumpNr] = warning.amountLeft);
+        this.adminService.getStandardAmounts().then(amounts => this.standardAmounts = amounts);
+        this.amountWarningConnection = this.socketService.get("/production","amountWarning","warning").subscribe(warning=>{
+            this.warnings[warning.pumpNr] = warning;
+        });
+
     }
     ngOnDestroy(): void{
 
@@ -46,5 +50,9 @@ export class AdminComponentComponent implements OnInit,OnDestroy {
         this.adminService.setPump(nr,pump.component.id);
         // I want to do something here for new selectedDevice, but what I
         // got here is always last selection, not the one I just select.
+    }
+
+    ResetAmount(pumpNr: number){
+        this.adminService.resetComponent(pumpNr,this.standardAmounts[pumpNr]).then(response => console.log(response));
     }
 }

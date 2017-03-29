@@ -74,6 +74,20 @@ export class AdminService {
         toPromise().then(response => response.status);
     }
 
+    getStandardAmounts(): Promise<any>{
+        let url = `${this.adminUrl}pumps/standardAmount`;
+        return this.http
+            .get(url)
+            .toPromise()
+            .then(response => response.json() as any[])
+    }
+
+    resetComponent(pumpId: number, amount: number): Promise<Response>{
+        let url = `${this.adminUrl}pumps/${pumpId}/amount`;
+        let body = amount.toString();
+        return this.http.put(url,body,null).toPromise();
+    }
+
     private handleError(error: any): Promise<any> {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);

@@ -346,6 +346,15 @@ pumpcontrol_service.setIngredient = function (pumpNumber, ingredient, callback) 
     });
 
 };
+pumpcontrol_service.getStorageIngredient = function (pumpNumber) {
+    return storage.getItemSync('component' + pumpNumber);
+
+};
+
+pumpcontrol_service.getPumpNumbers = function () {
+    return pumpNumbers;
+
+};
 pumpcontrol_service.setPumpAmount = function (pumpNumber, amount, callback) {
     clearAmountWarning(pumpNumber);
     pumpcontrol_service.emit('amountWarning', pumpAmountWarnings[pumpNumber]);
@@ -354,8 +363,11 @@ pumpcontrol_service.setPumpAmount = function (pumpNumber, amount, callback) {
 };
 pumpcontrol_service.setPumpStandardAmount = function (pumpNumber, amount) {
     storage.setItemSync('amount' + pumpNumber, amount);
-
 };
+
+pumpcontrol_service.getPumpStandardAmount = function (pumpNumber) {
+    return storage.getItemSync('amount' + pumpNumber);
+}
 pumpcontrol_service.startProgram = function (program) {
     var options = {
         hostname: 'localhost',
@@ -381,7 +393,7 @@ pumpcontrol_service.getServiceState = function(){
 
 pumpcontrol_service.getAmountWarnings = function () {
     return pumpAmountWarnings;
-}
+};
 
 
 
