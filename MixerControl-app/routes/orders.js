@@ -43,7 +43,7 @@ router.post('/', function (req, res, next) {
     });
 });
 
-router.get('/:id', cache(60), function (req, res, next) {
+router.get('/:id',  function (req, res, next) {
 
     var orderId = req.params['id'];
     var order = OrderDB.getOrder(orderId);

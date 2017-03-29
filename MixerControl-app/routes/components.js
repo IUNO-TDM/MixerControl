@@ -18,7 +18,7 @@ String.prototype.format = function () {
     });
 };
 
-router.get('/', cache(60), function (req, res, next) {
+router.get('/', function (req, res, next) {
     jms_connector.getAllComponents(function (e, components) {
 
         if (e) {

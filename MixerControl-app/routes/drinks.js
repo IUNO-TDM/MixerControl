@@ -21,7 +21,7 @@ String.prototype.format = function () {
     });
 };
 
-router.get('/', cache(60), function (req, res, next) {
+router.get('/',  function (req, res, next) {
     jms_connector.getAllRecipes(function (e, recipes) {
 
         if (e) {
@@ -36,7 +36,7 @@ router.get('/', cache(60), function (req, res, next) {
 });
 
 
-router.get('/:id', cache(60), function (req, res, next) {
+router.get('/:id', function (req, res, next) {
     var recipeId = req.params['id'];
 
     jms_connector.getRecipeForId(recipeId, function (e, recipe) {

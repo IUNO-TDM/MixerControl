@@ -92,88 +92,88 @@ self.getAllRecipes = function (callback) {
 
 
 self.getAllComponents = function (callback) {
-    // var options = buildOptionsForRequest(
-    //     'GET',
-    //     'http',
-    //     HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-    //     HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-    //     '/components'
-    // );
-    //
-    // request(options, function (e, r, jsonData) {
-    //     logger.debug('Response:' + JSON.stringify(jsonData));
-    //
-    //     if (e) {
-    //         console.error(e);
-    //         if (typeof(callback) == 'function') {
-    //
-    //             callback(e);
-    //             return;
-    //         }
-    //     }
-    //
-    //     if (r && r.statusCode != 200) {
-    //         var err = {
-    //             status: r.statusCode,
-    //             message: jsonData
-    //         };
-    //         logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-    //         callback(err);
-    //
-    //         return;
-    //     }
-    //
-    //     if (!helper.isArray(jsonData)) {
-    //         callback({
-    //             status: 500,
-    //             message: 'Expected object. But did get something different: ' + jsonData
-    //         });
-    //         return;
-    //     }
-    //
-    //     //TODO: Parse json data into objects to validate the content
-    //     if (typeof(callback) == 'function') {
-    //
-    //         callback(null, jsonData);
-    //     }
-    // });
-    callback(null, [
-        {
-            id: "570a5df0-a044-4e22-b6e6-b10af872d75c",
-            name: 'Mineralwasser'
-        },
-        {
-            id: "198f1571-4846-4467-967a-00427ab0208d",
-            name: 'Apfelsaft'
-        },
+    var options = buildOptionsForRequest(
+        'GET',
+        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/components'
+    );
 
-        {
-            id: "f6d361a9-5a6f-42ad-bff7-0913750809e4",
-            name: 'Orangensaft'
-        },
+    request(options, function (e, r, jsonData) {
+        logger.debug('Response:' + JSON.stringify(jsonData));
 
-        {
-            id: "fac1ee6f-185f-47fb-8c56-af57cd428aa8",
-            name: 'Mangosaft'
-        },
+        if (e) {
+            console.error(e);
+            if (typeof(callback) == 'function') {
 
-        {
-            id: "0425393d-5b84-4815-8eda-1c27d35766cf",
-            name: 'Kirschsaft'
-        },
-        {
-            id: "4cfa2890-6abd-4e21-a7ab-17613ed9a5c9",
-            name: 'Bananensaft'
-        },
-        {
-            id: "14b72ce5-fec1-48ec-83ff-24b124f98dc8",
-            name: 'Maracujasaft'
-        },
-        {
-            id: "bf2cfd66-5b6f-4655-8e7f-04090308f6db",
-            name: 'Ananassaft'
+                callback(e);
+                return;
+            }
         }
-    ]);
+
+        if (r && r.statusCode != 200) {
+            var err = {
+                status: r.statusCode,
+                message: jsonData
+            };
+            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
+            callback(err);
+
+            return;
+        }
+
+        if (!helper.isArray(jsonData)) {
+            callback({
+                status: 500,
+                message: 'Expected object. But did get something different: ' + jsonData
+            });
+            return;
+        }
+
+        //TODO: Parse json data into objects to validate the content
+        if (typeof(callback) == 'function') {
+
+            callback(null, jsonData);
+        }
+    });
+    // callback(null, [
+    //     {
+    //         id: "570a5df0-a044-4e22-b6e6-b10af872d75c",
+    //         name: 'Mineralwasser'
+    //     },
+    //     {
+    //         id: "198f1571-4846-4467-967a-00427ab0208d",
+    //         name: 'Apfelsaft'
+    //     },
+    //
+    //     {
+    //         id: "f6d361a9-5a6f-42ad-bff7-0913750809e4",
+    //         name: 'Orangensaft'
+    //     },
+    //
+    //     {
+    //         id: "fac1ee6f-185f-47fb-8c56-af57cd428aa8",
+    //         name: 'Mangosaft'
+    //     },
+    //
+    //     {
+    //         id: "0425393d-5b84-4815-8eda-1c27d35766cf",
+    //         name: 'Kirschsaft'
+    //     },
+    //     {
+    //         id: "4cfa2890-6abd-4e21-a7ab-17613ed9a5c9",
+    //         name: 'Bananensaft'
+    //     },
+    //     {
+    //         id: "14b72ce5-fec1-48ec-83ff-24b124f98dc8",
+    //         name: 'Maracujasaft'
+    //     },
+    //     {
+    //         id: "bf2cfd66-5b6f-4655-8e7f-04090308f6db",
+    //         name: 'Ananassaft'
+    //     }
+    // ]);
 };
 
 self.getRecipeForId = function (id, callback) {

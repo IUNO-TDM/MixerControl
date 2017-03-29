@@ -18,7 +18,7 @@ String.prototype.format = function () {
 
 
 
-router.get('/:id', cache(60), function (req, res, next) {
+router.get('/:id', function (req, res, next) {
     var userId = req.params['id'];
 
     jms_connector.getUserForId(userId, function (e, user) {

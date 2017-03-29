@@ -21,15 +21,8 @@
 
                     <div class="components">
                         <p>Beinhaltet:</p>
-                        <ul class="componentsList">
-                            <li>Mineralwasser</li>
-                            <li>Apfelsaft</li>
-                            <li>Orangensaft</li>
-                            <li>Mineralwasser</li>
-                            <li>Mineralwasser</li>
-                            <li>Apfelsaft</li>
-                            <li>Orangensaft</li>
-                            <li>Mineralwasser</li>
+                        <ul class="componentsList" >
+                            <li class="componentsLi" *ngFor="let component of drink.components">{{component.name}}</li>
                         </ul>
                     </div>
 
