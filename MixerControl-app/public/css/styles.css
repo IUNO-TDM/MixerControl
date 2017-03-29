@@ -17,6 +17,7 @@ a:hover {
 
 .container{
     width: 95%;
+    margin-bottom: 55px;
 }
 header {
     background-image: url('../img/header.png');
@@ -37,13 +38,14 @@ footer {
     background-image: url('../img/powered_by_axoom_vertical.svg');
     background-size: auto 30px;
     background-repeat: no-repeat;
-    background-position: center center;  
+    background-position: center center;
+    border-top: 1px solid #000;
     height: 50px;
     position: fixed;
     
     bottom: 0px; 
-    right: 5%;
-    width: 120px;
+    right: 0;
+    width: 100%;
 }
 
 .loader {
