@@ -88,6 +88,11 @@ footer {
     height: 350px
     
 }
+
+.tileDrink h4 {
+    font-size: 2.8rem;
+}
+
 .tileDrink .inner{
     height: 200px;
     overflow: hidden;
@@ -103,6 +108,8 @@ footer {
 .tileDrink .authorName{
     width:70%;
     float: left;
+    padding-left: 5px;
+    padding-top: 11px;
 }
 
 .tileDrink p.authorText{
@@ -148,6 +155,9 @@ footer {
     width: 90%;
     /*margin-top: 30px;*/
 }
+.tileDrink .components p{
+    margin-bottom: 0.5rem;
+}
 
 .tileDrink ul.componentsList{
     /*-moz-column-count: 2;*/
@@ -159,17 +169,11 @@ footer {
     margin-bottom: 0;
 }
 .tileDrink li.componentsLi{
-    line-height: 1em;
+    line-height: 1.2em;
     margin-bottom: 0;
     display: block;
 }
 
-
-
-.tileDrink button.detailButton{
-    position: absolute;
-    bottom: 0;
-}
 
 
 
@@ -212,12 +216,17 @@ footer {
 
 .drinkDetail .userName{
     float: left;
+
+    padding-left: 5px;
+    padding-top: 11px;
 }
 
-.drinkDetail .orderButtonDiv{
+.centeredButtonDiv{
     width:100%;
-    float: left;
-    margin-top: 15px;
+    text-align: center;
+    padding-top: 15px;
+    clear: both;
+
 }
 
 .drinkDetail p.usernametext{
@@ -329,7 +338,7 @@ box-shadow: 0px 4px 6px #333;
 .orderSteps .done::after{
     content: " ✓";
     padding-left: 0.1em; 
-    color: limegreen;
+    color: #598cb3;
 }
 
 .orderSteps p {
@@ -340,7 +349,9 @@ box-shadow: 0px 4px 6px #333;
 .orderButton {
     margin-top: 5rem;
     font-size: 2rem;
-    background-color: cornsilk;
+    background-color: #598cb3;
+    border-color: #598cb3;
+    color: white;
 }
 
 /*payment*/
