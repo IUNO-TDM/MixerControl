@@ -1,41 +1,33 @@
 <div class="container">
-  <div class="row title">
-    <h1>Detailseite</h1>
-    <button (click)="getBack()">zurück</button>
-</div>    
-  <div class="row">
-    <div class="one-half column">
-        <div class="tileDrink detail" *ngIf="drink">
-           
-            <div class="inner">
-                <h3> {{drink.title}}</h3>
-                <img src="/api/drinks/{{drink.id}}/image"/>   
+    <div class="row title">
+        <h1>Details</h1>
+        <button (click)="getBack()">zurück</button>
+    </div>
+    <div class="drinkDetail" *ngIf="drink">
+        <h3> {{drink.title}}</h3>
+        <div class="imgAndText">
+            <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
+            <div class="description">
+
                 <p>{{drink.description}}</p>
-                <p>{{components}}</p>
+                <p>Beinhaltet:<br>{{components}}</p>
+                <p>Verkaufspreis: {{drink.retailPrice / 10000}} IUNOs</p>
+                <p>Rezepthersteller:</p>
 
-                <table>
-                <tr>
-                    <td>Verkaufspreis:</td>
-                    <td>{{drink.retailPrice}} IUNOs</td>
-                </tr>
-                  <tr *ngIf="user">
-                    <td>Rezepthersteller:</td>
-                    <td>{{user.firstname}} {{user.lastname}}</td>
-                </tr>
-                </table>
-
-                   <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
-
+                <div class="userDetails" *ngIf="user">
+                    <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
+                    <div class="userName">
+                        <p class="userNameText">{{user.firstname}} {{user.lastname}}</p>
+                    </div>
+                </div>
+                <div class="orderButtonDiv">
+                    <button (click)="onClickMe()">Bestellen</button>
+                </div>
             </div>
-                 <button (click)="onClickMe()">Bestellen</button>
         </div>
-      </div>
-   <!-- <div class="one-half column ">
-      <div class="note">
-        <strong>was hier eigentlich passiert:</strong><br />
-      
-        - Anforderung eines Datesatzes im verschlüsslten uswusf..
-      </div>
-    </div>-->
-  </div>
+
+    </div>
+
+
 </div>
+

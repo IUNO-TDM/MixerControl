@@ -9,13 +9,32 @@
     <div class="row drinks">
         <a [routerLink]="['/drinks', drink.id]" *ngFor="let drink of drinks">
             <div class="tileDrink">
-                <div class="title">
-                    <h4> {{drink.title}}</h4>
-                    <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
-                </div>
-                <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
+                <h4> {{drink.title}}</h4>
+                <div class="content">
+                    <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
+                    <div class="author">
+                        <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
+                        <div class="authorName" *ngIf="users && users[drink.authorId]" >
+                        <p class="authorText">{{users[drink.authorId].firstname}} {{users[drink.authorId].lastname}}</p></div>
 
-                <p class="components">Apfelsaft, Orangensaft,Apfelsaft, Orangensaft,Apfelsaft, Orangensaft,Apfelsaft, Orangensaft</p>
+                    </div>
+
+                    <div class="components">
+                        <p>Beinhaltet:</p>
+                        <ul class="componentsList">
+                            <li>Mineralwasser</li>
+                            <li>Apfelsaft</li>
+                            <li>Orangensaft</li>
+                            <li>Mineralwasser</li>
+                            <li>Mineralwasser</li>
+                            <li>Apfelsaft</li>
+                            <li>Orangensaft</li>
+                            <li>Mineralwasser</li>
+                        </ul>
+                    </div>
+
+                </div>
+                <!--<p class="components">Apfelsaft, Orangensaft,Apfelsaft, Orangensaft,Apfelsaft, Orangensaft,Apfelsaft, Orangensaft</p>-->
                 <button class="detailButton">Details anzeigen</button>
 
             </div>
