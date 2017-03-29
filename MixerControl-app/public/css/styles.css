@@ -7,6 +7,7 @@ html {
 }
 body{
     background: #fff;
+    
 }
 
 a {
@@ -75,13 +76,14 @@ footer {
     width: 47%; 
     border: 1px solid #999;
     padding: 1em;
-    padding-right: 40px;
+
     margin: 0.5em;
     float:left;
     display: inline;
     box-sizing: border-box;
     overflow: hidden;
     position:relative;
+    height: 350px
     
 }
 .tileDrink .inner{
@@ -89,36 +91,48 @@ footer {
     overflow: hidden;
 }
 
-
-
-.tileDrink button{
-
+.tileDrink .title{
+    position: relative;
+    width: 100%;
+    height: 70px;
 }
-.tileDrink img{
-    width: 100px;
-    float: left;
-    margin-right: 10px;
+.tileDrink .title h4{
+    font-size: 3rem;
+    margin-right: 41px;
 }
-
 .tileDrink img.userImg{
     position: absolute;
-    top: 0.5em;
     right: 0;
+    top:0;
     width: 40px !important;
     height: 40px;
     border: 1px solid grey;
     border-radius: 50%;
 }
 
+.tileDrink img.drinkImg{
+    width: 100%;
+    max-height: 150px;
+    /*float: left;*/
+    align-self: center;
+}
+
+.tileDrink .components{
+    font-size: 1.2rem;
+    text-align: center;
+    position: absolute;
+    bottom: 45px;
+}
+
+.tileDrink button.detailButton{
+    position: absolute;
+    bottom: 0;
+}
+
+
 
 .detail.tileDrink .inner {
     height: auto;
-}
-
-.detail.tileDrink img{
-    width: 300px;
-    float: none;
-    margin-bottom: 1em;
 }
 
 
@@ -231,4 +245,10 @@ box-shadow: 0px 4px 6px #333;
 .orderSteps p {
     padding-top: 1em;
     font-size: 2rem;
+}
+
+.orderButton {
+    margin-top: 5rem;
+    font-size: 2rem;
+    background-color: cornsilk;
 }

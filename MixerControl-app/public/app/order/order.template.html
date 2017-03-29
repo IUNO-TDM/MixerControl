@@ -42,7 +42,7 @@
                   <div class="step payment done">Bezahlung</div>
                   <div class="step production ">Produktion</div>
 
-                  <button (click)="ProductionStart()">Getränk zubereiten</button>
+                  <button class="orderButton" (click)="ProductionStart()">Getränk zubereiten</button>
               </div>
 
               <div class="orderSteps" *ngSwitchCase="'startProduction'">
@@ -64,7 +64,7 @@
                   <div class="step payment done">Bezahlung</div>
                   <div class="step production done">Produktion</div>
                   <p>Getränk ist zubereitet.</p>
-                  <button (click)="Home()">Neues Getränk bestellen</button>
+                  <button class="orderButton" (click)="Home()">Neues Getränk bestellen</button>
 
               </div>
 

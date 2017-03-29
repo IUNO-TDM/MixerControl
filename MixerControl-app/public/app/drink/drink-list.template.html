@@ -9,21 +9,16 @@
     <div class="row drinks">
         <a [routerLink]="['/drinks', drink.id]" *ngFor="let drink of drinks">
             <div class="tileDrink">
-                <div class="inner">
+                <div class="title">
                     <h4> {{drink.title}}</h4>
-                    <img src="/api/drinks/{{drink.id}}/image"/>
-                    <p>{{drink.description}}</p>
-                    <h6 *ngIf="users && users[drink.authorId]">Rezepthersteller: {{users[drink.authorId].firstname}}
-                        {{users[drink.authorId].lastname}}</h6>
                     <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
                 </div>
-                <button>Details anzeigen</button>
+                <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
+
+                <p class="components">Apfelsaft, Orangensaft,Apfelsaft, Orangensaft,Apfelsaft, Orangensaft,Apfelsaft, Orangensaft</p>
+                <button class="detailButton">Details anzeigen</button>
+
             </div>
         </a>
     </div>
 </div>
-<!--
-<li ng-repeat="task in $ctrl.tasks ">
-    <a href="#!/tasks/{{task.id}}">{{task.name}}</a>
-</li>
--->
