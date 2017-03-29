@@ -67,20 +67,20 @@ pumpcontrol_service.websocketclient = wsclient;
 var initIngredients = function () {
     jms_connector.getAllComponents(function (e, components) {
         if (!e) {
-            async.each(pumpNumbers, function (item, callback) {
+            async.eachSeries(pumpNumbers, function (item, callback) {
                 storage.getItem('component' + item).then(
                     function (compId) {
                         const compName = componentNameForId(components,compId);
                         updateIngredient(item, compName, function () {
-
+                            storage.getItem('amount' + item).then(
+                                function (amount) {
+                                    pumpcontrol_service.setPumpAmount(item,amount, function () {
+                                        callback();
+                                    });
+                                });
                         });
                     });
-                storage.getItem('amount' + item).then(
-                    function (amount) {
-                        pumpcontrol_service.setPumpAmount(item,amount, function () {
 
-                        });
-                    });
             });
         }
     });
