@@ -20,6 +20,7 @@ var AdminComponentComponent = (function () {
         this.componentService = componentService;
         this.adminService = adminService;
         this.socketService = socketService;
+        this.standardAmounts = {};
         this.warnings = {};
         this.selectedValue = null;
     }
@@ -27,8 +28,9 @@ var AdminComponentComponent = (function () {
         var _this = this;
         this.componentService.getComponents().then(function (components) { return _this.components = components; });
         this.adminService.getPumps().then(function (pumps) { return _this.pumps = pumps; });
+        this.adminService.getStandardAmounts().then(function (amounts) { return _this.standardAmounts = amounts; });
         this.amountWarningConnection = this.socketService.get("/production", "amountWarning", "warning").subscribe(function (warning) {
-            return _this.warnings[warning.pumpNr] = warning.amountLeft;
+            _this.warnings[warning.pumpNr] = warning;
         });
     };
     AdminComponentComponent.prototype.ngOnDestroy = function () {
@@ -44,6 +46,9 @@ var AdminComponentComponent = (function () {
         this.adminService.setPump(nr, pump.component.id);
         // I want to do something here for new selectedDevice, but what I
         // got here is always last selection, not the one I just select.
+    };
+    AdminComponentComponent.prototype.ResetAmount = function (pumpNr) {
+        this.adminService.resetComponent(pumpNr, this.standardAmounts[pumpNr]).then(function (response) { return console.log(response); });
     };
     AdminComponentComponent = __decorate([
         core_1.Component({

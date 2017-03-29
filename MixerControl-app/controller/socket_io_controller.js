@@ -7,6 +7,7 @@ var pumpControl_service = require('../services/pumpcontrol_service');
 var production_queue = require('../models/production_queue');
 var OSM = require('../models/order_state_machine');
 var OrderDB = require('../database/orderDB');
+const async = require('async');
 
 function onOrderNamespaceConnect(socket) {
     logger.info('a user connected: ' + socket.id);
@@ -63,7 +64,13 @@ function onProductionNamespaceConnect(socket) {
         } else if (roomId == "pumpControlMode") {
             socket.emit("modeChange", pumpControl_service.getMode());
         } else if (roomId == "pumpControlService") {
-            socket.emit("stateChange", pumpControl_service.getServiceState());
+            socket.emit("serviceStateChange", pumpControl_service.getServiceState());
+        }else if (roomId == "amountWarning") {
+            const warnings = pumpControl_service.getAmountWarnings();
+            async.each(warnings, function iterate(item,callback){
+                socket.emit("warning",item);
+            });
+
         }
 
     });
@@ -141,7 +148,7 @@ function registerProductionEvents(productionNamespace) {
     });
 
     pumpControl_service.on('serviceState', function (state) {
-        productionNamespace.to('pumpControlService').emit("stateChange", state);
+        productionNamespace.to('pumpControlService').emit("serviceStateChange", state);
     });
     pumpControl_service.on('pumpControlMode', function (state) {
         productionNamespace.to('pumpControlMode').emit("modeChange", state);
