@@ -44,7 +44,7 @@ self.getAllRecipes = function (callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes',
@@ -94,7 +94,7 @@ self.getAllRecipes = function (callback) {
 self.getAllComponents = function (callback) {
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/components'
@@ -179,7 +179,7 @@ self.getAllComponents = function (callback) {
 self.getRecipeForId = function (id, callback) {
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes/' + id
@@ -226,7 +226,7 @@ self.getRecipeForId = function (id, callback) {
 self.getRecipeImageForId = function (id, callback) {
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes/' + id + '/image'
@@ -267,7 +267,7 @@ self.getRecipeImageForId = function (id, callback) {
 self.getUserForId = function (id, callback) {
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/users/' + id
@@ -314,7 +314,7 @@ self.getUserForId = function (id, callback) {
 self.getUserImageForId = function (id, callback) {
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/users/' + id + '/image'
@@ -356,7 +356,7 @@ self.getUserImageForId = function (id, callback) {
 self.requestOfferForOrders = function (hsmId, orderList, callback) {
     var options = buildOptionsForRequest(
         'POST',
-        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/offers'
@@ -409,7 +409,7 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
 self.getOfferForId = function (id, callback) {
     var options = buildOptionsForRequest(
         'GET',
-        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/offers/' + id
@@ -456,7 +456,7 @@ self.getOfferForId = function (id, callback) {
 self.savePaymentForOffer = function (offerId, bip70, callback) {
     var options = buildOptionsForRequest(
         'POST',
-        'http',
+        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/offers/' + offerId + '/payment'

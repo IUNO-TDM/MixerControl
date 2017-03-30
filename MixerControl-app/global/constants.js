@@ -9,8 +9,9 @@ const self = {
     },
     HOST_SETTINGS: {
         JUICE_MACHINE_SERVICE: {
-            HOST: 'test-tdm',
-            PORT: 3001
+            HOST: 'tdm-jms.axoom.cloud',
+            PORT: 443,
+            METHOD: 'https'
         }
     }
 };
