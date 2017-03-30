@@ -15,19 +15,22 @@
                   <div class="step production off">Produktion</div>
               </div>
 
-              <div class="orderSteps" *ngSwitchCase="'waitingLicense'">
-                  <div class="step order ">Lizenzanfrage</div>
-                  <div class="step payment off">Bezahlung</div>
-                  <div class="step production off">Produktion</div>
-              </div>
 
               <div class="orderSteps" *ngSwitchCase="'waitingPayment'">
                   <div class="step order done">Lizenzanfrage</div>
-                  <div class="step payment ">Bezahlung</div>
+                  <div class="step payment">Bezahlung</div>
                   <div class="step production off">Produktion</div>
 
                   <my-payment></my-payment>
               </div>
+
+
+              <div class="orderSteps" *ngSwitchCase="'waitingLicense'">
+                  <div class="step order done">Lizenzanfrage</div>
+                  <div class="step payment done">Bezahlung</div>
+                  <div class="step production off">Produktion</div>
+              </div>
+
               <div class="orderSteps" *ngSwitchCase="'waitForProduction'">
                   <div class="step order done">Lizenzanfrage</div>
                   <div class="step payment done">Bezahlung</div>
