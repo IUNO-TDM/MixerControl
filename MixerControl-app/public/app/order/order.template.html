@@ -21,7 +21,9 @@
                   <div class="step payment">Bezahlung</div>
                   <div class="step production off">Produktion</div>
 
-                  <my-payment></my-payment>
+                  <button *ngIf="showDialog == false" class="paymentButton" (click)="ShowPaymentModal()">Jetzt bezahlen</button>
+                  <my-payment *ngIf="showDialog"></my-payment>
+
               </div>
 
 
@@ -76,8 +78,8 @@
                   <div class="step production off">Produktion</div>
               </div>
           </div>
-     </div> 
-    </div>  
+     </div>
+    </div>
 
     <div class="one-half column details" >
         <h4 *ngIf="order">Auftragsdetails</h4>
