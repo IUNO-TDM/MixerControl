@@ -371,3 +371,10 @@ box-shadow: 0px 4px 6px #333;
 
     float: left;
 }
+.paymentButton {
+    margin-top: 5rem;
+    font-size: 2rem;
+    background-color: #598cb3;
+    border-color: #598cb3;
+    color: white;
+}
