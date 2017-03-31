@@ -9,22 +9,7 @@ var request = require('request');
 var logger = require('../global/logger');
 var HOST_SETTINGS = require('../global/constants').HOST_SETTINGS;
 var helper = require('../services/helper_service');
-var component_config = require('../global/ingredient_configuration').INGREDIENT_CONFIGURATION;
-
-var component_uuids = [
-    "8f0bc514-7219-46d2-999d-c45c930c3e7c",
-    "570a5df0-a044-4e22-b6e6-b10af872d75c",
-    "198f1571-4846-4467-967a-00427ab0208d",
-    "f6d361a9-5a6f-42ad-bff7-0913750809e4",
-    "0476e3d6-ab8e-4d38-9348-4a308c2b5fc0",
-    "fac1ee6f-185f-47fb-8c56-af57cd428aa8",
-    "0425393d-5b84-4815-8eda-1c27d35766cf",
-    "4cfa2890-6abd-4e21-a7ab-17613ed9a5c9",
-    "14b72ce5-fec1-48ec-83ff-24b124f98dc8",
-    "bf2cfd66-5b6f-4655-8e7f-04090308f6db",
-    "7b6e8a7f-5412-4972-9174-5e6e27a32c7e"
-
-];
+var component_uuids = require('../global/ingredient_configuration').STD_INGREDIENT_CONFIGURATION;
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
