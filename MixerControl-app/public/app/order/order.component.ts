@@ -22,10 +22,11 @@ export class OrderComponent implements OnInit, OnDestroy {
   drink: Drink;
   user: User;
   error: any;
-  orderState: string;
+  orderState: any;
   progress: number;
   orderStateConnection: Subscription;
   orderProgressConnection: Subscription;
+  showDialog: boolean = false;
 
   orderURL = "NULL";
   constructor(
@@ -35,7 +36,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private orderService: OrderService,
     private socketService: SocketService
-  ) { }
+  ) {}
 
 
 
@@ -85,6 +86,10 @@ export class OrderComponent implements OnInit, OnDestroy {
     this.route.params.
     switchMap((params: Params) => this.orderService.sendProductionStart(params['id']))
       .subscribe(response => console.log(response));
+  }
+
+  ShowPaymentModal(){
+    this.showDialog = true;
   }
 
   Home(){

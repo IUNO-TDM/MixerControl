@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
 var helper = require('../services/helper_service');
+var cache = require('../services/cache_middleware');
 
 
 
@@ -20,7 +21,7 @@ String.prototype.format = function () {
     });
 };
 
-router.get('/', function (req, res, next) {
+router.get('/',  function (req, res, next) {
     jms_connector.getAllRecipes(function (e, recipes) {
 
         if (e) {
@@ -46,6 +47,25 @@ router.get('/:id', function (req, res, next) {
         }
 
         res.json(recipe);
+    });
+});
+
+router.get('/:id/image', cache(60*60), function (req, res, next) {
+    var recipeId = req.params['id'];
+
+    jms_connector.getRecipeImageForId(recipeId, function (err, data) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        if (!data) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.set('Content-Type', data.contentType);
+        res.send(data.imageBuffer);
     });
 });
 

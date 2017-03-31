@@ -29,4 +29,6 @@ export class Drink {
 
   retailPrice?: models.Price;
 
+  components?: models.Component[] = [];
+
 }

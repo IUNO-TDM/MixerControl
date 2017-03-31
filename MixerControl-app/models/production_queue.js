@@ -2,6 +2,7 @@ var machina = require('machina');
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 
+var logger = require('../global/logger');
 var pumpcontrol_service = require('../services/pumpcontrol_service');
 
 const prog = {
@@ -90,9 +91,14 @@ var state_machine = new machina.Fsm({
         },
         startProcessing: {
             _onEnter: function () {
-                var p = prog;
-                p.orderName = queue[0].orderName;
-                pumpcontrol_service.startProgram(p);
+                if(queue[0]){
+                    var p = JSON.parse(queue[0].recipe.program);
+                    p.orderName = queue[0].orderName;
+                    pumpcontrol_service.startProgram(p);
+                } else {
+                    this.transition("errorProcessing");
+                }
+
             },
             startedProcessing: "processingOrder",
             errorProcessing: "errorProcessing",
@@ -213,6 +219,9 @@ pumpcontrol_service.on('pumpControlProgramEnd', function (progName) {
 });
 pumpcontrol_service.on('pumpControlError', function (error) {
     state_machine.errorProcessing();
+});
+pumpcontrol_service.on('amountWarning', function (amountWarning) {
+    logger.debug("Amount Warning: "+JSON.stringify(amountWarning));
 });
 
 state_machine.on('transition', function (data) {

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var logger = require('../global/logger');
 var helper = require('../services/helper_service');
-
+var cache = require('../services/cache_middleware');
 
 
 var jms_connector = require('../connectors/juice_machine_service_connector');

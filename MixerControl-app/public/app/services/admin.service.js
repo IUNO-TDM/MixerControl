@@ -72,6 +72,18 @@ var AdminService = (function () {
         return this.http.post(url, body, null).
             toPromise().then(function (response) { return response.status; });
     };
+    AdminService.prototype.getStandardAmounts = function () {
+        var url = this.adminUrl + "pumps/standardAmount";
+        return this.http
+            .get(url)
+            .toPromise()
+            .then(function (response) { return response.json(); });
+    };
+    AdminService.prototype.resetComponent = function (pumpId, amount) {
+        var url = this.adminUrl + "pumps/" + pumpId + "/amount";
+        var body = amount.toString();
+        return this.http.put(url, body, null).toPromise();
+    };
     AdminService.prototype.handleError = function (error) {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);

@@ -51,7 +51,9 @@ var OrderService = (function () {
         var headers = new http_1.Headers({ 'Content-Type': 'text/plain' });
         var options = new http_1.RequestOptions({ headers: headers });
         var url = "" + this.ordersUrl + id + "/Payment";
-        return this.http.put(url, payment, options).toPromise();
+        return this.http.put(url, payment, options).toPromise().then(function (response) {
+            return response;
+        }).catch(this.handleError);
     };
     OrderService.prototype.sendProductionStart = function (id) {
         var headers = new http_1.Headers({ 'Content-Type': 'text/plain' });

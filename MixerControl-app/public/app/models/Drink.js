@@ -1,6 +1,7 @@
 "use strict";
 var Drink = (function () {
     function Drink() {
+        this.components = [];
     }
     return Drink;
 }());

@@ -23,6 +23,7 @@ var admin_component_component_1 = require('./admin/admin-component.component');
 var admin_production_component_1 = require('./admin/admin-production.component');
 var admin_status_component_1 = require('./admin/admin-status.component');
 var admin_service_component_1 = require('./admin/admin-service.component');
+var angular2_notifications_1 = require('angular2-notifications');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -35,7 +36,8 @@ var AppModule = (function () {
                 http_1.HttpModule,
                 angular2_qrcode_1.QRCodeModule,
                 angular2_qrscanner_1.QrScannerModule,
-                ng_bootstrap_1.NgbModule.forRoot()
+                ng_bootstrap_1.NgbModule.forRoot(),
+                angular2_notifications_1.SimpleNotificationsModule.forRoot()
             ],
             declarations: [
                 app_component_1.AppComponent,

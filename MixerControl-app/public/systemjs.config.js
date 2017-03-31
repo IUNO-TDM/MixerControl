@@ -33,6 +33,7 @@
             '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
             'jquery': 'npm:jquery/dist/jquery.js',
             'bootstrap': 'npm:bootstrap/dist/bootstrap.js',
+            'angular2-notifications': 'npm:angular2-notifications',
             'tether': 'npm:tether/dist/js/tether.js'
 
         },
@@ -67,6 +68,10 @@
                 defaultExtension: 'js'
             },
             "tether": {
+                defaultExtension: 'js'
+            },
+            "angular2-notifications": {
+                main: 'components.js',
                 defaultExtension: 'js'
             },
         }

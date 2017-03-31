@@ -23,6 +23,7 @@ var OrderComponent = (function () {
         this.userService = userService;
         this.orderService = orderService;
         this.socketService = socketService;
+        this.showDialog = false;
         this.orderURL = "NULL";
     }
     OrderComponent.prototype.ngOnInit = function () {
@@ -66,6 +67,9 @@ var OrderComponent = (function () {
         this.route.params.
             switchMap(function (params) { return _this.orderService.sendProductionStart(params['id']); })
             .subscribe(function (response) { return console.log(response); });
+    };
+    OrderComponent.prototype.ShowPaymentModal = function () {
+        this.showDialog = true;
     };
     OrderComponent.prototype.Home = function () {
         this.router.navigateByUrl("/");

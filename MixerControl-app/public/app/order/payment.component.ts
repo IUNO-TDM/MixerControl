@@ -1,9 +1,11 @@
 /**
  * Created by goergch on 14.02.17.
  */
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 import {OrderService} from '../services/order.service'
+import {QrScannerComponent} from 'angular2-qrscanner';
+import {NotificationsService} from "angular2-notifications";
 
 @Component({
 
@@ -15,11 +17,18 @@ import {OrderService} from '../services/order.service'
 
 export class PaymentComponent implements OnInit{
   paymentRequest: string;
-  response: string;
+  @ViewChild(QrScannerComponent)
+  private qrScannerComponent: QrScannerComponent;
+    public options = {
+        position: ["bottom", "RIGHT"],
+        timeOut: 5000,
+        lastOnBottom: true
 
+    }
   constructor(
     private route: ActivatedRoute,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private _service: NotificationsService
   ) { }
 
   ngOnInit(): void{
@@ -31,11 +40,22 @@ export class PaymentComponent implements OnInit{
 
   }
 
-  onRead(text: string){
-    this.route.params.
-    switchMap((params: Params) => this.orderService.sendPayment(params['id'], text))
-      .subscribe(response => this.response = response);
-
+  onRead(text: string) {
+    //TODO remove this logging later
+    console.log("Scanned QR-Code: " + text);
+    this.route.params.subscribe((params: Params) => {
+      this.orderService.sendPayment(params['id'], text)
+          .then(response => {
+            if (response.status != 200) {
+              this.qrScannerComponent.startScanning();
+            }
+            console.log(response);
+          },
+          err => {
+            console.log(err);
+            this.qrScannerComponent.startScanning();
+            this._service.alert("Fehler beim QR-Code lesen", "Bitte probieren Sie es noch einmal.");
+          });
+    });
   }
-
 }

@@ -1,24 +1,35 @@
-<div class="row title">
-  <h1>Detailseite</h1>
-  <button (click)="getBack()">zurück</button>
-</div>    
-<div class="row">
-    <div class="one-half column">
-        <div class="tileDrink" *ngIf="drink">
-            <img src="{{drink.thumbnail}}" *ngIf="drink.thumbnail" />
-            <div class="inner">
-                <h3> {{drink.title}}</h3>
-                <p>{{drink.description}}</p>
-                <p *ngIf="user">Rezepthersteller: {{user.firstname}} {{user.lastname}}</p>
-            </div>
-                 <button (click)="onClickMe()">Bestellen</button>
-        </div>
-      </div>
-    <div class="one-half column ">
-      <div class="note">
-        <strong>was hier eigentlich passiert:</strong><br />
-      
-        - Anforderung eines Datesatzes im verschlüsslten uswusf..
-      </div>
+<div class="container">
+    <div class="row title">
+        <h1>Details</h1>
+        <button (click)="getBack()">zurück</button>
     </div>
+    <div class="drinkDetail" *ngIf="drink">
+        <h3> {{drink.title}}</h3>
+        <div class="imgAndText">
+            <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
+            <div class="description">
+
+                <p>{{drink.description}}</p>
+                <p>Beinhaltet:<br>{{components}}</p>
+                <p>Verkaufspreis: {{drink.retailPrice / 100000}} IUNO</p>
+                <p>Lizenzgebühr: {{drink.licencefee / 100000}} IUNO</p>
+                <p>Rezepthersteller:</p>
+
+                <div class="userDetails" *ngIf="user">
+                    <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
+                    <div class="userName">
+                        <p class="userNameText">{{user.firstname}} {{user.lastname}}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="centeredButtonDiv">
+            <button (click)="onClickMe()">Bestellen</button>
+        </div>
+
+    </div>
+
+
 </div>
+

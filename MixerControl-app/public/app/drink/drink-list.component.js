@@ -11,16 +11,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var drink_service_1 = require('../services/drink.service');
+var user_service_1 = require('../services/user.service');
+var User_1 = require("../models/User");
 var DrinkListComponent = (function () {
-    function DrinkListComponent(router, drinkService) {
+    function DrinkListComponent(router, drinkService, userService) {
         this.router = router;
         this.drinkService = drinkService;
+        this.userService = userService;
+        this.drinks = [];
+        this.users = [];
     }
+    DrinkListComponent.prototype.refreshUsers = function () {
+        var _this = this;
+        var loadingUser = new User_1.User();
+        loadingUser.firstname = "User";
+        loadingUser.lastname = "Loading";
+        var _loop_1 = function(drink) {
+            if (!this_1.users[drink.authorId]) {
+                this_1.users[drink.authorId] = loadingUser;
+                this_1.userService.getUser(drink.authorId).then(function (user) {
+                    _this.users[drink.authorId] = user;
+                });
+            }
+        };
+        var this_1 = this;
+        for (var _i = 0, _a = this.drinks; _i < _a.length; _i++) {
+            var drink = _a[_i];
+            _loop_1(drink);
+        }
+    };
+    ;
     DrinkListComponent.prototype.getDrinks = function () {
         var _this = this;
         this.drinkService
             .getDrinks()
-            .then(function (drinks) { return _this.drinks = drinks; })
+            .then(function (drinks) {
+            _this.drinks = drinks;
+            _this.refreshUsers();
+        })
             .catch(function (error) { return _this.error = error; });
         return;
     };
@@ -35,9 +63,9 @@ var DrinkListComponent = (function () {
             moduleId: module.id,
             selector: 'my-drinkList',
             templateUrl: 'drink-list.template.html',
-            providers: [drink_service_1.DrinkService]
+            providers: [drink_service_1.DrinkService, user_service_1.UserService]
         }), 
-        __metadata('design:paramtypes', [router_1.Router, drink_service_1.DrinkService])
+        __metadata('design:paramtypes', [router_1.Router, drink_service_1.DrinkService, user_service_1.UserService])
     ], DrinkListComponent);
     return DrinkListComponent;
 }());
