@@ -3,7 +3,7 @@
  */
 
 var IFTTT = require('node-ifttt-maker'),
-var ifttt = new IFTTT('xxx');
+ ifttt = new IFTTT('xxx');
 
 
 var pumpcontrol_service = require('../services/pumpcontrol_service');
