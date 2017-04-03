@@ -16,6 +16,7 @@ import {AdminProductionComponent} from './admin/admin-production.component';
 import {AdminStatusComponent} from './admin/admin-status.component';
 import {AdminServiceComponent} from './admin/admin-service.component';
 
+import {SimpleNotificationsModule}from 'angular2-notifications'
 @NgModule({
     imports: [
         BrowserModule,
@@ -24,7 +25,8 @@ import {AdminServiceComponent} from './admin/admin-service.component';
         HttpModule,
         QRCodeModule,
         QrScannerModule,
-        NgbModule.forRoot()
+        NgbModule.forRoot(),
+        SimpleNotificationsModule.forRoot()
         // InMemoryWebApiModule.forRoot(InMemoryDataService, { delay: 600 })
     ],
     declarations: [

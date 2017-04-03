@@ -5,17 +5,22 @@
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 var logger = require('../global/logger');
+
 var io = require('socket.io-client');
 const constants = require('../global/constants');
 var LicenseService = function () {};
 const license_service = new LicenseService();
 util.inherits(LicenseService, EventEmitter);
 
-license_service.socket = io.connect('http://' + constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
-    + ":" + constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT +  "/licenses",{transports: ['websocket']});
+license_service.socket = io.connect(constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE
+        .METHOD+'://' + constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
+    + ":" + constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT +  "/licenses");
 
 license_service.socket.on('connect', function(){
     logger.debug("connected to license SocketIO at Marketplace");
+});
+license_service.socket.on('connect_error', function(error){
+    logger.debug("Conncetion Error at license SocketIO at Marketplace: " + error);
 });
 
 license_service.socket.on('disconnect', function () {

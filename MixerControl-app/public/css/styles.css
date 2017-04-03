@@ -3,10 +3,11 @@
 
 
 html {
-  font-size: 50%; }
+  font-size: 50%;
 }
 body{
     background: #fff;
+
 }
 
 a {
@@ -16,10 +17,12 @@ a:hover {
 
 .container{
     width: 95%;
+    margin-bottom: 55px;
 }
 header {
     background-image: url('../img/header.png');
     background-size: cover;
+    background-color: blue;
     height: 80px;
 }
 header .projectTitle{
@@ -35,14 +38,14 @@ footer {
     background-image: url('../img/powered_by_axoom_vertical.svg');
     background-size: auto 30px;
     background-repeat: no-repeat;
-    background-position: right center;  
+    background-position: center center;
+    border-top: 1px solid #000;
     height: 50px;
-    border-top: 1px solid slategrey;
     position: fixed;
     
     bottom: 0px; 
-    left: 5%;
-    width: 90%;
+    right: 0;
+    width: 100%;
 }
 
 .loader {
@@ -69,29 +72,169 @@ footer {
 }
 
 
+/* -------------  DRINK ----------------- */
+
 .tileDrink{
-    width: 48%; 
+    width: 47%; 
     border: 1px solid #999;
     padding: 1em;
-    margin-right: 0.5em;
-    margin-bottom: 0.5em;
+
+    margin: 0.5em;
     float:left;
     display: inline;
     box-sizing: border-box;
     overflow: hidden;
+    position:relative;
+    height: 350px
     
 }
+
+.tileDrink h4 {
+    font-size: 2.8rem;
+}
+
 .tileDrink .inner{
-    padding-left: 120px;
-    min-height: 200px;
+    height: 200px;
+    overflow: hidden;
 }
-.tileDrink button{
-    margin-left: 120px;
+
+.tileDrink .content{
+    position: relative;
+    float:none;
+    width:100%;
+    height:225px;
 }
-.tileDrink img{
+
+.tileDrink .authorName{
+    width:70%;
     float: left;
-    
+    padding-left: 5px;
+    padding-top: 11px;
 }
+
+.tileDrink p.authorText{
+    height: 100%;
+    width:100%;
+}
+
+.tileDrink .author{
+    position: absolute;
+    top:0;
+
+    /*float:left;*/
+    width:100%
+}
+
+.tileDrink img.userImg{
+    /*position: absolute;*/
+    width: 40px;
+    height: 40px;
+    border: 1px solid grey;
+    border-radius: 50%;
+    float: left;
+}
+
+.tileDrink img.drinkImg{
+    position:absolute;
+    opacity:0.3;
+    max-width: 100%;
+    max-height: 100%;
+    /*max-height: 150px;*/
+    /*float: left;*/
+    align-self: center;
+    margin: auto;
+    /*margin-bottom: 50px;*/
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+
+
+.tileDrink .components{
+    position:absolute;
+    bottom: 0;
+    width: 90%;
+    /*margin-top: 30px;*/
+}
+.tileDrink .components p{
+    margin-bottom: 0.5rem;
+}
+
+.tileDrink ul.componentsList{
+    /*-moz-column-count: 2;*/
+    -moz-column-gap: 1px;
+    /*-webkit-column-count: 2;*/
+    -webkit-column-gap: 1px;
+    /*column-count: 2;*/
+    column-gap: 1px;
+    margin-bottom: 0;
+}
+.tileDrink li.componentsLi{
+    line-height: 1.2em;
+    margin-bottom: 0;
+    display: block;
+}
+
+
+
+
+.detail.tileDrink .inner {
+    height: auto;
+}
+
+
+.drinkDetail{
+    position: relative;
+}
+
+.drinkDetail .imgAndText{
+    position:relative;
+    height:100%
+}
+.drinkDetail img.drinkImg{
+    float:left;
+    width: 45%;
+}
+
+.drinkDetail .description{
+    float:left;
+    width: 45%;
+}
+
+.drinkDetail img.userImg{
+    /*position: absolute;*/
+    width: 40px;
+    height: 40px;
+    border: 1px solid grey;
+    border-radius: 50%;
+    float: left;
+}
+
+
+.drinkDetail .userDetails{
+    position: relative;
+}
+
+.drinkDetail .userName{
+    float: left;
+
+    padding-left: 5px;
+    padding-top: 11px;
+}
+
+.centeredButtonDiv{
+    width:100%;
+    text-align: center;
+    padding-top: 15px;
+    clear: both;
+
+}
+
+.drinkDetail p.usernametext{
+    height:100%;
+    width:100%;
+}
+
+
 .one-half .tileDrink{
     width: 100%;
     border: none;
@@ -101,6 +244,8 @@ footer {
 background:#fefabc; 
 padding:15px; 
 font-family: 'blokletters_viltstifviltstift', cursive; 
+font-size: 16px;
+
 
 color: #000; 
 width:240px; 
@@ -117,6 +262,9 @@ box-shadow: 0px 4px 6px #333;
 -webkit-box-shadow: 0px 4px 6px #333;
 
 }
+
+/* -------------  Payment ----------------- */
+
 
 .modal {
   transition: all 0.3s;
@@ -141,16 +289,22 @@ box-shadow: 0px 4px 6px #333;
   border-radius: 0.3rem;
   overflow: hidden;
   padding: 2em;
-   z-index: 101;
+    z-index: 101;
 }
 
 #v {
     width: 80%;
 }
 
+
+/* -------------  Order ----------------- */
+
+
+
 .orderSteps {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-family: 'open_sanslight'; 
+    padding-bottom: 2em;
 }
 
 .orderSteps .step {
@@ -158,6 +312,8 @@ box-shadow: 0px 4px 6px #333;
     background-repeat: no-repeat;
     padding-left: 1.5em;  
     background-size: 4rem ;
+    text-decoration: underline;
+
 }
 
 .orderSteps .order{
@@ -172,10 +328,53 @@ box-shadow: 0px 4px 6px #333;
 
 .orderSteps  .off{
     opacity: 0.2;
+    text-decoration: none;
+}
+
+.orderSteps  .done{
+    text-decoration: none;
 }
 
 .orderSteps .done::after{
     content: " ✓";
     padding-left: 0.1em; 
-    color: limegreen;
+    color: #598cb3;
+}
+
+.orderSteps p {
+    padding-top: 1em;
+    font-size: 2rem;
+}
+
+.orderButton {
+    margin-top: 5rem;
+    font-size: 2rem;
+    background-color: #598cb3;
+    border-color: #598cb3;
+    color: white;
+}
+
+/*payment*/
+
+.paymentContent{
+    width:90%;
+    height:90%;
+    position: relative;
+}
+
+.paymentContent .qrContent{
+    width:300px;
+    float: left;
+}
+.paymentContent .scannerContent{
+    width:340px;
+
+    float: left;
+}
+.paymentButton {
+    margin-top: 5rem;
+    font-size: 2rem;
+    background-color: #598cb3;
+    border-color: #598cb3;
+    color: white;
 }

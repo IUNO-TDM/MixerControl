@@ -10,9 +10,52 @@ const util = require('util');
 const http = require('http');
 var jms_connector = require('../connectors/juice_machine_service_connector');
 const async = require('async');
+var storage = require('node-persist');
+
+
+var pumpAmountWarnings = {};
+const clearAmountWarning = function (item) {
+    pumpAmountWarnings[item] = {'pumpNr':item, 'warningCleared':true}
+};
+
+const pumpNumbers = [ 1, 2, 3, 4, 5, 6, 7, 8];
+
+pumpNumbers.forEach(clearAmountWarning );
+
+
+
 
 var PumpControlService = function () {
     console.log('a new instance of pumpControlservice');
+    initStorage();
+
+
+};
+
+var initStorage = function(){
+
+
+    async.each(pumpNumbers, function iterate(item, callback){
+        storage.getItem('component' + item).then(
+            function (value) {
+                if(!value){
+                    storage.setItem('component' + item,ingredient_configuration.STD_INGREDIENT_CONFIGURATION[item-1]);
+                    console.log("Set Component UUID for " + item + ": " + ingredient_configuration.STD_INGREDIENT_CONFIGURATION[item-1]);
+                }else{
+                    console.log("Component UUID for " + item + ": " + value);
+                }
+            });
+        storage.getItem('amount' + item).then(
+            function (value) {
+                if(!value){
+                    storage.setItem('amount' + item,ingredient_configuration.STD_INGREDIENT_AMOUNT[item-1]);
+                    console.log("Set Amount for " + item + ": " + ingredient_configuration.STD_INGREDIENT_AMOUNT[item-1]);
+                }else{
+                    console.log("Amount for " + item + ": " + value);
+                }
+            });
+    });
+
 };
 
 const pumpcontrol_service = new PumpControlService();
@@ -24,9 +67,20 @@ pumpcontrol_service.websocketclient = wsclient;
 var initIngredients = function () {
     jms_connector.getAllComponents(function (e, components) {
         if (!e) {
-            async.eachSeries(ingredient_configuration.INGREDIENT_CONFIGURATION, function iterate(item, callback) {
-                const key = Object.keys(item)[0]
-                updateIngredient(key, componentNameForId(components,item[key]), callback);
+            async.eachSeries(pumpNumbers, function (item, callback) {
+                storage.getItem('component' + item).then(
+                    function (compId) {
+                        const compName = componentNameForId(components,compId);
+                        updateIngredient(item, compName, function () {
+                            storage.getItem('amount' + item).then(
+                                function (amount) {
+                                    pumpcontrol_service.setPumpAmount(item,amount, function () {
+                                        callback();
+                                    });
+                                });
+                        });
+                    });
+
             });
         }
     });
@@ -55,7 +109,22 @@ var updateIngredient = function(pumpNumber, ingredient, callback){
             callback();
         }
     ).end(ingredient);
-}
+};
+var updatePumpAmount = function (pumpNumber, amount, callback) {
+    var options = {
+        hostname: 'localhost',
+        port: 9002,
+        path: '/ingredients/' + pumpNumber + '/amount',
+        agent: false,
+        method: 'PUT'
+    };
+    var req = http.request(options, function (res) {
+            console.log(res.statusCode + ' ' + res.statusMessage);
+            callback();
+        }
+    ).end(amount.toString());
+
+};
 
 var state_machine = new machina.Fsm({
 
@@ -151,6 +220,9 @@ var onWebSocketMessage = function (message) {
             pumpcontrol_service.emit('pumpControlProgramEnd', messageObject.programEnded);
         } else if (messageObject.hasOwnProperty('error')) {
             pumpcontrol_service.emit('pumpControlError', messageObject.error);
+        } else if (messageObject.hasOwnProperty('amountWarning')) {
+            pumpcontrol_service.emit('amountWarning', messageObject.amountWarning);
+            pumpAmountWarnings[messageObject.amountWarning.pumpNr] = messageObject.amountWarning;
         } else {
             console.log("Unrecognized message from PumpControl: " + message);
         }
@@ -266,15 +338,7 @@ pumpcontrol_service.getIngredient = function (pumpNumber, callback) {
     ).end();
 };
 pumpcontrol_service.setIngredient = function (pumpNumber, ingredient, callback) {
-    const ingr = ingredient_configuration.INGREDIENT_CONFIGURATION;
-    for(var i = 0; i < ingr; i++ ){
-        const key = ingr[i].keys()[0];
-        if(key == pumpNumber){
-            ingr[i][key] = ingredient;
-            break;
-        }
-    }
-    // ingredient_configuration.INGREDIENT_CONFIGURATION[pumpNumber] = ingredient;
+    storage.setItemSync('component' + pumpNumber, ingredient);
     jms_connector.getAllComponents(function (e, components) {
         if (!e) {
             updateIngredient(pumpNumber,componentNameForId(components,ingredient),callback);
@@ -282,6 +346,28 @@ pumpcontrol_service.setIngredient = function (pumpNumber, ingredient, callback) 
     });
 
 };
+pumpcontrol_service.getStorageIngredient = function (pumpNumber) {
+    return storage.getItemSync('component' + pumpNumber);
+
+};
+
+pumpcontrol_service.getPumpNumbers = function () {
+    return pumpNumbers;
+
+};
+pumpcontrol_service.setPumpAmount = function (pumpNumber, amount, callback) {
+    clearAmountWarning(pumpNumber);
+    pumpcontrol_service.emit('amountWarning', pumpAmountWarnings[pumpNumber]);
+    updatePumpAmount(pumpNumber,amount,callback);
+
+};
+pumpcontrol_service.setPumpStandardAmount = function (pumpNumber, amount) {
+    storage.setItemSync('amount' + pumpNumber, amount);
+};
+
+pumpcontrol_service.getPumpStandardAmount = function (pumpNumber) {
+    return storage.getItemSync('amount' + pumpNumber);
+}
 pumpcontrol_service.startProgram = function (program) {
     var options = {
         hostname: 'localhost',
@@ -304,5 +390,11 @@ pumpcontrol_service.getMode = function(){
 pumpcontrol_service.getServiceState = function(){
     return state_machine.compositeState();
 };
+
+pumpcontrol_service.getAmountWarnings = function () {
+    return pumpAmountWarnings;
+};
+
+
 
 module.exports = pumpcontrol_service;
