@@ -27,6 +27,13 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
 self.getAllRecipes = function (callback) {
 
+    if (typeof(callback) === 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'GET',
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
@@ -37,46 +44,27 @@ self.getAllRecipes = function (callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + JSON.stringify(jsonData));
-
-        if (e) {
-            console.error(e);
-            if (typeof(callback) == 'function') {
-
-                callback(e);
-                return;
-            }
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        var recipes;
+        if (helper.isArray(jsonData)) {
+            //TODO: Parse json data into objects to validate the content
+            recipes = jsonData;
         }
 
-        if (r && r.statusCode != 200) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        if (!helper.isArray(jsonData)) {
-            callback({
-                status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
-            });
-            return;
-        }
-
-        //TODO: Parse json data into objects to validate the content
-        if (typeof(callback) == 'function') {
-
-            callback(null, jsonData);
-        }
+        callback(err, recipes);
     });
 };
 
 
 self.getAllComponents = function (callback) {
+
+    if (typeof(callback) === 'function') {
+
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'GET',
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
@@ -86,82 +74,27 @@ self.getAllComponents = function (callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + JSON.stringify(jsonData));
 
-        if (e) {
-            console.error(e);
-            if (typeof(callback) == 'function') {
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        var components;
 
-                callback(e);
-                return;
-            }
+        if (helper.isArray(jsonData)) {
+            //TODO: Parse json data into objects to validate the content
+            components = jsonData;
         }
 
-        if (r && r.statusCode != 200) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        if (!helper.isArray(jsonData)) {
-            callback({
-                status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
-            });
-            return;
-        }
-
-        //TODO: Parse json data into objects to validate the content
-        if (typeof(callback) == 'function') {
-
-            callback(null, jsonData);
-        }
+        callback(err, components);
     });
-    // callback(null, [
-    //     {
-    //         id: "570a5df0-a044-4e22-b6e6-b10af872d75c",
-    //         name: 'Mineralwasser'
-    //     },
-    //     {
-    //         id: "198f1571-4846-4467-967a-00427ab0208d",
-    //         name: 'Apfelsaft'
-    //     },
-    //
-    //     {
-    //         id: "f6d361a9-5a6f-42ad-bff7-0913750809e4",
-    //         name: 'Orangensaft'
-    //     },
-    //
-    //     {
-    //         id: "fac1ee6f-185f-47fb-8c56-af57cd428aa8",
-    //         name: 'Mangosaft'
-    //     },
-    //
-    //     {
-    //         id: "0425393d-5b84-4815-8eda-1c27d35766cf",
-    //         name: 'Kirschsaft'
-    //     },
-    //     {
-    //         id: "4cfa2890-6abd-4e21-a7ab-17613ed9a5c9",
-    //         name: 'Bananensaft'
-    //     },
-    //     {
-    //         id: "14b72ce5-fec1-48ec-83ff-24b124f98dc8",
-    //         name: 'Maracujasaft'
-    //     },
-    //     {
-    //         id: "bf2cfd66-5b6f-4655-8e7f-04090308f6db",
-    //         name: 'Ananassaft'
-    //     }
-    // ]);
 };
 
 self.getRecipeForId = function (id, callback) {
+
+    if (typeof(callback) === 'function') {
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'GET',
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
@@ -171,44 +104,26 @@ self.getRecipeForId = function (id, callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + JSON.stringify(jsonData));
+        logger.logRequestAndResponse(e, options, r, jsonData);
 
-        if (e) {
-            console.error(e);
-            if (typeof(callback) == 'function') {
-
-                callback(e);
-            }
+        var recipe;
+        if (helper.isObject(jsonData)) {
+            //TODO: Parse json data into objects to validate the content
+            recipe = jsonData;
         }
 
-        if (r && r.statusCode >= 400) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
 
-            return;
-        }
-
-        if (!helper.isObject(jsonData)) {
-            callback({
-                status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
-            });
-            return;
-        }
-
-        //TODO: Parse json data into objects to validate the content
-        if (typeof(callback) == 'function') {
-
-            callback(null, jsonData);
-        }
+        callback(err, recipe);
     });
 };
 
 self.getRecipeImageForId = function (id, callback) {
+    if (typeof(callback) === 'function') {
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'GET',
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
@@ -220,36 +135,22 @@ self.getRecipeImageForId = function (id, callback) {
     options.encoding = null;
 
     request(options, function (e, r, data) {
-        if (e) {
-            logger.crit(e);
-            if (typeof(callback) == 'function') {
+        var err = logger.logRequestAndResponse(e, options, r, data);
 
-                callback(e);
-            }
-        }
-
-        if (r && r.statusCode != 200) {
-            var err = {
-                status: r.statusCode,
-                message: data
-            };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        if (typeof(callback) == 'function') {
-
-            callback(null, {
-                imageBuffer: data,
-                contentType: r.headers['content-type']
-            });
-        }
+        callback(err, {
+            imageBuffer: data,
+            contentType: r.headers['content-type']
+        });
     });
 };
 
 self.getUserForId = function (id, callback) {
+    if (typeof(callback) === 'function') {
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'GET',
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
@@ -259,44 +160,24 @@ self.getUserForId = function (id, callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + JSON.stringify(jsonData));
-
-        if (e) {
-            console.error(e);
-            if (typeof(callback) == 'function') {
-
-                callback(e);
-            }
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        var user;
+        if (helper.isObject(jsonData)) {
+            //TODO: Parse json data into objects to validate the content
+            user = jsonData;
         }
 
-        if (r && r.statusCode >= 400) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        if (!helper.isObject(jsonData)) {
-            callback({
-                status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
-            });
-            return;
-        }
-
-        //TODO: Parse json data into objects to validate the content
-        if (typeof(callback) == 'function') {
-
-            callback(null, jsonData);
-        }
+        callback(err, user);
     });
 };
 
 self.getUserImageForId = function (id, callback) {
+    if (typeof(callback) === 'function') {
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'GET',
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
@@ -308,37 +189,22 @@ self.getUserImageForId = function (id, callback) {
     options.encoding = null;
 
     request(options, function (e, r, data) {
-        if (e) {
-            logger.crit(e);
-            if (typeof(callback) == 'function') {
+        var err = logger.logRequestAndResponse(e, options, r. data);
 
-                callback(e);
-                return;
-            }
-        }
-
-        if (r && r.statusCode != 200) {
-            var err = {
-                status: r.statusCode,
-                message: data
-            };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        if (typeof(callback) == 'function') {
-
-            callback(null, {
-                imageBuffer: data,
-                contentType: r.headers['content-type']
-            });
-        }
+        callback(err, {
+            imageBuffer: data,
+            contentType: r.headers['content-type']
+        });
     });
 };
 
 self.requestOfferForOrders = function (hsmId, orderList, callback) {
+    if (typeof(callback) === 'function') {
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'POST',
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
@@ -354,44 +220,25 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
     };
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + JSON.stringify(jsonData));
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        var offer;
 
-        if (e) {
-            console.error(e);
-            if (typeof(callback) == 'function') {
-
-                callback(e);
-            }
+        if (helper.isObject(jsonData)) {
+            //TODO: Parse json data into objects to validate the content
+            offer = jsonData;
         }
 
-        if (r && r.statusCode >= 400) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        if (!helper.isObject(jsonData)) {
-            callback({
-                status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
-            });
-            return;
-        }
-
-        //TODO: Parse json data into objects to validate the content
-        if (typeof(callback) == 'function') {
-
-            callback(null, jsonData);
-        }
+        callback(err, offer);
     });
 };
 
 self.getOfferForId = function (id, callback) {
+    if (typeof(callback) === 'function') {
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'GET',
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
@@ -401,44 +248,24 @@ self.getOfferForId = function (id, callback) {
     );
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + JSON.stringify(jsonData));
-
-        if (e) {
-            console.error(e);
-            if (typeof(callback) == 'function') {
-
-                callback(e);
-            }
+        var err = logger.logRequestAndResponse(e, options, r, jsonData);
+        var offer;
+        if (helper.isObject(jsonData)) {
+            //TODO: Parse json data into objects to validate the content
+            offer = jsonData;
         }
 
-        if (r && r.statusCode >= 400) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        if (!helper.isObject(jsonData)) {
-            callback({
-                status: 500,
-                message: 'Expected object. But did get something different: ' + jsonData
-            });
-            return;
-        }
-
-        //TODO: Parse json data into objects to validate the content
-        if (typeof(callback) == 'function') {
-
-            callback(null, jsonData);
-        }
+        callback(err, offer);
     });
 };
 
 self.savePaymentForOffer = function (offerId, bip70, callback) {
+    if (typeof(callback) === 'function') {
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
     var options = buildOptionsForRequest(
         'POST',
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
@@ -447,37 +274,14 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
         '/offers/' + offerId + '/payment'
     );
 
-
     options.body = {
         paymentBIP70: bip70
     };
 
     request(options, function (e, r, jsonData) {
-        logger.debug('Response:' + JSON.stringify(jsonData));
+        var err = logger.logRequestAndResponse(e, r, jsonData);
 
-        if (e) {
-            console.error(e);
-            if (typeof(callback) == 'function') {
-
-                callback(e);
-            }
-        }
-
-        if (r && r.statusCode >= 400) {
-            var err = {
-                status: r.statusCode,
-                message: jsonData
-            };
-            logger.warn('Options: ' + JSON.stringify(options) + ' Error: ' + JSON.stringify(err));
-            callback(err);
-
-            return;
-        }
-
-        if (typeof(callback) == 'function') {
-
-            callback(null);
-        }
+        callback(err);
     });
 };
 
