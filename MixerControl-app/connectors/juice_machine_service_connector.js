@@ -7,9 +7,9 @@ var self = {};
 
 var request = require('request');
 var logger = require('../global/logger');
-var HOST_SETTINGS = require('../global/constants').HOST_SETTINGS;
+var HOST_SETTINGS = require('../config/config_loader').HOST_SETTINGS;
 var helper = require('../services/helper_service');
-var component_uuids = require('../global/ingredient_configuration').STD_INGREDIENT_CONFIGURATION;
+var component_uuids = require('../config/config_loader').STD_INGREDIENT_CONFIGURATION;
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 

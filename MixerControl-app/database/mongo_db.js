@@ -3,20 +3,19 @@
  */
 
 var logger = require('../global/logger');
-const CONSTANTS = require("../global/constants.js");
+const CONFIG = require("../config/config_loader.js");
 
-var db = require('mongojs')(CONSTANTS.CONFIG.DATABASE_NAME, []);
+var db = require('mongojs')(CONFIG.DATABASE_NAME, []);
 
 
 function validateArgument(arg, defaultValue) {
-    if (!arg || arg == 0 || typeof (arg) == 'function') {
+    if (!arg || arg === 0 || typeof (arg) === 'function') {
         return defaultValue;
     }
     return arg;
 }
 
 var self = {
-    COLLECTIONS: CONSTANTS.COLLECTIONS,
     getDocuments: function getDocuments(collectionName, identifier, selector, limit, next) {
         next = arguments[arguments.length - 1];
 
@@ -27,7 +26,7 @@ var self = {
         var collection = db.collection(collectionName);
 
         collection.find(replacePlaceholder(identifier), selector).limit(limit, function (err, doc) {
-            if (next && typeof(next) == 'function') {
+            if (next && typeof(next) === 'function') {
                 next(err, doc);
             }
         });
@@ -42,7 +41,7 @@ var self = {
 
         logger.debug(identifier);
         collection.findOne(replacePlaceholder(identifier), selector, function (err, doc) {
-            if (next && typeof(next) == 'function') {
+            if (next && typeof(next) === 'function') {
                 next(err, doc);
             }
         });
@@ -65,7 +64,7 @@ var self = {
             if (err) {
                 logger.crit(err);
             }
-            if (next && typeof(next) == 'function') {
+            if (next && typeof(next) === 'function') {
                 next(err, doc);
             }
         });
@@ -76,7 +75,7 @@ var self = {
         var collection = db.collection(collectionName);
 
         collection.save(data, function (err, doc) {
-            if (next && typeof(next) == 'function') {
+            if (next && typeof(next) === 'function') {
                 next(err, doc);
             }
         });

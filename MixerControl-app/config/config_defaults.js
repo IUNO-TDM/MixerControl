@@ -1,11 +1,24 @@
 /**
- * Created by beuttlerma on 27.02.17.
+ * Created by beuttlerma on 18.04.17.
  */
-
 
 
 var self = {};
 
+
+// ---- CONFIGURATION EXPORT ----
+
+self.DATABASE_NAME = 'MIXERCONTROL_DB';
+self.LOG_LEVEL = 'debug';
+self.HOST_SETTINGS = {
+    JUICE_MACHINE_SERVICE: {
+        HOST: 'tdm-jms.axoom.cloud',
+        PORT: 443,
+        METHOD: 'https'
+    }
+};
+
+// ---- INGREDIENT CONFIGURATION ----
 self.STD_INGREDIENT_CONFIGURATION = [
     "570a5df0-a044-4e22-b6e6-b10af872d75c",
     "198f1571-4846-4467-967a-00427ab0208d",
@@ -16,6 +29,7 @@ self.STD_INGREDIENT_CONFIGURATION = [
     "14b72ce5-fec1-48ec-83ff-24b124f98dc8",
     "bf2cfd66-5b6f-4655-8e7f-04090308f6db"
 ];
+
 self.STD_INGREDIENT_AMOUNT = [
     1500,
     1500,

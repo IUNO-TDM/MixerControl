@@ -4,7 +4,7 @@
 
 
 var winston = require('winston');
-var config = require('../global/constants').CONFIG;
+var config = require('../config/config_loader');
 
 // Set up logger
 var customColors = {
