@@ -27,7 +27,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
 self.getAllRecipes = function (callback) {
 
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
@@ -58,7 +58,7 @@ self.getAllRecipes = function (callback) {
 
 self.getAllComponents = function (callback) {
 
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
 
         callback = function () {
             logger.info('Callback not registered');
@@ -89,7 +89,7 @@ self.getAllComponents = function (callback) {
 
 self.getRecipeForId = function (id, callback) {
 
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
         callback = function () {
             logger.info('Callback not registered');
         }
@@ -118,7 +118,7 @@ self.getRecipeForId = function (id, callback) {
 };
 
 self.getRecipeImageForId = function (id, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
         callback = function () {
             logger.info('Callback not registered');
         }
@@ -145,7 +145,7 @@ self.getRecipeImageForId = function (id, callback) {
 };
 
 self.getUserForId = function (id, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
         callback = function () {
             logger.info('Callback not registered');
         }
@@ -172,7 +172,7 @@ self.getUserForId = function (id, callback) {
 };
 
 self.getUserImageForId = function (id, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
         callback = function () {
             logger.info('Callback not registered');
         }
@@ -199,7 +199,7 @@ self.getUserImageForId = function (id, callback) {
 };
 
 self.requestOfferForOrders = function (hsmId, orderList, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
         callback = function () {
             logger.info('Callback not registered');
         }
@@ -233,7 +233,7 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
 };
 
 self.getOfferForId = function (id, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
         callback = function () {
             logger.info('Callback not registered');
         }
@@ -260,7 +260,7 @@ self.getOfferForId = function (id, callback) {
 };
 
 self.savePaymentForOffer = function (offerId, bip70, callback) {
-    if (typeof(callback) === 'function') {
+    if (typeof(callback) !== 'function') {
         callback = function () {
             logger.info('Callback not registered');
         }
