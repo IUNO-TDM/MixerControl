@@ -7,14 +7,14 @@ const util = require('util');
 var logger = require('../global/logger');
 
 var io = require('socket.io-client');
-const constants = require('../global/constants');
+const CONFIG = require('../config/config_loader');
 var LicenseService = function () {};
 const license_service = new LicenseService();
 util.inherits(LicenseService, EventEmitter);
 
-license_service.socket = io.connect(constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE
-        .METHOD+'://' + constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
-    + ":" + constants.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT +  "/licenses");
+license_service.socket = io.connect(CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE
+        .METHOD+'://' + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
+    + ":" + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT +  "/licenses");
 
 license_service.socket.on('connect', function(){
     logger.debug("connected to license SocketIO at Marketplace");

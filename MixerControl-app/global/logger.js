@@ -4,7 +4,7 @@
 
 
 var winston = require('winston');
-var config = require('../global/constants').CONFIG;
+var config = require('../config/config_loader');
 
 // Set up logger
 var customColors = {
@@ -38,17 +38,99 @@ var logger = new (winston.Logger)({
 
 winston.addColors(customColors);
 
-// Extend logger object to properly log 'Error' types
+//Logging wrapper, to remove "unknown function" warnings
 var origLog = logger.log;
-
 logger.log = function (level, msg) {
+    if (!msg) {
+        msg = level;
+        level = 'info';
+    }
+    origLog.call(logger, level, msg);
+};
+
+var origFatal = logger.fatal;
+logger.fatal = function (msg) {
+    origFatal.call(logger, msg);
+};
+
+var origCrit = logger.crit;
+logger.crit = function (msg) {
+    origCrit.call(logger, msg);
+};
+
+var origWarn = logger.warn;
+logger.warn = function (msg) {
+    origWarn.call(logger, msg);
+};
+
+var origInfo = logger.info;
+logger.info = function (msg) {
+    origInfo.call(logger, msg);
+};
+
+var origDebug = logger.debug;
+logger.debug = function (msg) {
+    origDebug.call(logger, msg);
+};
+
+// Always log the error trace when tracing
+var origTrace = logger.trace;
+logger.trace = function (msg) {
     var objType = Object.prototype.toString.call(msg);
     if (objType === '[object Error]') {
-        origLog.call(logger, level, msg.toString());
+        origTrace.call(logger, msg);
     } else {
-        origLog.call(logger, level, msg);
+        origTrace.call(logger, new Error(msg));
     }
 };
+
+
+/**
+ * Custom log function for the request module.
+ * Logs the output and error messages from responses.
+ *
+ * Wraps the logger output within an error object in case of a unsuccessful request.
+ *
+ * @param err
+ * @param options
+ * @param res
+ * @param data
+ * @returns {Error}
+ */
+logger.logRequestAndResponse = function (err, options, res, data) {
+
+    var loggerOutput = {};
+
+    if (options) {
+        loggerOutput.options = options;
+    }
+
+    if (res) {
+        loggerOutput.statusCode = res.statusCode;
+        loggerOutput.statusMessage = res.statusMessage;
+    }
+
+    if (data) {
+        loggerOutput.data = data;
+    }
+
+    if (err) {
+        loggerOutput.err = err;
+        logger.crit(loggerOutput);
+        return new Error(loggerOutput);
+    }
+    else if (res && res.statusCode > 201) {
+        logger.warn(loggerOutput);
+        return new Error(loggerOutput);
+    }
+    else {
+        logger.debug(loggerOutput);
+    }
+
+
+    return null;
+};
+
 
 /**
  Exports an instance of a winston logger with the additional members described below.

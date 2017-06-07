@@ -4,7 +4,7 @@
 
 var WebSocketClient = require('websocket').client;
 var machina = require('machina');
-var ingredient_configuration = require('../global/ingredient_configuration');
+var CONFIG = require('../config/config_loader');
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 const http = require('http');
@@ -39,8 +39,8 @@ var initStorage = function(){
         storage.getItem('component' + item).then(
             function (value) {
                 if(!value){
-                    storage.setItem('component' + item,ingredient_configuration.STD_INGREDIENT_CONFIGURATION[item-1]);
-                    console.log("Set Component UUID for " + item + ": " + ingredient_configuration.STD_INGREDIENT_CONFIGURATION[item-1]);
+                    storage.setItem('component' + item,CONFIG.STD_INGREDIENT_CONFIGURATION[item-1]);
+                    console.log("Set Component UUID for " + item + ": " + CONFIG.STD_INGREDIENT_CONFIGURATION[item-1]);
                 }else{
                     console.log("Component UUID for " + item + ": " + value);
                 }
@@ -48,8 +48,8 @@ var initStorage = function(){
         storage.getItem('amount' + item).then(
             function (value) {
                 if(!value){
-                    storage.setItem('amount' + item,ingredient_configuration.STD_INGREDIENT_AMOUNT[item-1]);
-                    console.log("Set Amount for " + item + ": " + ingredient_configuration.STD_INGREDIENT_AMOUNT[item-1]);
+                    storage.setItem('amount' + item,CONFIG.STD_INGREDIENT_AMOUNT[item-1]);
+                    console.log("Set Amount for " + item + ": " + CONFIG.STD_INGREDIENT_AMOUNT[item-1]);
                 }else{
                     console.log("Amount for " + item + ": " + value);
                 }

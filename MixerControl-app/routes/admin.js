@@ -6,7 +6,7 @@ var router = express.Router();
 var logger = require('../global/logger');
 var production_queue = require('../models/production_queue');
 var pumpcontrol_service = require('../services/pumpcontrol_service');
-var ingredient_configuration = require('../global/ingredient_configuration');
+
 const async = require('async');
 var jms_connector = require('../connectors/juice_machine_service_connector');
 router.post('/production/startConfirm', function (req, res, next) {
@@ -32,7 +32,7 @@ router.get('/pumps', function (req, res, next) {
             var componentNameForId = function(components,id){
                 for(var i = 0 ; i < components.length; i++)
                 {
-                    if(components[i].id == id){
+                    if(components[i].id === id){
                         return components[i].name;
                     }
                 }
@@ -122,12 +122,12 @@ router.get('/pumps/standardAmount', function (req, res, next) {
 
 
 router.post('/pumps/:id/active', function (req, res, next) {
-    if (!req.body || (req.body != 'true' &&req.body != 'false')) {
+    if (!req.body || (req.body !== 'true' &&req.body !== 'false')) {
         res.sendStatus(400);
         return;
     }
     const id = req.params['id'];
-    if(req.body == 'true'){
+    if(req.body === 'true'){
         pumpcontrol_service.setServicePump(id,true);
     }else {
         pumpcontrol_service.setServicePump(id,false);
@@ -140,11 +140,11 @@ router.post('/pumps/:id/active', function (req, res, next) {
 
 
 router.post('/pumps/service', function (req, res, next) {
-    if (!req.body || (req.body != 'true' && req.body != 'false')) {
+    if (!req.body || (req.body !== 'true' && req.body !== 'false')) {
         res.sendStatus(400);
         return;
     }
-    if(req.body == 'true'){
+    if(req.body === 'true'){
         pumpcontrol_service.setServiceMode(true);
     }else {
         pumpcontrol_service.setServiceMode(false);
