@@ -40,7 +40,7 @@ self.getAllRecipes = function (callback) {
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes',
-        {'ingredients': component_uuids}
+        {'components': component_uuids}
     );
 
     request(options, function (e, r, jsonData) {
