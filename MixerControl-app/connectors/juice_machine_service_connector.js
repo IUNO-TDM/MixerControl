@@ -7,13 +7,15 @@ var self = {};
 
 var request = require('request');
 var logger = require('../global/logger');
-var HOST_SETTINGS = require('../config/config_loader').HOST_SETTINGS;
+var CONFIG = require('../config/config_loader');
 var helper = require('../services/helper_service');
 var component_uuids = require('../config/config_loader').STD_INGREDIENT_CONFIGURATION;
 
-function buildOptionsForRequest(method, protocol, host, port, path, qs) {
+const authServer = require('../connectors/auth_service_connector');
 
-    return {
+function buildOptionsForRequest(method, protocol, host, port, path, qs, callback) {
+
+    callback(null, {
         method: method,
         url: protocol + '://' + host + ':' + port + path,
         qs: qs,
@@ -21,7 +23,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
         headers: {
             'Content-Type': 'application/json'
         }
-    }
+    });
 }
 
 
@@ -34,25 +36,26 @@ self.getAllRecipes = function (callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'GET',
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes',
-        {'components': component_uuids}
-    );
+        {'components': component_uuids},
+        function (err, options) {
+            request(options, function (e, r, jsonData) {
+                var err = logger.logRequestAndResponse(e, options, r, jsonData);
+                var recipes;
+                if (helper.isArray(jsonData)) {
+                    //TODO: Parse json data into objects to validate the content
+                    recipes = jsonData;
+                }
 
-    request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
-        var recipes;
-        if (helper.isArray(jsonData)) {
-            //TODO: Parse json data into objects to validate the content
-            recipes = jsonData;
+                callback(err, recipes);
+            });
         }
-
-        callback(err, recipes);
-    });
+    );
 };
 
 
@@ -65,26 +68,27 @@ self.getAllComponents = function (callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'GET',
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/components'
-    );
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/components',
+        function (err, options) {
+            request(options, function (e, r, jsonData) {
 
-    request(options, function (e, r, jsonData) {
+                var err = logger.logRequestAndResponse(e, options, r, jsonData);
+                var components;
 
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
-        var components;
+                if (helper.isArray(jsonData)) {
+                    //TODO: Parse json data into objects to validate the content
+                    components = jsonData;
+                }
 
-        if (helper.isArray(jsonData)) {
-            //TODO: Parse json data into objects to validate the content
-            components = jsonData;
+                callback(err, components);
+            });
         }
-
-        callback(err, components);
-    });
+    );
 };
 
 self.getRecipeForId = function (id, callback) {
@@ -95,26 +99,27 @@ self.getRecipeForId = function (id, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'GET',
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/recipes/' + id
-    );
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/recipes/' + id,
+        function (err, options) {
+            request(options, function (e, r, jsonData) {
+                logger.logRequestAndResponse(e, options, r, jsonData);
 
-    request(options, function (e, r, jsonData) {
-        logger.logRequestAndResponse(e, options, r, jsonData);
+                var recipe;
+                if (helper.isObject(jsonData)) {
+                    //TODO: Parse json data into objects to validate the content
+                    recipe = jsonData;
+                }
 
-        var recipe;
-        if (helper.isObject(jsonData)) {
-            //TODO: Parse json data into objects to validate the content
-            recipe = jsonData;
+
+                callback(err, recipe);
+            });
         }
-
-
-        callback(err, recipe);
-    });
+    );
 };
 
 self.getRecipeImageForId = function (id, callback) {
@@ -124,24 +129,25 @@ self.getRecipeImageForId = function (id, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'GET',
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/recipes/' + id + '/image'
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/recipes/' + id + '/image',
+        function (err, options) {
+            options.encoding = null;
+
+            request(options, function (e, r, data) {
+                var err = logger.logRequestAndResponse(e, options, r, data);
+
+                callback(err, {
+                    imageBuffer: data,
+                    contentType: r.headers['content-type']
+                });
+            });
+        }
     );
-
-    options.encoding = null;
-
-    request(options, function (e, r, data) {
-        var err = logger.logRequestAndResponse(e, options, r, data);
-
-        callback(err, {
-            imageBuffer: data,
-            contentType: r.headers['content-type']
-        });
-    });
 };
 
 self.getUserForId = function (id, callback) {
@@ -153,22 +159,24 @@ self.getUserForId = function (id, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/users/' + id
-    );
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/users/' + id,
+        function (err, options) {
+            request(options, function (e, r, jsonData) {
+                var err = logger.logRequestAndResponse(e, options, r, jsonData);
+                var user;
+                if (helper.isObject(jsonData)) {
+                    //TODO: Parse json data into objects to validate the content
+                    user = jsonData;
+                }
 
-    request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
-        var user;
-        if (helper.isObject(jsonData)) {
-            //TODO: Parse json data into objects to validate the content
-            user = jsonData;
+                callback(err, user);
+            });
+
         }
-
-        callback(err, user);
-    });
+    );
 };
 
 self.getUserImageForId = function (id, callback) {
@@ -178,24 +186,25 @@ self.getUserImageForId = function (id, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'GET',
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/users/' + id + '/image'
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/users/' + id + '/image',
+        function (err, options) {
+            options.encoding = null;
+
+            request(options, function (e, r, data) {
+                var err = logger.logRequestAndResponse(e, options, r.data);
+
+                callback(err, {
+                    imageBuffer: data,
+                    contentType: r.headers['content-type']
+                });
+            });
+        }
     );
-
-    options.encoding = null;
-
-    request(options, function (e, r, data) {
-        var err = logger.logRequestAndResponse(e, options, r. data);
-
-        callback(err, {
-            imageBuffer: data,
-            contentType: r.headers['content-type']
-        });
-    });
 };
 
 self.requestOfferForOrders = function (hsmId, orderList, callback) {
@@ -205,31 +214,31 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'POST',
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/offers'
-    );
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/offers',
+        function (err, options) {
+            options.body = {
+                items: orderList,
+                hsmId: hsmId
+            };
 
+            request(options, function (e, r, jsonData) {
+                var err = logger.logRequestAndResponse(e, options, r, jsonData);
+                var offer;
 
-    options.body = {
-        items: orderList,
-        hsmId: hsmId
-    };
+                if (helper.isObject(jsonData)) {
+                    //TODO: Parse json data into objects to validate the content
+                    offer = jsonData;
+                }
 
-    request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
-        var offer;
-
-        if (helper.isObject(jsonData)) {
-            //TODO: Parse json data into objects to validate the content
-            offer = jsonData;
+                callback(err, offer);
+            });
         }
-
-        callback(err, offer);
-    });
+    );
 };
 
 self.getOfferForId = function (id, callback) {
@@ -239,24 +248,25 @@ self.getOfferForId = function (id, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'GET',
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/offers/' + id
-    );
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/offers/' + id,
+        function (err, options) {
+            request(options, function (e, r, jsonData) {
+                var err = logger.logRequestAndResponse(e, options, r, jsonData);
+                var offer;
+                if (helper.isObject(jsonData)) {
+                    //TODO: Parse json data into objects to validate the content
+                    offer = jsonData;
+                }
 
-    request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, options, r, jsonData);
-        var offer;
-        if (helper.isObject(jsonData)) {
-            //TODO: Parse json data into objects to validate the content
-            offer = jsonData;
+                callback(err, offer);
+            });
         }
-
-        callback(err, offer);
-    });
+    );
 };
 
 self.savePaymentForOffer = function (offerId, bip70, callback) {
@@ -266,23 +276,24 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'POST',
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/offers/' + offerId + '/payment'
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/offers/' + offerId + '/payment',
+        function (err, options) {
+            options.body = {
+                paymentBIP70: bip70
+            };
+
+            request(options, function (e, r, jsonData) {
+                var err = logger.logRequestAndResponse(e, r, jsonData);
+
+                callback(err);
+            });
+        }
     );
-
-    options.body = {
-        paymentBIP70: bip70
-    };
-
-    request(options, function (e, r, jsonData) {
-        var err = logger.logRequestAndResponse(e, r, jsonData);
-
-        callback(err);
-    });
 };
 
 module.exports = self;
