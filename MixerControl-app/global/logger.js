@@ -1,8 +1,10 @@
 /**
  * Created by beuttlerma on 02.12.16.
+ *
+ * Example usage:
+ *  var logger = require('../global/logger');
+ *  logger.debug('Foo');
  */
-
-
 var winston = require('winston');
 var config = require('../config/config_loader');
 
@@ -41,6 +43,11 @@ winston.addColors(customColors);
 //Logging wrapper, to remove "unknown function" warnings
 var origLog = logger.log;
 logger.log = function (level, msg) {
+    if (arguments.length > 2) {
+        for (var i = 2; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     if (!msg) {
         msg = level;
         level = 'info';
@@ -50,26 +57,51 @@ logger.log = function (level, msg) {
 
 var origFatal = logger.fatal;
 logger.fatal = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origFatal.call(logger, msg);
 };
 
 var origCrit = logger.crit;
 logger.crit = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origCrit.call(logger, msg);
 };
 
 var origWarn = logger.warn;
 logger.warn = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origWarn.call(logger, msg);
 };
 
 var origInfo = logger.info;
 logger.info = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origInfo.call(logger, msg);
 };
 
 var origDebug = logger.debug;
 logger.debug = function (msg) {
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            msg += ' ' + JSON.stringify(arguments[i]);
+        }
+    }
     origDebug.call(logger, msg);
 };
 
@@ -80,23 +112,17 @@ logger.trace = function (msg) {
     if (objType === '[object Error]') {
         origTrace.call(logger, msg);
     } else {
+        if (arguments.length > 1) {
+            for (var i = 1; i < arguments.length; i++) {
+                msg += ' ' + JSON.stringify(arguments[i]);
+            }
+        }
         origTrace.call(logger, new Error(msg));
     }
 };
 
 
-/**
- * Custom log function for the request module.
- * Logs the output and error messages from responses.
- *
- * Wraps the logger output within an error object in case of a unsuccessful request.
- *
- * @param err
- * @param options
- * @param res
- * @param data
- * @returns {Error}
- */
+// Custom log method for request responses
 logger.logRequestAndResponse = function (err, options, res, data) {
 
     var loggerOutput = {};
@@ -131,9 +157,4 @@ logger.logRequestAndResponse = function (err, options, res, data) {
     return null;
 };
 
-
-/**
- Exports an instance of a winston logger with the additional members described below.
- @see {@link https://github.com/winstonjs/winston}
- */
 module.exports = logger;
