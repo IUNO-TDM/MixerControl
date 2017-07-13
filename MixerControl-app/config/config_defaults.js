@@ -15,6 +15,11 @@ self.HOST_SETTINGS = {
         HOST: 'tdm-jms.axoom.cloud',
         PORT: 443,
         METHOD: 'https'
+    },
+    OAUTH_SERVER: {
+        HOST: 'localhost',
+        PORT: 3005,
+        METHOD: 'https'
     }
 };
 
@@ -40,5 +45,13 @@ self.STD_INGREDIENT_AMOUNT = [
     1000,
     1000
 ];
+
+self.OAUTH_CREDENTIALS = {
+    CLIENT_ID: '',
+    CLIENT_SECRET: ''
+};
+
+self.USER_UUID = '';
+
 
 module.exports = self;

@@ -15,15 +15,26 @@ const authServer = require('../connectors/auth_service_connector');
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs, callback) {
 
-    callback(null, {
-        method: method,
-        url: protocol + '://' + host + ':' + port + path,
-        qs: qs,
-        json: true,
-        headers: {
-            'Content-Type': 'application/json'
+    authServer.getAccessToken(function (err, token) {
+
+        if (err) {
+            logger.crit(err);
         }
-    });
+        else {
+            qs.accessToken = token.accessToken;
+            qs.userUUID = CONFIG.USER_UUID;
+        }
+
+        callback(err, {
+            method: method,
+            url: protocol + '://' + host + ':' + port + path,
+            qs: qs,
+            json: true,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    })
 }
 
 
@@ -44,6 +55,9 @@ self.getAllRecipes = function (callback) {
         '/recipes',
         {'components': component_uuids},
         function (err, options) {
+            if (err) {
+                return callback(err);
+            }
             request(options, function (e, r, jsonData) {
                 var err = logger.logRequestAndResponse(e, options, r, jsonData);
                 var recipes;
