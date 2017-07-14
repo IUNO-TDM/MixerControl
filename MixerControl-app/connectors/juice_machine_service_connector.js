@@ -120,6 +120,7 @@ self.getRecipeForId = function (id, callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes/' + id,
+        {},
         function (err, options) {
             request(options, function (e, r, jsonData) {
                 logger.logRequestAndResponse(e, options, r, jsonData);
@@ -150,6 +151,7 @@ self.getRecipeImageForId = function (id, callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes/' + id + '/image',
+        {},
         function (err, options) {
             options.encoding = null;
 
@@ -178,6 +180,7 @@ self.getUserForId = function (id, callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/users/' + id,
+        {},
         function (err, options) {
             request(options, function (e, r, jsonData) {
                 var err = logger.logRequestAndResponse(e, options, r, jsonData);
@@ -207,6 +210,7 @@ self.getUserImageForId = function (id, callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/users/' + id + '/image',
+        {},
         function (err, options) {
             options.encoding = null;
 
@@ -235,6 +239,7 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/offers',
+        {},
         function (err, options) {
             options.body = {
                 items: orderList,
@@ -269,6 +274,7 @@ self.getOfferForId = function (id, callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/offers/' + id,
+        {},
         function (err, options) {
             request(options, function (e, r, jsonData) {
                 var err = logger.logRequestAndResponse(e, options, r, jsonData);
@@ -297,6 +303,7 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/offers/' + offerId + '/payment',
+        {},
         function (err, options) {
             options.body = {
                 paymentBIP70: bip70
