@@ -21,7 +21,6 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs, callback
             logger.crit(err);
         }
         else {
-            qs.accessToken = token.accessToken;
             qs.userUUID = CONFIG.USER_UUID;
         }
 
@@ -31,6 +30,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs, callback
             qs: qs,
             json: true,
             headers: {
+                'Authorization': 'Bearer ' + token.accessToken,
                 'Content-Type': 'application/json'
             }
         });
@@ -88,6 +88,7 @@ self.getAllComponents = function (callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/components',
+        {},
         function (err, options) {
             request(options, function (e, r, jsonData) {
 
