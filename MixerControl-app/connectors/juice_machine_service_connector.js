@@ -30,7 +30,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs, callback
             qs: qs,
             json: true,
             headers: {
-                'Authorization': 'Bearer ' + token.accessToken,
+                'Authorization': 'Bearer ' + (token ? token.accessToken : ''),
                 'Content-Type': 'application/json'
             }
         });
