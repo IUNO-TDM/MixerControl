@@ -13,7 +13,7 @@ const license_service = new LicenseService();
 util.inherits(LicenseService, EventEmitter);
 
 license_service.socket = io.connect(CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE
-        .METHOD+'://' + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
+        .PROTOCOL+'://' + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
     + ":" + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT +  "/licenses");
 
 license_service.socket.on('connect', function(){

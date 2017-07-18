@@ -41,7 +41,7 @@ self.getAccessToken = function (callback) {
 
     var options = buildOptionsForRequest(
         'POST',
-        CONFIG.HOST_SETTINGS.OAUTH_SERVER.METHOD,
+        CONFIG.HOST_SETTINGS.OAUTH_SERVER.PROTOCOL,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/oauth/token',

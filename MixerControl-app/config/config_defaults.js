@@ -12,14 +12,14 @@ self.DATABASE_NAME = 'MIXERCONTROL_DB';
 self.LOG_LEVEL = 'debug';
 self.HOST_SETTINGS = {
     JUICE_MACHINE_SERVICE: {
-        HOST: 'tdm-jms.axoom.cloud',
-        PORT: 443,
-        METHOD: 'https'
+        HOST: 'localhost',
+        PORT: 3001,
+        PROTOCOL: 'http'
     },
     OAUTH_SERVER: {
         HOST: 'localhost',
         PORT: 3005,
-        METHOD: 'https'
+        PROTOCOL: 'http'
     }
 };
 

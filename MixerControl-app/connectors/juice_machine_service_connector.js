@@ -49,7 +49,7 @@ self.getAllRecipes = function (callback) {
 
     buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes',
@@ -84,7 +84,7 @@ self.getAllComponents = function (callback) {
 
     buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/components',
@@ -116,7 +116,7 @@ self.getRecipeForId = function (id, callback) {
 
     buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes/' + id,
@@ -147,7 +147,7 @@ self.getRecipeImageForId = function (id, callback) {
 
     buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes/' + id + '/image',
@@ -176,7 +176,7 @@ self.getUserForId = function (id, callback) {
 
     var options = buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/users/' + id,
@@ -206,7 +206,7 @@ self.getUserImageForId = function (id, callback) {
 
     buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/users/' + id + '/image',
@@ -235,7 +235,7 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
 
     buildOptionsForRequest(
         'POST',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/offers',
@@ -270,7 +270,7 @@ self.getOfferForId = function (id, callback) {
 
     buildOptionsForRequest(
         'GET',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/offers/' + id,
@@ -299,7 +299,7 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
 
     buildOptionsForRequest(
         'POST',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.METHOD,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/offers/' + offerId + '/payment',
