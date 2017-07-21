@@ -8,7 +8,7 @@ var CONFIG = require('../config/config_loader');
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 const http = require('http');
-var jms_connector = require('../connectors/juice_machine_service_connector');
+var jms_connector = require('../adapter/juice_machine_service_adapter');
 const async = require('async');
 var storage = require('node-persist');
 

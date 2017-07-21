@@ -6,7 +6,7 @@ var cache = require('../services/cache_middleware');
 
 
 
-var jms_connector = require('../connectors/juice_machine_service_connector');
+var jms_connector = require('../adapter/juice_machine_service_adapter');
 
 
 

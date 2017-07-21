@@ -8,7 +8,7 @@ var production_queue = require('../models/production_queue');
 var pumpcontrol_service = require('../services/pumpcontrol_service');
 
 const async = require('async');
-var jms_connector = require('../connectors/juice_machine_service_connector');
+var jms_connector = require('../adapter/juice_machine_service_adapter');
 router.post('/production/startConfirm', function (req, res, next) {
     production_queue.startConfirmed();
     res.sendStatus(200);

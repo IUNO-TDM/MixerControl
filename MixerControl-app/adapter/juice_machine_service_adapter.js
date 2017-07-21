@@ -11,7 +11,7 @@ var CONFIG = require('../config/config_loader');
 var helper = require('../services/helper_service');
 var component_uuids = require('../config/config_loader').STD_INGREDIENT_CONFIGURATION;
 
-const authServer = require('../connectors/auth_service_connector');
+const authServer = require('./auth_service_adapter');
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs, callback) {
 

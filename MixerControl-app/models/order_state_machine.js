@@ -4,7 +4,7 @@
 
 var machina = require('machina');
 var production_queue = require('../models/production_queue');
-var jms_connector = require('../connectors/juice_machine_service_connector');
+var jms_connector = require('../adapter/juice_machine_service_adapter');
 var logger = require('../global/logger');
 var payment_service = require('../services/payment_service');
 var orderDB = require('../database/orderDB');
