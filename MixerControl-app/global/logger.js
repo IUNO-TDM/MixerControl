@@ -147,7 +147,6 @@ logger.logRequestAndResponse = function (err, options, res, data) {
     }
     else if (res && res.statusCode > 201) {
         logger.warn(loggerOutput);
-        return new Error(JSON.stringify(loggerOutput, null, 4));
     }
     else {
         logger.debug(loggerOutput);

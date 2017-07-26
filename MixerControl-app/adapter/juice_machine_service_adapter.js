@@ -20,9 +20,6 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs, callback
         if (err) {
             logger.crit(err);
         }
-        else {
-            qs.userUUID = CONFIG.USER_UUID;
-        }
 
         callback(err, {
             method: method,
