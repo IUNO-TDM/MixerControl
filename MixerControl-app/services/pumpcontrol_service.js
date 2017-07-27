@@ -71,16 +71,20 @@ var initIngredients = function () {
                 storage.getItem('component' + item).then(
                     function (compId) {
                         const compName = componentNameForId(components,compId);
-                        updateIngredient(item, compName, function () {
-                            storage.getItem('amount' + item).then(
-                                function (amount) {
-                                    pumpcontrol_service.setPumpAmount(item,amount, function () {
-                                        callback();
+                        if (!compName) {
+                            storage.removeItem('component' + item);
+                        }
+                        else {
+                            updateIngredient(item, compName, function () {
+                                storage.getItem('amount' + item).then(
+                                    function (amount) {
+                                        pumpcontrol_service.setPumpAmount(item,amount, function () {
+                                            callback();
+                                        });
                                     });
-                                });
-                        });
+                            });
+                        }
                     });
-
             });
         }
     });
