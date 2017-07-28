@@ -20,6 +20,16 @@ self.HOST_SETTINGS = {
         HOST: 'localhost',
         PORT: 3005,
         PROTOCOL: 'http'
+    },
+    PAYMENT_SERVICE: {
+        HOST: 'localhost',
+        PORT: 8080,
+        PROTOCOL: 'http'
+    },
+    PUMP_CONTROL: {
+        HOST: 'localhost',
+        PORT: 9002,
+        PROTOCOL: 'http'
     }
 };
 
