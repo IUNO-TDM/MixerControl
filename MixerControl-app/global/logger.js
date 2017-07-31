@@ -125,7 +125,7 @@ logger.trace = function (msg) {
 // Custom log method for request responses
 logger.logRequestAndResponse = function (err, options, res, data) {
 
-    var loggerOutput = {};
+    let loggerOutput = {};
 
     if (options) {
         loggerOutput.options = options;
@@ -142,6 +142,10 @@ logger.logRequestAndResponse = function (err, options, res, data) {
 
     if (err) {
         loggerOutput.err = err;
+        logger.crit(loggerOutput);
+        return new Error(JSON.stringify(loggerOutput, null, 4));
+    }
+    else if (res && res.statusCode === 500) {
         logger.crit(loggerOutput);
         return new Error(JSON.stringify(loggerOutput, null, 4));
     }
