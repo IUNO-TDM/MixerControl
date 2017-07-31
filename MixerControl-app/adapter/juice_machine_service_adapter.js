@@ -244,10 +244,10 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
             };
 
             request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var offer;
+                let err = logger.logRequestAndResponse(e, options, r, jsonData);
+                let offer;
 
-                if (helper.isObject(jsonData)) {
+                if (!err && helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     offer = jsonData;
                 }

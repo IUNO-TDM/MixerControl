@@ -262,7 +262,7 @@ wsclient.on('connectFailed', function (errorDescription) {
     state_machine.connectFail();
 });
 wsclient.on('httpResponse', function (response, webSocketClient) {
-    console.log('Got HTTP Response: ' + response);
+    console.log('[PumpControl] Got HTTP Response: ' + response);
 });
 
 state_machine.on('transition', function (data) {

@@ -19,8 +19,10 @@ var self = {
     isArray: function isArray(a) {
         return (!!a) && (a.constructor === Array);
     },
-    formatString: function (string, arguments) {
-        return string.format(arguments);
+    formatString: function (string) {
+        var args = [].slice.call(arguments);
+        args.shift();
+        return string.format(...args);
     }
 };
 

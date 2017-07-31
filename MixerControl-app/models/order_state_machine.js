@@ -43,9 +43,9 @@ var stateMachine = new machina.BehavioralFsm({
                     //TODO: Parse result into object before using it
                     client.offerId = offer.id;
                     client.invoice = offer.invoice;
-                    var totalAmount = 0;
-                    for (var key in client.invoice.transfers) {
-                        var transfer = client.invoice.transfers[key];
+                    let totalAmount = 0;
+                    for (let key in client.invoice.transfers) {
+                        let transfer = client.invoice.transfers[key];
                         totalAmount += transfer.coin;
                     }
                     client.invoice.totalAmount = client.recipe.retailPrice;
