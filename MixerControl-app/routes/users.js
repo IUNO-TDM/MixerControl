@@ -33,7 +33,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 
-router.get('/:id/image', cache(60*60), function (req, res, next) {
+router.get('/:id/image', function (req, res, next) {
     var userId = req.params['id'];
 
     jms_connector.getUserImageForId(userId, function (err, data) {
