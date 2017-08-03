@@ -50,7 +50,7 @@ router.get('/:id', function (req, res, next) {
     });
 });
 
-router.get('/:id/image', cache(60*60), function (req, res, next) {
+router.get('/:id/image', function (req, res, next) {
     var recipeId = req.params['id'];
 
     jms_connector.getRecipeImageForId(recipeId, function (err, data) {
