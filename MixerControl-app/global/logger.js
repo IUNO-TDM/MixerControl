@@ -21,12 +21,12 @@ var customColors = {
 var logger = new (winston.Logger)({
     colors: customColors,
     levels: {
-        fatal: 5,
-        crit: 4,
+        fatal: 1,
+        crit: 2,
         warn: 3,
-        info: 2,
-        debug: 1,
-        trace: 0
+        info: 4,
+        debug: 5,
+        trace: 6
     },
     transports: [
         new (winston.transports.Console)({
