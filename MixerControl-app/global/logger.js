@@ -21,12 +21,12 @@ var customColors = {
 var logger = new (winston.Logger)({
     colors: customColors,
     levels: {
-        fatal: 0,
-        crit: 1,
-        warn: 2,
-        info: 3,
-        debug: 4,
-        trace: 5
+        fatal: 5,
+        crit: 4,
+        warn: 3,
+        info: 2,
+        debug: 1,
+        trace: 0
     },
     transports: [
         new (winston.transports.Console)({
@@ -125,7 +125,7 @@ logger.trace = function (msg) {
 // Custom log method for request responses
 logger.logRequestAndResponse = function (err, options, res, data) {
 
-    var loggerOutput = {};
+    let loggerOutput = {};
 
     if (options) {
         loggerOutput.options = options;
@@ -145,9 +145,12 @@ logger.logRequestAndResponse = function (err, options, res, data) {
         logger.crit(loggerOutput);
         return new Error(JSON.stringify(loggerOutput, null, 4));
     }
+    else if (res && res.statusCode === 500) {
+        logger.crit(loggerOutput);
+        return new Error(JSON.stringify(loggerOutput, null, 4));
+    }
     else if (res && res.statusCode > 201) {
         logger.warn(loggerOutput);
-        return new Error(JSON.stringify(loggerOutput, null, 4));
     }
     else {
         logger.debug(loggerOutput);

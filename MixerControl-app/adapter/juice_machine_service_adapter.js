@@ -11,7 +11,7 @@ var CONFIG = require('../config/config_loader');
 var helper = require('../services/helper_service');
 var component_uuids = require('../config/config_loader').STD_INGREDIENT_CONFIGURATION;
 
-const authServer = require('../connectors/auth_service_connector');
+const authServer = require('./auth_service_adapter');
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs, callback) {
 
@@ -19,9 +19,6 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs, callback
 
         if (err) {
             logger.crit(err);
-        }
-        else {
-            qs.userUUID = CONFIG.USER_UUID;
         }
 
         callback(err, {
@@ -247,10 +244,10 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
             };
 
             request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var offer;
+                let err = logger.logRequestAndResponse(e, options, r, jsonData);
+                let offer;
 
-                if (helper.isObject(jsonData)) {
+                if (!err && helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     offer = jsonData;
                 }

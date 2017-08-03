@@ -6,7 +6,7 @@ var cache = require('../services/cache_middleware');
 
 
 
-var jms_connector = require('../connectors/juice_machine_service_connector');
+var jms_connector = require('../adapter/juice_machine_service_adapter');
 
 
 
@@ -50,7 +50,7 @@ router.get('/:id', function (req, res, next) {
     });
 });
 
-router.get('/:id/image', cache(60*60), function (req, res, next) {
+router.get('/:id/image', function (req, res, next) {
     var recipeId = req.params['id'];
 
     jms_connector.getRecipeImageForId(recipeId, function (err, data) {

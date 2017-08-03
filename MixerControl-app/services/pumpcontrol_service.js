@@ -5,11 +5,14 @@
 var WebSocketClient = require('websocket').client;
 var machina = require('machina');
 var CONFIG = require('../config/config_loader');
+
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 const http = require('http');
-var jms_connector = require('../connectors/juice_machine_service_connector');
 const async = require('async');
+const helper = require('../services/helper_service');
+
+var jms_connector = require('../adapter/juice_machine_service_adapter');
 var storage = require('node-persist');
 
 
@@ -71,16 +74,20 @@ var initIngredients = function () {
                 storage.getItem('component' + item).then(
                     function (compId) {
                         const compName = componentNameForId(components,compId);
-                        updateIngredient(item, compName, function () {
-                            storage.getItem('amount' + item).then(
-                                function (amount) {
-                                    pumpcontrol_service.setPumpAmount(item,amount, function () {
-                                        callback();
+                        if (!compName) {
+                            storage.removeItem('component' + item);
+                        }
+                        else {
+                            updateIngredient(item, compName, function () {
+                                storage.getItem('amount' + item).then(
+                                    function (amount) {
+                                        pumpcontrol_service.setPumpAmount(item,amount, function () {
+                                            callback();
+                                        });
                                     });
-                                });
-                        });
+                            });
+                        }
                     });
-
             });
         }
     });
@@ -89,7 +96,7 @@ var initIngredients = function () {
 var componentNameForId = function(components,id){
     for(var i = 0 ; i < components.length; i++)
     {
-        if(components[i].id == id){
+        if(components[i].id === id){
             return components[i].name;
         }
     }
@@ -98,8 +105,8 @@ var componentNameForId = function(components,id){
 
 var updateIngredient = function(pumpNumber, ingredient, callback){
     var options = {
-        hostname: 'localhost',
-        port: 9002,
+        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
+        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
         path: '/ingredients/' + pumpNumber,
         agent: false,
         method: 'PUT'
@@ -112,8 +119,8 @@ var updateIngredient = function(pumpNumber, ingredient, callback){
 };
 var updatePumpAmount = function (pumpNumber, amount, callback) {
     var options = {
-        hostname: 'localhost',
-        port: 9002,
+        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
+        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
         path: '/ingredients/' + pumpNumber + '/amount',
         agent: false,
         method: 'PUT'
@@ -139,7 +146,10 @@ var state_machine = new machina.Fsm({
         },
         connecting: {
             _onEnter: function () {
-                wsclient.connect('http://localhost:9002', null, null, null);
+                wsclient.connect(helper.formatString('{0}://{1}:{2}',
+                    CONFIG.HOST_SETTINGS.PUMP_CONTROL.PROTOCOL,
+                    CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
+                    CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT), null, null, null);
             },
             connectFail: "connectionFailed",
             connectSuccess: "connected",
@@ -209,7 +219,7 @@ pumpcontrol_service.pumpcontrolmode = "";
 
 var onWebSocketMessage = function (message) {
 
-    if (message.type == 'utf8') {
+    if (message.type === 'utf8') {
         var messageObject = JSON.parse(message.utf8Data);
         if (messageObject.hasOwnProperty('mode')) {
             pumpcontrol_service.emit('pumpControlMode', messageObject.mode);
@@ -252,7 +262,7 @@ wsclient.on('connectFailed', function (errorDescription) {
     state_machine.connectFail();
 });
 wsclient.on('httpResponse', function (response, webSocketClient) {
-    console.log('Got HTTP Response: ' + response);
+    console.log('[PumpControl] Got HTTP Response: ' + response);
 });
 
 state_machine.on('transition', function (data) {
@@ -270,10 +280,10 @@ pumpcontrol_service.setServiceMode = function (on) {
     } else {
         body = 'false';
     }
-    ;
+
     var options = {
-        hostname: 'localhost',
-        port: 9002,
+        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
+        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
         path: '/service',
         agent: false,
         method: 'PUT'
@@ -290,10 +300,10 @@ pumpcontrol_service.setServicePump = function (pumpNumber, on) {
     } else {
         body = 'false';
     }
-    ;
+
     var options = {
-        hostname: 'localhost',
-        port: 9002,
+        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
+        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
         path: '/service/pumps/' + pumpNumber,
         agent: false,
         method: 'PUT'
@@ -305,8 +315,8 @@ pumpcontrol_service.setServicePump = function (pumpNumber, on) {
 };
 pumpcontrol_service.getPumpList = function (callback) {
     var options = {
-        hostname: 'localhost',
-        port: 9002,
+        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
+        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
         path: '/pumps',
         agent: false,
         method: 'GET'
@@ -322,8 +332,8 @@ pumpcontrol_service.getPumpList = function (callback) {
 };
 pumpcontrol_service.getIngredient = function (pumpNumber, callback) {
     var options = {
-        hostname: 'localhost',
-        port: 9002,
+        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
+        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
         path: '/ingredients/' + pumpNumber,
         agent: false,
         method: 'GET'
@@ -367,11 +377,12 @@ pumpcontrol_service.setPumpStandardAmount = function (pumpNumber, amount) {
 
 pumpcontrol_service.getPumpStandardAmount = function (pumpNumber) {
     return storage.getItemSync('amount' + pumpNumber);
-}
+};
+
 pumpcontrol_service.startProgram = function (program) {
     var options = {
-        hostname: 'localhost',
-        port: 9002,
+        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
+        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
         path: '/program',
         agent: false,
         method: 'PUT'

@@ -4,7 +4,7 @@
 
 var machina = require('machina');
 var production_queue = require('../models/production_queue');
-var jms_connector = require('../connectors/juice_machine_service_connector');
+var jms_connector = require('../adapter/juice_machine_service_adapter');
 var logger = require('../global/logger');
 var payment_service = require('../services/payment_service');
 var orderDB = require('../database/orderDB');
@@ -43,9 +43,9 @@ var stateMachine = new machina.BehavioralFsm({
                     //TODO: Parse result into object before using it
                     client.offerId = offer.id;
                     client.invoice = offer.invoice;
-                    var totalAmount = 0;
-                    for (var key in client.invoice.transfers) {
-                        var transfer = client.invoice.transfers[key];
+                    let totalAmount = 0;
+                    for (let key in client.invoice.transfers) {
+                        let transfer = client.invoice.transfers[key];
                         totalAmount += transfer.coin;
                     }
                     client.invoice.totalAmount = client.recipe.retailPrice;

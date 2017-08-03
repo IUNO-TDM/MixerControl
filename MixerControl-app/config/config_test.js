@@ -12,14 +12,14 @@ self.DATABASE_NAME = 'MIXERCONTROL_DB';
 self.LOG_LEVEL = 'debug';
 self.HOST_SETTINGS = {
     JUICE_MACHINE_SERVICE: {
-        HOST: 'localhost',
+        HOST: 'test-tdm.fritz.box',
         PORT: 3001,
         PROTOCOL: 'http'
     },
     OAUTH_SERVER: {
-        HOST: 'localhost',
+        HOST: 'test-tdm.fritz.box',
         PORT: 3005,
-        PROTOCOL: 'http'
+        PROTOCOL: 'https'
     },
     PAYMENT_SERVICE: {
         HOST: 'localhost',
@@ -57,11 +57,11 @@ self.STD_INGREDIENT_AMOUNT = [
 ];
 
 self.OAUTH_CREDENTIALS = {
-    CLIENT_ID: '',
-    CLIENT_SECRET: ''
+    CLIENT_ID: 'c28df0ac-7cab-40e4-ba78-4f9b49465767',
+    CLIENT_SECRET: '7b139abc-a176-478e-b1b0-aaf371f7ebea'
 };
 
-self.USER_UUID = '';
+self.USER_UUID = '168955dc-d057-4826-99ce-732c60c8f91e';
 
 
 module.exports = self;

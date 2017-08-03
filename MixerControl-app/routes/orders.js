@@ -10,7 +10,7 @@ var OrderDB = require('../database/orderDB');
 var pumpcontrol_service = require('../services/pumpcontrol_service');
 var osm = require('../models/order_state_machine');
 var production_queue = require('../models/production_queue');
-var jms_connector = require('../connectors/juice_machine_service_connector');
+var jms_connector = require('../adapter/juice_machine_service_adapter');
 var payment_service = require('../services/payment_service');
 var cache = require('../services/cache_middleware');
 
