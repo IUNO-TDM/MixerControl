@@ -23,11 +23,15 @@ var config = require('./config_defaults');
 if (process.env[ENV_NAME]) {
     console.info('Loading configuration file: ' + process.env[ENV_NAME]);
 
-    var customConfig = require('./' + process.env[ENV_NAME]);
-
-    // override default values from custom configuration
-    for (var key in customConfig) {
-        config[key] = customConfig[key];
+    try {
+        var customConfig = require('./' + process.env[ENV_NAME]);
+        // override default values from custom configuration
+        for (var key in customConfig) {
+            config[key] = customConfig[key];
+        }
+    }
+    catch (err) {
+        console.warn(err);
     }
 }
 else {
