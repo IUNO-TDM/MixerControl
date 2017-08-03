@@ -387,10 +387,15 @@ pumpcontrol_service.startProgram = function (program) {
         agent: false,
         method: 'PUT'
     };
-    var req = http.request(options, function (res) {
-            console.log(res.statusCode + ' ' + res.statusMessage);
-        }
-    ).end(JSON.stringify(program));
+    try {
+        var req = http.request(options, function (res) {
+                console.log(res.statusCode + ' ' + res.statusMessage);
+            }
+        ).end(JSON.stringify(program));
+    }
+    catch (err) {
+        logger.crit(err);
+    }
 };
 
 
