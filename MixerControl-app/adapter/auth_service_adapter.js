@@ -74,7 +74,7 @@ self.getAccessToken = function (callback) {
             return;
         }
 
-        self.token = jsonData
+        self.token = jsonData.access_token;
         callback(null, self.token);
     });
 

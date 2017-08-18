@@ -39,3 +39,5 @@ jspm_packages
 private*
 
 public/scripts
+
+.DS_Store
