@@ -11,6 +11,7 @@ const logger = require('../global/logger');
 const payment_service = require('../services/payment_service');
 const orderDB = require('../database/orderDB');
 const license_service = require('../services/license_service');
+const licenseManager = require('../adapter/license_manager_adapter');
 const stateMachine = new machina.BehavioralFsm({
     initialize: function (options) {
         // your setup code goes here...
@@ -92,7 +93,7 @@ const stateMachine = new machina.BehavioralFsm({
             paymentArrived: "waitingLicense",
             licenseArrived: function (client) {
                 this.deferUntilTransition(client);
-                this.transition(client,'waitingLicense' );
+                this.transition(client, 'waitingLicense');
 
             }
         },
@@ -219,6 +220,7 @@ payment_service.on('StateChange', function (state) {
     }
 
 });
+
 const getOrderWithOfferId = function (offerId) {
     const orderDict = orderDB.getOrders();
     for (var key in orderDict) {
@@ -232,13 +234,30 @@ const getOrderWithOfferId = function (offerId) {
     return undefined;
 };
 
-//TODO change, when licenses can be downloaded. This is too early...
 license_service.on('updateAvailable', function (offerId, hsmId) {
+
     const order = getOrderWithOfferId(offerId);
     if (order) {
-        stateMachine.licenseArrived(order);
-    }
+        licenseManager.getContextForHsmId(hsmId, function (err, context) {
+            if (err || !context) {
+                return logger.crit('[order_state_machine] could not get context from license manager');
+            }
 
+            jms_connector.getLicenseUpdate(hsmId, context, function (err, update) {
+                if (err || !context) {
+                    return logger.crit('[order_state_machine] could not get license update from webservice');
+                }
+
+                licenseManager.updateHsm(hsmId, update, function (err, success) {
+                    if (err || !success) {
+                        return logger.crit('[order_state_machine] could not update hsm on license manager');
+                    }
+
+                    stateMachine.licenseArrived(order);
+                })
+            })
+        });
+    }
 });
 
 module.exports = stateMachine;

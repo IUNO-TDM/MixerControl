@@ -30,6 +30,11 @@ self.HOST_SETTINGS = {
         HOST: 'localhost',
         PORT: 9002,
         PROTOCOL: 'http'
+    },
+    LICENSE_MANAGER: {
+        HOST: 'localhost',
+        PORT: 11432,
+        PROTOCOL: 'http'
     }
 };
 

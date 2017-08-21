@@ -3,15 +3,15 @@
  */
 
 
-var self = {};
+const self = {};
 
-var request = require('request');
-var logger = require('../global/logger');
-var CONFIG = require('../config/config_loader');
-var helper = require('../services/helper_service');
-var component_uuids = require('../config/config_loader').STD_INGREDIENT_CONFIGURATION;
-
+const request = require('request');
+const logger = require('../global/logger');
+const CONFIG = require('../config/config_loader');
+const helper = require('../services/helper_service');
+const component_uuids = require('../config/config_loader').STD_INGREDIENT_CONFIGURATION;
 const authServer = require('./auth_service_adapter');
+
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs, callback) {
 
@@ -310,6 +310,37 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
                 var err = logger.logRequestAndResponse(e, r, jsonData);
 
                 callback(err);
+            });
+        }
+    );
+};
+
+self.getLicenseUpdate = function(hsmId, context, callback) {
+    if (typeof(callback) !== 'function') {
+        return logger.info('[juice_machine_service_adapter] Callback not registered');
+    }
+
+    if (!hsmId || !context) {
+        return logger.info('[juice_machine_service_adapter] Missing function arguments');
+    }
+
+    buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/cmdongle/' + hsmId + '/update',
+        {},
+        function (err, options) {
+
+            options.body = {
+                RAC: context
+            };
+
+            request(options, function (e, r, jsonData) {
+                const err = logger.logRequestAndResponse(e, options, r, jsonData);
+
+                callback(err, jsonData['RAU']);
             });
         }
     );
