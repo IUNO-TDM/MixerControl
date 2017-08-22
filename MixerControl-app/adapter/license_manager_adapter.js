@@ -30,7 +30,7 @@ self.getContextForHsmId = function (hsmId, callback) {
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PROTOCOL,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.HOST,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PORT,
-        '/cmdongle/' + hsmId + '/context',
+        '/cmdongles/' + hsmId + '/context',
         {},
         function (err, options) {
             request(options, function (e, r, context) {
@@ -56,7 +56,7 @@ self.updateHsm = function (hsmId, update, callback) {
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PROTOCOL,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.HOST,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PORT,
-        '/cmdongle/' + hsmId + '/update',
+        '/cmdongles/' + hsmId + '/update',
         {},
         function (err, options) {
 
@@ -114,7 +114,7 @@ self.getHsmId = function(callback) {
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PROTOCOL,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.HOST,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PORT,
-        '/cmdongle',
+        '/cmdongles',
         {},
         function (err, options) {
             request(options, function (e, r, data) {
