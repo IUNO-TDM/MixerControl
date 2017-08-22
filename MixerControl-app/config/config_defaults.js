@@ -68,8 +68,6 @@ self.OAUTH_CREDENTIALS = {
 
 self.USER_UUID = '';
 
-self.HSM_ID = 'TW552HSM';
-
 self.RETAIL_PRICE = 5 * 100000; //1 IUNO = 100.000 satoshi
 
 

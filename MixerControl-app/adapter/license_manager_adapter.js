@@ -1,7 +1,9 @@
 const logger = require('../global/logger');
 const CONFIG = require('../config/config_loader');
 const request = require('request');
-const self = {};
+const self = {
+    _hsmId: null,
+};
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
@@ -93,6 +95,38 @@ self.getLicenseInformationForHsm = function (productCode, callback) {
                 const err = logger.logRequestAndResponse(e, options, r, data);
 
                 callback(err, data);
+            });
+        }
+    );
+};
+
+self.getHsmId = function(callback) {
+    if (self._hsmId) {
+        return callback(self._hsmId);
+    }
+
+    if (typeof(callback) !== 'function') {
+        return logger.crit('[license_manager_adapter] missing callback');
+    }
+
+    buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PROTOCOL,
+        CONFIG.HOST_SETTINGS.LICENSE_MANAGER.HOST,
+        CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PORT,
+        '/cmdongle',
+        {},
+        function (err, options) {
+            request(options, function (e, r, data) {
+                const err = logger.logRequestAndResponse(e, options, r, data);
+
+                let hsmId = null;
+                if (data && data.length) {
+                    hsmId = data[0];
+                }
+
+                self._hsmId = hsmId;
+                callback(err, self._hsmId);
             });
         }
     );
