@@ -3,7 +3,7 @@
  */
 
 
-var self = {};
+const self = {};
 
 
 // ---- CONFIGURATION EXPORT ----
@@ -29,6 +29,11 @@ self.HOST_SETTINGS = {
     PUMP_CONTROL: {
         HOST: 'localhost',
         PORT: 9002,
+        PROTOCOL: 'http'
+    },
+    LICENSE_MANAGER: {
+        HOST: 'localhost',
+        PORT: 11432,
         PROTOCOL: 'http'
     }
 };
@@ -62,6 +67,8 @@ self.OAUTH_CREDENTIALS = {
 };
 
 self.USER_UUID = '';
+
+self.RETAIL_PRICE = 5 * 100000; //1 IUNO = 100.000 satoshi
 
 
 module.exports = self;
