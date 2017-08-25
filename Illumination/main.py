@@ -5,6 +5,9 @@ import time
 
 endThreads = 0
 
+#####
+# Socket IO Client
+###
 class socketIoThread (threading.Thread):
     def __init__(self, name):
         threading.Thread.__init__(self)
@@ -15,6 +18,10 @@ class socketIoThread (threading.Thread):
             pass
         print "Exiting " + self.name
 
+#####
+# Dot Stars Animator
+###
+HZ = 50
 class dotStarsThread (threading.Thread):
     def __init__(self, name):
         threading.Thread.__init__(self)
@@ -22,7 +29,15 @@ class dotStarsThread (threading.Thread):
     def run(self):
         print "Starting " + self.name
         while not endThreads:
-            pass   
+            now = time.time()
+            frame = int(now * HZ)
+
+            # draw something
+
+            delay = float(int(now * HZ) + 1) / HZ - now
+            print frame, delay
+            time.sleep(delay)
+
         print "Exiting " + self.name
 
 threads = []
