@@ -18,14 +18,12 @@ var storage = require('node-persist');
 
 var pumpAmountWarnings = {};
 const clearAmountWarning = function (item) {
-    pumpAmountWarnings[item] = {'pumpNr':item, 'warningCleared':true}
+    pumpAmountWarnings[item] = {'pumpNr': item, 'warningCleared': true}
 };
 
-const pumpNumbers = [ 1, 2, 3, 4, 5, 6, 7, 8];
+const pumpNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
 
-pumpNumbers.forEach(clearAmountWarning );
-
-
+pumpNumbers.forEach(clearAmountWarning);
 
 
 var PumpControlService = function () {
@@ -35,25 +33,25 @@ var PumpControlService = function () {
 
 };
 
-var initStorage = function(){
+var initStorage = function () {
 
 
-    async.each(pumpNumbers, function iterate(item, callback){
+    async.each(pumpNumbers, function iterate(item, callback) {
         storage.getItem('component' + item).then(
             function (value) {
-                if(!value){
-                    storage.setItem('component' + item,CONFIG.STD_INGREDIENT_CONFIGURATION[item-1]);
-                    console.log("Set Component UUID for " + item + ": " + CONFIG.STD_INGREDIENT_CONFIGURATION[item-1]);
-                }else{
+                if (!value) {
+                    storage.setItem('component' + item, CONFIG.STD_INGREDIENT_CONFIGURATION[item - 1]);
+                    console.log("Set Component UUID for " + item + ": " + CONFIG.STD_INGREDIENT_CONFIGURATION[item - 1]);
+                } else {
                     console.log("Component UUID for " + item + ": " + value);
                 }
             });
         storage.getItem('amount' + item).then(
             function (value) {
-                if(!value){
-                    storage.setItem('amount' + item,CONFIG.STD_INGREDIENT_AMOUNT[item-1]);
-                    console.log("Set Amount for " + item + ": " + CONFIG.STD_INGREDIENT_AMOUNT[item-1]);
-                }else{
+                if (!value) {
+                    storage.setItem('amount' + item, CONFIG.STD_INGREDIENT_AMOUNT[item - 1]);
+                    console.log("Set Amount for " + item + ": " + CONFIG.STD_INGREDIENT_AMOUNT[item - 1]);
+                } else {
                     console.log("Amount for " + item + ": " + value);
                 }
             });
@@ -73,15 +71,14 @@ var initIngredients = function () {
             async.eachSeries(pumpNumbers, function (item, callback) {
                 storage.getItem('component' + item).then(
                     function (compId) {
-                        const compName = componentNameForId(components,compId);
-                        if (!compName) {
+                        if (!componentExists(components, compId)) {
                             storage.removeItem('component' + item);
                         }
                         else {
-                            updateIngredient(item, compName, function () {
+                            updateIngredient(item, compId, function () {
                                 storage.getItem('amount' + item).then(
                                     function (amount) {
-                                        pumpcontrol_service.setPumpAmount(item,amount, function () {
+                                        pumpcontrol_service.setPumpAmount(item, amount, function () {
                                             callback();
                                         });
                                     });
@@ -93,17 +90,16 @@ var initIngredients = function () {
     });
 };
 
-var componentNameForId = function(components,id){
-    for(var i = 0 ; i < components.length; i++)
-    {
-        if(components[i].id === id){
-            return components[i].name;
+var componentExists = function (components, id) {
+    for (var i = 0; i < components.length; i++) {
+        if (components[i].id === id) {
+            return true;
         }
     }
-    return undefined;
+    return false;
 };
 
-var updateIngredient = function(pumpNumber, ingredient, callback){
+var updateIngredient = function (pumpNumber, componentUUID, callback) {
     var options = {
         hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
         port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
@@ -115,7 +111,7 @@ var updateIngredient = function(pumpNumber, ingredient, callback){
             console.log(res.statusCode + ' ' + res.statusMessage);
             callback();
         }
-    ).end(ingredient);
+    ).end(componentUUID);
 };
 var updatePumpAmount = function (pumpNumber, amount, callback) {
     var options = {
@@ -351,7 +347,7 @@ pumpcontrol_service.setIngredient = function (pumpNumber, ingredient, callback) 
     storage.setItemSync('component' + pumpNumber, ingredient);
     jms_connector.getAllComponents(function (e, components) {
         if (!e) {
-            updateIngredient(pumpNumber,componentNameForId(components,ingredient),callback);
+            updateIngredient(pumpNumber, componentExists(components, ingredient), callback);
         }
     });
 
@@ -368,7 +364,7 @@ pumpcontrol_service.getPumpNumbers = function () {
 pumpcontrol_service.setPumpAmount = function (pumpNumber, amount, callback) {
     clearAmountWarning(pumpNumber);
     pumpcontrol_service.emit('amountWarning', pumpAmountWarnings[pumpNumber]);
-    updatePumpAmount(pumpNumber,amount,callback);
+    updatePumpAmount(pumpNumber, amount, callback);
 
 };
 pumpcontrol_service.setPumpStandardAmount = function (pumpNumber, amount) {
@@ -399,18 +395,17 @@ pumpcontrol_service.startProgram = function (program) {
 };
 
 
-pumpcontrol_service.getMode = function(){
+pumpcontrol_service.getMode = function () {
     return pumpcontrol_service.pumpcontrolmode;
 };
 
-pumpcontrol_service.getServiceState = function(){
+pumpcontrol_service.getServiceState = function () {
     return state_machine.compositeState();
 };
 
 pumpcontrol_service.getAmountWarnings = function () {
     return pumpAmountWarnings;
 };
-
 
 
 module.exports = pumpcontrol_service;
