@@ -92,9 +92,16 @@ var state_machine = new machina.Fsm({
         startProcessing: {
             _onEnter: function () {
                 if(queue[0]){
-                    var p = JSON.parse(queue[0].recipe.program);
-                    p.orderName = queue[0].orderName;
-                    pumpcontrol_service.startProgram(p);
+                    try{
+                        var p = JSON.parse(queue[0].recipe.program);
+                        p.orderName = queue[0].orderName;
+                        pumpcontrol_service.startProgram(p);
+                    }
+                    catch (err) {
+                        logger.crit(err);
+                        logger.crit('[production_queue] Program: ' + queue[0].recipe.program)
+                        this.transition("errorProcessing");
+                    }
                 } else {
                     this.transition("errorProcessing");
                 }

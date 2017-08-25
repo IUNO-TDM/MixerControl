@@ -2,14 +2,17 @@
  * Created by goergch on 25.01.17.
  */
 
-var machina = require('machina');
-var production_queue = require('../models/production_queue');
-var jms_connector = require('../adapter/juice_machine_service_adapter');
-var logger = require('../global/logger');
-var payment_service = require('../services/payment_service');
-var orderDB = require('../database/orderDB');
-var license_service = require('../services/license_service');
-var stateMachine = new machina.BehavioralFsm({
+const CONFIG = require('../config/config_loader');
+
+const machina = require('machina');
+const production_queue = require('../models/production_queue');
+const jms_connector = require('../adapter/juice_machine_service_adapter');
+const logger = require('../global/logger');
+const payment_service = require('../services/payment_service');
+const orderDB = require('../database/orderDB');
+const license_service = require('../services/license_service');
+const licenseManager = require('../adapter/license_manager_adapter');
+const stateMachine = new machina.BehavioralFsm({
     initialize: function (options) {
         // your setup code goes here...
     },
@@ -26,9 +29,9 @@ var stateMachine = new machina.BehavioralFsm({
         waitingOffer: {
             _onEnter: function (client) {
                 console.log("Ordernumber " + client.orderNumber + " is now state waitingOffer ");
-                license_service.registerUpdates('TW552HSM');
-                var self = this;
-                jms_connector.requestOfferForOrders("TW552HSM", [
+                license_service.registerUpdates(CONFIG.HSM_ID);
+                const self = this;
+                jms_connector.requestOfferForOrders(CONFIG.HSM_ID, [
                     {
                         recipeId: client.drinkId,
                         amount: 1
@@ -40,31 +43,18 @@ var stateMachine = new machina.BehavioralFsm({
 
                         return;
                     }
-                    //TODO: Parse result into object before using it
+
                     client.offerId = offer.id;
                     client.invoice = offer.invoice;
+
                     let totalAmount = 0;
                     for (let key in client.invoice.transfers) {
                         let transfer = client.invoice.transfers[key];
                         totalAmount += transfer.coin;
                     }
-                    client.invoice.totalAmount = client.recipe.retailPrice;
+                    client.invoice.totalAmount = payment_service.calculateRetailPriceForInvoice(client.invoice);
                     client.invoice.referenceId = client.orderNumber;
 
-                    //TODO replace, when marketplace api and paymentservice api are synchronous
-                    // var expDate = new Date();
-                    // expDate.setHours(expDate.getHours()+1);
-                    // const inv = {
-                    //     totalAmount: 100000,
-                    //     expiration: expDate,
-                    //     referenceId: client.orderNumber,
-                    //     transfers:[{
-                    //         address: 'mvGXYeuze85kyK1HJ443rVjotMCCvAaYkb',
-                    //         coin: 90000
-                    //     }]
-                    //
-                    // };
-                    // client.invoice = inv;
 
                     self.handle(client, "offerReceived");
 
@@ -103,7 +93,7 @@ var stateMachine = new machina.BehavioralFsm({
             paymentArrived: "waitingLicense",
             licenseArrived: function (client) {
                 this.deferUntilTransition(client);
-                this.transition(client,'waitingLicense' );
+                this.transition(client, 'waitingLicense');
 
             }
         },
@@ -203,39 +193,40 @@ var stateMachine = new machina.BehavioralFsm({
 
 production_queue.on('state', function (state, order) {
     if (typeof order !== 'undefined') {
-        if (state == 'waitingStart') {
+        if (state === 'waitingStart') {
             stateMachine.readyForProduction(order);
-        } else if (state == 'processingOrder') {
+        } else if (state === 'processingOrder') {
             stateMachine.productionStarted(order);
-        } else if (state == 'finished') {
+        } else if (state === 'finished') {
             stateMachine.productionFinished(order);
-        } else if (state == 'error') {
+        } else if (state === 'error') {
             stateMachine.productionFinished(order);
-        } else if (state == 'waitingPump' || state == 'productionPaused' || state == 'pumpControlServiceMode') {
+        } else if (state === 'waitingPump' || state === 'productionPaused' || state === 'pumpControlServiceMode') {
             stateMachine.productionPaused(order);
-        } else if (state == 'errorProcessing') {
+        } else if (state === 'errorProcessing') {
             stateMachine.error(order);
         }
     }
 });
 
 payment_service.on('StateChange', function (state) {
-    if (state.state == 'pending' || state.state == 'building') {
-        var orderNumber = state.referenceId;
-        var order = orderDB.getOrder(orderNumber);
-        if (order != undefined) {
+    if (state.state === 'pending' || state.state === 'building') {
+        const orderNumber = state.referenceId;
+        const order = orderDB.getOrder(orderNumber);
+        if (order !== undefined) {
             stateMachine.paymentArrived(order);
         }
 
     }
 
 });
-var getOrderWithOfferId = function (offerId) {
-    var orderDict = orderDB.getOrders();
-    for (var key in orderDict) {
-        var order = orderDict[key];
 
-        if (order.offerId == offerId) {
+const getOrderWithOfferId = function (offerId) {
+    const orderDict = orderDB.getOrders();
+    for (var key in orderDict) {
+        const order = orderDict[key];
+
+        if (order.offerId === offerId) {
             return order;
         }
     }
@@ -243,13 +234,30 @@ var getOrderWithOfferId = function (offerId) {
     return undefined;
 };
 
-//TODO change, when licenses can be downloaded. This is too early...
 license_service.on('updateAvailable', function (offerId, hsmId) {
-    var order = getOrderWithOfferId(offerId);
-    if (order) {
-        stateMachine.licenseArrived(order);
-    }
 
+    const order = getOrderWithOfferId(offerId);
+    if (order) {
+        licenseManager.getContextForHsmId(hsmId, function (err, context) {
+            if (err || !context) {
+                return logger.crit('[order_state_machine] could not get context from license manager');
+            }
+
+            jms_connector.getLicenseUpdate(hsmId, context, function (err, update) {
+                if (err || !context) {
+                    return logger.crit('[order_state_machine] could not get license update from webservice');
+                }
+
+                licenseManager.updateHsm(hsmId, update, function (err, success) {
+                    if (err || !success) {
+                        return logger.crit('[order_state_machine] could not update hsm on license manager');
+                    }
+
+                    stateMachine.licenseArrived(order);
+                })
+            })
+        });
+    }
 });
 
 module.exports = stateMachine;
