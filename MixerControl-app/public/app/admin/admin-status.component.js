@@ -20,11 +20,11 @@ var AdminStatusComponent = (function () {
     ;
     AdminStatusComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.pqStateConnection = this.socketService.get("/production", "state", "stateChange")
+        this.pqStateConnection = this.socketService.get("/production", "state", "state")
             .subscribe(function (state) { return _this.pqState = state; });
-        this.pcServiceStateConnection = this.socketService.get("/production", "pumpControlService", "stateChange")
+        this.pcServiceStateConnection = this.socketService.get("/production", "pumpControlService", "pumpControlServiceState")
             .subscribe(function (state) { return _this.pcServiceState = state; });
-        this.pcModeConnection = this.socketService.get("/production", "pumpControlMode", "modeChange")
+        this.pcModeConnection = this.socketService.get("/production", "pumpControlMode", "pumpControlMode")
             .subscribe(function (state) { return _this.pcMode = state; });
     };
     ;

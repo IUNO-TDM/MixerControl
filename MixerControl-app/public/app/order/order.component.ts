@@ -42,16 +42,6 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void{
 
-    // this.route.params.
-    // switchMap((params: Params) => this.socketService.get("/orders", params['id'], "state"))
-    //   .subscribe(state => {
-    //     this.orderState = state;
-    //   });
-    // this.route.params.
-    // switchMap((params: Params) => this.socketService.get("/orders", params['id'], "progress"))
-    //   .subscribe(progress => {
-    //     this.progress = progress['progress'];
-    //   });
 
     this.route.params.subscribe( params => {
           this.orderProgressConnection =

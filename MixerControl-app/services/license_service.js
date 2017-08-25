@@ -20,7 +20,7 @@ license_service.socket.on('connect', function(){
     logger.debug("connected to license SocketIO at Marketplace");
 });
 license_service.socket.on('connect_error', function(error){
-    logger.debug("Conncetion Error at license SocketIO at Marketplace: " + error);
+    logger.debug("Connection Error at license SocketIO at Marketplace: " + error);
 });
 
 license_service.socket.on('disconnect', function () {

@@ -31,7 +31,7 @@ export class AdminComponentComponent implements OnInit,OnDestroy {
         this.componentService.getComponents().then(components => this.components = components);
         this.adminService.getPumps().then(pumps => this.pumps = pumps);
         this.adminService.getStandardAmounts().then(amounts => this.standardAmounts = amounts);
-        this.amountWarningConnection = this.socketService.get("/production","amountWarning","warning").subscribe(warning=>{
+        this.amountWarningConnection = this.socketService.get("/production","amountWarning","amountWarning").subscribe(warning=>{
             this.warnings[warning.pumpNr] = warning;
         });
 

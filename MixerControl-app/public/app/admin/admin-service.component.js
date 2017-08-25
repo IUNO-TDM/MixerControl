@@ -22,11 +22,11 @@ var AdminServiceComponent = (function () {
     ;
     AdminServiceComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.pqStateConnection = this.socketService.get("/production", "state", "stateChange")
+        this.pqStateConnection = this.socketService.get("/production", "state", "state")
             .subscribe(function (state) { return _this.pqState = state; });
-        this.pcServiceStateConnection = this.socketService.get("/production", "pumpControlService", "serviceStateChange")
+        this.pcServiceStateConnection = this.socketService.get("/production", "pumpControlService", "pumpControlServiceState")
             .subscribe(function (state) { return _this.pcServiceState = state; });
-        this.pcModeConnection = this.socketService.get("/production", "pumpControlMode", "modeChange")
+        this.pcModeConnection = this.socketService.get("/production", "pumpControlMode", "pumpControlMode")
             .subscribe(function (state) { return _this.pcMode = state; });
         this.adminService.getPumps().then(function (pumps) { return _this.pumps = pumps; });
     };

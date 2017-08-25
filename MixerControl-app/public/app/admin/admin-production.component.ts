@@ -28,10 +28,10 @@ export class AdminProductionComponent implements OnInit, OnDestroy {
 
 
     ngOnInit(): void {
-        this.queueConnection = this.socketService.get("/production", "state", "stateChange")
+        this.queueConnection = this.socketService.get("/production", "state", "state")
             .subscribe(state =>
                 this.state = state);
-        this.stateConnection = this.socketService.get("/production", "queue", "queueChange")
+        this.stateConnection = this.socketService.get("/production", "queue", "queue")
             .subscribe(queue =>
                 this.queue = queue as Array<Order>);
     }

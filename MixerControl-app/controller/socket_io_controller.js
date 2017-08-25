@@ -58,17 +58,17 @@ function onProductionNamespaceConnect(socket) {
         socket.join(roomId);
 
         if (roomId == "queue") {
-            socket.emit("queueChange", production_queue.getStrippedQueue());
+            socket.emit("queue", production_queue.getStrippedQueue());
         } else if (roomId == "state") {
-            socket.emit("stateChange", production_queue.getState());
+            socket.emit("state", production_queue.getState());
         } else if (roomId == "pumpControlMode") {
-            socket.emit("modeChange", pumpControl_service.getMode());
+            socket.emit("pumpControlMode", pumpControl_service.getMode());
         } else if (roomId == "pumpControlService") {
-            socket.emit("serviceStateChange", pumpControl_service.getServiceState());
+            socket.emit("pumpControlServiceState", pumpControl_service.getServiceState());
         }else if (roomId == "amountWarning") {
             const warnings = pumpControl_service.getAmountWarnings();
             async.each(warnings, function iterate(item,callback){
-                socket.emit("warning",item);
+                socket.emit("amountWarning",item);
             });
 
         }

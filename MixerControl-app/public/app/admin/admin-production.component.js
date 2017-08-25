@@ -24,11 +24,11 @@ var AdminProductionComponent = (function () {
     }
     AdminProductionComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.queueConnection = this.socketService.get("/production", "state", "stateChange")
+        this.queueConnection = this.socketService.get("/production", "state", "state")
             .subscribe(function (state) {
             return _this.state = state;
         });
-        this.stateConnection = this.socketService.get("/production", "queue", "queueChange")
+        this.stateConnection = this.socketService.get("/production", "queue", "queue")
             .subscribe(function (queue) {
             return _this.queue = queue;
         });

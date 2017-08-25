@@ -27,16 +27,6 @@ var OrderComponent = (function () {
         this.orderURL = "NULL";
     }
     OrderComponent.prototype.ngOnInit = function () {
-        // this.route.params.
-        // switchMap((params: Params) => this.socketService.get("/orders", params['id'], "state"))
-        //   .subscribe(state => {
-        //     this.orderState = state;
-        //   });
-        // this.route.params.
-        // switchMap((params: Params) => this.socketService.get("/orders", params['id'], "progress"))
-        //   .subscribe(progress => {
-        //     this.progress = progress['progress'];
-        //   });
         var _this = this;
         this.route.params.subscribe(function (params) {
             _this.orderProgressConnection =

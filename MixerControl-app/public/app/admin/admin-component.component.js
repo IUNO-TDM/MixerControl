@@ -29,7 +29,7 @@ var AdminComponentComponent = (function () {
         this.componentService.getComponents().then(function (components) { return _this.components = components; });
         this.adminService.getPumps().then(function (pumps) { return _this.pumps = pumps; });
         this.adminService.getStandardAmounts().then(function (amounts) { return _this.standardAmounts = amounts; });
-        this.amountWarningConnection = this.socketService.get("/production", "amountWarning", "warning").subscribe(function (warning) {
+        this.amountWarningConnection = this.socketService.get("/production", "amountWarning", "amountWarning").subscribe(function (warning) {
             _this.warnings[warning.pumpNr] = warning;
         });
     };
