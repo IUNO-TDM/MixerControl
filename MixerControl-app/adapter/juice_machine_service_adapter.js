@@ -182,7 +182,7 @@ self.getUserForId = function (id, callback) {
             request(options, function (e, r, jsonData) {
                 var err = logger.logRequestAndResponse(e, options, r, jsonData);
                 var user;
-                if (helper.isObject(jsonData)) {
+                if (!err && helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     user = jsonData;
                 }

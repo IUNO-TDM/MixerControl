@@ -31,9 +31,7 @@ var PaymentComponent = (function () {
         var _this = this;
         this.route.params.
             switchMap(function (params) { return _this.orderService.getPaymentRequest(params['id']); })
-            .subscribe(function (paymentRequest) {
-            _this.paymentRequest = paymentRequest;
-        });
+            .then(function (paymentRequest) { return _this.paymentRequest = paymentRequest; });
     };
     PaymentComponent.prototype.onRead = function (text) {
         var _this = this;

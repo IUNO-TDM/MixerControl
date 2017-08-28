@@ -70,23 +70,11 @@ router.get('/:id/paymentRequest', function (req, res, next) {
         return;
     }
 
-    if(order.paymentRequest != undefined){
+    if(order.paymentRequest !== undefined){
         res.send(order.paymentRequest);
     }else {
         res.sendStatus(404);
     }
-
-    // jms_connector.getOfferForId(order.offerId, function (e, offer) {
-    //     if (!helper.isObject(offer) || !Object.keys(offer).length) {
-    //         res.sendStatus(404);
-    //         return;
-    //     }
-    //
-    //     //TODO: Call the payment service to generate the payment request.
-    //     res.send('bitcoin:n1Q5Tpn5gqD8EwjT3tUsydpSct86eZsRAQ?amount=0.05000000')
-    // });
-
-
 });
 
 
@@ -99,8 +87,8 @@ router.put('/:id/payment', function (req, res, next) {
     logger.debug("PaymentString: " + req.body);
 
     const data = req.body;
-    if (invoice != undefined){
-        if(data != undefined){
+    if (invoice !== undefined){
+        if(data !== undefined){
             payment_service.redeemCoupon(invoice,data, function(statusCode){
                 res.sendStatus(statusCode);
             });
