@@ -34,6 +34,17 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs, callback
     })
 }
 
+function doRequest(options, callback) {
+    request(options, function (e, r, data) {
+        if (r.statusCode === 401) {
+            authServer.invalidateToken();
+        }
+        const err = logger.logRequestAndResponse(e, options, r, data);
+
+        callback(err, r, data);
+    });
+}
+
 
 self.getAllRecipes = function (callback) {
 
@@ -55,9 +66,9 @@ self.getAllRecipes = function (callback) {
             if (err) {
                 return callback(err);
             }
-            request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var recipes;
+            doRequest(options, function (e, r, jsonData) {
+
+                let recipes;
                 if (helper.isArray(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     recipes = jsonData;
@@ -87,17 +98,15 @@ self.getAllComponents = function (callback) {
         '/components',
         {},
         function (err, options) {
-            request(options, function (e, r, jsonData) {
-
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var components;
+            doRequest(options, function (e, r, jsonData) {
+                let components;
 
                 if (helper.isArray(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     components = jsonData;
                 }
 
-                callback(err, components);
+                callback(e, components);
             });
         }
     );
@@ -119,17 +128,14 @@ self.getRecipeForId = function (id, callback) {
         '/recipes/' + id,
         {},
         function (err, options) {
-            request(options, function (e, r, jsonData) {
-                logger.logRequestAndResponse(e, options, r, jsonData);
-
-                var recipe;
+            doRequest(options, function (e, r, jsonData) {
+                let recipe;
                 if (helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     recipe = jsonData;
                 }
 
-
-                callback(err, recipe);
+                callback(e, recipe);
             });
         }
     );
@@ -152,10 +158,9 @@ self.getRecipeImageForId = function (id, callback) {
         function (err, options) {
             options.encoding = null;
 
-            request(options, function (e, r, data) {
-                var err = logger.logRequestAndResponse(e, options, r, data);
+            doRequest(options, function (e, r, data) {
 
-                callback(err, {
+                callback(e, {
                     imageBuffer: data,
                     contentType: r.headers['content-type']
                 });
@@ -171,7 +176,7 @@ self.getUserForId = function (id, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'GET',
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
@@ -179,15 +184,14 @@ self.getUserForId = function (id, callback) {
         '/users/' + id,
         {},
         function (err, options) {
-            request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var user;
-                if (!err && helper.isObject(jsonData)) {
+            doRequest(options, function (e, r, jsonData) {
+                let user;
+                if (!e && helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     user = jsonData;
                 }
 
-                callback(err, user);
+                callback(e, user);
             });
 
         }
@@ -211,10 +215,9 @@ self.getUserImageForId = function (id, callback) {
         function (err, options) {
             options.encoding = null;
 
-            request(options, function (e, r, data) {
-                var err = logger.logRequestAndResponse(e, options, r.data);
+            doRequest(options, function (e, r, data) {
 
-                callback(err, {
+                callback(e, {
                     imageBuffer: data,
                     contentType: r.headers['content-type']
                 });
@@ -243,16 +246,15 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
                 hsmId: hsmId
             };
 
-            request(options, function (e, r, jsonData) {
-                let err = logger.logRequestAndResponse(e, options, r, jsonData);
+            doRequest(options, function (e, r, jsonData) {
                 let offer;
 
-                if (!err && helper.isObject(jsonData)) {
+                if (!e && helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     offer = jsonData;
                 }
 
-                callback(err, offer);
+                callback(e, offer);
             });
         }
     );
@@ -273,15 +275,14 @@ self.getOfferForId = function (id, callback) {
         '/offers/' + id,
         {},
         function (err, options) {
-            request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var offer;
+            doRequest(options, function (e, r, jsonData) {
+                let offer;
                 if (helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     offer = jsonData;
                 }
 
-                callback(err, offer);
+                callback(e, offer);
             });
         }
     );
@@ -306,10 +307,8 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
                 paymentBIP70: bip70
             };
 
-            request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, r, jsonData);
-
-                callback(err);
+            doRequest(options, function (e, r, jsonData) {
+                callback(e);
             });
         }
     );
@@ -337,10 +336,8 @@ self.getLicenseUpdate = function(hsmId, context, callback) {
                 RAC: context
             };
 
-            request(options, function (e, r, jsonData) {
-                const err = logger.logRequestAndResponse(e, options, r, jsonData);
-
-                callback(err, jsonData['RAU'], jsonData['isOutOfDate']);
+            doRequest(options, function (e, r, jsonData) {
+                callback(e, jsonData['RAU'], jsonData['isOutOfDate']);
             });
         }
     );
@@ -368,10 +365,8 @@ self.confirmLicenseUpdate = function(hsmId, context, callback) {
                 RAC: context
             };
 
-            request(options, function (e, r, jsonData) {
-                const err = logger.logRequestAndResponse(e, options, r, jsonData);
-
-                callback(err);
+            doRequest(options, function (e, r, jsonData) {
+                callback(e);
             });
         }
     );

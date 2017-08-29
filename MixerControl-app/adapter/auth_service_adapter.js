@@ -3,10 +3,10 @@
  */
 
 
-var logger = require('../global/logger');
+const logger = require('../global/logger');
 const CONFIG = require('../config/config_loader');
-var request = require('request');
-var self = {
+const request = require('request');
+const self = {
 };
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
@@ -80,4 +80,7 @@ self.getAccessToken = function (callback) {
 
 };
 
+self.invalidateToken = function() {
+  self.token = null;
+};
 module.exports = self;
