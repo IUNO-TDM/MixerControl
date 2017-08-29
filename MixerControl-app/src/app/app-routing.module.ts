@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DrinkListComponent } from './drink/drink-list.component';
 import { DrinkDetailComponent } from './drink/drink-detail.component';
+
+import { OrderComponent } from './order/order.component';
 const routes: Routes = [
   {
     path: '',
@@ -15,6 +17,10 @@ const routes: Routes = [
   {
     path: 'drinks/:id',
     component: DrinkDetailComponent
+  },
+  {
+    path: 'orders/:id',
+    component: OrderComponent
   }
 ];
 
@@ -23,4 +29,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routedComponents = [DrinkListComponent,DrinkDetailComponent];
+export const routedComponents = [DrinkListComponent,DrinkDetailComponent, OrderComponent];

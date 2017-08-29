@@ -5,7 +5,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 import {OrderService} from '../services/order.service'
 import {QrScannerComponent} from 'angular2-qrscanner';
-import {NotificationsService} from "angular2-notifications";
+// import {NotificationsService} from "angular2-notifications";
 
 @Component({
 
@@ -28,13 +28,14 @@ export class PaymentComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private orderService: OrderService,
-    private _service: NotificationsService
+    // private _service: NotificationsService
   ) { }
 
   ngOnInit(): void{
+
     this.route.params.
     switchMap((params: Params) => this.orderService.getPaymentRequest(params['id']))
-      .then(paymentRequest =>  this.paymentRequest = paymentRequest)
+      .subscribe(paymentRequest =>  this.paymentRequest = paymentRequest)
 
 }
 
@@ -52,7 +53,7 @@ export class PaymentComponent implements OnInit{
           err => {
             console.log(err);
             this.qrScannerComponent.startScanning();
-            this._service.alert("Fehler beim QR-Code lesen", "Bitte probieren Sie es noch einmal.");
+            // this._service.alert("Fehler beim QR-Code lesen", "Bitte probieren Sie es noch einmal.");
           });
     });
   }

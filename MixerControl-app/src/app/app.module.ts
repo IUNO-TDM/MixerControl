@@ -9,10 +9,16 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdButtonModule, MdCheckboxModule, MdCardModule, MdRadioModule, MdGridListModule, MdMenuModule, MdToolbarModule} from '@angular/material';
 import 'hammerjs';
 
+
+import {QRCodeModule} from 'angular2-qrcode';
+import {QrScannerModule} from 'angular2-qrscanner';
+import {PaymentComponent} from './order/payment.component';
+
 @NgModule({
   declarations: [
     AppComponent,
-    routedComponents
+    routedComponents,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +31,9 @@ import 'hammerjs';
     MdRadioModule,
     MdGridListModule,
     MdMenuModule,
-    MdToolbarModule
+    MdToolbarModule,
+    QRCodeModule,
+    QrScannerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

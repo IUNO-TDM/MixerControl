@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Params, Router }   from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import {Drink} from '../models/Drink'
@@ -14,7 +14,8 @@ import {SocketService} from '../services/socketio.service'
   moduleId: module.id,
   selector: 'my-drinkDetail',
   templateUrl: 'drink-detail.template.html',
-  providers: [DrinkService, UserService, OrderService, SocketService]
+  providers: [DrinkService, UserService, OrderService, SocketService],
+  styleUrls: ['./drink-detail.component.css'],
 })
 
 export class DrinkDetailComponent implements OnInit {
@@ -23,6 +24,8 @@ export class DrinkDetailComponent implements OnInit {
   error: any;
   orderURL = "NULL";
   components = "";
+
+  gridcols: any = 2;
   constructor(private route: ActivatedRoute,
               private router: Router,
               private drinkService: DrinkService,
@@ -33,6 +36,8 @@ export class DrinkDetailComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.resize(window.innerWidth);
     this.route.params.switchMap((params: Params) => this.drinkService.getDrink(params['id']))
       .subscribe(drink => {
         this.drink = drink;
@@ -46,8 +51,8 @@ export class DrinkDetailComponent implements OnInit {
       });
 
   }
-   getBack(): void{
-      this.router.navigateByUrl("/")
+ getBack(): void{
+      this.router.navigateByUrl("/drinks")
   }
 
   onClickMe() {
@@ -61,6 +66,24 @@ export class DrinkDetailComponent implements OnInit {
 
       this.router.navigateByUrl(`/orders/${orderNumber}`);
     });
+  }
+  resize(width) {
+    if (width < 600) {
+      this.gridcols = 2;
+    }else if (width < 900) {
+      this.gridcols = 3;
+    }else {
+      this.gridcols = 4;
+
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(event) {
+    const element = event.target.innerWidth;
+    console.log("window resize " +  element);
+    this.resize(element);
+
   }
 
 
