@@ -17,6 +17,7 @@ import {QrScannerComponent} from 'angular2-qrscanner';
 
 export class PaymentComponent implements OnInit{
   paymentRequest: string;
+  elementtype:  'url' | 'canvas' | 'img' = 'url';
   @ViewChild(QrScannerComponent)
   private qrScannerComponent: QrScannerComponent;
     public options = {

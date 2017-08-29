@@ -101,9 +101,9 @@ const stateMachine = new machina.BehavioralFsm({
             _onEnter: function (client) {
                 //??sendPaymentToMarketplace??
                 payment_service.unregisterStateChangeUpdates(client.invoice.invoiceId);
-                // this.timer = setTimeout(function () {
-                //     this.handle(client, "licenseArrived");
-                // }.bind(this), 5000);
+                this.timer = setTimeout(function () {
+                    this.handle(client, "licenseArrived");
+                }.bind(this), 5000);
             },
             licenseArrived: "enqueueForProduction"
         },

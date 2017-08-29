@@ -10,7 +10,8 @@ import {MdButtonModule, MdCheckboxModule, MdCardModule, MdRadioModule, MdGridLis
 import 'hammerjs';
 
 
-import {QRCodeModule} from 'angular2-qrcode';
+
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import {QrScannerModule} from 'angular2-qrscanner';
 import {PaymentComponent} from './order/payment.component';
 
@@ -32,7 +33,7 @@ import {PaymentComponent} from './order/payment.component';
     MdGridListModule,
     MdMenuModule,
     MdToolbarModule,
-    QRCodeModule,
+    NgxQRCodeModule,
     QrScannerModule,
   ],
   providers: [],

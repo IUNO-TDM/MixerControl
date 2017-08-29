@@ -14,15 +14,15 @@ const prog = {
             {
                 "components": [
                     {
-                        "ingredient": "Orangensaft",
+                        "ingredient": "198f1571-4846-4467-967a-00427ab0208d",
+                        "amount": 100
+                    },
+                    {
+                        "ingredient": "f6d361a9-5a6f-42ad-bff7-0913750809e4",
                         "amount": 5
                     },
                     {
-                        "ingredient": "Apfelsaft",
-                        "amount": 5
-                    },
-                    {
-                        "ingredient": "Johannisbeersaft",
+                        "ingredient": "f6d361a9-5a6f-42ad-bff7-0913750809e4",
                         "amount": 5
                     }
                 ],
@@ -93,9 +93,12 @@ var state_machine = new machina.Fsm({
             _onEnter: function () {
                 if(queue[0]){
                     try{
-                        var p = JSON.parse(queue[0].recipe.program);
+                        // var p = JSON.parse(queue[0].recipe.program);
+
+                        var p = prog;
                         p.orderName = queue[0].orderName;
-                        pumpcontrol_service.startProgram(p);
+
+                        pumpcontrol_service.startProgram(prog);
                     }
                     catch (err) {
                         logger.crit(err);
