@@ -34,11 +34,9 @@ export class PaymentComponent implements OnInit{
   ngOnInit(): void{
     this.route.params.
     switchMap((params: Params) => this.orderService.getPaymentRequest(params['id']))
-      .subscribe(paymentRequest => {
-        this.paymentRequest = paymentRequest;
-      });
+      .then(paymentRequest =>  this.paymentRequest = paymentRequest)
 
-  }
+}
 
   onRead(text: string) {
     //TODO remove this logging later
