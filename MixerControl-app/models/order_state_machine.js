@@ -6,7 +6,7 @@ const CONFIG = require('../config/config_loader');
 
 const machina = require('machina');
 const production_queue = require('../models/production_queue');
-const jms_connector = require('../adapter/juice_machine_service_adapter');
+const juiceMachineService = require('../adapter/juice_machine_service_adapter');
 const logger = require('../global/logger');
 const payment_service = require('../services/payment_service');
 const orderDB = require('../database/orderDB');
@@ -31,7 +31,7 @@ const stateMachine = new machina.BehavioralFsm({
                 console.log("Ordernumber " + client.orderNumber + " is now state waitingOffer ");
                 license_service.registerUpdates(CONFIG.HSM_ID);
                 const self = this;
-                jms_connector.requestOfferForOrders(CONFIG.HSM_ID, [
+                juiceMachineService.requestOfferForOrders(CONFIG.HSM_ID, [
                     {
                         recipeId: client.drinkId,
                         amount: 1
@@ -234,30 +234,80 @@ const getOrderWithOfferId = function (offerId) {
     return undefined;
 };
 
+
+//TODO: Move this into the license service module and inject a order state machine reference
 license_service.on('updateAvailable', function (offerId, hsmId) {
 
     const order = getOrderWithOfferId(offerId);
     if (order) {
-        licenseManager.getContextForHsmId(hsmId, function (err, context) {
-            if (err || !context) {
-                return logger.crit('[order_state_machine] could not get context from license manager');
-            }
-
-            jms_connector.getLicenseUpdate(hsmId, context, function (err, update) {
-                if (err || !context) {
-                    return logger.crit('[order_state_machine] could not get license update from webservice');
-                }
-
-                licenseManager.updateHsm(hsmId, update, function (err, success) {
-                    if (err || !success) {
-                        return logger.crit('[order_state_machine] could not update hsm on license manager');
-                    }
-
-                    stateMachine.licenseArrived(order);
-                })
-            })
+        updateCMDongle(hsmId, function(err) {
+           if (err) {
+               stateMachine.licenseArrived(order);
+           }
         });
+
     }
 });
+
+
+// TODO: Move this into the license service when refactoring the order state machine.
+function updateCMDongle(hsmId, callback) {
+    if (license_service.isUpdating) {
+        logger.warn('[order_state_machine] Update cycle is already running.');
+        return callback(new Error('Update cycle already running'));
+    }
+
+    license_service.isUpdating = true;
+    logger.debug('[order_state_machine] Starting update cycle for hsmId: ' + hsmId);
+
+    licenseManager.getContextForHsmId(hsmId, function (err, context) {
+        if (err || !context) {
+            logger.crit('[order_state_machine] could not get context from license manager');
+            license_service.isUpdating = false;
+            return callback(err);
+        }
+
+        juiceMachineService.getLicenseUpdate(hsmId, context, function (err, update, isOutOfDate) {
+            if (err || !context) {
+                logger.crit('[order_state_machine] could not get license update from webservice');
+                license_service.isUpdating = false;
+                return callback(err);
+            }
+
+            licenseManager.updateHsm(hsmId, update, function (err, success) {
+                if (err || !success) {
+                    logger.crit('[order_state_machine] could not update hsm on license manager');
+                    license_service.isUpdating = false;
+                    return callback(err);
+                }
+
+                licenseManager.getContextForHsmId(hsmId, function (err, context) {
+                    if (err || !context) {
+                        logger.crit('[order_state_machine] could not get context from license manager');
+                        license_service.isUpdating = false;
+                        return callback(err);
+                    }
+
+                    juiceMachineService.confirmLicenseUpdate(hsmId, function (err) {
+                        license_service.isUpdating = false;
+
+                        if (err) {
+                            logger.crit('[order_state_machine] could not confirm update on license manager');
+                            return callback(err);
+                        }
+
+                        // Restart the update process as long the returned context is out of date
+                        if (isOutOfDate) {
+                            logger.warn('[order_state_machine] CM-Dongle context is out of date. Restarting update cycle');
+                            return updateCMDongle(hsmId, callback)
+                        }
+
+                        callback(null)
+                    });
+                });
+            });
+        });
+    });
+}
 
 module.exports = stateMachine;

@@ -340,7 +340,38 @@ self.getLicenseUpdate = function(hsmId, context, callback) {
             request(options, function (e, r, jsonData) {
                 const err = logger.logRequestAndResponse(e, options, r, jsonData);
 
-                callback(err, jsonData['RAU']);
+                callback(err, jsonData['RAU'], jsonData['isOutOfDate']);
+            });
+        }
+    );
+};
+
+self.confirmLicenseUpdate = function(hsmId, context, callback) {
+    if (typeof(callback) !== 'function') {
+        return logger.info('[juice_machine_service_adapter] Callback not registered');
+    }
+
+    if (!hsmId || !context) {
+        return logger.info('[juice_machine_service_adapter] Missing function arguments');
+    }
+
+    buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/cmdongle/' + hsmId + '/update/confirm',
+        {},
+        function (err, options) {
+
+            options.body = {
+                RAC: context
+            };
+
+            request(options, function (e, r, jsonData) {
+                const err = logger.logRequestAndResponse(e, options, r, jsonData);
+
+                callback(err);
             });
         }
     );
