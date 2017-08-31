@@ -11,6 +11,7 @@ const util = require('util');
 const http = require('http');
 const async = require('async');
 const helper = require('../services/helper_service');
+const logger = require('../global/logger');
 
 var jms_connector = require('../adapter/juice_machine_service_adapter');
 var storage = require('node-persist');
@@ -76,12 +77,7 @@ var initIngredients = function () {
                         }
                         else {
                             updateIngredient(item, compId, function () {
-                                storage.getItem('amount' + item).then(
-                                    function (amount) {
-                                        pumpcontrol_service.setPumpAmount(item, amount, function () {
-                                            callback();
-                                        });
-                                    });
+                                callback();
                             });
                         }
                     });
@@ -357,6 +353,14 @@ pumpcontrol_service.getStorageIngredient = function (pumpNumber) {
 
 };
 
+pumpcontrol_service.getConfiguredComponents = function() {
+    const components = [];
+    for (let pump in pumpNumbers) {
+        components.push(storage.getItemSync('component' + pump));
+    }
+    return components;
+};
+
 pumpcontrol_service.getPumpNumbers = function () {
     return pumpNumbers;
 
@@ -375,19 +379,19 @@ pumpcontrol_service.getPumpStandardAmount = function (pumpNumber) {
     return storage.getItemSync('amount' + pumpNumber);
 };
 
-pumpcontrol_service.startProgram = function (program) {
+pumpcontrol_service.startProgram = function (recipe) {
     var options = {
         hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
         port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
-        path: '/program',
+        path: '/program/' + recipe['productCode'],
         agent: false,
         method: 'PUT'
     };
     try {
         var req = http.request(options, function (res) {
-                console.log(res.statusCode + ' ' + res.statusMessage);
+                logger.log(res.statusCode + ' ' + res.statusMessage);
             }
-        ).end(JSON.stringify(program));
+        ).end(recipe.program);
     }
     catch (err) {
         logger.crit(err);

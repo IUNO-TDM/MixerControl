@@ -241,9 +241,11 @@ license_service.on('updateAvailable', function (offerId, hsmId) {
     const order = getOrderWithOfferId(offerId);
     if (order) {
         updateCMDongle(hsmId, function (err) {
-            if (!err) {
-                stateMachine.licenseArrived(order);
+            if (err) {
+                return;
             }
+
+            stateMachine.licenseArrived(order);
         });
 
     }
@@ -277,18 +279,8 @@ function updateCMDongle(hsmId, callback) {
             licenseManager.updateHsm(hsmId, update, function (err, success) {
                 if (err || !success) {
                     logger.crit('[order_state_machine] could not update hsm on license manager');
-                    license_service.isUpdating = false;
-                    return callback(err);
-                }
 
-                licenseManager.getContextForHsmId(hsmId, function (err, context) {
-                    if (err || !context) {
-                        logger.crit('[order_state_machine] could not get context from license manager');
-                        license_service.isUpdating = false;
-                        return callback(err);
-                    }
-
-                    juiceMachineService.confirmLicenseUpdate(hsmId, function (err) {
+                    juiceMachineService.confirmLicenseUpdate(hsmId, context, function (err) {
                         license_service.isUpdating = false;
 
                         if (err) {
@@ -296,15 +288,36 @@ function updateCMDongle(hsmId, callback) {
                             return callback(err);
                         }
 
-                        // Restart the update process as long the returned context is out of date
-                        if (isOutOfDate) {
-                            logger.warn('[order_state_machine] CM-Dongle context is out of date. Restarting update cycle');
-                            return updateCMDongle(hsmId, callback)
+                        logger.warn('[order_state_machine] CM-Dongle context is out of date. Restarting update cycle');
+                        return updateCMDongle(hsmId, callback)
+                    });
+                }
+                else {
+                    licenseManager.getContextForHsmId(hsmId, function (err, context) {
+                        if (err || !context) {
+                            logger.crit('[order_state_machine] could not get context from license manager');
+                            license_service.isUpdating = false;
+                            return callback(err);
                         }
 
-                        callback(null)
+                        juiceMachineService.confirmLicenseUpdate(hsmId, context, function (err) {
+                            license_service.isUpdating = false;
+
+                            if (err) {
+                                logger.crit('[order_state_machine] could not confirm update on license manager');
+                                return callback(err);
+                            }
+
+                            // Restart the update process as long the returned context is out of date
+                            if (isOutOfDate) {
+                                logger.warn('[order_state_machine] CM-Dongle context is out of date. Restarting update cycle');
+                                return updateCMDongle(hsmId, callback)
+                            }
+
+                            callback(null)
+                        });
                     });
-                });
+                }
             });
         });
     });

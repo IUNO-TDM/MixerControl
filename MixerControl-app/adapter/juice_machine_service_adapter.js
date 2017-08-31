@@ -9,7 +9,6 @@ const request = require('request');
 const logger = require('../global/logger');
 const CONFIG = require('../config/config_loader');
 const helper = require('../services/helper_service');
-const component_uuids = require('../config/config_loader').STD_INGREDIENT_CONFIGURATION;
 const authServer = require('./auth_service_adapter');
 
 
@@ -46,7 +45,7 @@ function doRequest(options, callback) {
 }
 
 
-self.getAllRecipes = function (callback) {
+self.getAllRecipes = function (components, callback) {
 
     if (typeof(callback) !== 'function') {
 
@@ -61,7 +60,7 @@ self.getAllRecipes = function (callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes',
-        {'components': component_uuids},
+        {'components': components},
         function (err, options) {
             if (err) {
                 return callback(err);
@@ -69,12 +68,14 @@ self.getAllRecipes = function (callback) {
             doRequest(options, function (e, r, jsonData) {
 
                 let recipes;
-                if (helper.isArray(jsonData)) {
-                    //TODO: Parse json data into objects to validate the content
-                    recipes = jsonData;
+                if (!e && jsonData) {
+                    if (helper.isArray(jsonData)) {
+                        //TODO: Parse json data into objects to validate the content
+                        recipes = jsonData;
+                    }
                 }
 
-                callback(err, recipes);
+                callback(e, recipes);
             });
         }
     );
