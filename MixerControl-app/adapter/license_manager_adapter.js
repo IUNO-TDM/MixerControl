@@ -52,7 +52,7 @@ self.updateHsm = function (hsmId, update, callback) {
     }
 
     buildOptionsForRequest(
-        'POST',
+        'PUT',
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PROTOCOL,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.HOST,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PORT,
@@ -74,7 +74,7 @@ self.updateHsm = function (hsmId, update, callback) {
     );
 };
 
-self.getLicenseInformationForHsm = function (productCode, callback) {
+self.getLicenseInformationForProductCodeOnHsm = function (productCode, hsmId, callback) {
     if (typeof(callback) !== 'function') {
         return logger.crit('[license_manager_adapter] missing callback');
     }
@@ -88,7 +88,7 @@ self.getLicenseInformationForHsm = function (productCode, callback) {
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PROTOCOL,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.HOST,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PORT,
-        '/product/' + productCode + '/license',
+        '/cmdongles/'+ hsmId + '/products/' + productCode + '/licensecount',
         {},
         function (err, options) {
             request(options, function (e, r, data) {
