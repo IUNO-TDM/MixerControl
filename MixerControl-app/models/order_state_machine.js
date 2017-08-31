@@ -28,37 +28,41 @@ const stateMachine = new machina.BehavioralFsm({
 
         waitingOffer: {
             _onEnter: function (client) {
-                console.log("Ordernumber " + client.orderNumber + " is now state waitingOffer ");
-                license_service.registerUpdates(CONFIG.HSM_ID);
                 const self = this;
-                juiceMachineService.requestOfferForOrders(CONFIG.HSM_ID, [
-                    {
-                        recipeId: client.drinkId,
-                        amount: 1
+                console.log("Ordernumber " + client.orderNumber + " is now state waitingOffer ");
+                licenseManager.getHsmId(function (err, hsmId) {
+                    if (!err && hsmId) {
+                        license_service.registerUpdates(hsmId);
+                        juiceMachineService.requestOfferForOrders(hsmId, [
+                            {
+                                recipeId: client.drinkId,
+                                amount: 1
+                            }
+                        ], function (e, offer) {
+                            logger.debug(offer);
+                            if (e) {
+                                logger.crit(e);
+
+                                return;
+                            }
+
+                            client.offerId = offer.id;
+                            client.invoice = offer.invoice;
+
+                            let totalAmount = 0;
+                            for (let key in client.invoice.transfers) {
+                                let transfer = client.invoice.transfers[key];
+                                totalAmount += transfer.coin;
+                            }
+                            client.invoice.totalAmount = payment_service.calculateRetailPriceForInvoice(client.invoice);
+                            client.invoice.referenceId = client.orderNumber;
+
+
+                            self.handle(client, "offerReceived");
+
+
+                        });
                     }
-                ], function (e, offer) {
-                    logger.debug(offer);
-                    if (e) {
-                        logger.crit(e);
-
-                        return;
-                    }
-
-                    client.offerId = offer.id;
-                    client.invoice = offer.invoice;
-
-                    let totalAmount = 0;
-                    for (let key in client.invoice.transfers) {
-                        let transfer = client.invoice.transfers[key];
-                        totalAmount += transfer.coin;
-                    }
-                    client.invoice.totalAmount = payment_service.calculateRetailPriceForInvoice(client.invoice);
-                    client.invoice.referenceId = client.orderNumber;
-
-
-                    self.handle(client, "offerReceived");
-
-
                 });
             },
             offerReceived: "waitingPaymentRequest"
@@ -99,11 +103,7 @@ const stateMachine = new machina.BehavioralFsm({
         },
         waitingLicense: {
             _onEnter: function (client) {
-                //??sendPaymentToMarketplace??
                 payment_service.unregisterStateChangeUpdates(client.invoice.invoiceId);
-                // this.timer = setTimeout(function () {
-                //     this.handle(client, "licenseArrived");
-                // }.bind(this), 5000);
             },
             licenseArrived: "enqueueForProduction"
         },
@@ -240,10 +240,10 @@ license_service.on('updateAvailable', function (offerId, hsmId) {
 
     const order = getOrderWithOfferId(offerId);
     if (order) {
-        updateCMDongle(hsmId, function(err) {
-           if (err) {
-               stateMachine.licenseArrived(order);
-           }
+        updateCMDongle(hsmId, function (err) {
+            if (!err) {
+                stateMachine.licenseArrived(order);
+            }
         });
 
     }
