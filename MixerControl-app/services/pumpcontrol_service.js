@@ -353,7 +353,7 @@ pumpcontrol_service.getStorageIngredient = function (pumpNumber) {
 
 };
 
-pumpcontrol_service.getConfiguredComponents = function() {
+pumpcontrol_service.getConfiguredComponents = function () {
     const components = [];
     for (let pump in pumpNumbers) {
         components.push(storage.getItemSync('component' + pump));
@@ -388,8 +388,13 @@ pumpcontrol_service.startProgram = function (recipe) {
         method: 'PUT'
     };
     try {
-        var req = http.request(options, function (res) {
+        const req = http.request(options, function (res) {
                 logger.log(res.statusCode + ' ' + res.statusMessage);
+
+                res.on("data", function (data) {
+                    logger.log("[pumpcontrol_service] start program response:");
+                    logger.log(data);
+                });
             }
         ).end(recipe.program);
     }
