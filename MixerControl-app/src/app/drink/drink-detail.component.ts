@@ -70,8 +70,8 @@ export class DrinkDetailComponent implements OnInit {
   resize(width) {
     if (width < 600) {
       this.gridcols = 2;
-    }else if (width < 900) {
-      this.gridcols = 3;
+    // }else if (width < 900) {
+    //   this.gridcols = 2;
     }else {
       this.gridcols = 4;
 

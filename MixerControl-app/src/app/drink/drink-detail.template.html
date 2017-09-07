@@ -11,10 +11,10 @@
   <div class="drinkDetail" *ngIf="drink">
     <h3> {{drink.title}}</h3>
     <md-grid-list cols="{{gridcols}}" rowHeight="2:1">
-      <md-grid-tile colspan="2" rowspan="4">
+      <md-grid-tile colspan="2" rowspan="4" style="background-color: #0FA0CE">
         <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
       </md-grid-tile>
-      <md-grid-tile cols="2" rowspan="2">
+      <md-grid-tile colspan="2" rowspan="4" style="background-color: #512da8">
         <div class="description">
 
         <p>{{drink.description}}</p>
@@ -29,16 +29,12 @@
         <p class="userNameText">{{user.firstname}} {{user.lastname}}</p>
         </div>
         </div>
-
+          <button (click)="onClickMe()">Kostenpflichtig bestellen</button>
         </div>
+
+
       </md-grid-tile>
 
-      <md-grid-tile colspan="2" rowspan="{{gridcols}}">
-        <!--<div class="centeredButtonDiv">-->
-        <button (click)="onClickMe()">Kostenpflichtig bestellen</button>
-        <!--<button (click)="getBack()">zurück</button>-->
-        <!--</div>-->
-      </md-grid-tile>
 
 
     </md-grid-list>

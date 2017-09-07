@@ -1,0 +1,121 @@
+img.drinkImg{
+  position:absolute;
+  /*opacity:0.3;*/
+  max-width: 100%;
+  max-height: 100%;
+  /*max-height: 150px;*/
+  /*float: left;*/
+  align-self: center;
+  margin: auto;
+  /*margin-bottom: 50px;*/
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+
+.example-fill-remaining-space {
+  flex: 1 1 auto;
+}
+.description{
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  float: none;
+}
+
+
+h3 {
+
+}
+.priceWidthClass{
+  flex: 0 0 70px;
+}
+
+.customWidthClass{
+   flex: 0 0 50px;
+ }
+
+
+.titleWidthClass{
+  flex: 1 0 100px;
+}
+
+
+
+.orderSteps {
+  font-size: 3.5rem;
+  font-family: 'open_sanslight';
+  padding-bottom: 2em;
+}
+
+.orderSteps .step {
+  background-position: left center;
+  background-repeat: no-repeat;
+  padding-left: 3em;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  background-size: 6rem ;
+  text-decoration: underline;
+
+}
+
+.orderSteps .licensepayment{
+  background-image: url('../../img/lnr-cloud.svg');
+}
+.orderSteps .license{
+  background-image: url('../../img/lnr-license.svg');
+}
+.orderSteps .payment{
+  background-image: url('../../img/lnr-cart.svg');
+}
+.orderSteps .production{
+  background-image: url('../../img/lnr-coffee-cup.svg');
+}
+
+
+
+.orderSteps  .off{
+  opacity: 0.2;
+  text-decoration: none;
+}
+
+.orderSteps  .done{
+  text-decoration: none;
+}
+
+.orderSteps .done::after{
+  content: " ✓";
+  padding-left: 0.1em;
+  color: #598cb3;
+}
+
+.orderSteps .active {
+  animation-name: pulse_animation;
+  animation-duration: 2000ms;
+  transform-origin:70% 70%;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.orderSteps p {
+  padding-top: 1em;
+  font-size: 2rem;
+}
+
+.orderButton {
+  margin-top: 5rem;
+  font-size: 2rem;
+  background-color: #598cb3;
+  border-color: #598cb3;
+  color: white;
+}
+
+@keyframes pulse_animation {
+  0% { transform: scale(1); }
+  30% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  50% { transform: scale(1); }
+  60% { transform: scale(1); }
+  70% { transform: scale(1.05); }
+  80% { transform: scale(1); }
+  100% { transform: scale(1); }
+}

@@ -35,7 +35,7 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs, callback
 
 function doRequest(options, callback) {
     request(options, function (e, r, data) {
-        if (r.statusCode === 401) {
+        if (r && (r.statusCode === 401)) {
             authServer.invalidateToken();
         }
         const err = logger.logRequestAndResponse(e, options, r, data);

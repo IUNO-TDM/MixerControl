@@ -3,6 +3,20 @@
     <h1>Bestellabwicklung</h1>
 </div>
 
+  <md-toolbar color="primary">
+    <span>Bestellabwicklung</span>
+
+
+    <span class="example-fill-remaining-space"></span>
+
+    <span (click)="Home()">abbrechen</span>
+  </md-toolbar>
+
+
+
+
+
+
   <div class="row">
     <div class="one-half column">
       <div *ngIf="orderState">
@@ -10,72 +24,123 @@
                 <h4>&nbsp;</h4>
 
               <div class="orderSteps" *ngSwitchCase="'waitingOffer'">
-                  <div class="step order">Lizenzanfrage</div>
-                  <div class="step payment off">Bezahlung</div>
-                  <div class="step production off">Produktion</div>
+                <md-progress-spinner mode="indeterminate"></md-progress-spinner>
+                  <p>Lizenzkauf wird initiiert</p>
               </div>
 
 
               <div class="orderSteps" *ngSwitchCase="'waitingPayment'">
-                  <div class="step order done">Lizenzanfrage</div>
-                  <div class="step payment">Bezahlung</div>
-                  <div class="step production off">Produktion</div>
+                  Getränk bezahlen
+                <md-card>
+                  <md-table #table [dataSource]="dataSource">
+                    <ng-container mdColumnDef="Pos" >
+                      <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'"> Pos </md-header-cell>
+                      <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Pos}} </md-cell>
+                    </ng-container>
+                    <ng-container mdColumnDef="Menge">
+                      <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'"> Menge </md-header-cell>
+                      <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Menge}} </md-cell>
+                    </ng-container>
+                    <ng-container mdColumnDef="Artikel">
+                      <md-header-cell *mdHeaderCellDef [ngClass]="'titleWidthClass'"> Artikel </md-header-cell>
+                      <md-cell *mdCellDef="let row"  [ngClass]="'titleWidthClass'"> {{row.Artikel}} </md-cell>
+                    </ng-container>
+                    <ng-container mdColumnDef="Preis">
+                      <md-header-cell *mdHeaderCellDef [ngClass]="'priceWidthClass'"> Preis </md-header-cell>
+                      <md-cell *mdCellDef="let row"[ngClass]="'priceWidthClass'"> {{row.Preis}} </md-cell>
+                    </ng-container>
 
-                  <button *ngIf="showDialog == false" class="paymentButton" (click)="ShowPaymentModal()">Jetzt bezahlen</button>
-                  <my-payment *ngIf="showDialog"></my-payment>
+                    <ng-container mdColumnDef="Gesamt">
+                      <md-header-cell *mdHeaderCellDef [ngClass]="'priceWidthClass'"> Gesamt </md-header-cell>
+                      <md-cell *mdCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Gesamt}} </md-cell>
+                    </ng-container>
+
+                    <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+                    <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+                  </md-table>
+                  <div *ngIf="drink">Summe: {{drink.licencefee / 100000}} IUNO</div>
+
+                </md-card>
+
+
+
+                <button class="paymentButton" (click)="ShowPaymentModalQR()">QR-Code</button>
+                <button class="paymentButton" (click)="ShowPaymentModalScan()">Scanner</button>
+
+                <!--<my-payment *ngIf="showDialog"></my-payment>-->
 
               </div>
 
+              <div class="orderSteps" *ngSwitchCase="'waitingLicenseAvailable'">
+                <div class="step payment done">Getränk bezahlt</div>
+                <div class="step licenseavailable active">Lizenzgebühr wird bezahlt</div>
+                <div class="step license off">Lizenz vom Marktplatz laden</div>
+                <div class="step production off">Getränk zubereiten</div>
+              </div>
 
               <div class="orderSteps" *ngSwitchCase="'waitingLicense'">
-                  <div class="step order done">Lizenzanfrage</div>
-                  <div class="step payment done">Bezahlung</div>
-                  <div class="step production off">Produktion</div>
+                  <div class="step payment done">Getränk bezahlt</div>
+                  <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
+                  <div class="step license active">Lizenz vom Marktplatz laden</div>
+                  <div class="step production off">Getränk zubereiten</div>
               </div>
 
               <div class="orderSteps" *ngSwitchCase="'waitForProduction'">
-                  <div class="step order done">Lizenzanfrage</div>
-                  <div class="step payment done">Bezahlung</div>
-                  <div class="step production ">Produktion</div>
+                  <div class="step payment done">Getränk bezahlt</div>
+                  <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
+                  <div class="step license done">Lizenz ist eingespielt</div>
+                  <div class="step production active">Getränk kann zubereitet werden</div>
 
                   <p> Auftrag in der Warteschlange.</p>
               </div>
               <div class="orderSteps" *ngSwitchCase="'readyForProduction'">
-                  <div class="step order done">Lizenzanfrage</div>
-                  <div class="step payment done">Bezahlung</div>
-                  <div class="step production ">Produktion</div>
+                  <div class="step payment done">Getränk bezahlt</div>
+                  <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
+                  <div class="step license done">Lizenz ist eingespielt</div>
+                  <div class="step production active">Getränk kann zubereitet werden</div>
 
                   <button class="orderButton" (click)="ProductionStart()">Getränk zubereiten</button>
               </div>
 
               <div class="orderSteps" *ngSwitchCase="'startProduction'">
-                  <div class="step order done">Lizenzanfrage</div>
-                  <div class="step payment done">Bezahlung</div>
-                  <div class="step production ">Produktion</div>
-                  <p>Produktion wird gestartet.</p>
+                <div class="step payment done">Getränk bezahlt</div>
+                <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
+                <div class="step license done">Lizenz ist eingespielt</div>
+                <div class="step production" active>Getränk wird zubereitet</div>
+                  <!--<p>Produktion wird gestartet.</p>-->
 
               </div>
               <div class="orderSteps" *ngSwitchCase="'inProduction'">
-                  <div class="step order done">Lizenzanfrage</div>
-                  <div class="step payment done">Bezahlung</div>
-                  <div class="step production ">Produktion</div>
-                  <progress value="{{progress}}" max="100"></progress>
+                <div class="step payment done">Getränk bezahlt</div>
+                <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
+                <div class="step license done">Lizenz ist eingespielt</div>
+                <div class="step production active">Getränk wird zubereitet</div>
+                  <md-progress-bar value="{{progress}}"></md-progress-bar>
 
               </div>
               <div class="orderSteps" *ngSwitchCase="'productionFinished'">
-                  <div class="step order done">Lizenzanfrage</div>
-                  <div class="step payment done">Bezahlung</div>
-                  <div class="step production done">Produktion</div>
-                  <p>Getränk ist zubereitet.</p>
+                <div class="step payment done">Getränk bezahlt</div>
+                <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
+                <div class="step license done">Lizenz ist eingespielt</div>
+                <div class="step production done">Getränk ist zubereitet</div>
+                  <!--<p>Getränk ist zubereitet.</p>-->
                   <button class="orderButton" (click)="Home()">Neues Getränk bestellen</button>
 
               </div>
 
+            <div class="orderSteps" *ngSwitchCase="'error'">
+              <div class="step production">Leider gab es einen Fehler 😳</div>
+
+              <p>Bitte melden Sie sich beim Standpersonal.</p>
+
+            </div>
+
 
               <div class="orderSteps" *ngSwitchDefault>
-                  <div class="step order off">Lizenzanfrage</div>
-                  <div class="step payment off">Bezahlung</div>
-                  <div class="step production off">Produktion</div>
+                <div class="step payment off">Getränk bezahlen</div>
+                <div class="step licensepayment off">Lizenzgebühr bezahlen</div>
+                <div class="step license off">Lizenz vom Marktplatz laden</div>
+
               </div>
           </div>
      </div>

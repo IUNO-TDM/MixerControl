@@ -87,24 +87,39 @@ const stateMachine = new machina.BehavioralFsm({
             paymentRequestReceived: "waitingPayment"
         },
         waitingPayment: {
-            _onEnter: function (client) {
-                console.log("Ordernumber " + client.orderNumber + " is now state waitingPayment ");
-                // this.timer = setTimeout( function() {
-                //   this.handle(client, "paymentArrived" );
-                // }.bind( this ), 5000 );
-                //display PR QR Code
+          _onEnter: function (client) {
+            console.log("Ordernumber " + client.orderNumber + " is now state waitingPayment ");
+            // this.timer = setTimeout( function() {
+            //   this.handle(client, "paymentArrived" );
+            // }.bind( this ), 5000 );
+            //display PR QR Code
+          },
+          paymentArrived: "waitingLicenseAvailable",
+
+          licenseAvailable: function (client) {
+              this.deferUntilTransition(client);
+              this.transition(client, 'waitingLicenseAvailable');
+
             },
-            paymentArrived: "waitingLicense",
-            licenseArrived: function (client) {
-                this.deferUntilTransition(client);
-                this.transition(client, 'waitingLicense');
+          licenseArrived: function (client) {
+              this.deferUntilTransition(client);
+              this.transition(client, 'waitingLicenseAvailable');
 
             }
         },
+        waitingLicenseAvailable: {
+          _onEnter: function (client) {
+            payment_service.unregisterStateChangeUpdates(client.invoice.invoiceId);
+          },
+          licenseAvailable: "waitingLicense",
+          licenseArrived: function (client) {
+            this.deferUntilTransition(client);
+            this.transition(client, 'waitingLicense');
+
+          }
+        },
         waitingLicense: {
-            _onEnter: function (client) {
-                payment_service.unregisterStateChangeUpdates(client.invoice.invoiceId);
-            },
+
             licenseArrived: "enqueueForProduction"
         },
 
@@ -163,6 +178,9 @@ const stateMachine = new machina.BehavioralFsm({
     },
     paymentArrived: function (client) {
         this.handle(client, "paymentArrived");
+    },
+    licenseAvailable: function (client) {
+      this.handle(client, "licenseAvailable");
     },
     licenseArrived: function (client) {
         this.handle(client, "licenseArrived");
@@ -239,6 +257,7 @@ const getOrderWithOfferId = function (offerId) {
 license_service.on('updateAvailable', function (offerId, hsmId) {
 
     const order = getOrderWithOfferId(offerId);
+    stateMachine.licenseAvailable(order);
     if (order) {
         updateCMDongle(hsmId, function (err) {
             if (err) {

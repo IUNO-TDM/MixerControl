@@ -9,25 +9,17 @@ export class Drink {
 
   description?: string;
 
-  /**
-   * The Thumbnail jpg in base64
-   */
-  thumbnail?: string;
-
-  /**
-   * The reference to the image
-   */
-  imageRef?: string;
 
   authorId?: string;
 
-  createdAt?: Date;
+  licencefee?: number;
+  retailprice?: number;
 
-  updatedAt?: Date;
+  imageref?: string;
 
-  rating?: models.Rating;
+  productId?: string;
 
-  retailPrice?: models.Price;
+  program?: string;
 
   components?: models.Component[] = [];
 
