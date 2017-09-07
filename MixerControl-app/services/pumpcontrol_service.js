@@ -355,8 +355,8 @@ pumpcontrol_service.getStorageIngredient = function (pumpNumber) {
 
 pumpcontrol_service.getConfiguredComponents = function () {
     const components = [];
-    for (let pump in pumpNumbers) {
-        components.push(storage.getItemSync('component' + pump));
+    for (let i in pumpNumbers) {
+        components.push(storage.getItemSync('component' + pumpNumbers[i]));
     }
     return components;
 };

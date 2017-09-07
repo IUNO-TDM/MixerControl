@@ -26,9 +26,6 @@ router.get('/',  function (req, res, next) {
 
     let components = pumpControl.getConfiguredComponents();
 
-    //TODO: Remove this line
-    components = config.STD_INGREDIENT_CONFIGURATION;
-
     juiceMachineService.getAllRecipes(components, function (e, recipes) {
 
         if (e) {
