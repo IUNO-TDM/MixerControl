@@ -26,6 +26,12 @@ img.drinkImg{
 h3 {
 
 }
+
+.surroundingCard{
+  padding: 2rem;
+}
+
+
 .priceWidthClass{
   flex: 0 0 70px;
 }
@@ -39,9 +45,13 @@ h3 {
   flex: 1 0 100px;
 }
 
-
+.centered {
+  width:100%;
+  text-align: center;
+}
 
 .orderSteps {
+  display: inline-block;
   font-size: 3.5rem;
   font-family: 'open_sanslight';
   padding-bottom: 2em;
@@ -50,27 +60,66 @@ h3 {
 .orderSteps .step {
   background-position: left center;
   background-repeat: no-repeat;
-  padding-left: 3em;
+  padding-left: 2em;
   padding-bottom: 1rem;
   padding-top: 1rem;
   background-size: 6rem ;
   text-decoration: underline;
+  text-align: left;
+  position: relative;
 
 }
 
-.orderSteps .licensepayment{
+
+/*.orderSteps .licensepayment{*/
+  /*background-image: url('../../img/lnr-cloud.svg');*/
+/*}*/
+/*.orderSteps .license{*/
+  /*background-image: url('../../img/lnr-license.svg');*/
+/*}*/
+/*.orderSteps .payment{*/
+  /*background-image: url('../../img/lnr-cart.svg');*/
+/*}*/
+/*.orderSteps .production{*/
+  /*background-image: url('../../img/lnr-coffee-cup.svg');*/
+/*}*/
+
+.stepIcons{
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: center;
+}
+.stepIcons .licensepayment{
   background-image: url('../../img/lnr-cloud.svg');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: center;
 }
-.orderSteps .license{
+.stepIcons .license{
   background-image: url('../../img/lnr-license.svg');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: center;
 }
-.orderSteps .payment{
+.stepIcons .payment{
   background-image: url('../../img/lnr-cart.svg');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: center;
 }
-.orderSteps .production{
+.stepIcons .production{
   background-image: url('../../img/lnr-coffee-cup.svg');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: center;
 }
 
+.stepIcons .arrow{
+  background-image: url('../../img/lnr-arrow.svg');
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: center;
+}
 
 
 .orderSteps  .off{
@@ -80,21 +129,14 @@ h3 {
 
 .orderSteps  .done{
   text-decoration: none;
+  background-image: url('../../img/lnr-check.svg');
 }
 
-.orderSteps .done::after{
-  content: " ✓";
-  padding-left: 0.1em;
-  color: #598cb3;
-}
-
-.orderSteps .active {
-  animation-name: pulse_animation;
-  animation-duration: 2000ms;
-  transform-origin:70% 70%;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
+/*.orderSteps .done::after{*/
+  /*content: " ✓";*/
+  /*padding-left: 0.1em;*/
+  /*color: #598cb3;*/
+/*}*/
 
 .orderSteps p {
   padding-top: 1em;
@@ -109,13 +151,9 @@ h3 {
   color: white;
 }
 
-@keyframes pulse_animation {
-  0% { transform: scale(1); }
-  30% { transform: scale(1); }
-  40% { transform: scale(1.08); }
-  50% { transform: scale(1); }
-  60% { transform: scale(1); }
-  70% { transform: scale(1.05); }
-  80% { transform: scale(1); }
-  100% { transform: scale(1); }
+.activeSpinner{
+  position: absolute;
+  height: 4rem;
+  left: -3.5rem;
+
 }

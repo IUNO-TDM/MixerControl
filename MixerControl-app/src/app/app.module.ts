@@ -17,7 +17,8 @@ import {
   MdTableModule,
   MdDialogModule,
   MdProgressSpinnerModule,
-  MdProgressBarModule
+  MdProgressBarModule,
+  MdIconModule
 } from '@angular/material';
 import 'hammerjs';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -56,7 +57,8 @@ import {ScanDialog} from "./order/scannerdialog";
     CdkTableModule,
     MdDialogModule,
     MdProgressSpinnerModule,
-    MdProgressBarModule
+    MdProgressBarModule,
+    MdIconModule
   ],
   providers: [],
   bootstrap: [AppComponent],

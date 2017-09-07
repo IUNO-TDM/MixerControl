@@ -14,6 +14,9 @@ import {Observable} from "rxjs";
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
 import {QrDialog} from "./qrdialog";
 import {ScanDialog} from "./scannerdialog";
+import {MdIconRegistry} from '@angular/material';
+
+import {DomSanitizer} from '@angular/platform-browser';
 @Component({
   moduleId: module.id,
   selector: 'my-order',
@@ -63,7 +66,9 @@ export class OrderComponent implements OnInit, OnDestroy {
     private orderService: OrderService,
     private socketService: SocketService,
     private dialog: MdDialog
-  ) {}
+  ) {
+
+  }
 
 
 
