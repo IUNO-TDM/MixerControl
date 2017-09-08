@@ -25,7 +25,6 @@
     "@angular/router": "^4.2.4",
     "@techiediaries/ngx-qrcode": "0.0.5",
     "@types/socket.io-client": "^1.4.30",
-    "angular2-notifications": "^0.4.53",
     "angular2-qrscanner": "^0.1.7",
     "async": "^2.1.5",
     "body-parser": "^1.17.2",
