@@ -121,6 +121,26 @@ h3 {
   background-position: center;
 }
 
+.stepIcons .step0{
+  opacity: 30;
+  filter: alpha(opacity=30);
+  /*background-color: red;*/
+}
+.stepIcons .step1{
+  opacity: 100;
+  filter: alpha(opacity=100);
+  /*background-color: blue;*/
+}
+.stepIcons .step2{
+  opacity: 100;
+  filter: alpha(opacity=100);
+  /*background-color: green;*/
+}
+.stepIcons .step3{
+  opacity: 80;
+  filter: alpha(opacity=80);
+  /*background-color: yellow;*/
+}
 
 .orderSteps  .off{
   opacity: 0.2;

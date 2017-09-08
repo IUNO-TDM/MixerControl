@@ -78,7 +78,7 @@
               <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
               <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
             </md-table>
-            <div *ngIf="drink">Summe: {{drink.licencefee / 100000}} IUNO</div>
+            <div *ngIf="drink">Summe: {{drink.licensefee / 100000}} IUNO</div>
 
           </md-card>
 
@@ -92,59 +92,64 @@
 
         <div class="orderSteps" *ngSwitchCase="'waitingLicenseAvailable'">
           <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licenseavailable active">Lizenzgebühr wird bezahlt</div>
+          <div class="step licenseavailable active">
+            <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
+            Lizenzgebühr wird bezahlt</div>
           <div class="step license off">Lizenz vom Marktplatz laden</div>
           <div class="step production off">Getränk zubereiten</div>
         </div>
 
         <div class="orderSteps" *ngSwitchCase="'waitingLicense'">
           <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
-          <div class="step license active">Lizenz vom Marktplatz laden</div>
+          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+          <div class="step license active">
+            <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
+            Lizenz vom Marktplatz laden</div>
           <div class="step production off">Getränk zubereiten</div>
         </div>
 
         <div class="orderSteps" *ngSwitchCase="'waitForProduction'">
           <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
-          <div class="step license done">Lizenz ist eingespielt</div>
-          <div class="step production">Getränk kann zubereitet werden</div>
+          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+          <div class="step license done">Lizenz eingespielt</div>
+          <div class="step production">Getränk zubereiten</div>
 
           <p> Auftrag in der Warteschlange.</p>
         </div>
         <div class="orderSteps" *ngSwitchCase="'readyForProduction'">
           <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
-          <div class="step license done">Lizenz ist eingespielt</div>
-          <div class="step production">
-            <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
-            Getränk kann zubereitet werden
-          </div>
+          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+          <div class="step license done">Lizenz eingespielt</div>
+          <div class="step production"></div>
 
           <button class="orderButton" (click)="ProductionStart()">Getränk zubereiten</button>
         </div>
 
         <div class="orderSteps" *ngSwitchCase="'startProduction'">
           <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
-          <div class="step license done">Lizenz ist eingespielt</div>
-          <div class="step production" active>Getränk wird zubereitet</div>
+          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+          <div class="step license done">Lizenz eingespielt</div>
+          <div class="step production" active>
+            <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
+            Getränk wird zubereitet</div>
           <!--<p>Produktion wird gestartet.</p>-->
 
         </div>
         <div class="orderSteps" *ngSwitchCase="'inProduction'">
           <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
-          <div class="step license done">Lizenz ist eingespielt</div>
-          <div class="step production active">Getränk wird zubereitet</div>
+          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+          <div class="step license done">Lizenz eingespielt</div>
+          <div class="step production active">
+            <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
+            Getränk wird zubereitet</div>
           <md-progress-bar value="{{progress}}"></md-progress-bar>
 
         </div>
         <div class="orderSteps" *ngSwitchCase="'productionFinished'">
           <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr wird bezahlt</div>
-          <div class="step license done">Lizenz ist eingespielt</div>
-          <div class="step production done">Getränk ist zubereitet</div>
+          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+          <div class="step license done">Lizenz eingespielt</div>
+          <div class="step production done">Getränk zubereitet</div>
           <!--<p>Getränk ist zubereitet.</p>-->
           <button md-raised-button color="primary" (click)="Home()">Neues Getränk bestellen</button>
 

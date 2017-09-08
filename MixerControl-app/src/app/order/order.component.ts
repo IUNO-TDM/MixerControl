@@ -1,4 +1,7 @@
-import { Component, OnInit,Inject, OnDestroy } from '@angular/core';
+import {
+  Component, OnInit, Inject, OnDestroy, ViewChild, QueryList, ElementRef, ContentChildren,
+  ViewChildren
+} from '@angular/core';
 import { ActivatedRoute, Params, Router }   from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import {Drink} from '../models/Drink'
@@ -11,12 +14,13 @@ import {SocketService} from "../services/socketio.service";
 import {Subscription} from "rxjs";
 import {DataSource} from '@angular/cdk/collections';
 import {Observable} from "rxjs";
-import {MdDialog, MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
+import {MdDialog, MdDialogRef, MD_DIALOG_DATA, MdGridTile, MdGridList} from '@angular/material';
 import {QrDialog} from "./qrdialog";
 import {ScanDialog} from "./scannerdialog";
-import {MdIconRegistry} from '@angular/material';
 
-import {DomSanitizer} from '@angular/platform-browser';
+
+
+
 @Component({
   moduleId: module.id,
   selector: 'my-order',
@@ -58,6 +62,11 @@ export class OrderComponent implements OnInit, OnDestroy {
       orderId: ''
     }
   };
+
+
+  @ViewChildren(MdGridTile)gridTiles;
+
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -70,6 +79,77 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   }
 
+
+  refreshStepCards(state): void{
+    // 0= OFF, 1 = Active, 2= Highlighted, 3= FINISHED
+    // var pState = "";
+    if(state && state.toState){
+      state = state.toState;
+    }
+
+    var step1 = 0;
+    var step2 = 0;
+    var step3 = 0;
+    var step4 = 0;
+    if(state == "uninitialized" || state == "error"){
+      step1 = 0;
+      step2 = 0;
+      step3 = 0;
+      step4 = 0;
+    }else if(state == "waitingOffer" || state == "waitingPaymentRequest"|| state == "waitingPayment"){
+      step1 = 1;
+      step2 = 0;
+      step3 = 0;
+      step4 = 0;
+    }else if(state == "waitingLicenseAvailable"){
+      step1 = 3;
+      step2 = 2;
+      step3 = 0;
+      step4 = 0;
+    }else if(state == "waitingLicense"){
+      step1 = 3;
+      step2 = 3;
+      step3 = 2;
+      step4 = 0;
+    }else if(state == "waitForProduction" || state == "readyForProduction" || state == "orderPaused"){
+      step1 = 3;
+      step2 = 3;
+      step3 = 3;
+      step4 = 1;
+    }else if(state == "inProduction" ){
+      step1 = 3;
+      step2 = 3;
+      step3 = 3;
+      step4 = 2;
+    }else if(state === "productionFinished" ){
+      step1 = 3;
+      step2 = 3;
+      step3 = 3;
+      step4 = 3;
+    }
+    // var tile1 = this.gridList.nativeElement.getElementsByClassName('payment').first();
+    // var tile2 = this.gridList.nativeElement.getElementsByClassName('licensepayment').first();
+    // var tile3 = this.gridList.nativeElement.getElementsByClassName('license').first();
+    // var tile4 = this.gridList.nativeElement.getElementsByClassName('production').first();
+    console.log(state);
+    // console.log(this.gridTiles);
+    var tile1  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
+    var tile2  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('licensepayment'));
+    var tile3  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('license'));
+    var tile4  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('production'));
+
+    for(let t of [tile1, tile2, tile3, tile4]){
+        var cl = t._element.nativeElement.classList;
+        cl.remove('step1');
+        cl.remove('step2');
+        cl.remove('step3');
+        cl.remove('step4');
+    }
+    tile1._element.nativeElement.classList.add('step'+step1);
+    tile2._element.nativeElement.classList.add('step'+step2);
+    tile3._element.nativeElement.classList.add('step'+step3);
+    tile4._element.nativeElement.classList.add('step'+step4);
+  }
 
 
   ngOnInit(): void{
@@ -92,6 +172,7 @@ export class OrderComponent implements OnInit, OnDestroy {
                         this.scanDialogRef.close();
                       }
                     }
+                    this.refreshStepCards(state);
                     return this.orderState = state
                   });
         }
@@ -175,9 +256,9 @@ export class ExampleDataSource extends DataSource<any> {
       drinkPosition.Artikel = drink.title;
       drinkPosition.Pos = 1;
       drinkPosition.Menge = 1;
-      console.log(drink.licencefee)
-      drinkPosition.Preis = String(drink.licencefee / 100000) + " IUNO";
-      drinkPosition.Gesamt = String(drink.licencefee / 100000) + " IUNO";
+      console.log(drink.licensefee)
+      drinkPosition.Preis = String(drink.licensefee / 100000) + " IUNO";
+      drinkPosition.Gesamt = String(drink.licensefee / 100000) + " IUNO";
       var posArray: Array<DrinkPosition> = Array(1);
       posArray[0] = drinkPosition;
       return posArray;

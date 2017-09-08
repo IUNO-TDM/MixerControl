@@ -11,16 +11,16 @@
   <div class="drinkDetail" *ngIf="drink">
     <h3> {{drink.title}}</h3>
     <md-grid-list cols="{{gridcols}}" rowHeight="2:1">
-      <md-grid-tile colspan="2" rowspan="4" style="background-color: #0FA0CE">
+      <md-grid-tile colspan="2" rowspan="4" >
         <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
       </md-grid-tile>
-      <md-grid-tile colspan="2" rowspan="4" style="background-color: #512da8">
+      <md-grid-tile colspan="2" rowspan="4" >
         <div class="description">
 
         <p>{{drink.description}}</p>
         <p>Beinhaltet:<br>{{components}}</p>
         <p>Verkaufspreis: 2 IUNO</p>
-        <p>Lizenzgebühr: {{drink.licencefee / 100000}} IUNO</p>
+        <p>Lizenzgebühr: {{drink.licensefee / 100000}} IUNO</p>
         <p>Rezepthersteller:</p>
 
         <div class="userDetails" *ngIf="user">
@@ -29,7 +29,7 @@
         <p class="userNameText">{{user.firstname}} {{user.lastname}}</p>
         </div>
         </div>
-          <button (click)="onClickMe()">Kostenpflichtig bestellen</button>
+          <button md-raised-button color="primary" (click)="onClickMe()">Kostenpflichtig bestellen</button>
         </div>
 
 
@@ -61,7 +61,7 @@
                 <!--<p>{{drink.description}}</p>-->
                 <!--<p>Beinhaltet:<br>{{components}}</p>-->
                 <!--<p>Verkaufspreis: 2 IUNO</p>-->
-                <!--<p>Lizenzgebühr: {{drink.licencefee / 100000}} IUNO</p>-->
+                <!--<p>Lizenzgebühr: {{drink.licensefee / 100000}} IUNO</p>-->
                 <!--<p>Rezepthersteller:</p>-->
 
                 <!--<div class="userDetails" *ngIf="user">-->
