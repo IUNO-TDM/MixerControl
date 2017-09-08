@@ -50,6 +50,7 @@ router.get('/:id', function (req, res, next) {
             return;
         }
 
+        recipe.retailPrice = config.RETAIL_PRICE;
         res.json(recipe);
     });
 });

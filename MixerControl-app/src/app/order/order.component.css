@@ -6,6 +6,58 @@
   position:absolute;
 }
 
+.orderStateContainer{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+.stepIcons{
+  width: 100%;
+  margin: 0 auto 2rem;
+  max-width: 900px;
+}
+
+.orderStateDetails{
+  flex-grow: 2;
+  /*background-color: yellow;*/
+  /*width: 100%;*/
+  /*max-width: 900px;*/
+  /*height:700px;*/
+}
+
+
+.cardContent{
+  width:100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /*align-items: center;*/
+  justify-content: space-around;
+}
+
+
+.orderTableCard{
+  max-width: 900px;
+}
+
+.buttonHorizontalCenter{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.orderSteps {
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*align-content: center;*/
+  text-align: center;
+  font-family: 'open_sanslight';
+
+}
+
 .stepIconTileContent img{
   position:absolute;
   opacity:0.3;
@@ -20,77 +72,56 @@
 }
 
 
-.example-fill-remaining-space {
-  flex: 1 1 auto;
-}
-.description{
-  position: absolute;
-  width: 90%;
-  height: 90%;
-  float: none;
-}
-
-
-h3 {
-
-}
-
-.surroundingCard{
-  padding: 2rem;
+.centered {
+  flex: 0 0 70%;
 }
 
 
 .priceWidthClass{
-  flex: 0 0 70px;
+  flex: 0 0 100px;
+  text-align: right;
 }
 
 .customWidthClass{
    flex: 0 0 50px;
+  text-align: left;
  }
 
 
 .titleWidthClass{
   flex: 1 0 100px;
+  min-width: 100px;
+  text-align: left;
 }
 
-.centered {
-  width:100%;
-  text-align: center;
-}
-
-.orderSteps {
-  display: inline-block;
-  font-size: 3.5rem;
-  font-family: 'open_sanslight';
-  /*padding-bottom: 2rem;*/
-}
 
 .orderStepsFrame{
   padding-bottom: 2rem;
+  min-width: 650px;
+  text-align: center;
 }
 
 
 
-.orderSteps .step {
+.step {
   background-position: left center;
   background-repeat: no-repeat;
-  padding-left: 2em;
+  padding-left: 3rem;
   padding-bottom: 1rem;
   padding-top: 1rem;
-  background-size: 6rem ;
+  background-size: 3rem ;
   text-decoration: underline;
   text-align: left;
-  position: relative;
 
 }
 
-
-.stepIcons{
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-position: center;
-  max-width: 800px;
+.orderStepsFrame .sumPrice{
+  text-align: right;
+  margin-right: 1rem;
+  font-style: oblique;
 }
+
+
 .stepIcons .licensepayment{
   background-repeat: no-repeat;
   background-size: auto;
@@ -173,17 +204,14 @@ h3 {
   font-size: 2rem;
 }
 
-.orderButton {
-  margin-top: 5rem;
-  font-size: 2rem;
-  background-color: #598cb3;
-  border-color: #598cb3;
-  color: white;
-}
 
 .activeSpinner{
   position: absolute;
   height: 4rem;
   left: -3.5rem;
 
+}
+
+.orderStepsCard{
+  min-height: 280px ;
 }

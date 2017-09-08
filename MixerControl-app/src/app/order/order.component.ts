@@ -43,7 +43,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   showDialog: boolean = false;
   orderURL = "NULL";
 
-  displayedColumns = ['Pos', 'Menge', 'Artikel', 'Preis', 'Gesamt'];
+  displayedColumns = ['Pos', 'Menge', 'Artikel','UnterPosPreis', 'Preis', 'Gesamt'];
   dataSource: ExampleDataSource | null;
   config = {
     disableClose: false,
@@ -96,12 +96,12 @@ export class OrderComponent implements OnInit, OnDestroy {
       step2 = 0;
       step3 = 0;
       step4 = 0;
-    }else if(state == "waitingOffer" || state == "waitingPaymentRequest"|| state == "waitingPayment"){
+    }else if(state == "waitingOffer" || state == "waitingPaymentRequest"){
       step1 = 2;
       step2 = 0;
       step3 = 0;
       step4 = 0;
-    }else if(state == "waitingLicenseAvailable"){
+    }else if(state == "waitingPayment" || state == "waitingLicenseAvailable"){
       step1 = 3;
       step2 = 2;
       step3 = 0;
@@ -127,9 +127,10 @@ export class OrderComponent implements OnInit, OnDestroy {
       step3 = 3;
       step4 = 3;
     }
+    console.log(this.gridTiles);
 
-    var tile1  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
-    var tile2  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('licensepayment'));
+    var tile1  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('order'));
+    var tile2  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
     var tile3  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('license'));
     var tile4  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('production'));
 
@@ -229,9 +230,10 @@ export class OrderComponent implements OnInit, OnDestroy {
 }
 
 export class DrinkPosition {
-  Pos: number;
-  Menge: number;
+  Pos: string;
+  Menge: string;
   Artikel: string;
+  UnterPosPreis: string;
   Preis: string;
   Gesamt: string;
 }
@@ -246,16 +248,51 @@ export class ExampleDataSource extends DataSource<any> {
   connect(): Observable<DrinkPosition[]> {
 
     return this._drinkObservable.map((drink: Drink) => {
-      var drinkPosition: DrinkPosition;
-      drinkPosition = new DrinkPosition();
-      drinkPosition.Artikel = drink.title;
-      drinkPosition.Pos = 1;
-      drinkPosition.Menge = 1;
-      console.log(drink.licensefee)
-      drinkPosition.Preis = String(drink.licensefee / 100000) + " IUNO";
-      drinkPosition.Gesamt = String(drink.licensefee / 100000) + " IUNO";
-      var posArray: Array<DrinkPosition> = Array(1);
-      posArray[0] = drinkPosition;
+
+
+      var drinkPosition1: DrinkPosition;
+      drinkPosition1 = new DrinkPosition();
+      drinkPosition1.Artikel = drink.title;
+      drinkPosition1.Pos = "1";
+      drinkPosition1.Menge = "1";
+      drinkPosition1.UnterPosPreis = "";
+      drinkPosition1.Preis = String(drink.retailPrice / 100000) + " IUNO";
+      drinkPosition1.Gesamt = String(drink.retailPrice / 100000) + " IUNO";
+
+      var drinkPosition2: DrinkPosition;
+      drinkPosition2 = new DrinkPosition();
+      drinkPosition2.Artikel = "*Marktplatzprovision";
+      drinkPosition2.Pos = "";
+      drinkPosition2.Menge = "";
+      drinkPosition2.UnterPosPreis = String(drink.licensefee * 0.3 / 100000) + " IUNO";
+      drinkPosition2.Preis = "";
+      drinkPosition2.Gesamt = "";
+
+      var drinkPosition3: DrinkPosition;
+      drinkPosition3 = new DrinkPosition();
+      drinkPosition3.Artikel = "*Nutzungslizenz";
+      drinkPosition3.Pos = "";
+      drinkPosition3.Menge = "";
+      drinkPosition3.UnterPosPreis = String(drink.licensefee * 0.7 / 100000) + " IUNO";
+      drinkPosition3.Preis = "";
+      drinkPosition3.Gesamt = "";
+
+      var drinkPosition4: DrinkPosition;
+      drinkPosition4 = new DrinkPosition();
+      drinkPosition4.Artikel = "*Zubereitung";
+      drinkPosition4.Pos = "";
+      drinkPosition4.Menge = "";
+      drinkPosition4.UnterPosPreis = String((drink.retailPrice - drink.licensefee)/ 100000) + " IUNO";
+      drinkPosition4.Preis = "";
+      drinkPosition4.Gesamt = "";
+
+
+      var posArray: Array<DrinkPosition> = Array(4);
+      posArray[0] = drinkPosition1;
+      posArray[1] = drinkPosition2;
+      posArray[2] = drinkPosition3;
+      posArray[3] = drinkPosition4;
+
       return posArray;
     });
   }

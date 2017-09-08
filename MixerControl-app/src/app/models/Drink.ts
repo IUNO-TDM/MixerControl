@@ -13,7 +13,7 @@ export class Drink {
   authorId?: string;
 
   licensefee?: number;
-  retailprice?: number;
+  retailPrice?: number;
 
   imageref?: string;
 
