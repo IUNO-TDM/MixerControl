@@ -18,7 +18,7 @@ body{
 .loader {
   background-position: center center;
   background-repeat: no-repeat;
-  background-image: url('../img/loader.gif');
+  background-image: url('../assets/loader.gif');
   height: 50rem;
   width: 100%;
 }
@@ -28,7 +28,7 @@ a:hover {
   color: #000; }
 
 header {
-  background-image: url('../img/header.png');
+  background-image: url('../assets/header.png');
   background-size: cover;
   background-color: blue;
   height: 80px;
@@ -43,7 +43,7 @@ header .projectTitle{
 
 footer {
   background: white;
-  background-image: url('../img/powered_by_axoom_vertical.svg');
+  background-image: url('../assets/powered_by_axoom_vertical.svg');
   background-size: auto 30px;
   background-repeat: no-repeat;
   background-position: center center;

@@ -15,25 +15,34 @@
   <md-card class="surroundingCard">
     <md-grid-list class="stepIcons" cols="11" row-height="1:1" gutterSize="1rem">
       <md-grid-tile class="payment" colspan="2" rowspan="2" >
+        <div class="stepIconTileContent">
+          <img src="./assets/lnr-cart.svg">
+        </div>
 
       </md-grid-tile>
       <md-grid-tile class="arrow" colspan="1" rowspan="2">
 
       </md-grid-tile>
       <md-grid-tile class="licensepayment" colspan="2" rowspan="2" >
-
+        <div class="stepIconTileContent">
+          <img src="./assets/lnr-cloud.svg">
+        </div>
       </md-grid-tile>
       <md-grid-tile class="arrow" colspan="1" rowspan="2">
 
       </md-grid-tile>
       <md-grid-tile class="license" colspan="2" rowspan="2">
-
+        <div class="stepIconTileContent">
+          <img src="./assets/lnr-license.svg">
+        </div>
       </md-grid-tile>
       <md-grid-tile class="arrow" colspan="1" rowspan="2">
 
       </md-grid-tile>
       <md-grid-tile class="production" colspan="2" rowspan="2">
-
+        <div class="stepIconTileContent">
+          <img src="./assets/lnr-coffee-cup.svg">
+        </div>
       </md-grid-tile>
     </md-grid-list>
 
@@ -120,7 +129,7 @@
           <div class="step payment done">Getränk bezahlt</div>
           <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
           <div class="step license done">Lizenz eingespielt</div>
-          <div class="step production"></div>
+          <div class="step production">Getränk kann zubereitet werden</div>
 
           <button class="orderButton" (click)="ProductionStart()">Getränk zubereiten</button>
         </div>

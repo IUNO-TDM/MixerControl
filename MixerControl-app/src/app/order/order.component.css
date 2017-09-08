@@ -1,6 +1,14 @@
-img.drinkImg{
+
+.stepIconTileContent{
+  width:100%;
+  height:100%;
+  float: none;
   position:absolute;
-  /*opacity:0.3;*/
+}
+
+.stepIconTileContent img{
+  position:absolute;
+  opacity:0.3;
   max-width: 100%;
   max-height: 100%;
   /*max-height: 150px;*/
@@ -71,75 +79,66 @@ h3 {
 }
 
 
-/*.orderSteps .licensepayment{*/
-  /*background-image: url('../../img/lnr-cloud.svg');*/
-/*}*/
-/*.orderSteps .license{*/
-  /*background-image: url('../../img/lnr-license.svg');*/
-/*}*/
-/*.orderSteps .payment{*/
-  /*background-image: url('../../img/lnr-cart.svg');*/
-/*}*/
-/*.orderSteps .production{*/
-  /*background-image: url('../../img/lnr-coffee-cup.svg');*/
-/*}*/
-
 .stepIcons{
   background-repeat: no-repeat;
   background-size: auto;
   background-position: center;
 }
 .stepIcons .licensepayment{
-  background-image: url('../../img/lnr-cloud.svg');
   background-repeat: no-repeat;
   background-size: auto;
   background-position: center;
 }
 .stepIcons .license{
-  background-image: url('../../img/lnr-license.svg');
   background-repeat: no-repeat;
   background-size: auto;
   background-position: center;
 }
 .stepIcons .payment{
-  background-image: url('../../img/lnr-cart.svg');
   background-repeat: no-repeat;
   background-size: auto;
   background-position: center;
 }
 .stepIcons .production{
-  background-image: url('../../img/lnr-coffee-cup.svg');
   background-repeat: no-repeat;
   background-size: auto;
   background-position: center;
 }
 
 .stepIcons .arrow{
-  background-image: url('../../img/lnr-arrow.svg');
+  background-image: url('../../assets/lnr-arrow.svg');
   background-repeat: no-repeat;
   background-size: auto;
   background-position: center;
 }
 
-.stepIcons .step0{
-  opacity: 30;
-  filter: alpha(opacity=30);
-  /*background-color: red;*/
+.stepIcons .step0 img{
+  opacity: 0.2;
+  transform:scale(0.9);
 }
-.stepIcons .step1{
-  opacity: 100;
-  filter: alpha(opacity=100);
-  /*background-color: blue;*/
+.stepIcons .step1 img{
+  opacity: 1;
+  transform:scale(1);
 }
-.stepIcons .step2{
-  opacity: 100;
-  filter: alpha(opacity=100);
-  /*background-color: green;*/
+.stepIcons .step2 img{
+  opacity: 1;
+  animation: woop 2s infinite
 }
-.stepIcons .step3{
-  opacity: 80;
-  filter: alpha(opacity=80);
-  /*background-color: yellow;*/
+.stepIcons .step3 img{
+  opacity: 0.7;
+  transform:scale(0.9);
+}
+
+@keyframes woop {
+  0% {
+    transform: scale(1.0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1.0);
+  }
 }
 
 .orderSteps  .off{
@@ -149,14 +148,8 @@ h3 {
 
 .orderSteps  .done{
   text-decoration: none;
-  background-image: url('../../img/lnr-check.svg');
+  background-image: url('../../assets/lnr-check.svg');
 }
-
-/*.orderSteps .done::after{*/
-  /*content: " ✓";*/
-  /*padding-left: 0.1em;*/
-  /*color: #598cb3;*/
-/*}*/
 
 .orderSteps p {
   padding-top: 1em;
