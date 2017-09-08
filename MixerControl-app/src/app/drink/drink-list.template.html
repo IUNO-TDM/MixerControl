@@ -1,11 +1,9 @@
 <div class="container">
-  <md-toolbar color="primary">
-    <span>Verfübare Cocktails</span>
 
-    <span class="example-fill-remaining-space"></span>
-
-    <span>Anzahl an Drinks: {{drinks.length}}</span>
-  </md-toolbar>
+  <div class="row title">
+    <div class="left">Verfübare Cocktails</div>
+    <div class="right">Anzahl an Drinks: {{drinks.length}}</div>
+  </div>
 
   <md-grid-list class="drinklistgrid" cols="{{gridcols}}" row-height="1:1" gutterSize="1rem">
     <md-grid-tile [routerLink]="['/drinks', drink.id]"  *ngFor="let drink of drinks" style="background-color: #FBFBFB" >

@@ -5,23 +5,10 @@ import {OrderService} from "../services/order.service";
 
 @Component({
   selector: 'qr-dialog',
-  template: `
+  templateUrl: './qrdialog.template.html',
+  providers: [OrderService],
+  styleUrls: ['./qrdialog.component.css']
 
-    <h2 md-dialog-title>Scan this code with a Bitcoin Wallet App</h2>
-
-    <md-dialog-content>
-      <ngx-qrcode [qrc-element-type]="elementType" [qrc-value] = "paymentRequest"></ngx-qrcode>
-    </md-dialog-content>
-
-    <md-dialog-actions >
-      <button
-        md-raised-button
-        color="primary"
-        md-dialog-close>Close</button>
-
-    </md-dialog-actions>
-  `,
-  providers: [OrderService]
 })
 export class QrDialog implements OnInit{
   paymentRequest = "^234567890ß";

@@ -15,8 +15,8 @@ import {Subscription} from "rxjs";
 import {DataSource} from '@angular/cdk/collections';
 import {Observable} from "rxjs";
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA, MdGridTile, MdGridList} from '@angular/material';
-import {QrDialog} from "./qrdialog";
-import {ScanDialog} from "./scannerdialog";
+import {QrDialog} from "./qrdialog.component";
+import {ScanDialog} from "./scannerdialog.component";
 
 
 
@@ -97,7 +97,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       step3 = 0;
       step4 = 0;
     }else if(state == "waitingOffer" || state == "waitingPaymentRequest"|| state == "waitingPayment"){
-      step1 = 1;
+      step1 = 2;
       step2 = 0;
       step3 = 0;
       step4 = 0;
@@ -116,7 +116,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       step2 = 3;
       step3 = 3;
       step4 = 1;
-    }else if(state == "inProduction" ){
+    }else if(state == "inProduction"|| state == "startProduction" ){
       step1 = 3;
       step2 = 3;
       step3 = 3;
@@ -127,12 +127,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       step3 = 3;
       step4 = 3;
     }
-    // var tile1 = this.gridList.nativeElement.getElementsByClassName('payment').first();
-    // var tile2 = this.gridList.nativeElement.getElementsByClassName('licensepayment').first();
-    // var tile3 = this.gridList.nativeElement.getElementsByClassName('license').first();
-    // var tile4 = this.gridList.nativeElement.getElementsByClassName('production').first();
-    console.log(state);
-    // console.log(this.gridTiles);
+
     var tile1  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
     var tile2  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('licensepayment'));
     var tile3  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('license'));

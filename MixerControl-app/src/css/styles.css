@@ -3,7 +3,7 @@
 @import 'fonts.css';
 
 html {
-  font-size: 50%;
+  /*font-size: 50%;*/
   font-family: 'open_sanslight';
 }
 body{
@@ -14,6 +14,11 @@ body{
 .container{
   width: 100%;
   margin-bottom: 55px;
+  /*overflow: hidden;*/
+}
+
+.containerInner{
+  overflow:visible;
 }
 .loader {
   background-position: center center;
@@ -39,9 +44,9 @@ header .projectTitle{
   padding-left: 5%;
   font-family: 'open_sanslight';
   text-decoration: none;
-}
 
-footer {
+  font-size:50%;
+
   background: white;
   background-image: url('../assets/powered_by_axoom_vertical.svg');
   background-size: auto 30px;
@@ -59,14 +64,37 @@ footer {
 .row.title {
   border-bottom: 1px solid #000;
   padding-top:  1em;
-  padding-bottom:  0.5em;
-  margin-bottom: 2em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  position: relative;
+  /*overflow: auto;*/
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+
 }
 .row.title h1,
 .row.title h4{
-  display: inline;
+  /*display: inline;*/
   padding-right: 1em;
 }
-.row.title button {
+
+.row.title h1{
+  font-size: 1.5rem;
+}
+
+.row.title .left{
+  height: 100%;
+  float: left;
+}
+.row.title .right{
+  height: 100%;
   float: right;
 }
+
+.mat-cardm, .mat-button-wrapper{
+  font-family: 'open_sanslight';
+}
+
+

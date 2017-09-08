@@ -257,11 +257,15 @@ const getOrderWithOfferId = function (offerId) {
 license_service.on('updateAvailable', function (offerId, hsmId) {
 
     const order = getOrderWithOfferId(offerId);
+    if(!order){
+      return;
+    }
     stateMachine.licenseAvailable(order);
     if (order) {
         updateCMDongle(hsmId, function (err) {
             if (err) {
                 return;
+                stateMachine.error(order)
             }
 
             stateMachine.licenseArrived(order);

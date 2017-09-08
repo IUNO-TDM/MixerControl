@@ -37,7 +37,7 @@ export class DrinkDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.resize(window.innerWidth);
+    // this.resize(window.innerWidth);
     this.route.params.switchMap((params: Params) => this.drinkService.getDrink(params['id']))
       .subscribe(drink => {
         this.drink = drink;
@@ -67,24 +67,24 @@ export class DrinkDetailComponent implements OnInit {
       this.router.navigateByUrl(`/orders/${orderNumber}`);
     });
   }
-  resize(width) {
-    if (width < 600) {
-      this.gridcols = 2;
-    // }else if (width < 900) {
-    //   this.gridcols = 2;
-    }else {
-      this.gridcols = 4;
-
-    }
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onWindowResize(event) {
-    const element = event.target.innerWidth;
-    console.log("window resize " +  element);
-    this.resize(element);
-
-  }
+  // resize(width) {
+  //   if (width < 600) {
+  //     this.gridcols = 2;
+  //   // }else if (width < 900) {
+  //   //   this.gridcols = 2;
+  //   }else {
+  //     this.gridcols = 4;
+  //
+  //   }
+  // }
+  //
+  // @HostListener('window:resize', ['$event'])
+  // onWindowResize(event) {
+  //   const element = event.target.innerWidth;
+  //   console.log("window resize " +  element);
+  //   this.resize(element);
+  //
+  // }
 
 
 }

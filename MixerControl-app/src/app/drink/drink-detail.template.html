@@ -1,84 +1,83 @@
 <div class="container">
 
-  <md-toolbar color="primary">
-    <span>Details</span>
 
-
-    <span class="example-fill-remaining-space"></span>
-
-    <span (click)="getBack()">zurück</span>
-  </md-toolbar>
-  <div class="drinkDetail" *ngIf="drink">
-    <h3> {{drink.title}}</h3>
-    <md-grid-list cols="{{gridcols}}" rowHeight="2:1">
-      <md-grid-tile colspan="2" rowspan="4" >
-        <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
-      </md-grid-tile>
-      <md-grid-tile colspan="2" rowspan="4" >
+  <div class="row title">
+    <div *ngIf="drink" class="left"> Details: {{drink.title}}</div>
+    <div class="right">
+      <button md-button (click)="getBack()">zurück</button>
+    </div>
+  </div>
+  <div class="cardContainer">
+    <md-card>
+      <h1 *ngIf="drink">{{drink.title}}</h1>
+      <div class="drinkDetail" *ngIf="drink">
+        <div class="drinkDetailImage">
+          <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
+        </div>
         <div class="description">
+          <div class="descriptionText">
+            <div class="descriptionTextInner">
 
-        <p>{{drink.description}}</p>
-        <p>Beinhaltet:<br>{{components}}</p>
-        <p>Verkaufspreis: 2 IUNO</p>
-        <p>Lizenzgebühr: {{drink.licensefee / 100000}} IUNO</p>
-        <p>Rezepthersteller:</p>
+              <p>{{drink.description}}</p>
+              <p>Beinhaltet:<br>{{components}}</p>
+              <p>Verkaufspreis: 2 IUNO</p>
+              <p>Rezepthersteller:</p>
 
-        <div class="userDetails" *ngIf="user">
-        <!--<img class="userImg" src="/api/users/{{drink.authorId}}/image"/>-->
-        <div class="userName">
-        <p class="userNameText">{{user.firstname}} {{user.lastname}}</p>
+              <div class="userDetails" *ngIf="user">
+                <div class="userName">
+                  <p class="userNameText">{{user.firstname}} {{user.lastname}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="descriptionButton">
+            <button md-raised-button color="primary" (click)="onClickMe()">Kostenpflichtig bestellen</button>
+          </div>
         </div>
-        </div>
-          <button md-raised-button color="primary" (click)="onClickMe()">Kostenpflichtig bestellen</button>
-        </div>
 
+      </div>
 
-      </md-grid-tile>
-
-
-
-    </md-grid-list>
-
+    </md-card>
   </div>
 
 
   <!--<div class="imgAndText">-->
-    <!--<img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>-->
+  <!--<img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>-->
 
   <!--</div>-->
   <!--<div class="centeredButtonDiv">-->
-    <!--<button (click)="onClickMe()">Bestellen</button>-->
+  <!--<button (click)="onClickMe()">Bestellen</button>-->
   <!--</div>-->
-    <!--<div class="row">-->
-        <!--<h1>Details</h1>-->
-      <!--<button (click)="getBack()">zurück</button>-->
-    <!--</div>-->
-    <!--<div class="drinkDetail" *ngIf="drink">-->
-        <!--<div class="imgAndText">-->
-            <!--<img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>-->
-            <!--<div class="description">-->
+  <!--<div class="row">-->
+  <!--<h1>Details</h1>-->
+  <!--<button (click)="getBack()">zurück</button>-->
+  <!--</div>-->
+  <!--<div class="drinkDetail" *ngIf="drink">-->
+  <!--<div class="imgAndText">-->
+  <!--<img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>-->
+  <!--<div class="description">-->
 
-                <!--<p>{{drink.description}}</p>-->
-                <!--<p>Beinhaltet:<br>{{components}}</p>-->
-                <!--<p>Verkaufspreis: 2 IUNO</p>-->
-                <!--<p>Lizenzgebühr: {{drink.licensefee / 100000}} IUNO</p>-->
-                <!--<p>Rezepthersteller:</p>-->
+  <!--<p>{{drink.description}}</p>-->
+  <!--<p>Beinhaltet:<br>{{components}}</p>-->
+  <!--<p>Verkaufspreis: 2 IUNO</p>-->
+  <!--<p>Lizenzgebühr: {{drink.licensefee / 100000}} IUNO</p>-->
+  <!--<p>Rezepthersteller:</p>-->
 
-                <!--<div class="userDetails" *ngIf="user">-->
-                    <!--<img class="userImg" src="/api/users/{{drink.authorId}}/image"/>-->
-                    <!--<div class="userName">-->
-                        <!--<p class="userNameText">{{user.firstname}} {{user.lastname}}</p>-->
-                    <!--</div>-->
-                <!--</div>-->
+  <!--<div class="userDetails" *ngIf="user">-->
+  <!--<img class="userImg" src="/api/users/{{drink.authorId}}/image"/>-->
+  <!--<div class="userName">-->
+  <!--<p class="userNameText">{{user.firstname}} {{user.lastname}}</p>-->
+  <!--</div>-->
+  <!--</div>-->
 
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="centeredButtonDiv">-->
-            <!--<button (click)="onClickMe()">Bestellen</button>-->
-          <!--<button (click)="getBack()">zurück</button>-->
-        <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="centeredButtonDiv">-->
+  <!--<button (click)="onClickMe()">Bestellen</button>-->
+  <!--<button (click)="getBack()">zurück</button>-->
+  <!--</div>-->
 
-    <!--</div>-->
+  <!--</div>-->
 
 
 </div>

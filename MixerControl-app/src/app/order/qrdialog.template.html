@@ -1,0 +1,18 @@
+<h2 md-dialog-title>Scan this code with a Bitcoin Wallet App</h2>
+
+<md-dialog-content>
+  <div class="qrWrapper">
+    <ngx-qrcode [qrc-element-type]="elementType" [qrc-value]="paymentRequest"></ngx-qrcode>
+
+  </div>
+
+</md-dialog-content>
+
+<md-dialog-actions>
+  <button
+    md-raised-button
+    color="primary"
+    md-dialog-close>Close
+  </button>
+
+</md-dialog-actions>

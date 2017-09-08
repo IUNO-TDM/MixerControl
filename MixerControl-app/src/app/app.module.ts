@@ -27,8 +27,8 @@ import {CdkTableModule} from '@angular/cdk/table';
 import {NgxQRCodeModule} from '@techiediaries/ngx-qrcode';
 import {QrScannerModule} from 'angular2-qrscanner';
 import {PaymentComponent} from './order/payment.component';
-import {QrDialog} from "./order/qrdialog";
-import {ScanDialog} from "./order/scannerdialog";
+import {QrDialog} from "./order/qrdialog.component";
+import {ScanDialog} from "./order/scannerdialog.component";
 
 
 @NgModule({

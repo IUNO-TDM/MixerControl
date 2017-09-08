@@ -43,7 +43,3 @@ img.drinkImg{
   margin-bottom: 0;
   display: block;
 }
-
-.example-fill-remaining-space {
-  flex: 1 1 auto;
-}

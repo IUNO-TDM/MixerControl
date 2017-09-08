@@ -1,20 +1,14 @@
 <div class="container">
-<div class="row title">
-    <h1>Bestellabwicklung</h1>
-</div>
 
-  <md-toolbar color="primary">
-    <span>Bestellabwicklung</span>
-
-
-    <span class="example-fill-remaining-space"></span>
-
-    <span (click)="Home()">abbrechen</span>
-  </md-toolbar>
-
+  <div class="row title">
+    <div *ngIf="drink && order" class="left">Auftrag {{order.orderNumber}}: {{drink.title}}</div>
+    <div class="right">
+      <button md-button (click)="Home()">zurück</button>
+    </div>
+  </div>
   <md-card class="surroundingCard">
     <md-grid-list class="stepIcons" cols="11" row-height="1:1" gutterSize="1rem">
-      <md-grid-tile class="payment" colspan="2" rowspan="2" >
+      <md-grid-tile class="payment" colspan="2" rowspan="2">
         <div class="stepIconTileContent">
           <img src="./assets/lnr-cart.svg">
         </div>
@@ -23,7 +17,7 @@
       <md-grid-tile class="arrow" colspan="1" rowspan="2">
 
       </md-grid-tile>
-      <md-grid-tile class="licensepayment" colspan="2" rowspan="2" >
+      <md-grid-tile class="licensepayment" colspan="2" rowspan="2">
         <div class="stepIconTileContent">
           <img src="./assets/lnr-cloud.svg">
         </div>
@@ -47,7 +41,6 @@
     </md-grid-list>
 
 
-
     <div class="centered" *ngIf="orderState">
       <div [ngSwitch]="orderState.toState">
         <h4>&nbsp;</h4>
@@ -59,39 +52,39 @@
 
 
         <div class="stepPayment" *ngSwitchCase="'waitingPayment'">
+          <div class="orderStepsFrame">
+            <md-card>
+              <md-table #table [dataSource]="dataSource">
+                <ng-container mdColumnDef="Pos">
+                  <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'"> Pos</md-header-cell>
+                  <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Pos}}</md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="Menge">
+                  <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'"> Menge</md-header-cell>
+                  <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Menge}}</md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="Artikel">
+                  <md-header-cell *mdHeaderCellDef [ngClass]="'titleWidthClass'"> Artikel</md-header-cell>
+                  <md-cell *mdCellDef="let row" [ngClass]="'titleWidthClass'"> {{row.Artikel}}</md-cell>
+                </ng-container>
+                <ng-container mdColumnDef="Preis">
+                  <md-header-cell *mdHeaderCellDef [ngClass]="'priceWidthClass'"> Preis</md-header-cell>
+                  <md-cell *mdCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Preis}}</md-cell>
+                </ng-container>
 
-          <md-card>
-            <md-table #table [dataSource]="dataSource">
-              <ng-container mdColumnDef="Pos" >
-                <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'"> Pos </md-header-cell>
-                <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Pos}} </md-cell>
-              </ng-container>
-              <ng-container mdColumnDef="Menge">
-                <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'"> Menge </md-header-cell>
-                <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Menge}} </md-cell>
-              </ng-container>
-              <ng-container mdColumnDef="Artikel">
-                <md-header-cell *mdHeaderCellDef [ngClass]="'titleWidthClass'"> Artikel </md-header-cell>
-                <md-cell *mdCellDef="let row"  [ngClass]="'titleWidthClass'"> {{row.Artikel}} </md-cell>
-              </ng-container>
-              <ng-container mdColumnDef="Preis">
-                <md-header-cell *mdHeaderCellDef [ngClass]="'priceWidthClass'"> Preis </md-header-cell>
-                <md-cell *mdCellDef="let row"[ngClass]="'priceWidthClass'"> {{row.Preis}} </md-cell>
-              </ng-container>
+                <ng-container mdColumnDef="Gesamt">
+                  <md-header-cell *mdHeaderCellDef [ngClass]="'priceWidthClass'"> Gesamt</md-header-cell>
+                  <md-cell *mdCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Gesamt}}</md-cell>
+                </ng-container>
 
-              <ng-container mdColumnDef="Gesamt">
-                <md-header-cell *mdHeaderCellDef [ngClass]="'priceWidthClass'"> Gesamt </md-header-cell>
-                <md-cell *mdCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Gesamt}} </md-cell>
-              </ng-container>
+                <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+                <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+              </md-table>
+              <div *ngIf="drink">Summe: {{drink.licensefee / 100000}} IUNO</div>
 
-              <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-              <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
-            </md-table>
-            <div *ngIf="drink">Summe: {{drink.licensefee / 100000}} IUNO</div>
+            </md-card>
 
-          </md-card>
-
-
+          </div>
           <button md-raised-button color="primary" (click)="ShowPaymentModalQR()">QR-Code</button>
           <button md-raised-button color="primary" (click)="ShowPaymentModalScan()">Scanner</button>
 
@@ -100,73 +93,90 @@
         </div>
 
         <div class="orderSteps" *ngSwitchCase="'waitingLicenseAvailable'">
-          <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licenseavailable active">
-            <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
-            Lizenzgebühr wird bezahlt</div>
-          <div class="step license off">Lizenz vom Marktplatz laden</div>
-          <div class="step production off">Getränk zubereiten</div>
+          <div class="orderStepsFrame">
+            <div class="step payment done">Getränk bezahlt</div>
+            <div class="step licenseavailable active">
+              <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
+              Lizenzgebühr wird bezahlt
+            </div>
+            <div class="step license off">Lizenz vom Marktplatz laden</div>
+            <div class="step production off">Getränk zubereiten</div>
+          </div>
         </div>
 
         <div class="orderSteps" *ngSwitchCase="'waitingLicense'">
-          <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
-          <div class="step license active">
-            <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
-            Lizenz vom Marktplatz laden</div>
-          <div class="step production off">Getränk zubereiten</div>
+          <div class="orderStepsFrame">
+            <div class="step payment done">Getränk bezahlt</div>
+            <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+            <div class="step license active">
+              <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
+              Lizenz vom Marktplatz laden
+            </div>
+            <div class="step production off">Getränk zubereiten</div>
+          </div>
         </div>
 
         <div class="orderSteps" *ngSwitchCase="'waitForProduction'">
-          <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
-          <div class="step license done">Lizenz eingespielt</div>
-          <div class="step production">Getränk zubereiten</div>
-
+          <div class="orderStepsFrame">
+            <div class="step payment done">Getränk bezahlt</div>
+            <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+            <div class="step license done">Lizenz eingespielt</div>
+            <div class="step production">Getränk zubereiten</div>
+          </div>
           <p> Auftrag in der Warteschlange.</p>
         </div>
         <div class="orderSteps" *ngSwitchCase="'readyForProduction'">
-          <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
-          <div class="step license done">Lizenz eingespielt</div>
-          <div class="step production">Getränk kann zubereitet werden</div>
-
+          <div class="orderStepsFrame">
+            <div class="step payment done">Getränk bezahlt</div>
+            <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+            <div class="step license done">Lizenz eingespielt</div>
+            <div class="step production">Getränk kann zubereitet werden</div>
+          </div>
           <button class="orderButton" (click)="ProductionStart()">Getränk zubereiten</button>
         </div>
 
         <div class="orderSteps" *ngSwitchCase="'startProduction'">
-          <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
-          <div class="step license done">Lizenz eingespielt</div>
-          <div class="step production" active>
-            <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
-            Getränk wird zubereitet</div>
+          <div class="orderStepsFrame">
+            <div class="step payment done">Getränk bezahlt</div>
+            <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+            <div class="step license done">Lizenz eingespielt</div>
+            <div class="step production" active>
+              <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
+              Getränk wird zubereitet
+            </div>
+          </div>
           <!--<p>Produktion wird gestartet.</p>-->
 
         </div>
         <div class="orderSteps" *ngSwitchCase="'inProduction'">
-          <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
-          <div class="step license done">Lizenz eingespielt</div>
-          <div class="step production active">
-            <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
-            Getränk wird zubereitet</div>
+          <div class="orderStepsFrame">
+            <div class="step payment done">Getränk bezahlt</div>
+            <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+            <div class="step license done">Lizenz eingespielt</div>
+            <div class="step production active">
+              <md-progress-spinner class="activeSpinner" mode="indeterminate"></md-progress-spinner>
+              Getränk wird zubereitet
+            </div>
+          </div>
           <md-progress-bar value="{{progress}}"></md-progress-bar>
 
         </div>
         <div class="orderSteps" *ngSwitchCase="'productionFinished'">
-          <div class="step payment done">Getränk bezahlt</div>
-          <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
-          <div class="step license done">Lizenz eingespielt</div>
-          <div class="step production done">Getränk zubereitet</div>
-          <!--<p>Getränk ist zubereitet.</p>-->
+          <div class="orderStepsFrame">
+            <div class="step payment done">Getränk bezahlt</div>
+            <div class="step licensepayment done">Lizenzgebühr bezahlt</div>
+            <div class="step license done">Lizenz eingespielt</div>
+            <div class="step production done">Getränk zubereitet</div>
+            <!--<p>Getränk ist zubereitet.</p>-->
+          </div>
           <button md-raised-button color="primary" (click)="Home()">Neues Getränk bestellen</button>
 
         </div>
 
         <div class="orderSteps" *ngSwitchCase="'error'">
-          <div class="step production">Leider gab es einen Fehler 😳</div>
-
+          <div class="orderStepsFrame">
+            <div class="step production">Leider gab es einen Fehler 😳</div>
+          </div>
           <p>Bitte melden Sie sich beim Standpersonal.</p>
 
         </div>
