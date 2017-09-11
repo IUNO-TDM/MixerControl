@@ -19,7 +19,7 @@ import {
   MdProgressSpinnerModule,
   MdProgressBarModule,
   MdIconModule,
-  MdListModule,
+  MdListModule, MdTabsModule,
 } from '@angular/material';
 import 'hammerjs';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -30,6 +30,11 @@ import {QrScannerModule} from 'angular2-qrscanner';
 import {PaymentComponent} from './order/payment.component';
 import {QrDialog} from "./order/qrdialog.component";
 import {ScanDialog} from "./order/scannerdialog.component";
+import {AdminComponentComponent} from "./admin/admin-component.component";
+import {AdminOrdersComponent} from "./admin/admin-orders.component";
+import {AdminProductionComponent} from "./admin/admin-production.component";
+import {AdminServiceComponent} from "./admin/admin-service.component";
+import {AdminStatusComponent} from "./admin/admin-status.component";
 
 
 @NgModule({
@@ -38,7 +43,12 @@ import {ScanDialog} from "./order/scannerdialog.component";
     routedComponents,
     PaymentComponent,
     QrDialog,
-    ScanDialog
+    ScanDialog,
+    AdminComponentComponent,
+    AdminOrdersComponent,
+    AdminProductionComponent,
+    AdminServiceComponent,
+    AdminStatusComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +70,8 @@ import {ScanDialog} from "./order/scannerdialog.component";
     MdProgressSpinnerModule,
     MdProgressBarModule,
     MdIconModule,
-    MdListModule
+    MdListModule,
+    MdTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
