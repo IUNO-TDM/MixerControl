@@ -115,7 +115,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       step1 = 3;
       step2 = 3;
       step3 = 3;
-      step4 = 1;
+      step4 = 2;
     }else if(state == "inProduction"|| state == "startProduction" ){
       step1 = 3;
       step2 = 3;
