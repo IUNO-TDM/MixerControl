@@ -86,9 +86,13 @@ router.put('/:id/payment', function (req, res, next) {
     //TODO remove this logging later
     logger.debug("PaymentString: " + req.body);
 
-    const data = req.body;
+    var data = req.body;
     if (invoice !== undefined){
         if(data !== undefined){
+            if(data.startsWith("http://iuno.axoom.cloud/?")){
+              data = data.substring(25);
+            }
+
             payment_service.redeemCoupon(invoice,data, function(statusCode){
                 res.sendStatus(statusCode);
             });

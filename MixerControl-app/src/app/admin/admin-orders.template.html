@@ -1,19 +1,43 @@
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>OrderNumber</th>
-        <th>DrinkId</th>
-        <th>OrderName</th>
-        <th>State</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let order of orders">
-        <td>{{order.orderNumber}}</td>
-        <td>{{order.drinkId}}</td>
-        <td>{{order.orderName}}</td>
-        <td>{{states[order.orderNumber]}}</td>
-    </tr>
+<!--<table class="table table-striped">-->
+    <!--<thead>-->
+    <!--<tr>-->
+        <!--<th>OrderNumber</th>-->
+        <!--<th>DrinkId</th>-->
+        <!--<th>OrderName</th>-->
+        <!--<th>State</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let order of orders">-->
+        <!--<td>{{order.orderNumber}}</td>-->
+        <!--<td>{{order.drinkId}}</td>-->
+        <!--<td>{{order.orderName}}</td>-->
+        <!--<td>{{states[order.orderNumber]}}</td>-->
+    <!--</tr>-->
 
-    </tbody>
-</table>
+    <!--</tbody>-->
+<!--</table>-->
+
+<md-table class="ordersTable" #table [dataSource]="dataSource">
+  <ng-container mdColumnDef="OrderNr">
+    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">OrderNr.</md-header-cell>
+    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.OrderNr}}</md-cell>
+  </ng-container>
+  <ng-container mdColumnDef="DrinkId">
+    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">DrinkId</md-header-cell>
+    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkId}}</md-cell>
+  </ng-container>
+  <ng-container mdColumnDef="DrinkName">
+    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">DrinkName</md-header-cell>
+    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkName}}</md-cell>
+  </ng-container>
+
+  <ng-container mdColumnDef="State">
+    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">State</md-header-cell>
+    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.State}}</md-cell>
+  </ng-container>
+
+
+  <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+  <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+</md-table>

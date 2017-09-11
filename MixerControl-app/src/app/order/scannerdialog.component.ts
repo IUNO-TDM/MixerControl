@@ -7,7 +7,7 @@ import {QrScannerComponent} from 'angular2-qrscanner';
   selector: 'scan-dialog',
   template: `
 
-    <h2 md-dialog-title>Scan this code with a Bitcoin Wallet App</h2>
+    <h2 md-dialog-title>Den Coupon vor die Kamera halten</h2>
 
     <md-dialog-content>
       <qr-scanner
@@ -24,7 +24,7 @@ import {QrScannerComponent} from 'angular2-qrscanner';
       <button
         md-raised-button
         color="primary"
-        md-dialog-close>Close</button>
+        md-dialog-close>schließen</button>
 
     </md-dialog-actions>
   `,

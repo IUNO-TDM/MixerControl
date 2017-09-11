@@ -38,13 +38,14 @@ header {
   background-color: blue;
   height: 80px;
 }
-header .projectTitle{
+header .projectTitle {
   font-size: 2.4rem;
   color: #fff;
   padding-left: 5%;
   font-family: 'open_sanslight';
   text-decoration: none;
-
+}
+.footer{
   font-size:50%;
 
   background: white;
