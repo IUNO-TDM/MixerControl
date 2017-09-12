@@ -1,4 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from "@angular/forms";
 import {NgModule} from '@angular/core';
 import {HttpModule} from '@angular/http';
 
@@ -19,7 +20,7 @@ import {
   MdProgressSpinnerModule,
   MdProgressBarModule,
   MdIconModule,
-  MdListModule, MdTabsModule,
+  MdListModule, MdTabsModule, MdSelectModule, MdSliderModule,
 } from '@angular/material';
 import 'hammerjs';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -34,7 +35,8 @@ import {AdminComponentComponent} from "./admin/admin-component.component";
 import {AdminOrdersComponent} from "./admin/admin-orders.component";
 import {AdminProductionComponent} from "./admin/admin-production.component";
 import {AdminServiceComponent} from "./admin/admin-service.component";
-import {AdminStatusComponent} from "./admin/admin-status.component";
+import {AdminComponentDialogComponent} from "./admin/admin-component-dialog.component";
+import {AdminAmountDialogComponent} from "./admin/admin-amount-dialog.component";
 
 
 @NgModule({
@@ -48,10 +50,12 @@ import {AdminStatusComponent} from "./admin/admin-status.component";
     AdminOrdersComponent,
     AdminProductionComponent,
     AdminServiceComponent,
-    AdminStatusComponent
+    AdminComponentDialogComponent,
+    AdminAmountDialogComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpModule,
@@ -71,11 +75,13 @@ import {AdminStatusComponent} from "./admin/admin-status.component";
     MdProgressBarModule,
     MdIconModule,
     MdListModule,
-    MdTabsModule
+    MdTabsModule,
+    MdSelectModule,
+    MdSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [QrDialog, ScanDialog]
+  entryComponents: [QrDialog, ScanDialog, AdminComponentDialogComponent, AdminAmountDialogComponent]
 })
 export class AppModule {
 }

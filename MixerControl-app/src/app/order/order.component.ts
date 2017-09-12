@@ -127,7 +127,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       step3 = 3;
       step4 = 3;
     }
-    console.log(this.gridTiles);
+    // console.log(this.gridTiles);
 
     var tile1  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('order'));
     var tile2  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
@@ -175,19 +175,29 @@ export class OrderComponent implements OnInit, OnDestroy {
       );
 
     var orderObservable = this.route.params.
-      switchMap((params: Params) => this.orderService.getOrder(params['id']));
+      switchMap((params: Params) => Observable.fromPromise(this.orderService.getOrder(params['id'])));
+    // orderObservable;
     orderObservable.subscribe(order => {
+      console.log(order);
         this.order = order;
         this.drinkService.getDrink(order.drinkId).then(drink => {
           this.drink = drink;
           this.userService.getUser(this.drink.authorId).then(user => this.user = user)
             .catch(error => this.error = error);
         })
-      });
+      },
+      err => {
+        console.log(err);
+        if(err && err.status && err.status == 404){
+          this.router.navigateByUrl('/');
+        }
+      },
+      () => console.log('yay'));
 
     var drinkObservable = orderObservable.switchMap((order: Order) => this.drinkService.getDrink(order.drinkId));
     this.dataSource = new ExampleDataSource(drinkObservable);
   }
+
 
   ngOnDestroy(): void {
     this.orderProgressConnection.unsubscribe();
