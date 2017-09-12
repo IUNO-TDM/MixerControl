@@ -325,7 +325,9 @@
 
                 </md-list>
               </div>
-              <p> Auftrag in der Warteschlange.</p>
+              <p *ngIf="queuePlace>0"> Auftrag in Warteschlangenposition {{queuePlace}}</p>
+              <p *ngIf="queuePlace==0"> Servicemodus aktiv. Ihr Auftrag ist der nächste.</p>
+              <p *ngIf="queuePlace<0"> Auftrag in der Warteschlange</p>
 
             </md-card-content>
           </md-card>

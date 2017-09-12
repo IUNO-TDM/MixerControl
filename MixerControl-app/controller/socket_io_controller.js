@@ -140,18 +140,18 @@ function registerOrderDbEvents(orderNamespace) {
 
 function registerProductionEvents(productionNamespace) {
     production_queue.on('state', function (state, topOrder) {
-        productionNamespace.to('state').emit("stateChange", state);
+        productionNamespace.to('state').emit("state", state);
     });
 
     production_queue.on('queueChange', function (queue) {
-        productionNamespace.to('queue').emit("queueChange", queue);
+        productionNamespace.to('queue').emit("queue", queue);
     });
 
     pumpControl_service.on('serviceState', function (state) {
-        productionNamespace.to('pumpControlService').emit("serviceStateChange", state);
+        productionNamespace.to('pumpControlService').emit("pumpControlServiceState", state);
     });
     pumpControl_service.on('pumpControlMode', function (state) {
-        productionNamespace.to('pumpControlMode').emit("modeChange", state);
+        productionNamespace.to('pumpControlMode').emit("pumpControlMode", state);
     });
     pumpControl_service.on('amountWarning', function (warning) {
         productionNamespace.to('amountWarning').emit("warning", warning);
