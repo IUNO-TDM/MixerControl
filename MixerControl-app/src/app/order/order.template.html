@@ -7,7 +7,6 @@
     </div>
   </div>
   <div class="orderStateContainer">
-
     <div class="stepIcons">
       <md-grid-list cols="11" row-height="1:1" gutterSize="1rem">
         <md-grid-tile class="order" colspan="2" rowspan="2">
@@ -80,6 +79,7 @@
       <div class="orderSteps" *ngSwitchCase="'waitingPayment'">
         <div class="orderStepsFrame">
           <md-card class="orderTableCard">
+            <md-card-header>Rechnung</md-card-header>
             <md-card-content class="orderTableContainer">
               <md-table class="orderTable" #table [dataSource]="dataSource">
                 <ng-container mdColumnDef="Pos">

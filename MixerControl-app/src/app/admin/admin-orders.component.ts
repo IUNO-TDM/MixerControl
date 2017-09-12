@@ -53,9 +53,7 @@ export class OrdersDataSource extends DataSource<any> {
   ordersObservable: Observable<any>;
   ordersStatesObservable: Observable<any>;
   orders = new Map<string, Order>();
-  // states = {};
-  // orders:Dictionary<Order>  = {};
-
+  orderStates = new Map<string,string>();
   constructor(private socketService: SocketService) {
     super();
   }
@@ -66,87 +64,38 @@ export class OrdersDataSource extends DataSource<any> {
 
     this.ordersObservable = this.socketService.get("/orders", "allOrders", "add").map(order => {
       var o: Order = order;
-      let map = new Map<string, Order>();
-
-      this.orders.set("key", o);
-      // console.log(this.orders.get("key")); // value
-      console.log(this.orders)
-      // this.orders[o.orderNumber] = o;
+      this.orders.set(o.orderNumber, o);
+      
       return this.orders;
     });
+    this.ordersStatesObservable = this.socketService.get("/orders", "allOrders", "state").map(o => {
+      this.orderStates.set(o.orderNumber, o.toState);
+      return this.orderStates;
+    });
 
-    // this.ordersStatesObservable = this.socketService.get("/orders", "allOrders", "state").map(o => {
-    //   console.log(this.orders);
-    //   // console.log(String(o.orderNumber));
-    //   // console.log(this.orders[o.orderNumber]);
-    //   // console.log(this);
-    //   // console.log("Count: " + this.orders.length);
-    //
-    //
-    //   var order = this.orders.get("key");
-    //   console.log(order)
-    //   if(order){
-    //
-    //     // order.toState = o.toState;
-    //     this.orders[String(order.orderNumber)] = order;
-    //     console.log(order);
-    //   }
-    //
-    //   return this.orders;
-    // });
 
-    return this.ordersObservable.map(() => {
+
+    return Observable.merge(this.ordersObservable, this.ordersStatesObservable,2).map(() => {
+    // return this.ordersObservable.map(() => {
       var array = new Array<OrderLine>();
+      console.log(this.orders);
       for (let order of Array.from(this.orders.values())) {
         var orderLine = new OrderLine();
         orderLine.DrinkId = order.drinkId;
         orderLine.DrinkName = "nix";
         orderLine.OrderNr = String(order.orderNumber);
-        // orderLine.State = (order as any).toState;
+        if(this.orderStates.has(order.orderNumber)){
+          orderLine.State = this.orderStates.get(order.orderNumber);
+        }
         array.push(orderLine);
       }
       return array;
     })
 
-    // return this.ordersStatesObservable.switchMap()
-
-    // this.addConnection =
-    //
-    // this.stateConnection = this.socketService.get("/orders", "allOrders", "state")
-    //   .subscribe(o =>
-    //     this.states[o.orderNumber] = o.toState);
-
-    // this.orderLineObservable = this.
-    //
-    //
-    //
-    //
-    // return this._drinkObservable.map((drink: Drink) => {
-    //
-    //
-    //   var drinkPosition1: OrderLine;
-    //   drinkPosition1 = new OrderLine();
-    //   drinkPosition1.Artikel = drink.title;
-    //   drinkPosition1.Pos = "1";
-    //   drinkPosition1.Menge = "1";
-    //   drinkPosition1.UnterPosPreis = "";
-    //   drinkPosition1.Preis = String(drink.retailPrice / 100000) + " IUNO";
-    //   drinkPosition1.Gesamt = String(drink.retailPrice / 100000) + " IUNO";
-    //
-    //
-    //   var posArray: Array<DrinkPosition> = Array(4);
-    //   posArray[0] = drinkPosition1;
-    //   posArray[1] = drinkPosition2;
-    //   posArray[2] = drinkPosition3;
-    //   posArray[3] = drinkPosition4;
-    //
-    //   return posArray;
-    // });
   }
 
   disconnect() {
-    // this.addConnection.unsubscribe();
-    // this.stateConnection.unsubscribe();
+
   }
 }
 
