@@ -80,7 +80,7 @@
       <div class="orderSteps" *ngSwitchCase="'waitingPayment'">
         <div class="orderStepsFrame">
           <md-card class="orderTableCard">
-            <md-card-content>
+            <md-card-content class="orderTableContainer">
               <md-table class="orderTable" #table [dataSource]="dataSource">
                 <ng-container mdColumnDef="Pos">
                   <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'"> Pos</md-header-cell>

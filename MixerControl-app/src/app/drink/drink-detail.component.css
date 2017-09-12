@@ -80,3 +80,19 @@ md-card{
 h3 {
   text-align: center;
 }
+
+img.userImg{
+  width: 40px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 50%;
+  float: left;
+  margin-right: 1em;
+}
+
+
+.userDetails{
+  display: flex;
+  align-items: center;
+  /*justify-content: space-between;*/
+}

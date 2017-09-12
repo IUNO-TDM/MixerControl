@@ -24,10 +24,10 @@
               <p>Rezepthersteller:</p>
 
               <div class="userDetails" *ngIf="user">
-                <div class="userName">
-                  <p class="userNameText">{{user.firstname}} {{user.lastname}}</p>
-                </div>
+                <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
+                <p class="userNameText">{{user.firstname}} {{user.lastname}}</p>
               </div>
+
             </div>
           </div>
           <div class="descriptionButton">
@@ -39,45 +39,6 @@
 
     </md-card>
   </div>
-
-
-  <!--<div class="imgAndText">-->
-  <!--<img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>-->
-
-  <!--</div>-->
-  <!--<div class="centeredButtonDiv">-->
-  <!--<button (click)="onClickMe()">Bestellen</button>-->
-  <!--</div>-->
-  <!--<div class="row">-->
-  <!--<h1>Details</h1>-->
-  <!--<button (click)="getBack()">zurück</button>-->
-  <!--</div>-->
-  <!--<div class="drinkDetail" *ngIf="drink">-->
-  <!--<div class="imgAndText">-->
-  <!--<img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>-->
-  <!--<div class="description">-->
-
-  <!--<p>{{drink.description}}</p>-->
-  <!--<p>Beinhaltet:<br>{{components}}</p>-->
-  <!--<p>Verkaufspreis: 2 IUNO</p>-->
-  <!--<p>Lizenzgebühr: {{drink.licensefee / 100000}} IUNO</p>-->
-  <!--<p>Rezepthersteller:</p>-->
-
-  <!--<div class="userDetails" *ngIf="user">-->
-  <!--<img class="userImg" src="/api/users/{{drink.authorId}}/image"/>-->
-  <!--<div class="userName">-->
-  <!--<p class="userNameText">{{user.firstname}} {{user.lastname}}</p>-->
-  <!--</div>-->
-  <!--</div>-->
-
-  <!--</div>-->
-  <!--</div>-->
-  <!--<div class="centeredButtonDiv">-->
-  <!--<button (click)="onClickMe()">Bestellen</button>-->
-  <!--<button (click)="getBack()">zurück</button>-->
-  <!--</div>-->
-
-  <!--</div>-->
 
 
 </div>

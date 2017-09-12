@@ -247,3 +247,6 @@
   /*background-image: url('../../assets/lnr-check.svg');*/
 }
 
+.orderTableContainer{
+  overflow: scroll;
+}
