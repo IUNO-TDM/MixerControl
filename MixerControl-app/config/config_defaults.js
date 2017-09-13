@@ -62,11 +62,9 @@ self.STD_INGREDIENT_AMOUNT = [
 ];
 
 self.OAUTH_CREDENTIALS = {
-    CLIENT_ID: '',
-    CLIENT_SECRET: ''
+    CLIENT_ID: 'adb4c297-45bd-437e-ac90-9179eea41746',
+    CLIENT_SECRET: 'IsSecret'
 };
-
-self.USER_UUID = '';
 
 self.RETAIL_PRICE = 2 * 100000; //1 IUNO = 100.000 satoshi
 

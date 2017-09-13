@@ -1,0 +1,45 @@
+img.drinkImg{
+  position:absolute;
+  opacity:0.7;
+  max-width: 100%;
+  max-height: 100%;
+  /*max-height: 150px;*/
+  /*float: left;*/
+  align-self: center;
+  margin: auto;
+  /*margin-bottom: 50px;*/
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.drinkTileContent{
+  width:90%;
+  height:90%;
+  float: none;
+  position:absolute;
+}
+
+.drinkTileContent .components{
+  position:absolute;
+  /*bottom: 0;*/
+  width: 90%;
+  height: 90%;
+  /*margin-top: 30px;*/
+}
+.drinkTileContent .components p{
+  margin-bottom: 0.5rem;
+}
+
+.drinkTileContent ul.componentsList{
+  /*-moz-column-count: 2;*/
+  -moz-column-gap: 1px;
+  /*-webkit-column-count: 2;*/
+  -webkit-column-gap: 1px;
+  /*column-count: 2;*/
+  column-gap: 1px;
+  margin-bottom: 0;
+}
+.drinkTileContent li.componentsLi{
+  line-height: 1.2em;
+  margin-bottom: 0;
+  display: block;
+}

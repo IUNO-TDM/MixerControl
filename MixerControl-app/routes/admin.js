@@ -67,7 +67,12 @@ router.put('/pumps/:id', function (req, res, next) {
     }
     const id = req.params['id'];
     var componentId = req.body;
-    pumpcontrol_service.setIngredient(id,componentId,function(){
+    pumpcontrol_service.setIngredient(id,componentId,function(err){
+        if (err) {
+            res.status = 500;
+            res.json(JSON.stringify(err));
+        }
+
         res.sendStatus(200);
     });
 });
@@ -80,8 +85,14 @@ router.put('/pumps/:id/amount', function (req, res, next) {
     }
     const id = req.params['id'];
     var amount = Number.parseInt(req.body);
-    pumpcontrol_service.setPumpAmount(id, amount, function () {
-        res.sendStatus(200);
+    pumpcontrol_service.setPumpAmount(id, amount, function (err) {
+        if (err) {
+            res.status = 500;
+            res.json(JSON.stringify(err));
+        }
+        else {
+            res.sendStatus(200);
+        }
     });
 });
 

@@ -1,0 +1,20 @@
+<div class="modal">
+  <div class="modal__dialog">
+
+          <div class="paymentContent">
+              <div class="qrContent">
+                  <h4>Pay with this: </h4>
+                  <div *ngIf="paymentRequest">
+                      <!--<qr-code [value]="paymentRequest" [size]="250"></qr-code>-->
+                    <ngx-qrcode [qrc-element-type]="elementType" [qrc-value] = "paymentRequest">
+                    </ngx-qrcode>
+                  </div>
+              </div>
+              <div class="scannerContent">
+                  <h4>or scan here</h4>
+                  <qr-scanner [facing]="'back'" (onRead)="onRead($event)"></qr-scanner>
+                  <!--<simple-notifications [options]="options"></simple-notifications>-->
+              </div>
+          </div>
+  </div>
+</div>
