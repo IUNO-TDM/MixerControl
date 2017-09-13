@@ -6,18 +6,18 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import * as models from '../models/models';
 import {ComponentService} from '../services/component.service';
 import {AdminService} from '../services/admin.service'
-import {SocketService} from '../services/socketio.service'
 import {Component as ModelComponent} from '../models/Component'
 import {Subscription} from "rxjs";
 import {AdminComponentDialogComponent} from "./admin-component-dialog.component";
 import {MdDialog, MdDialogRef} from "@angular/material";
 import {AdminAmountDialogComponent} from "./admin-amount-dialog.component";
+import {ProductionSocketService} from "../services/production-socket.service";
 
 @Component({
   moduleId: module.id,
   selector: 'my-admin-component',
   templateUrl: 'admin-component.template.html',
-  providers: [ComponentService, AdminService, SocketService]
+  providers: [ComponentService, AdminService, ProductionSocketService]
 })
 
 export class AdminComponentComponent implements OnInit, OnDestroy {
@@ -72,13 +72,15 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
 
   constructor(private componentService: ComponentService, private adminService: AdminService,
-              private socketService: SocketService,
+              private productionSocketService: ProductionSocketService,
               private dialog: MdDialog) {
   }
 
   ngOnInit(): void {
     this.loadContent();
-    this.amountWarningConnection = this.socketService.get("/production", "amountWarning", "amountWarning").subscribe(warning => {
+    this.productionSocketService.joinRoom("amountWarning");
+    this.productionSocketService.getUpdates("amountWarning").subscribe(warning => {
+    // this.amountWarningConnection = this.socketService.get("/production", "amountWarning", "amountWarning").subscribe(warning => {
       this.warnings[warning.pumpNr] = warning;
     });
 

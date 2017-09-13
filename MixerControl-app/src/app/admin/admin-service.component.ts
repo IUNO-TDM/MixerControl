@@ -3,16 +3,15 @@
  */
 
 import {Component, OnInit, OnDestroy} from '@angular/core';
-
-import {SocketService} from "../services/socketio.service";
 import {AdminService} from "../services/admin.service"
 import {Subscription} from "rxjs";
 import {Pump} from "../models/models";
+import {ProductionSocketService} from "../services/production-socket.service";
 @Component({
     moduleId: module.id,
     selector: 'my-admin-service',
     templateUrl: 'admin-service.template.html',
-    providers: [SocketService, AdminService]
+    providers: [ProductionSocketService, AdminService]
 })
 
 export class AdminServiceComponent implements OnInit,OnDestroy {
@@ -24,28 +23,37 @@ export class AdminServiceComponent implements OnInit,OnDestroy {
     pcMode: string;
     pumps: Pump[];
 
-    constructor(private socketService: SocketService, private adminService: AdminService) {
+    constructor(private productionSocketService: ProductionSocketService, private adminService: AdminService) {
     };
 
     ngOnInit() {
       console.log("init service");
-        this.pqStateConnection = this.socketService.get("/production","state","state")
+
+
+
+        this.pqStateConnection = this.productionSocketService.getUpdates('state')
             .subscribe(state => {
               this.pqState = state;
               console.log("pqState: " + state);
             });
-        this.pcServiceStateConnection = this.socketService.get("/production","pumpControlService","pumpControlServiceState")
+        this.pcServiceStateConnection = this.productionSocketService.getUpdates('pumpControlService')
             .subscribe(state => {
               this.pcServiceState = state;
               console.log("pcServiceState: " + state);
             });
-        this.pcModeConnection = this.socketService.get("/production","pumpControlMode","pumpControlMode")
+        this.pcModeConnection = this.productionSocketService.getUpdates('pumpControlMode')
             .subscribe(state => {
               this.pcMode = state;
               console.log("pcMode: " + state);
             });
 
         this.adminService.getPumps().then(pumps=> this.pumps = pumps);
+
+
+      this.productionSocketService.joinRoom('state');
+      this.productionSocketService.joinRoom('pumpControlService');
+      this.productionSocketService.joinRoom('pumpControlMode');
+
     };
 
     ngOnDestroy(){

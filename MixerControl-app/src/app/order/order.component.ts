@@ -10,13 +10,14 @@ import {Order} from '../models/Order'
 import {DrinkService} from '../services/drink.service'
 import {UserService} from '../services/user.service'
 import {OrderService} from '../services/order.service'
-import {SocketService} from "../services/socketio.service";
 import {Subscription} from "rxjs";
 import {DataSource} from '@angular/cdk/collections';
 import {Observable} from "rxjs";
 import {MdDialog, MdDialogRef, MD_DIALOG_DATA, MdGridTile, MdGridList} from '@angular/material';
 import {QrDialog} from "./qrdialog.component";
 import {ScanDialog} from "./scannerdialog.component";
+import {OrdersSocketService} from "../services/orders-socket.service";
+import {ProductionSocketService} from "../services/production-socket.service";
 
 
 @Component({
@@ -24,7 +25,7 @@ import {ScanDialog} from "./scannerdialog.component";
   selector: 'my-order',
   templateUrl: 'order.template.html',
   styleUrls: ['./order.component.css'],
-  providers: [DrinkService, UserService, OrderService, SocketService]
+  providers: [DrinkService, UserService, OrderService, OrdersSocketService,ProductionSocketService]
 })
 
 export class OrderComponent implements OnInit, OnDestroy {
@@ -60,7 +61,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       right: ''
     },
     data: {
-      orderId: ''
+      order: new Order
     }
   };
 
@@ -73,7 +74,8 @@ export class OrderComponent implements OnInit, OnDestroy {
               private drinkService: DrinkService,
               private userService: UserService,
               private orderService: OrderService,
-              private socketService: SocketService,
+              private productionSocketService: ProductionSocketService,
+              private ordersSocketService: OrdersSocketService,
               private dialog: MdDialog) {
 
   }
@@ -152,11 +154,11 @@ export class OrderComponent implements OnInit, OnDestroy {
 
     this.route.params.subscribe(params => {
 
-        this.orderProgressConnection =
-          this.socketService.get("/orders", params['id'], "progress")
+
+        this.orderProgressConnection = this.ordersSocketService.getUpdates('progress')
             .subscribe(progress => this.progress = progress['progress']);
         this.orderStateConnection =
-          this.socketService.get("/orders", params['id'], "state")
+          this.ordersSocketService.getUpdates('state')
             .subscribe(state => {
               if (state != 'waitingPayment') {
                 if (this.qrDialogRef) {
@@ -169,6 +171,9 @@ export class OrderComponent implements OnInit, OnDestroy {
               this.refreshStepCards(state);
               return this.orderState = state
             });
+
+        this.ordersSocketService.joinRoom(params['id']);
+
       }
     );
 
@@ -194,7 +199,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     var drinkObservable = orderObservable.switchMap((order: Order) => this.drinkService.getDrink(order.drinkId));
     this.dataSource = new ExampleDataSource(drinkObservable);
 
-    this.queueObservable = this.socketService.get("/production", "queue", "queue");
+    this.queueObservable = this.productionSocketService.getUpdates('queue')
     this.queueConnection = this.queueObservable.subscribe(queue => {
         let list = queue as Array<any>;
         for(let order of list ){
@@ -203,6 +208,7 @@ export class OrderComponent implements OnInit, OnDestroy {
           }
         }
     });
+    this.productionSocketService.getUpdates('queue')
 
   }
 
@@ -220,7 +226,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ShowPaymentModalQR() {
     // this.showDialog = true;
-    this.config.data.orderId = this.order.orderNumber;
+    this.config.data.order = this.order;
     this.qrDialogRef = this.dialog.open(QrDialog, this.config);
 
     // this.qrDialogRef.beforeClose().subscribe((result: string) => {
@@ -233,7 +239,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   ShowPaymentModalScan() {
-    this.config.data.orderId = this.order.orderNumber;
+    this.config.data.order = this.order;
     this.scanDialogRef = this.dialog.open(ScanDialog, this.config);
     this.scanDialogRef.afterClosed().subscribe((result: string) => {
       // this.lastAfterClosedResult = result;

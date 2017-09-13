@@ -27,7 +27,7 @@ export class QrDialog implements OnInit{
 
   ngOnInit(){
 
-    this.orderService.getPaymentRequest(this.data.orderId)
+    this.orderService.getPaymentRequest(this.data.order.orderNumber)
       .then(paymentRequest => {
         this.paymentRequest = paymentRequest;
         this.errorMessage = "";

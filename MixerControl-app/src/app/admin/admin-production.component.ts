@@ -3,18 +3,17 @@
  */
 
 import {Component, OnInit, OnDestroy} from '@angular/core';
-
-import {SocketService} from "../services/socketio.service";
 import {AdminService} from "../services/admin.service";
 import {Subscription, Observable} from "rxjs";
 import {Order} from "../models/models"
 
 import {DataSource} from '@angular/cdk/collections';
+import {ProductionSocketService} from "../services/production-socket.service";
 @Component({
     moduleId: module.id,
     selector: 'my-admin-production',
     templateUrl: 'admin-production.template.html',
-    providers: [SocketService, AdminService]
+    providers: [ProductionSocketService, AdminService]
 })
 
 export class AdminProductionComponent implements OnInit, OnDestroy {
@@ -29,14 +28,15 @@ export class AdminProductionComponent implements OnInit, OnDestroy {
     displayedColumns = ['OrderNr', 'DrinkId', 'DrinkName'];
   dataSource: ProductionDataSource | null;
 
-    constructor(private socketService: SocketService, private adminService: AdminService) {
+    constructor(private productionSocketService: ProductionSocketService, private adminService: AdminService) {
 
     }
 
 
     ngOnInit(): void {
-      this.dataSource = new ProductionDataSource(this.socketService);
-      this.queueConnection = this.socketService.get("/production", "state", "state")
+      this.dataSource = new ProductionDataSource(this.productionSocketService);
+      this.productionSocketService.joinRoom('state');
+      this.queueConnection = this.productionSocketService.getUpdates('state')
             .subscribe(state =>
                 this.state = state);
 
@@ -76,13 +76,14 @@ export class ProductionDataSource extends DataSource<any> {
   queueObservable: Observable<any>;
 
 
-  constructor(private socketService: SocketService) {
+  constructor(private productionSocketService: ProductionSocketService) {
     super();
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<ProductionLine[]> {
-    this.queueObservable = this.socketService.get("/production", "queue", "queue");
+    this.productionSocketService.joinRoom('queue')
+    this.queueObservable = this.productionSocketService.getUpdates('queue');
     return this.queueObservable.map(queue =>{
       var array = new Array<ProductionLine>();
       console.log(queue);
@@ -96,24 +97,6 @@ export class ProductionDataSource extends DataSource<any> {
       }
       return array;
     })
-
-
-    // return Observable.merge(this.ordersObservable, this.ordersStatesObservable,2).map(() => {
-    //   // return this.ordersObservable.map(() => {
-    //   var array = new Array<OrderLine>();
-    //   console.log(this.orders);
-    //   for (let order of Array.from(this.orders.values())) {
-    //     var orderLine = new OrderLine();
-    //     orderLine.DrinkId = order.drinkId;
-    //     orderLine.DrinkName = order.orderName;
-    //     orderLine.OrderNr = String(order.orderNumber);
-    //     if(this.orderStates.has(order.orderNumber)){
-    //       orderLine.State = this.orderStates.get(order.orderNumber);
-    //     }
-    //     array.push(orderLine);
-    //   }
-    //   return array;
-    // })
 
   }
 
