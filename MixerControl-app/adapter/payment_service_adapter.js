@@ -37,6 +37,11 @@ self.createLocalInvoiceForOrder = function (stateMachine, order) {
 
         order.invoice = data;
         self.getBip21(data, function (e, bip21) {
+            if (e || !bip21) {
+                logger.crit(e);
+                logger.crit('[payment_service_adapter] Error when retrieving BIP21 from payment service');
+                return stateMachine.error(order);
+            }
             order.paymentRequest = bip21;
             stateMachine.paymentRequestReceived(order);
         })
