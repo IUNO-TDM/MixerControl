@@ -31,7 +31,10 @@ const stateMachine = new machina.BehavioralFsm({
 
                 offerService.requestOfferForOrder(this, order);
             },
-            offerReceived: "waitingPaymentRequest"
+            offerReceived: "waitingPaymentRequest",
+            onError: function (client) {
+                this.transition(client, "error");
+            }
         },
         waitingPaymentRequest: {
             _onEnter: function (order) {
@@ -39,7 +42,10 @@ const stateMachine = new machina.BehavioralFsm({
 
                 payment_service.createLocalInvoiceForOrder(this, order);
             },
-            paymentRequestReceived: "waitingPayment"
+            paymentRequestReceived: "waitingPayment",
+            onError: function (client) {
+                this.transition(client, "error");
+            }
         },
         waitingPayment: {
             _onEnter: function (client) {
@@ -56,6 +62,9 @@ const stateMachine = new machina.BehavioralFsm({
                 this.deferUntilTransition(client);
                 this.transition(client, 'waitingLicenseAvailable');
 
+            },
+            onError: function (client) {
+                this.transition(client, "error");
             }
         },
         waitingLicenseAvailable: {
@@ -66,11 +75,16 @@ const stateMachine = new machina.BehavioralFsm({
                 this.deferUntilTransition(client);
                 this.transition(client, 'waitingLicense');
 
+            },
+            onError: function (client) {
+                this.transition(client, "error");
             }
         },
         waitingLicense: {
-
-            licenseArrived: "enqueueForProduction"
+            licenseArrived: "enqueueForProduction",
+            onError: function (client) {
+                this.transition(client, "error");
+            }
         },
 
         enqueueForProduction: {
@@ -83,39 +97,58 @@ const stateMachine = new machina.BehavioralFsm({
             },
             readyForProduction: function (client) {
                 this.deferUntilTransition(client, "waitForProduction");
+            },
+            onError: function (client) {
+                this.transition(client, "error");
             }
 
         },
         waitForProduction: {
-
             readyForProduction: "readyForProduction",
-            pause: "orderPaused"
+            pause: "orderPaused",
+            onError: function (client) {
+                this.transition(client, "error");this.transition(client, "error");
+            }
         },
         readyForProduction: {
             _onEnter: function (client) {
             },
             productionStarted: "inProduction",
             productionPaused: "waitForProduction",
-            error: "error"
+            onError: function (client) {
+                this.transition(client, "error");
+            }
         },
         inProduction: {
             _onEnter: function (client) {
+
             },
-            productionFinished: "productionFinished"
+            productionFinished: "productionFinished",
+            onError: function (client) {
+                this.transition(client, "error");
+            }
         },
         productionFinished: {
             onEnter: function (client) {
+
+            },
+            onError: function (client) {
+                this.transition(client, "error");
             }
         },
         orderPaused: {
             _onEnter: function (client) {
                 production_queue.removeOrderFromQueue(client);
             },
-            resume: "enqueueForProduction"
+            resume: "enqueueForProduction",
+            onError: function (client) {
+                this.transition(client, "error");
+            }
         },
         error: {
             resume: "enqueueForProduction"
         }
+
     },
     init: function (client) {
         this.handle(client, "_init");
@@ -156,7 +189,6 @@ const stateMachine = new machina.BehavioralFsm({
     productionPaused: function (client) {
         this.handle(client, "productionPaused");
     }
-
 });
 
 production_queue.on('state', function (state, order) {
