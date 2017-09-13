@@ -65,7 +65,7 @@ export class OrdersDataSource extends DataSource<any> {
     this.ordersObservable = this.socketService.get("/orders", "allOrders", "add").map(order => {
       var o: Order = order;
       this.orders.set(o.orderNumber, o);
-      
+
       return this.orders;
     });
     this.ordersStatesObservable = this.socketService.get("/orders", "allOrders", "state").map(o => {
@@ -78,11 +78,11 @@ export class OrdersDataSource extends DataSource<any> {
     return Observable.merge(this.ordersObservable, this.ordersStatesObservable,2).map(() => {
     // return this.ordersObservable.map(() => {
       var array = new Array<OrderLine>();
-      console.log(this.orders);
+      // console.log(this.orders);
       for (let order of Array.from(this.orders.values())) {
         var orderLine = new OrderLine();
         orderLine.DrinkId = order.drinkId;
-        orderLine.DrinkName = "nix";
+        orderLine.DrinkName = order.orderName;
         orderLine.OrderNr = String(order.orderNumber);
         if(this.orderStates.has(order.orderNumber)){
           orderLine.State = this.orderStates.get(order.orderNumber);

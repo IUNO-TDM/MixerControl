@@ -292,7 +292,9 @@ production_queue.getQueue = function () {
 production_queue.getStrippedQueue = function () {
     var rv = [];
     for (var i = 0; i < queue.length; i++) {
-        rv.push(queue[i].strip());
+        var o = queue[i].strip();
+        o.queuePlace = i;
+        rv.push(o);
     }
     return rv;
 }

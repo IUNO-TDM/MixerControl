@@ -30,7 +30,7 @@ router.post('/', function (req, res, next) {
             res.sendStatus(500);
         } else {
             var orderNumber = OrderDB.generateNewOrderNumber();
-            var order = new Order(orderNumber, data.orderName, data.drinkId, recipe);
+            var order = new Order(orderNumber, recipe.title, data.drinkId, recipe);
             OrderDB.addOrder(order);
 
             osm.init(order);

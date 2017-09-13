@@ -82,10 +82,16 @@ export class AdminService {
             .then(response => response.json() as any[])
     }
 
-    resetComponent(pumpId: number, amount: number): Promise<Response>{
+    resetComponent(pumpId: string, amount: string): Promise<Response>{
         let url = `${this.adminUrl}pumps/${pumpId}/amount`;
-        let body = amount.toString();
+        let body = amount
         return this.http.put(url,body,null).toPromise();
+    }
+
+    setStandardAmount(pumpId: string, amount: string): Promise<Response>{
+      let url = `${this.adminUrl}pumps/${pumpId}/standardAmount`;
+      let body = amount
+      return this.http.put(url,body,null).toPromise();
     }
 
     private handleError(error: any): Promise<any> {

@@ -1,33 +1,52 @@
 <table class="table table-striped">
-    <thead>
-    <tr>
-        <th>PumpNr</th>
-        <th></th>
-        <th>Component</th>
-        <th>Change Component</th>
-        <th>Standard Amount</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let pump of pumps">
-        <td>{{pump.nr}}</td>
-        <td>
-            <div *ngIf="warnings[pump.nr] && warnings[pump.nr].amountWarningLimit"><{{warnings[pump.nr].amountWarningLimit}}ml</div>
-        </td>
-        <td>{{pump.component.name}}</td>
-        <td>
-            <!--<select [(ngModel)]="pump.component" (change)="onPumpChange($event, pump.nr)">-->
+  <!--<thead>-->
+  <!--<tr>-->
+  <!--<th>PumpNr</th>-->
+  <!--<th></th>-->
+  <!--<th>Component</th>-->
+  <!--<th>Change Component</th>-->
+  <!--<th>Standard Amount</th>-->
+  <!--<th></th>-->
+  <!--</tr>-->
+  <!--</thead>-->
+  <!--<tbody>-->
+  <!--<tr *ngFor="let pump of pumps">-->
+  <!--<td>{{pump.nr}}</td>-->
+  <!--<td>-->
+  <!--<div *ngIf="warnings[pump.nr] && warnings[pump.nr].amountWarningLimit"><{{warnings[pump.nr].amountWarningLimit}}ml</div>-->
+  <!--</td>-->
+  <!--<td>{{pump.component.name}}</td>-->
+  <!--<td>-->
+  <!--&lt;!&ndash;<select [(ngModel)]="pump.component" (change)="onPumpChange($event, pump.nr)">&ndash;&gt;-->
 
-                <!--&lt;!&ndash;<option selected [ngValue]="pump.component">{{pump.component.name}}</option>&ndash;&gt;-->
-                <!--<option *ngFor="let c of components " [ngValue]="c" [selected]="c.id == pump.component.id">{{c.name}}</option>-->
-            <!--</select>-->
+  <!--&lt;!&ndash;&lt;!&ndash;<option selected [ngValue]="pump.component">{{pump.component.name}}</option>&ndash;&gt;&ndash;&gt;-->
+  <!--&lt;!&ndash;<option *ngFor="let c of components " [ngValue]="c" [selected]="c.id == pump.component.id">{{c.name}}</option>&ndash;&gt;-->
+  <!--&lt;!&ndash;</select>&ndash;&gt;-->
 
-        </td>
-        <td><div *ngIf="standardAmounts && standardAmounts[pump.nr]">{{standardAmounts[pump.nr]}}ml</div> </td>
-        <td><button (click)="ResetAmount(pump.nr)">Refill</button> </td>
-    </tr>
+  <!--</td>-->
+  <!--<td><div *ngIf="standardAmounts && standardAmounts[pump.nr]">{{standardAmounts[pump.nr]}}ml</div> </td>-->
+  <!--<td><button (click)="ResetAmount(pump.nr)">Refill</button> </td>-->
+  <!--</tr>-->
 
 
-    </tbody>
+  <!--</tbody>-->
+    <md-list  *ngIf="pumps">
+      <md-list-item *ngFor="let pump of pumps">
+
+        <!--<ng-template #othercontent>battery_full</ng-template>-->
+        <md-icon md-list-icon>battery_full</md-icon>
+        <p md-line>{{pump.nr}}</p>
+        <p>{{pump.component.name}}</p>
+        <button md-button (click)="ChangeComponent(pump)" >Ändern</button>
+        <p *ngIf="standardAmounts && standardAmounts[pump.nr]">Menge: {{standardAmounts[pump.nr]}}ml</p>
+        <div *ngIf="warnings[pump.nr] && warnings[pump.nr].amountWarningLimit">
+          {{warnings[pump.nr].amountWarningLimit}}ml
+          <md-icon md-list-icon>warning</md-icon>
+        </div>
+
+        <button md-button (click)="ResetAmount(pump)">Flasche getauscht</button>
+      </md-list-item>
+
+
+    </md-list>
 </table>

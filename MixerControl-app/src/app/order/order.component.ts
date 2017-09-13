@@ -2,7 +2,7 @@ import {
   Component, OnInit, Inject, OnDestroy, ViewChild, QueryList, ElementRef, ContentChildren,
   ViewChildren
 } from '@angular/core';
-import { ActivatedRoute, Params, Router }   from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import {Drink} from '../models/Drink'
 import {User} from '../models/User'
@@ -19,8 +19,6 @@ import {QrDialog} from "./qrdialog.component";
 import {ScanDialog} from "./scannerdialog.component";
 
 
-
-
 @Component({
   moduleId: module.id,
   selector: 'my-order',
@@ -30,6 +28,9 @@ import {ScanDialog} from "./scannerdialog.component";
 })
 
 export class OrderComponent implements OnInit, OnDestroy {
+  queueConnection: Subscription;
+  queueObservable: Observable<any>;
+  queuePlace = -1;
   scanDialogRef: MdDialogRef<ScanDialog> | null;
   qrDialogRef: MdDialogRef<QrDialog> | null;
   order: Order;
@@ -43,7 +44,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   showDialog: boolean = false;
   orderURL = "NULL";
 
-  displayedColumns = ['Pos', 'Menge', 'Artikel','UnterPosPreis', 'Preis', 'Gesamt'];
+  displayedColumns = ['Pos', 'Menge', 'Artikel', 'UnterPosPreis', 'Preis', 'Gesamt'];
   dataSource: ExampleDataSource | null;
   config = {
     disableClose: false,
@@ -64,26 +65,24 @@ export class OrderComponent implements OnInit, OnDestroy {
   };
 
 
-  @ViewChildren(MdGridTile)gridTiles;
+  @ViewChildren(MdGridTile) gridTiles;
 
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private drinkService: DrinkService,
-    private userService: UserService,
-    private orderService: OrderService,
-    private socketService: SocketService,
-    private dialog: MdDialog
-  ) {
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private drinkService: DrinkService,
+              private userService: UserService,
+              private orderService: OrderService,
+              private socketService: SocketService,
+              private dialog: MdDialog) {
 
   }
 
 
-  refreshStepCards(state): void{
+  refreshStepCards(state): void {
     // 0= OFF, 1 = Active, 2= Highlighted, 3= FINISHED
     // var pState = "";
-    if(state && state.toState){
+    if (state && state.toState) {
       state = state.toState;
     }
 
@@ -91,116 +90,135 @@ export class OrderComponent implements OnInit, OnDestroy {
     var step2 = 0;
     var step3 = 0;
     var step4 = 0;
-    if(state == "uninitialized" || state == "error"){
+    if (state == "uninitialized" || state == "error") {
       step1 = 0;
       step2 = 0;
       step3 = 0;
       step4 = 0;
-    }else if(state == "waitingOffer" || state == "waitingPaymentRequest"){
+    } else if (state == "waitingOffer" || state == "waitingPaymentRequest") {
       step1 = 2;
       step2 = 0;
       step3 = 0;
       step4 = 0;
-    }else if(state == "waitingPayment" || state == "waitingLicenseAvailable"){
+    } else if (state == "waitingPayment" || state == "waitingLicenseAvailable") {
       step1 = 3;
       step2 = 2;
       step3 = 0;
       step4 = 0;
-    }else if(state == "waitingLicense"){
+    } else if (state == "waitingLicense") {
       step1 = 3;
       step2 = 3;
       step3 = 2;
       step4 = 0;
-    }else if(state == "waitForProduction" || state == "readyForProduction" || state == "orderPaused"){
+    } else if (state == "waitForProduction" || state == "readyForProduction" || state == "orderPaused") {
       step1 = 3;
       step2 = 3;
       step3 = 3;
       step4 = 2;
-    }else if(state == "inProduction"|| state == "startProduction" ){
+    } else if (state == "inProduction" || state == "startProduction") {
       step1 = 3;
       step2 = 3;
       step3 = 3;
       step4 = 2;
-    }else if(state === "productionFinished" ){
+    } else if (state === "productionFinished") {
       step1 = 3;
       step2 = 3;
       step3 = 3;
       step4 = 3;
     }
-    console.log(this.gridTiles);
+    // console.log(this.gridTiles);
 
-    var tile1  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('order'));
-    var tile2  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
-    var tile3  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('license'));
-    var tile4  = this.gridTiles.find(x => x._element.nativeElement.classList.contains('production'));
+    var tile1 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('order'));
+    var tile2 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
+    var tile3 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('license'));
+    var tile4 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('production'));
 
-    for(let t of [tile1, tile2, tile3, tile4]){
-        var cl = t._element.nativeElement.classList;
-        cl.remove('step1');
-        cl.remove('step2');
-        cl.remove('step3');
-        cl.remove('step4');
+    for (let t of [tile1, tile2, tile3, tile4]) {
+      var cl = t._element.nativeElement.classList;
+      cl.remove('step1');
+      cl.remove('step2');
+      cl.remove('step3');
+      cl.remove('step4');
     }
-    tile1._element.nativeElement.classList.add('step'+step1);
-    tile2._element.nativeElement.classList.add('step'+step2);
-    tile3._element.nativeElement.classList.add('step'+step3);
-    tile4._element.nativeElement.classList.add('step'+step4);
+    tile1._element.nativeElement.classList.add('step' + step1);
+    tile2._element.nativeElement.classList.add('step' + step2);
+    tile3._element.nativeElement.classList.add('step' + step3);
+    tile4._element.nativeElement.classList.add('step' + step4);
   }
 
 
-  ngOnInit(): void{
+  ngOnInit(): void {
 
 
+    this.route.params.subscribe(params => {
 
-    this.route.params.subscribe( params => {
-          this.orderProgressConnection =
-              this.orderProgressConnection =
-                  this.socketService.get("/orders",params['id'], "progress")
-                  .subscribe(progress =>this.progress = progress['progress']);
-          this.orderStateConnection =
-              this.socketService.get("/orders",params['id'], "state")
-                  .subscribe(state => {
-                    if(state != 'waitingPayment'){
-                      if(this.qrDialogRef){
-                        this.qrDialogRef.close();
-                      }
-                      if(this.scanDialogRef){
-                        this.scanDialogRef.close();
-                      }
-                    }
-                    this.refreshStepCards(state);
-                    return this.orderState = state
-                  });
-        }
-      );
+        this.orderProgressConnection =
+          this.socketService.get("/orders", params['id'], "progress")
+            .subscribe(progress => this.progress = progress['progress']);
+        this.orderStateConnection =
+          this.socketService.get("/orders", params['id'], "state")
+            .subscribe(state => {
+              if (state != 'waitingPayment') {
+                if (this.qrDialogRef) {
+                  this.qrDialogRef.close();
+                }
+                if (this.scanDialogRef) {
+                  this.scanDialogRef.close();
+                }
+              }
+              this.refreshStepCards(state);
+              return this.orderState = state
+            });
+      }
+    );
 
-    var orderObservable = this.route.params.
-      switchMap((params: Params) => this.orderService.getOrder(params['id']));
+    var orderObservable = this.route.params.switchMap((params: Params) => Observable.fromPromise(this.orderService.getOrder(params['id'])));
+    // orderObservable;
     orderObservable.subscribe(order => {
+        console.log(order);
         this.order = order;
         this.drinkService.getDrink(order.drinkId).then(drink => {
           this.drink = drink;
           this.userService.getUser(this.drink.authorId).then(user => this.user = user)
             .catch(error => this.error = error);
         })
-      });
+      },
+      err => {
+        console.log(err);
+        if (err && err.status && err.status == 404) {
+          this.router.navigateByUrl('/');
+        }
+      },
+      () => console.log('yay'));
 
     var drinkObservable = orderObservable.switchMap((order: Order) => this.drinkService.getDrink(order.drinkId));
     this.dataSource = new ExampleDataSource(drinkObservable);
+
+    this.queueObservable = this.socketService.get("/production", "queue", "queue");
+    this.queueConnection = this.queueObservable.subscribe(queue => {
+        let list = queue as Array<any>;
+        for(let order of list ){
+          if (order.orderNumber === this.order.orderNumber){
+            this.queuePlace = order.queuePlace;
+          }
+        }
+    });
+
   }
+
 
   ngOnDestroy(): void {
     this.orderProgressConnection.unsubscribe();
     this.orderStateConnection.unsubscribe();
+    this.queueConnection.unsubscribe();
   }
 
-  ProductionStart(){
-    this.route.params.
-    switchMap((params: Params) => this.orderService.sendProductionStart(params['id']))
+  ProductionStart() {
+    this.route.params.switchMap((params: Params) => this.orderService.sendProductionStart(params['id']))
       .subscribe(response => console.log(response));
   }
 
-  ShowPaymentModalQR(){
+  ShowPaymentModalQR() {
     // this.showDialog = true;
     this.config.data.orderId = this.order.orderNumber;
     this.qrDialogRef = this.dialog.open(QrDialog, this.config);
@@ -214,7 +232,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     });
   }
 
-  ShowPaymentModalScan(){
+  ShowPaymentModalScan() {
     this.config.data.orderId = this.order.orderNumber;
     this.scanDialogRef = this.dialog.open(ScanDialog, this.config);
     this.scanDialogRef.afterClosed().subscribe((result: string) => {
@@ -223,7 +241,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     });
   }
 
-  Home(){
+  Home() {
     this.router.navigateByUrl(`/`);
   }
 
@@ -240,7 +258,7 @@ export class DrinkPosition {
 
 export class ExampleDataSource extends DataSource<any> {
 
-  constructor(private _drinkObservable: Observable<Drink>){
+  constructor(private _drinkObservable: Observable<Drink>) {
     super();
   }
 
@@ -282,7 +300,7 @@ export class ExampleDataSource extends DataSource<any> {
       drinkPosition4.Artikel = "*Zubereitung";
       drinkPosition4.Pos = "";
       drinkPosition4.Menge = "";
-      drinkPosition4.UnterPosPreis = String((drink.retailPrice - drink.licensefee)/ 100000) + " IUNO";
+      drinkPosition4.UnterPosPreis = String((drink.retailPrice - drink.licensefee) / 100000) + " IUNO";
       drinkPosition4.Preis = "";
       drinkPosition4.Gesamt = "";
 
@@ -297,6 +315,7 @@ export class ExampleDataSource extends DataSource<any> {
     });
   }
 
-  disconnect() {}
+  disconnect() {
+  }
 }
 
