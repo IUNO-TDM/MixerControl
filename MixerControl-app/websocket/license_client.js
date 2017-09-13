@@ -37,7 +37,7 @@ license_service.socket.on('updateAvailable', function (data) {
     const orderStateMachine = require('../models/order_state_machine');
 
     if (data) {
-        const order = getOrderWithOfferId(data.offerId);
+        const order = orderDB.getOrderByOfferId(data.offerId);
         if (!order) {
             return;
         }
@@ -74,19 +74,6 @@ license_service.unregisterUpdates = function () {
 };
 module.exports = license_service;
 
-
-const getOrderWithOfferId = function (offerId) {
-    const orderDict = orderDB.getOrders();
-    for (var key in orderDict) {
-        const order = orderDict[key];
-
-        if (order.offerId === offerId) {
-            return order;
-        }
-    }
-
-    return undefined;
-};
 
 
 function updateCMDongle(hsmId, callback) {

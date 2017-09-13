@@ -75,7 +75,7 @@ self.getBip21 = function (invoice, callback) {
 
 
 self.redeemCoupon = function (invoice, couponKey, callback) {
-    if (!invoice || ! couponKey) {
+    if (!invoice || !couponKey) {
         return callback(new Error('Missing function arguments: Invoice: ' + invoice + ' CouponKey: ' + couponKey));
     }
     const options = buildOptionsForRequest(
@@ -93,6 +93,22 @@ self.redeemCoupon = function (invoice, couponKey, callback) {
         } else {
             callback(null, r, data);
         }
+    });
+};
+
+self.getInvoice = function (invoiceId, callback) {
+    const options = buildOptionsForRequest(
+        'POST',
+        {},
+        null,
+        '/v1/invoices/' + invoiceId
+    );
+
+    request(options, function (e, r, data) {
+
+        const err = logger.logRequestAndResponse(e, options, r, data);
+
+        callback(err, data);
     });
 };
 
@@ -114,7 +130,6 @@ function buildOptionsForRequest(method, qs, body, path) {
         body: body
     }
 }
-
 
 
 module.exports = self;

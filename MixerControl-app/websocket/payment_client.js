@@ -7,6 +7,7 @@ const helper = require('../services/helper_service');
 const logger = require('../global/logger');
 const io = require('socket.io-client');
 const orderDB = require('../database/orderDB');
+const paymentREST = require('../adapter/payment_service_adapter');
 
 const PaymentService = function () {
     logger.info('[payment_updated] New instance');
@@ -33,11 +34,22 @@ payment_service.socket = io.connect(helper.formatString(
     config.HOST_SETTINGS.PAYMENT_SERVICE.PORT), {transports: ['websocket']});
 
 payment_service.socket.on('connect', function () {
+    const orderStateMachine = require('../models/order_state_machine');
     logger.debug("[payment_client] connected to paymentservice");
 
     // Register on existing invoice ids if the connection got lost.
-    Object.keys(payment_service.registeredInvoiceIds).forEach(function(invoiceId) {
-        payment_service.socket.emit('room', invoiceId);
+    Object.keys(payment_service.registeredInvoiceIds).forEach(function (invoiceId) {
+        paymentREST.getInvoice(invoiceId, function (err, invoice) {
+            if (!err && invoice) {
+                logger.info('[payment_client] register for invoice updates after reconnect. invoiceId: ' + invoiceId);
+                payment_service.socket.emit('room', invoiceId);
+            }
+            else {
+                const order = orderDB.getOrderByInvoiceId(invoiceId);
+                logger.info('[payment_client] Setting error state for order after payment service reconnect. invoiceId: ' + invoiceId);
+                orderStateMachine.error(order);
+            }
+        });
     });
 
 });
