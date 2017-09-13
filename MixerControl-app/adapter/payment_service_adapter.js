@@ -35,7 +35,6 @@ self.createLocalInvoiceForOrder = function (stateMachine, order) {
 
         paymentWsClient.registerStateChangeUpdates(data.invoiceId);
 
-
         order.invoice = data;
         self.getBip21(data, function (e, bip21) {
             order.paymentRequest = bip21;
@@ -58,7 +57,7 @@ self.getBip21 = function (invoice, callback) {
         }
     }
 
-    const options = buildOptionsForRequest('GET');
+    const options = buildOptionsForRequest('GET', {}, null, '/v1/invoices/' + invoice.invoiceId + '/bip21');
 
     request(options, function (e, r, data) {
 
@@ -90,9 +89,9 @@ self.redeemCoupon = function (invoice, couponKey, callback) {
 
         const err = logger.logRequestAndResponse(e, options, r, data);
         if (err || !data) {
-            callback(err, r.statusCode);
+            callback(err, r, data);
         } else {
-            callback(null, r.statusCode);
+            callback(null, r, data);
         }
     });
 };

@@ -21,6 +21,8 @@ license_service.socket = io.connect(CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE
 
 license_service.socket.on('connect', function () {
     logger.debug("[license_client] Connected to JMS");
+
+    license_service.registerUpdates();
 });
 license_service.socket.on('connect_error', function (error) {
     logger.debug("[license_client] Connection Error: " + error);
@@ -53,8 +55,24 @@ license_service.socket.on('updateAvailable', function (data) {
     }
 });
 
-module.exports = license_service;
+license_service.registerUpdates = function () {
+    licenseManager.getHsmId(function(err, hsmId) {
+        if (err || !hsmId) {
+            logger.warn('[license_client] Could not register for license updates! Missing HSM ID');
+        }
+        license_service.socket.emit('room', hsmId);
+    });
+};
 
+license_service.unregisterUpdates = function () {
+    licenseManager.getHsmId(function(err, hsmId) {
+        if (err || !hsmId) {
+            logger.warn('[license_client] Could not unregister for license updates! Missing HSM ID');
+        }
+        license_service.socket.emit('leave', hsmId);
+    });
+};
+module.exports = license_service;
 
 
 const getOrderWithOfferId = function (offerId) {

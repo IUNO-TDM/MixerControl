@@ -80,25 +80,32 @@ router.get('/:id/paymentRequest', function (req, res, next) {
 
 router.put('/:id/payment', function (req, res, next) {
 
-    var orderId = req.params['id'];
-    var order = OrderDB.getOrder(orderId);
+    const orderId = req.params['id'];
+    const order = OrderDB.getOrder(orderId);
     const invoice = order.invoice;
-    //TODO remove this logging later
-    logger.debug("PaymentString: " + req.body);
 
-    var data = req.body;
+
+    let data = req.body;
     if (invoice !== undefined) {
         if (data !== undefined) {
             if (data.startsWith("http://iuno.axoom.cloud/?")) {
                 data = data.substring(25);
             }
 
-            payment_service.redeemCoupon(invoice, data, function (err, statusCode) {
-                if (err) {
-                    return res.sendStatus(statusCode);
+            payment_service.redeemCoupon(invoice, data, function (err, paymentResponse, data) {
+                res.statusMessage = paymentResponse.statusMessage;
+                res.status(paymentResponse.statusCode);
+
+                if (data) {
+                    res.json(data);
+                }
+                else if(err) {
+                    res.json(err);
+                }
+                else {
+                    res.sendStatus(paymentResponse.statusCode);
                 }
 
-                res.sendStatus(statusCode);
             });
         } else {
             res.sendStatus(400);
