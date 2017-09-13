@@ -184,7 +184,7 @@ const stateMachine = new machina.BehavioralFsm({
         this.handle(client, "resume");
     },
     error: function (client) {
-        this.handle(client, "error");
+        this.handle(client, "onError");
     },
     productionPaused: function (client) {
         this.handle(client, "productionPaused");

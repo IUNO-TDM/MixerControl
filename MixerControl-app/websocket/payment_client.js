@@ -7,7 +7,6 @@ const helper = require('../services/helper_service');
 const logger = require('../global/logger');
 const io = require('socket.io-client');
 const orderDB = require('../database/orderDB');
-const paymentREST = require('../adapter/payment_service_adapter');
 
 const PaymentService = function () {
     logger.info('[payment_updated] New instance');
@@ -34,7 +33,9 @@ payment_service.socket = io.connect(helper.formatString(
     config.HOST_SETTINGS.PAYMENT_SERVICE.PORT), {transports: ['websocket']});
 
 payment_service.socket.on('connect', function () {
+    const paymentREST = require('../adapter/payment_service_adapter');
     const orderStateMachine = require('../models/order_state_machine');
+
     logger.debug("[payment_client] connected to paymentservice");
 
     // Register on existing invoice ids if the connection got lost.
