@@ -93,7 +93,7 @@ var state_machine = new machina.Fsm({
             _onEnter: function () {
                 if(queue[0]){
                     try{
-                        pumpcontrol_service.startProgram(queue[0].recipe);
+                        pumpcontrol_service.startProgram(this, queue[0].recipe);
                     }
                     catch (err) {
                         logger.crit(err);
@@ -102,7 +102,6 @@ var state_machine = new machina.Fsm({
                 } else {
                     this.transition("errorProcessing");
                 }
-
             },
             startedProcessing: "processingOrder",
             errorProcessing: "errorProcessing",
