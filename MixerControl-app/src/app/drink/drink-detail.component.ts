@@ -7,14 +7,13 @@ import {Order} from '../models/Order'
 import {DrinkService} from '../services/drink.service'
 import {UserService} from '../services/user.service'
 import {OrderService} from '../services/order.service'
-import {SocketService} from '../services/socketio.service'
 
 
 @Component({
   moduleId: module.id,
   selector: 'my-drinkDetail',
   templateUrl: 'drink-detail.template.html',
-  providers: [DrinkService, UserService, OrderService, SocketService],
+  providers: [DrinkService, UserService, OrderService],
   styleUrls: ['./drink-detail.component.css'],
 })
 
@@ -30,8 +29,7 @@ export class DrinkDetailComponent implements OnInit {
               private router: Router,
               private drinkService: DrinkService,
               private userService: UserService,
-              private orderService: OrderService,
-              private socketService: SocketService) {
+              private orderService: OrderService) {
   }
 
 
@@ -67,24 +65,5 @@ export class DrinkDetailComponent implements OnInit {
       this.router.navigateByUrl(`/orders/${orderNumber}`);
     });
   }
-  // resize(width) {
-  //   if (width < 600) {
-  //     this.gridcols = 2;
-  //   // }else if (width < 900) {
-  //   //   this.gridcols = 2;
-  //   }else {
-  //     this.gridcols = 4;
-  //
-  //   }
-  // }
-  //
-  // @HostListener('window:resize', ['$event'])
-  // onWindowResize(event) {
-  //   const element = event.target.innerWidth;
-  //   console.log("window resize " +  element);
-  //   this.resize(element);
-  //
-  // }
-
 
 }

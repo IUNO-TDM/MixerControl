@@ -3,17 +3,16 @@
  */
 
 import {Component, OnInit, OnDestroy} from '@angular/core';
-
-import {SocketService} from "../services/socketio.service";
-import {Subscription, Observable} from "rxjs";
+import { Observable} from "rxjs";
 import {Order} from "../models/models"
 import {DataSource} from '@angular/cdk/collections';
+import {OrdersSocketService} from "../services/orders-socket.service";
 
 @Component({
   moduleId: module.id,
   selector: 'my-admin-orders',
   templateUrl: 'admin-orders.template.html',
-  providers: [SocketService]
+  providers: [OrdersSocketService]
 })
 
 export class AdminOrdersComponent implements OnInit, OnDestroy {
@@ -23,12 +22,12 @@ export class AdminOrdersComponent implements OnInit, OnDestroy {
 
   dataSource: OrdersDataSource | null;
 
-  constructor(private socketService: SocketService) {
+  constructor(private ordersSocketService: OrdersSocketService) {
   }
 
 
   ngOnInit(): void {
-    this.dataSource = new OrdersDataSource(this.socketService)
+    this.dataSource = new OrdersDataSource(this.ordersSocketService)
   }
 
   ngOnDestroy(): void {
@@ -54,7 +53,7 @@ export class OrdersDataSource extends DataSource<any> {
   ordersStatesObservable: Observable<any>;
   orders = new Map<string, Order>();
   orderStates = new Map<string,string>();
-  constructor(private socketService: SocketService) {
+  constructor(private ordersSocketService: OrdersSocketService) {
     super();
   }
 
@@ -62,13 +61,23 @@ export class OrdersDataSource extends DataSource<any> {
   connect(): Observable<OrderLine[]> {
 
 
-    this.ordersObservable = this.socketService.get("/orders", "allOrders", "add").map(order => {
+    // this.ordersObservable = this.socketService.get("/orders", "allOrders", "add").map(order => {
+    //   var o: Order = order;
+    //   this.orders.set(o.orderNumber, o);
+    //
+    //   return this.orders;
+    // });
+    this.ordersSocketService.joinRoom('allOrders');
+
+    this.ordersObservable = this.ordersSocketService.getUpdates('add').map(order => {
       var o: Order = order;
       this.orders.set(o.orderNumber, o);
-
+      console.log(o);
       return this.orders;
     });
-    this.ordersStatesObservable = this.socketService.get("/orders", "allOrders", "state").map(o => {
+
+
+    this.ordersStatesObservable = this.ordersSocketService.getUpdates('state').map(o => {
       this.orderStates.set(o.orderNumber, o.toState);
       return this.orderStates;
     });

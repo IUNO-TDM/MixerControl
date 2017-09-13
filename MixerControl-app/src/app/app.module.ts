@@ -37,6 +37,9 @@ import {AdminProductionComponent} from "./admin/admin-production.component";
 import {AdminServiceComponent} from "./admin/admin-service.component";
 import {AdminComponentDialogComponent} from "./admin/admin-component-dialog.component";
 import {AdminAmountDialogComponent} from "./admin/admin-amount-dialog.component";
+import {ProductionSocket} from "./services/production-socket.service";
+import {OrdersSocket} from "./services/orders-socket.service";
+import {SocketIoModule} from "ng-socket-io/socket-io.module";
 
 
 @NgModule({
@@ -78,9 +81,10 @@ import {AdminAmountDialogComponent} from "./admin/admin-amount-dialog.component"
     MdTabsModule,
     MdSelectModule,
     MdSliderModule,
-    MdSnackBarModule
+    MdSnackBarModule,
+    SocketIoModule
   ],
-  providers: [],
+  providers: [ProductionSocket, OrdersSocket],
   bootstrap: [AppComponent],
   entryComponents: [QrDialog, ScanDialog, AdminComponentDialogComponent, AdminAmountDialogComponent]
 })
