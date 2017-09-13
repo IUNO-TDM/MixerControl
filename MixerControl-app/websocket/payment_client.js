@@ -7,14 +7,21 @@ const helper = require('../services/helper_service');
 const logger = require('../global/logger');
 const io = require('socket.io-client');
 const orderDB = require('../database/orderDB');
-const orderStateMachine = require('../models/order_state_machine');
-
-
-const registeredInvoiceIds = [];
-
 
 const PaymentService = function () {
     logger.info('[payment_updated] New instance');
+    this.registeredInvoiceIds = {};
+
+    this.addInvoiceIdToList = function (invoiceId) {
+        if (!this.registeredInvoiceIds[invoiceId]) {
+            this.registeredInvoiceIds[invoiceId] = true;
+        }
+    };
+    this.removeInvoiceIdFromList = function (invoiceId) {
+        if (this.registeredInvoiceIds[invoiceId]) {
+            delete this.registeredInvoiceIds[invoiceId];
+        }
+    }
 };
 
 const payment_service = new PaymentService();
@@ -26,10 +33,25 @@ payment_service.socket = io.connect(helper.formatString(
     config.HOST_SETTINGS.PAYMENT_SERVICE.PORT), {transports: ['websocket']});
 
 payment_service.socket.on('connect', function () {
+    const paymentREST = require('../adapter/payment_service_adapter');
+    const orderStateMachine = require('../models/order_state_machine');
+
     logger.debug("[payment_client] connected to paymentservice");
-    for (let invoiceId in registeredInvoiceIds) {
-        payment_service.socket.emit('room', invoiceId);
-    }
+
+    // Register on existing invoice ids if the connection got lost.
+    Object.keys(payment_service.registeredInvoiceIds).forEach(function (invoiceId) {
+        paymentREST.getInvoice(invoiceId, function (err, invoice) {
+            if (!err && invoice) {
+                logger.info('[payment_client] register for invoice updates after reconnect. invoiceId: ' + invoiceId);
+                payment_service.socket.emit('room', invoiceId);
+            }
+            else {
+                const order = orderDB.getOrderByInvoiceId(invoiceId);
+                logger.info('[payment_client] Setting error state for order after payment service reconnect. invoiceId: ' + invoiceId);
+                orderStateMachine.error(order);
+            }
+        });
+    });
 
 });
 payment_service.socket.on('StateChange', function (data) {
@@ -56,24 +78,12 @@ payment_service.socket.on('disconnect', function () {
 
 payment_service.registerStateChangeUpdates = function (invoiceId) {
     payment_service.socket.emit('room', invoiceId);
-    addInvoiceIdToList(invoiceId);
+    payment_service.addInvoiceIdToList(invoiceId);
 };
 payment_service.unregisterStateChangeUpdates = function (invoiceId) {
     payment_service.socket.emit('leave', invoiceId);
-    removeInvoiceIdFromList(invoiceId);
+    payment_service.removeInvoiceIdFromList(invoiceId);
 };
-
-function addInvoiceIdToList(invoiceId) {
-    if (registeredInvoiceIds.indexOf(invoiceId) !== -1) {
-        registeredInvoiceIds.push(invoiceId);
-    }
-}
-function removeInvoiceIdFromList(invoiceId) {
-    const index = registeredInvoiceIds.indexOf(invoiceId);
-    if (index !== -1) {
-        registeredInvoiceIds.splice(index, 1);
-    }
-}
 
 
 module.exports = payment_service;

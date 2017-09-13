@@ -10,7 +10,7 @@ const self = {};
 self.requestOfferForOrder = function (stateMachine, order) {
     licenseManager.getHsmId(function (err, hsmId) {
         if (err || !hsmId) {
-            logger.crit(err);
+            logger.crit('[offer_service] Could not get the hsmId from the dongle. Setting error state for order');
             return stateMachine.error(order);
         }
 

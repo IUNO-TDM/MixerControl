@@ -93,8 +93,10 @@ router.put('/:id/payment', function (req, res, next) {
             }
 
             payment_service.redeemCoupon(invoice, data, function (err, paymentResponse, data) {
-                res.statusMessage = paymentResponse.statusMessage;
-                res.status(paymentResponse.statusCode);
+                if (paymentResponse) {
+                    res.statusMessage = paymentResponse.statusMessage;
+                    res.status(paymentResponse.statusCode);
+                }
 
                 if (data) {
                     res.json(data);
@@ -103,7 +105,7 @@ router.put('/:id/payment', function (req, res, next) {
                     res.json(err);
                 }
                 else {
-                    res.sendStatus(paymentResponse.statusCode);
+                    res.sendStatus(500);
                 }
 
             });

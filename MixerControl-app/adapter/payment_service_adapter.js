@@ -37,6 +37,11 @@ self.createLocalInvoiceForOrder = function (stateMachine, order) {
 
         order.invoice = data;
         self.getBip21(data, function (e, bip21) {
+            if (e || !bip21) {
+                logger.crit(e);
+                logger.crit('[payment_service_adapter] Error when retrieving BIP21 from payment service');
+                return stateMachine.error(order);
+            }
             order.paymentRequest = bip21;
             stateMachine.paymentRequestReceived(order);
         })
@@ -75,7 +80,7 @@ self.getBip21 = function (invoice, callback) {
 
 
 self.redeemCoupon = function (invoice, couponKey, callback) {
-    if (!invoice || ! couponKey) {
+    if (!invoice || !couponKey) {
         return callback(new Error('Missing function arguments: Invoice: ' + invoice + ' CouponKey: ' + couponKey));
     }
     const options = buildOptionsForRequest(
@@ -93,6 +98,22 @@ self.redeemCoupon = function (invoice, couponKey, callback) {
         } else {
             callback(null, r, data);
         }
+    });
+};
+
+self.getInvoice = function (invoiceId, callback) {
+    const options = buildOptionsForRequest(
+        'POST',
+        {},
+        null,
+        '/v1/invoices/' + invoiceId
+    );
+
+    request(options, function (e, r, data) {
+
+        const err = logger.logRequestAndResponse(e, options, r, data);
+
+        callback(err, data);
     });
 };
 
@@ -114,7 +135,6 @@ function buildOptionsForRequest(method, qs, body, path) {
         body: body
     }
 }
-
 
 
 module.exports = self;
