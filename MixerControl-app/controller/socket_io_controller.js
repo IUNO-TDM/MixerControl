@@ -10,7 +10,7 @@ var OrderDB = require('../database/orderDB');
 const async = require('async');
 
 function onOrderNamespaceConnect(socket) {
-    logger.info('a user connected: ' + socket.id);
+    logger.info('[socket_io_controller] a user connected: ' + socket.id);
 
     socket.on('room', function (orderId) {
         socket.join(orderId);
@@ -52,7 +52,7 @@ function onOrderNamespaceConnect(socket) {
 }
 
 function onProductionNamespaceConnect(socket) {
-    logger.info('a user connected: ' + socket.id);
+    logger.info('[socket_io_controller] a user connected: ' + socket.id);
 
     socket.on('room', function (roomId) {
         socket.join(roomId);
@@ -119,7 +119,7 @@ function registerPumpControlEvents(orderNamespace) {
 
 function registerOrderStateEvents(orderNamespace) {
     OSM.on("transition", function (data) {
-        logger.info("sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
+        logger.info("[socket_io_controller] sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
         orderNamespace.to(data.client.orderNumber).emit("state", {
             "fromState": data.fromState,
             "toState": data.toState

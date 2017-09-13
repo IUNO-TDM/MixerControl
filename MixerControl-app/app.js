@@ -16,6 +16,7 @@ var components = require('./routes/components');
 var app = express();
 
 var ifttt_controller = require('./controller/ifttt_controller');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
