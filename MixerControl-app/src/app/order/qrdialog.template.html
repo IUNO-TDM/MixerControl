@@ -2,8 +2,8 @@
 
 <md-dialog-content>
   <div class="qrWrapper">
-    <ngx-qrcode [qrc-element-type]="elementType" [qrc-value]="paymentRequest"></ngx-qrcode>
-
+    <ngx-qrcode *ngIf="paymentRequest && paymentRequest!==''" [qrc-element-type]="elementType" [qrc-value]="paymentRequest"></ngx-qrcode>
+    <p *ngIf="errorMessage && errorMessage!==''">{{errorMessage}}</p>
   </div>
 
 </md-dialog-content>

@@ -11,7 +11,8 @@ import {OrderService} from "../services/order.service";
 
 })
 export class QrDialog implements OnInit{
-  paymentRequest = "^234567890ß";
+  errorMessage= "";
+  paymentRequest = "";
   elementType:  'url' | 'canvas' | 'img' = 'url';
 
   constructor(
@@ -27,7 +28,13 @@ export class QrDialog implements OnInit{
   ngOnInit(){
 
     this.orderService.getPaymentRequest(this.data.orderId)
-      .then(paymentRequest =>  this.paymentRequest = paymentRequest);
+      .then(paymentRequest => {
+        this.paymentRequest = paymentRequest;
+        this.errorMessage = "";
+      }).catch(error => {
+        this.errorMessage = error;
+        this.paymentRequest = "";
+    });
 
   }
 

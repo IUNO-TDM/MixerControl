@@ -1,8 +1,7 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
+import {MdDialogRef, MD_DIALOG_DATA, MdSnackBar, MdSnackBarConfig} from '@angular/material';
 import {OrderService} from "../services/order.service";
 import {QrScannerComponent} from 'angular2-qrscanner';
-
 @Component({
   selector: 'scan-dialog',
   template: `
@@ -40,18 +39,13 @@ export class ScanDialog implements OnInit{
   constructor(
     public dialogRef: MdDialogRef<ScanDialog>,
     @Inject(MD_DIALOG_DATA) public data: any,
-    private orderService: OrderService,) {
-
-
-    // this.paymentRequest = data.message;
-
-  }
+    private orderService: OrderService,
+    public snackBar: MdSnackBar) {}
 
   ngOnInit(){
 
     this.orderService.getPaymentRequest(this.data.orderId)
       .then(paymentRequest =>  this.paymentRequest = paymentRequest);
-
   }
 
   decodedOutput(text: string) {
@@ -65,13 +59,26 @@ export class ScanDialog implements OnInit{
           }else {
             this.dialogRef.close();
           }
-
-
         },
-        err => {
-          console.log(err);
-          this.qrScannerComponent.startScanning();
-          // this._service.alert("Fehler beim QR-Code lesen", "Bitte probieren Sie es noch einmal.");
+        resp => {
+          console.log(resp);
+          if(resp.status){
+            if(resp.status == 404){
+              let config = new MdSnackBarConfig();
+              this.snackBar.open("Der Zahlungsauftrag ist im PaymentService nicht vorhanden","Neuer Auftrag",{duration: 5000});
+            }else if(resp.status == 422){
+              let config = new MdSnackBarConfig();
+              this.snackBar.open("Ungültiger Coupon","OK",{duration: 5000});
+              this.qrScannerComponent.startScanning();
+            } else if(resp.status == 409){
+              let config = new MdSnackBarConfig();
+              this.snackBar.open("Dieser Coupon wurde bereits für diesen Auftrag eingescannt.","OK",{duration: 5000});
+              this.qrScannerComponent.startScanning();
+            }
+          }
+          // console.log(err);
+          // this.snackBar.open(err);
+
         });
   }
 

@@ -20,7 +20,7 @@ import {
   MdProgressSpinnerModule,
   MdProgressBarModule,
   MdIconModule,
-  MdListModule, MdTabsModule, MdSelectModule, MdSliderModule,
+  MdListModule, MdTabsModule, MdSelectModule, MdSliderModule, MdSnackBarModule,
 } from '@angular/material';
 import 'hammerjs';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -77,7 +77,8 @@ import {AdminAmountDialogComponent} from "./admin/admin-amount-dialog.component"
     MdListModule,
     MdTabsModule,
     MdSelectModule,
-    MdSliderModule
+    MdSliderModule,
+    MdSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],
