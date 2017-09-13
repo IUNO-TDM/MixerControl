@@ -25,6 +25,32 @@ orderDB.getOrders = function () {
     return orderDB.orderDict;
 };
 
+orderDB.getOrderByInvoiceId = function (invoiceId) {
+    const orderDict = orderDB.getOrders();
+    for (var key in orderDict) {
+        const order = orderDict[key];
+
+        if (order && order.invoice && (order.invoice.invoiceId === invoiceId)) {
+            return order;
+        }
+    }
+
+    return undefined;
+};
+
+orderDB.getOrderByOfferId = function (offerId) {
+    const orderDict = orderDB.getOrders();
+    for (var key in orderDict) {
+        const order = orderDict[key];
+
+        if (order.offerId === offerId) {
+            return order;
+        }
+    }
+
+    return undefined;
+};
+
 
 orderDB.generateNewOrderNumber = function () {
     var i = 0;

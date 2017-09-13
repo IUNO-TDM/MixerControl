@@ -9,7 +9,6 @@ const request = require('request');
 const logger = require('../global/logger');
 const CONFIG = require('../config/config_loader');
 const helper = require('../services/helper_service');
-const component_uuids = require('../config/config_loader').STD_INGREDIENT_CONFIGURATION;
 const authServer = require('./auth_service_adapter');
 
 
@@ -34,8 +33,19 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs, callback
     })
 }
 
+function doRequest(options, callback) {
+    request(options, function (e, r, data) {
+        if (r && (r.statusCode === 401)) {
+            authServer.invalidateToken();
+        }
+        const err = logger.logRequestAndResponse(e, options, r, data);
 
-self.getAllRecipes = function (callback) {
+        callback(err, r, data);
+    });
+}
+
+
+self.getAllRecipes = function (components, callback) {
 
     if (typeof(callback) !== 'function') {
 
@@ -50,20 +60,22 @@ self.getAllRecipes = function (callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes',
-        {'components': component_uuids},
+        {'components': components},
         function (err, options) {
             if (err) {
                 return callback(err);
             }
-            request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var recipes;
-                if (helper.isArray(jsonData)) {
-                    //TODO: Parse json data into objects to validate the content
-                    recipes = jsonData;
+            doRequest(options, function (e, r, jsonData) {
+
+                let recipes;
+                if (!e && jsonData) {
+                    if (helper.isArray(jsonData)) {
+                        //TODO: Parse json data into objects to validate the content
+                        recipes = jsonData;
+                    }
                 }
 
-                callback(err, recipes);
+                callback(e, recipes);
             });
         }
     );
@@ -87,17 +99,15 @@ self.getAllComponents = function (callback) {
         '/components',
         {},
         function (err, options) {
-            request(options, function (e, r, jsonData) {
-
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var components;
+            doRequest(options, function (e, r, jsonData) {
+                let components;
 
                 if (helper.isArray(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     components = jsonData;
                 }
 
-                callback(err, components);
+                callback(e, components);
             });
         }
     );
@@ -119,17 +129,14 @@ self.getRecipeForId = function (id, callback) {
         '/recipes/' + id,
         {},
         function (err, options) {
-            request(options, function (e, r, jsonData) {
-                logger.logRequestAndResponse(e, options, r, jsonData);
-
-                var recipe;
+            doRequest(options, function (e, r, jsonData) {
+                let recipe;
                 if (helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     recipe = jsonData;
                 }
 
-
-                callback(err, recipe);
+                callback(e, recipe);
             });
         }
     );
@@ -152,10 +159,9 @@ self.getRecipeImageForId = function (id, callback) {
         function (err, options) {
             options.encoding = null;
 
-            request(options, function (e, r, data) {
-                var err = logger.logRequestAndResponse(e, options, r, data);
+            doRequest(options, function (e, r, data) {
 
-                callback(err, {
+                callback(e, {
                     imageBuffer: data,
                     contentType: r.headers['content-type']
                 });
@@ -171,7 +177,7 @@ self.getUserForId = function (id, callback) {
         }
     }
 
-    var options = buildOptionsForRequest(
+    buildOptionsForRequest(
         'GET',
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
@@ -179,15 +185,14 @@ self.getUserForId = function (id, callback) {
         '/users/' + id,
         {},
         function (err, options) {
-            request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var user;
-                if (helper.isObject(jsonData)) {
+            doRequest(options, function (e, r, jsonData) {
+                let user;
+                if (!e && helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     user = jsonData;
                 }
 
-                callback(err, user);
+                callback(e, user);
             });
 
         }
@@ -211,10 +216,9 @@ self.getUserImageForId = function (id, callback) {
         function (err, options) {
             options.encoding = null;
 
-            request(options, function (e, r, data) {
-                var err = logger.logRequestAndResponse(e, options, r.data);
+            doRequest(options, function (e, r, data) {
 
-                callback(err, {
+                callback(e, {
                     imageBuffer: data,
                     contentType: r.headers['content-type']
                 });
@@ -243,16 +247,15 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
                 hsmId: hsmId
             };
 
-            request(options, function (e, r, jsonData) {
-                let err = logger.logRequestAndResponse(e, options, r, jsonData);
+            doRequest(options, function (e, r, jsonData) {
                 let offer;
 
-                if (!err && helper.isObject(jsonData)) {
+                if (!e && helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     offer = jsonData;
                 }
 
-                callback(err, offer);
+                callback(e, offer);
             });
         }
     );
@@ -273,15 +276,14 @@ self.getOfferForId = function (id, callback) {
         '/offers/' + id,
         {},
         function (err, options) {
-            request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, options, r, jsonData);
-                var offer;
+            doRequest(options, function (e, r, jsonData) {
+                let offer;
                 if (helper.isObject(jsonData)) {
                     //TODO: Parse json data into objects to validate the content
                     offer = jsonData;
                 }
 
-                callback(err, offer);
+                callback(e, offer);
             });
         }
     );
@@ -306,10 +308,8 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
                 paymentBIP70: bip70
             };
 
-            request(options, function (e, r, jsonData) {
-                var err = logger.logRequestAndResponse(e, r, jsonData);
-
-                callback(err);
+            doRequest(options, function (e, r, jsonData) {
+                callback(e);
             });
         }
     );
@@ -337,10 +337,37 @@ self.getLicenseUpdate = function(hsmId, context, callback) {
                 RAC: context
             };
 
-            request(options, function (e, r, jsonData) {
-                const err = logger.logRequestAndResponse(e, options, r, jsonData);
+            doRequest(options, function (e, r, jsonData) {
+                callback(e, jsonData['RAU'], jsonData['isOutOfDate']);
+            });
+        }
+    );
+};
 
-                callback(err, jsonData['RAU']);
+self.confirmLicenseUpdate = function(hsmId, context, callback) {
+    if (typeof(callback) !== 'function') {
+        return logger.info('[juice_machine_service_adapter] Callback not registered');
+    }
+
+    if (!hsmId || !context) {
+        return logger.info('[juice_machine_service_adapter] Missing function arguments');
+    }
+
+    buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/cmdongle/' + hsmId + '/update/confirm',
+        {},
+        function (err, options) {
+
+            options.body = {
+                RAC: context
+            };
+
+            doRequest(options, function (e, r, jsonData) {
+                callback(e);
             });
         }
     );

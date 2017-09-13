@@ -16,6 +16,7 @@ var components = require('./routes/components');
 var app = express();
 
 var ifttt_controller = require('./controller/ifttt_controller');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
@@ -29,14 +30,17 @@ app.use(cookieParser());
 
 var CACHE_MAX_AGE = 60*60*24;
 
-app.use(express.static(path.join(__dirname, 'public'), {maxAge: CACHE_MAX_AGE}));
-app.use('/js', express.static(__dirname + '/public/js', {maxAge: CACHE_MAX_AGE}));
-app.use('/app', express.static(__dirname + '/public/app', {maxAge: CACHE_MAX_AGE}));
+app.use(express.static(path.join(__dirname, 'dist')));
+
+
+//app.use(express.static(path.join(__dirname, 'public'), {maxAge: CACHE_MAX_AGE}));
+//app.use('/js', express.static(__dirname + '/public/js', {maxAge: CACHE_MAX_AGE}));
+//app.use('/app', express.static(__dirname + '/public/app', {maxAge: CACHE_MAX_AGE}));
 app.use('/img', express.static(__dirname + '/public/img', {maxAge: CACHE_MAX_AGE}));
-app.use('/css', express.static(__dirname + '/public/css', {maxAge: CACHE_MAX_AGE}));
-app.use('/partials', express.static(__dirname + '/public/partials', {maxAge: CACHE_MAX_AGE}));
-app.use('/templates', express.static(__dirname + '/public/templates', {maxAge: CACHE_MAX_AGE}));
-app.use('/scripts', express.static(__dirname + '/public/scripts', {maxAge: CACHE_MAX_AGE}));
+//app.use('/css', express.static(__dirname + '/public/css', {maxAge: CACHE_MAX_AGE}));
+//app.use('/partials', express.static(__dirname + '/public/partials', {maxAge: CACHE_MAX_AGE}));
+//app.use('/templates', express.static(__dirname + '/public/templates', {maxAge: CACHE_MAX_AGE}));
+//app.use('/scripts', express.static(__dirname + '/public/scripts', {maxAge: CACHE_MAX_AGE}));
 
 app.use('/api/drinks', drinks);
 app.use('/api/users', users);
@@ -50,7 +54,7 @@ app.all('/api/*', function (req, res, next) {
 
 app.all('*', function (req, res, next) {
     // Just send the index.html for other files to support HTML5Mode
-    res.sendFile('public/index.html', {root: __dirname});
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 // catch 404 and forward to error handler

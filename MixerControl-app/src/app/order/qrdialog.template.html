@@ -1,0 +1,18 @@
+<h2 md-dialog-title>Diesen QR-Code mit einer Bitcoin Wallet App abscannen</h2>
+
+<md-dialog-content>
+  <div class="qrWrapper">
+    <ngx-qrcode *ngIf="paymentRequest && paymentRequest!==''" [qrc-element-type]="elementType" [qrc-value]="paymentRequest"></ngx-qrcode>
+    <p *ngIf="errorMessage && errorMessage!==''">{{errorMessage}}</p>
+  </div>
+
+</md-dialog-content>
+
+<md-dialog-actions>
+  <button
+    md-raised-button
+    color="primary"
+    md-dialog-close>schließen
+  </button>
+
+</md-dialog-actions>

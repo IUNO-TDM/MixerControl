@@ -1,0 +1,45 @@
+<div class="container">
+
+
+  <div class="row title">
+    <div *ngIf="drink" class="left"> Details: {{drink.title}}</div>
+    <div class="right">
+      <button md-button (click)="getBack()">zurück</button>
+    </div>
+  </div>
+  <div class="cardContainer">
+    <md-card>
+      <h1 *ngIf="drink">{{drink.title}}</h1>
+      <div class="drinkDetail" *ngIf="drink">
+        <div class="drinkDetailImage">
+          <img class="drinkImg" src="/api/drinks/{{drink.id}}/image"/>
+        </div>
+        <div class="description">
+          <div class="descriptionText">
+            <div class="descriptionTextInner">
+
+              <p>{{drink.description}}</p>
+              <p>Beinhaltet:<br>{{components}}</p>
+              <p>Verkaufspreis: {{drink.retailPrice / 100000}} IUNO</p>
+              <p>Rezepthersteller:</p>
+
+              <div class="userDetails" *ngIf="user">
+                <img class="userImg" src="/api/users/{{drink.authorId}}/image"/>
+                <p class="userNameText">{{user.firstname}} {{user.lastname}}</p>
+              </div>
+
+            </div>
+          </div>
+          <div class="descriptionButton">
+            <button md-raised-button color="primary" (click)="onClickMe()">Kostenpflichtig bestellen</button>
+          </div>
+        </div>
+
+      </div>
+
+    </md-card>
+  </div>
+
+
+</div>
+
