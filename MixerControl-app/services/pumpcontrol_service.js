@@ -2,9 +2,9 @@
  * Created by goergch on 07.02.17.
  */
 
-var WebSocketClient = require('websocket').client;
-var machina = require('machina');
-var CONFIG = require('../config/config_loader');
+const WebSocketClient = require('websocket').client;
+const machina = require('machina');
+const CONFIG = require('../config/config_loader');
 
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
@@ -12,12 +12,13 @@ const http = require('http');
 const async = require('async');
 const helper = require('../services/helper_service');
 const logger = require('../global/logger');
+const request = require('request');
 
-var jms_connector = require('../adapter/juice_machine_service_adapter');
-var storage = require('node-persist');
+const jms_connector = require('../adapter/juice_machine_service_adapter');
+const storage = require('node-persist');
 
 
-var pumpAmountWarnings = {};
+const pumpAmountWarnings = {};
 const clearAmountWarning = function (item) {
     pumpAmountWarnings[item] = {'pumpNr': item, 'warningCleared': true}
 };
@@ -27,14 +28,14 @@ const pumpNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
 pumpNumbers.forEach(clearAmountWarning);
 
 
-var PumpControlService = function () {
+const PumpControlService = function () {
     console.log('a new instance of pumpControlservice');
     initStorage();
 
 
 };
 
-var initStorage = function () {
+const initStorage = function () {
 
 
     async.each(pumpNumbers, function iterate(item, callback) {
@@ -63,10 +64,10 @@ var initStorage = function () {
 const pumpcontrol_service = new PumpControlService();
 util.inherits(PumpControlService, EventEmitter);
 
-var wsclient = new WebSocketClient();
+const wsclient = new WebSocketClient();
 pumpcontrol_service.websocketclient = wsclient;
 
-var initIngredients = function () {
+const initIngredients = function () {
     jms_connector.getAllComponents(function (e, components) {
         if (!e) {
             async.eachSeries(pumpNumbers, function (item, callback) {
@@ -86,7 +87,7 @@ var initIngredients = function () {
     });
 };
 
-var componentExists = function (components, id) {
+const componentExists = function (components, id) {
     for (var i = 0; i < components.length; i++) {
         if (components[i].id === id) {
             return true;
@@ -95,37 +96,7 @@ var componentExists = function (components, id) {
     return false;
 };
 
-var updateIngredient = function (pumpNumber, componentUUID, callback) {
-    var options = {
-        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
-        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
-        path: '/ingredients/' + pumpNumber,
-        agent: false,
-        method: 'PUT'
-    };
-    var req = http.request(options, function (res) {
-            console.log(res.statusCode + ' ' + res.statusMessage);
-            callback();
-        }
-    ).end(componentUUID);
-};
-var updatePumpAmount = function (pumpNumber, amount, callback) {
-    var options = {
-        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
-        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
-        path: '/ingredients/' + pumpNumber + '/amount',
-        agent: false,
-        method: 'PUT'
-    };
-    var req = http.request(options, function (res) {
-            console.log(res.statusCode + ' ' + res.statusMessage);
-            callback();
-        }
-    ).end(amount.toString());
-
-};
-
-var state_machine = new machina.Fsm({
+const state_machine = new machina.Fsm({
 
     namespace: "pumpcontrol",
     intialState: "uninitialized",
@@ -209,7 +180,7 @@ var state_machine = new machina.Fsm({
 pumpcontrol_service.pumpcontrolmode = "";
 
 
-var onWebSocketMessage = function (message) {
+const onWebSocketMessage = function (message) {
 
     if (message.type === 'utf8') {
         var messageObject = JSON.parse(message.utf8Data);
@@ -265,80 +236,7 @@ state_machine.on('transition', function (data) {
 pumpcontrol_service.init = function () {
     state_machine.connect();
 };
-pumpcontrol_service.setServiceMode = function (on) {
-    var body;
-    if (on) {
-        body = 'true';
-    } else {
-        body = 'false';
-    }
 
-    var options = {
-        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
-        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
-        path: '/service',
-        agent: false,
-        method: 'PUT'
-    };
-    var req = http.request(options, function (res) {
-            console.log(res.statusCode + ' ' + res.statusMessage);
-        }
-    ).end(body);
-};
-pumpcontrol_service.setServicePump = function (pumpNumber, on) {
-    var body;
-    if (on) {
-        body = 'true';
-    } else {
-        body = 'false';
-    }
-
-    var options = {
-        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
-        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
-        path: '/service/pumps/' + pumpNumber,
-        agent: false,
-        method: 'PUT'
-    };
-    var req = http.request(options, function (res) {
-            console.log(res.statusCode + ' ' + res.statusMessage);
-        }
-    ).end(body);
-};
-pumpcontrol_service.getPumpList = function (callback) {
-    var options = {
-        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
-        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
-        path: '/pumps',
-        agent: false,
-        method: 'GET'
-    };
-    var req = http.request(options, function (res) {
-
-            res.on('data', function (chunk) {
-                console.log('Got pumps: ' + chunk);
-                callback(chunk);
-            });
-        }
-    ).end();
-};
-pumpcontrol_service.getIngredient = function (pumpNumber, callback) {
-    var options = {
-        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
-        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
-        path: '/ingredients/' + pumpNumber,
-        agent: false,
-        method: 'GET'
-    };
-    var req = http.request(options, function (res) {
-
-            res.on('data', function (chunk) {
-                console.log('Got ingredient for pump ' + pumpNumber + ': ' + chunk);
-                callback(chunk);
-            });
-        }
-    ).end();
-};
 pumpcontrol_service.setIngredient = function (pumpNumber, ingredient, callback) {
     storage.setItemSync('component' + pumpNumber, ingredient);
     jms_connector.getAllComponents(function (e, components) {
@@ -379,31 +277,6 @@ pumpcontrol_service.getPumpStandardAmount = function (pumpNumber) {
     return storage.getItemSync('amount' + pumpNumber);
 };
 
-pumpcontrol_service.startProgram = function (recipe) {
-    var options = {
-        hostname: CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST,
-        port: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT,
-        path: '/program/' + recipe['productCode'],
-        agent: false,
-        method: 'PUT'
-    };
-    try {
-        const req = http.request(options, function (res) {
-                logger.log(res.statusCode + ' ' + res.statusMessage);
-
-                res.on("data", function (data) {
-                    logger.log("[pumpcontrol_service] start program response:");
-                    logger.log(data);
-                });
-            }
-        ).end(recipe.program);
-    }
-    catch (err) {
-        logger.crit(err);
-    }
-};
-
-
 pumpcontrol_service.getMode = function () {
     return pumpcontrol_service.pumpcontrolmode;
 };
@@ -416,5 +289,126 @@ pumpcontrol_service.getAmountWarnings = function () {
     return pumpAmountWarnings;
 };
 
+// ------------------------------------
+// ------------REST CALLS -------------
+// ------------------------------------
+
+
+const updateIngredient = function (pumpNumber, componentUUID, callback) {
+    const options = buildOptionsForRequest(
+        'PUT',
+        {},
+        componentUUID,
+        '/ingredients/' + pumpNumber
+    );
+
+    request(options, function (e, r, data) {
+        const err = logger.logRequestAndResponse(e, options, r, data);
+
+        callback(err);
+    });
+};
+const updatePumpAmount = function (pumpNumber, amount, callback) {
+    const options = buildOptionsForRequest(
+        'PUT',
+        {},
+        amount.toString(),
+        '/ingredients/' + pumpNumber + '/amount'
+    );
+
+    request(options, function (e, r, data) {
+        const err = logger.logRequestAndResponse(e, options, r, data);
+
+        callback(err);
+    });
+};
+
+pumpcontrol_service.startProgram = function (productionQueue, recipe) {
+    const options = buildOptionsForRequest(
+        'PUT',
+        {},
+        recipe.program,
+        '/program/' + recipe['productCode']
+    );
+
+    request(options, function (e, r, data) {
+        const err = logger.logRequestAndResponse(e, options, r, data);
+
+        if (err) {
+            pumpcontrol_service.emit('pumpControlError', err);
+        }
+    });
+};
+
+pumpcontrol_service.getIngredient = function (pumpNumber, callback) {
+
+    const options = buildOptionsForRequest(
+        'GET',
+        {},
+        null,
+        '/ingredients/' + pumpNumber
+    );
+
+    request(options, function (e, r, data) {
+        const err = logger.logRequestAndResponse(e, options, r, data);
+
+        callback(err, data);
+    });
+};
+
+pumpcontrol_service.getPumpList = function (callback) {
+    const options = buildOptionsForRequest(
+        'GET',
+        {},
+        null,
+        '/pumps'
+    );
+
+    request(options, function (e, r, data) {
+        const err = logger.logRequestAndResponse(e, options, r, data);
+
+        callback(err, data);
+    });
+};
+
+pumpcontrol_service.setServiceMode = function (on) {
+    const options = buildOptionsForRequest(
+        'PUT',
+        {},
+        on ? 'true' : false,
+        '/service'
+    );
+
+    request(options, function (e, r, data) {
+        logger.logRequestAndResponse(e, options, r, data);
+    });
+};
+pumpcontrol_service.setServicePump = function (pumpNumber, on) {
+
+    const options = buildOptionsForRequest(
+        'PUT',
+        {},
+        on ? 'true' : false,
+        '/service/pumps/' + pumpNumber
+    );
+
+    request(options, function (e, r, data) {
+        logger.logRequestAndResponse(e, options, r, data);
+    });
+};
+
+function buildOptionsForRequest(method, qs, body, path) {
+
+    return {
+        method: method,
+        url: CONFIG.HOST_SETTINGS.PUMP_CONTROL.PROTOCOL +
+        '://' + CONFIG.HOST_SETTINGS.PUMP_CONTROL.HOST + ':' + CONFIG.HOST_SETTINGS.PUMP_CONTROL.PORT + path,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        qs: qs,
+        body: body
+    }
+}
 
 module.exports = pumpcontrol_service;
