@@ -8,7 +8,6 @@ const CONFIG = require('../config/config_loader');
 const orderDB = require('../database/orderDB');
 const licenseManager = require('../adapter/license_manager_adapter');
 const juiceMachineService = require('../adapter/juice_machine_service_adapter');
-const orderStateMachine = require('../models/order_state_machine');
 
 const LicenseService = function () {
     logger.info('[license_client] new instance');
@@ -21,18 +20,19 @@ license_service.socket = io.connect(CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE
     + ":" + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT + "/licenses");
 
 license_service.socket.on('connect', function () {
-    logger.debug("connected to license SocketIO at Marketplace");
+    logger.debug("[license_client] Connected to JMS");
 });
 license_service.socket.on('connect_error', function (error) {
-    logger.debug("Connection Error at license SocketIO at Marketplace: " + error);
+    logger.debug("[license_client] Connection Error: " + error);
 });
 
 license_service.socket.on('disconnect', function () {
-    logger.debug("disconnected from license SocketIO at Marketplace");
+    logger.debug("[license_client] Disconnected from JMS");
 });
 
 license_service.socket.on('updateAvailable', function (data) {
-    logger.debug("License update available for " + JSON.stringify(data));
+    logger.debug("[license_client] License update available for " + JSON.stringify(data));
+    const orderStateMachine = require('../models/order_state_machine');
 
     if (data) {
         const order = getOrderWithOfferId(data.offerId);

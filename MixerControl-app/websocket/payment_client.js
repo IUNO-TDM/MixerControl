@@ -26,13 +26,14 @@ payment_service.socket = io.connect(helper.formatString(
     config.HOST_SETTINGS.PAYMENT_SERVICE.PORT), {transports: ['websocket']});
 
 payment_service.socket.on('connect', function () {
-    logger.debug("connected to paymentservice");
-    for (var invoiceId in registeredInvoiceIds) {
+    logger.debug("[payment_client] connected to paymentservice");
+    for (let invoiceId in registeredInvoiceIds) {
         payment_service.socket.emit('room', invoiceId);
     }
 
 });
 payment_service.socket.on('StateChange', function (data) {
+    const orderStateMachine = require('../models/order_state_machine');
     const state = JSON.parse(data);
 
     if (state.state === 'pending' || state.state === 'building') {
@@ -45,8 +46,12 @@ payment_service.socket.on('StateChange', function (data) {
     }
 });
 
+payment_service.socket.on('connect_error', function (error) {
+    logger.debug("[payment_client] Connection Error: " + error);
+});
+
 payment_service.socket.on('disconnect', function () {
-    logger.debug("disconnect");
+    logger.debug("[payment_client] Disconnected from paymentservice");
 });
 
 payment_service.registerStateChangeUpdates = function (invoiceId) {
