@@ -1,11 +1,11 @@
 <md-table class="ordersTable" #table [dataSource]="dataSource">
   <ng-container mdColumnDef="OrderNr">
     <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">OrderNr.</md-header-cell>
-    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.OrderNr}}</md-cell>
+    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"><a [routerLink]="['/orders/', row.OrderNr]">{{row.OrderNr}}</a></md-cell>
   </ng-container>
   <ng-container mdColumnDef="DrinkId">
     <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">DrinkId</md-header-cell>
-    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkId}}</md-cell>
+    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'">{{row.DrinkId}}</md-cell>
   </ng-container>
   <ng-container mdColumnDef="DrinkName">
     <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">DrinkName</md-header-cell>

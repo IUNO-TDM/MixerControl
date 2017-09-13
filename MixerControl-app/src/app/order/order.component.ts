@@ -60,7 +60,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       right: ''
     },
     data: {
-      orderId: ''
+      order: new Order
     }
   };
 
@@ -220,7 +220,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ShowPaymentModalQR() {
     // this.showDialog = true;
-    this.config.data.orderId = this.order.orderNumber;
+    this.config.data.order = this.order;
     this.qrDialogRef = this.dialog.open(QrDialog, this.config);
 
     // this.qrDialogRef.beforeClose().subscribe((result: string) => {
@@ -233,7 +233,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   ShowPaymentModalScan() {
-    this.config.data.orderId = this.order.orderNumber;
+    this.config.data.order = this.order;
     this.scanDialogRef = this.dialog.open(ScanDialog, this.config);
     this.scanDialogRef.afterClosed().subscribe((result: string) => {
       // this.lastAfterClosedResult = result;
