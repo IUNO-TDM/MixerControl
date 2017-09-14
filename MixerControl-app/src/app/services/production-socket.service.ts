@@ -6,7 +6,7 @@ import {Observable} from "rxjs/Observable";
 export class ProductionSocket extends Socket {
 
   constructor() {
-    super({ url: 'http://localhost:3000/production', options: {} });
+    super({ url: window.location.protocol+'//'+window.location.hostname+':'+ window.location.port +'/orders', options: {} });
   }
 
 }
