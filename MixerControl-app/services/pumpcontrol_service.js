@@ -239,11 +239,8 @@ pumpcontrol_service.init = function () {
 
 pumpcontrol_service.setIngredient = function (pumpNumber, ingredient, callback) {
     storage.setItemSync('component' + pumpNumber, ingredient);
-    jms_connector.getAllComponents(function (e, components) {
-        if (!e) {
-            updateIngredient(pumpNumber, componentExists(components, ingredient), callback);
-        }
-    });
+
+    updateIngredient(pumpNumber, ingredient, callback);
 
 };
 pumpcontrol_service.getStorageIngredient = function (pumpNumber) {
