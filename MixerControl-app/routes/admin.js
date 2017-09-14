@@ -67,10 +67,11 @@ router.put('/pumps/:id', function (req, res, next) {
     }
     const id = req.params['id'];
     var componentId = req.body;
+
     pumpcontrol_service.setIngredient(id,componentId,function(err){
         if (err) {
             res.status = 500;
-            res.json(JSON.stringify(err));
+            return res.json(JSON.stringify(err));
         }
 
         res.sendStatus(200);
@@ -88,7 +89,7 @@ router.put('/pumps/:id/amount', function (req, res, next) {
     pumpcontrol_service.setPumpAmount(id, amount, function (err) {
         if (err) {
             res.status = 500;
-            res.json(JSON.stringify(err));
+            return res.json(JSON.stringify(err));
         }
         else {
             res.sendStatus(200);
