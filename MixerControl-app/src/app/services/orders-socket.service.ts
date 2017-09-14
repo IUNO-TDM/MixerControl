@@ -6,7 +6,7 @@ import {Observable} from "rxjs/Observable";
 export class OrdersSocket extends Socket {
 
   constructor() {
-    super({ url: 'http://localhost:3000/orders', options: {} });
+    super({ url: window.location.protocol+'//'+window.location.hostname+':'+ window.location.port +'/orders', options: {} });
   }
 
 }
