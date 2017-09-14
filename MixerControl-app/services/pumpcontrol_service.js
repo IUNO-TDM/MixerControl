@@ -376,7 +376,7 @@ pumpcontrol_service.setServiceMode = function (on) {
     const options = buildOptionsForRequest(
         'PUT',
         {},
-        on ? 'true' : false,
+        on ? 'true' : 'false',
         '/service'
     );
 
@@ -389,7 +389,7 @@ pumpcontrol_service.setServicePump = function (pumpNumber, on) {
     const options = buildOptionsForRequest(
         'PUT',
         {},
-        on ? 'true' : false,
+        on ? 'true' : 'false',
         '/service/pumps/' + pumpNumber
     );
 
