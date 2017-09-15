@@ -77,7 +77,7 @@ if (app.get('env') === 'development') {
 } else {
     app.use(function (err, req, res, next) {
         console.error(err.stack);
-        res.status = 500;
+        res.status(500);
         res.send('Something broke!')
     });
 }
