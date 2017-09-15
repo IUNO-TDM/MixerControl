@@ -1,12 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var logger = require('../global/logger');
-var helper = require('../services/helper_service');
-var cache = require('../services/cache_middleware');
+const express = require('express');
+const router = express.Router();
+const logger = require('../global/logger');
+const helper = require('../services/helper_service');
+const cache = require('../services/cache_middleware');
+const config = require('../config/config_loader');
 
 
-
-var jms_connector = require('../connectors/juice_machine_service_connector');
+const pumpControl = require('../services/pumpcontrol_service');
+const juiceMachineService = require('../adapter/juice_machine_service_adapter');
 
 
 
@@ -22,7 +23,10 @@ String.prototype.format = function () {
 };
 
 router.get('/',  function (req, res, next) {
-    jms_connector.getAllRecipes(function (e, recipes) {
+
+    let components = pumpControl.getConfiguredComponents();
+
+    juiceMachineService.getAllRecipes(components, function (e, recipes) {
 
         if (e) {
             logger.crit(e);
@@ -39,21 +43,22 @@ router.get('/',  function (req, res, next) {
 router.get('/:id', function (req, res, next) {
     var recipeId = req.params['id'];
 
-    jms_connector.getRecipeForId(recipeId, function (e, recipe) {
+    juiceMachineService.getRecipeForId(recipeId, function (e, recipe) {
         if (e) {
             logger.crit(e);
             next(e);
             return;
         }
 
+        recipe.retailPrice = config.RETAIL_PRICE;
         res.json(recipe);
     });
 });
 
-router.get('/:id/image', cache(60*60), function (req, res, next) {
+router.get('/:id/image', function (req, res, next) {
     var recipeId = req.params['id'];
 
-    jms_connector.getRecipeImageForId(recipeId, function (err, data) {
+    juiceMachineService.getRecipeImageForId(recipeId, function (err, data) {
         if (err) {
             next(err);
             return;

@@ -2,3 +2,4 @@
 MixerControl-app/public/css/bootstrap
 MixerControl-app/public/css/tether
 MixerControl-app/.node-persist
+.DS_Store

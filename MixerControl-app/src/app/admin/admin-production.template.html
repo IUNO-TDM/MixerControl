@@ -1,0 +1,22 @@
+<p>Production queue state: {{state}}</p>
+<button md-raised-button *ngIf="state == 'waitingOrder' || state == 'waitingStart'" (click)="PauseProduction()">Pause Production</button>
+<button md-raised-button *ngIf="state == 'productionPaused'" (click)="ResumeProduction()">Resume Production</button>
+<button md-raised-button *ngIf="state == 'waitingStart'" (click)="StartProcessing()">Start Processing</button>
+
+<md-table class="productionTable" #table [dataSource]="dataSource">
+  <ng-container mdColumnDef="OrderNr">
+    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">OrderNr.</md-header-cell>
+    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.OrderNr}}</md-cell>
+  </ng-container>
+  <ng-container mdColumnDef="DrinkId">
+    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">DrinkId</md-header-cell>
+    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkId}}</md-cell>
+  </ng-container>
+  <ng-container mdColumnDef="DrinkName">
+    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">DrinkName</md-header-cell>
+    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkName}}</md-cell>
+  </ng-container>
+
+  <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+  <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+</md-table>

@@ -10,7 +10,7 @@ var OrderDB = require('../database/orderDB');
 const async = require('async');
 
 function onOrderNamespaceConnect(socket) {
-    logger.info('a user connected: ' + socket.id);
+    logger.info('[socket_io_controller] a user connected: ' + socket.id);
 
     socket.on('room', function (orderId) {
         socket.join(orderId);
@@ -52,23 +52,23 @@ function onOrderNamespaceConnect(socket) {
 }
 
 function onProductionNamespaceConnect(socket) {
-    logger.info('a user connected: ' + socket.id);
+    logger.info('[socket_io_controller] a user connected: ' + socket.id);
 
     socket.on('room', function (roomId) {
         socket.join(roomId);
 
         if (roomId == "queue") {
-            socket.emit("queueChange", production_queue.getStrippedQueue());
+            socket.emit("queue", production_queue.getStrippedQueue());
         } else if (roomId == "state") {
-            socket.emit("stateChange", production_queue.getState());
+            socket.emit("state", production_queue.getState());
         } else if (roomId == "pumpControlMode") {
-            socket.emit("modeChange", pumpControl_service.getMode());
+            socket.emit("pumpControlMode", pumpControl_service.getMode());
         } else if (roomId == "pumpControlService") {
-            socket.emit("serviceStateChange", pumpControl_service.getServiceState());
+            socket.emit("pumpControlServiceState", pumpControl_service.getServiceState());
         }else if (roomId == "amountWarning") {
             const warnings = pumpControl_service.getAmountWarnings();
             async.each(warnings, function iterate(item,callback){
-                socket.emit("warning",item);
+                socket.emit("amountWarning",item);
             });
 
         }
@@ -119,7 +119,7 @@ function registerPumpControlEvents(orderNamespace) {
 
 function registerOrderStateEvents(orderNamespace) {
     OSM.on("transition", function (data) {
-        logger.info("sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
+        logger.info("[socket_io_controller] sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
         orderNamespace.to(data.client.orderNumber).emit("state", {
             "fromState": data.fromState,
             "toState": data.toState
@@ -140,18 +140,18 @@ function registerOrderDbEvents(orderNamespace) {
 
 function registerProductionEvents(productionNamespace) {
     production_queue.on('state', function (state, topOrder) {
-        productionNamespace.to('state').emit("stateChange", state);
+        productionNamespace.to('state').emit("state", state);
     });
 
     production_queue.on('queueChange', function (queue) {
-        productionNamespace.to('queue').emit("queueChange", queue);
+        productionNamespace.to('queue').emit("queue", queue);
     });
 
     pumpControl_service.on('serviceState', function (state) {
-        productionNamespace.to('pumpControlService').emit("serviceStateChange", state);
+        productionNamespace.to('pumpControlService').emit("pumpControlServiceState", state);
     });
     pumpControl_service.on('pumpControlMode', function (state) {
-        productionNamespace.to('pumpControlMode').emit("modeChange", state);
+        productionNamespace.to('pumpControlMode').emit("pumpControlMode", state);
     });
     pumpControl_service.on('amountWarning', function (warning) {
         productionNamespace.to('amountWarning').emit("warning", warning);

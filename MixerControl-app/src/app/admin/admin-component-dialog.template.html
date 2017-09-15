@@ -1,0 +1,22 @@
+<h2 md-dialog-title>Komponente für Pumpe {{pumpNr}} ändern</h2>
+
+<md-dialog-content>
+  <p>bisher: {{oldComponent.name}}</p>
+
+  <md-select placeholder="Component" name="Neue Komponente wählen" [(ngModel)]="selectedValue">
+    <md-option *ngFor="let component of components" [value]="component.id">{{ component.name }}</md-option>
+  </md-select>
+
+</md-dialog-content>
+
+<md-dialog-actions>
+
+  <button
+    md-raised-button color="primary" md-dialog-close="{{selectedValue}}">akzeptieren
+  </button>
+  <button
+    md-raised-button
+    color="primary" md-dialog-close="">abbrechen
+  </button>
+
+</md-dialog-actions>

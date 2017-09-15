@@ -10,8 +10,8 @@ var OrderDB = require('../database/orderDB');
 var pumpcontrol_service = require('../services/pumpcontrol_service');
 var osm = require('../models/order_state_machine');
 var production_queue = require('../models/production_queue');
-var jms_connector = require('../connectors/juice_machine_service_connector');
-var payment_service = require('../services/payment_service');
+var jms_connector = require('../adapter/juice_machine_service_adapter');
+var payment_service = require('../adapter/payment_service_adapter');
 var cache = require('../services/cache_middleware');
 
 router.post('/', function (req, res, next) {
@@ -26,11 +26,11 @@ router.post('/', function (req, res, next) {
     logger.debug(data);
 
     jms_connector.getRecipeForId(data.drinkId, function (e, recipe) {
-        if(e){
+        if (e) {
             res.sendStatus(500);
-        }else{
+        } else {
             var orderNumber = OrderDB.generateNewOrderNumber();
-            var order = new Order(orderNumber, data.orderName, data.drinkId, recipe);
+            var order = new Order(orderNumber, recipe.title, data.drinkId, recipe);
             OrderDB.addOrder(order);
 
             osm.init(order);
@@ -43,7 +43,7 @@ router.post('/', function (req, res, next) {
     });
 });
 
-router.get('/:id',  function (req, res, next) {
+router.get('/:id', function (req, res, next) {
 
     var orderId = req.params['id'];
     var order = OrderDB.getOrder(orderId);
@@ -70,44 +70,49 @@ router.get('/:id/paymentRequest', function (req, res, next) {
         return;
     }
 
-    if(order.paymentRequest != undefined){
+    if (order.paymentRequest !== undefined) {
         res.send(order.paymentRequest);
-    }else {
+    } else {
         res.sendStatus(404);
     }
-
-    // jms_connector.getOfferForId(order.offerId, function (e, offer) {
-    //     if (!helper.isObject(offer) || !Object.keys(offer).length) {
-    //         res.sendStatus(404);
-    //         return;
-    //     }
-    //
-    //     //TODO: Call the payment service to generate the payment request.
-    //     res.send('bitcoin:n1Q5Tpn5gqD8EwjT3tUsydpSct86eZsRAQ?amount=0.05000000')
-    // });
-
-
 });
 
 
 router.put('/:id/payment', function (req, res, next) {
 
-    var orderId = req.params['id'];
-    var order = OrderDB.getOrder(orderId);
+    const orderId = req.params['id'];
+    const order = OrderDB.getOrder(orderId);
     const invoice = order.invoice;
-    //TODO remove this logging later
-    logger.debug("PaymentString: " + req.body);
 
-    const data = req.body;
-    if (invoice != undefined){
-        if(data != undefined){
-            payment_service.redeemCoupon(invoice,data, function(statusCode){
-                res.sendStatus(statusCode);
+
+    let data = req.body;
+    if (invoice !== undefined) {
+        if (data !== undefined) {
+            if (data.startsWith("http://iuno.axoom.cloud/?")) {
+                data = data.substring(25);
+            }
+
+            payment_service.redeemCoupon(invoice, data, function (err, paymentResponse, data) {
+                if (paymentResponse) {
+                    res.statusMessage = paymentResponse.statusMessage;
+                    res.status(paymentResponse.statusCode);
+                }
+
+                if (data) {
+                    res.json(data);
+                }
+                else if(err) {
+                    res.json(err);
+                }
+                else {
+                    res.sendStatus(500);
+                }
+
             });
-        }else{
+        } else {
             res.sendStatus(400);
         }
-    }else {
+    } else {
         res.sendStatus(400);
     }
 
@@ -140,10 +145,10 @@ router.put('/:id/resume', function (req, res, next) {
     var orderId = req.params['id'];
 
     var order = OrderDB.getOrder(orderId);
-    if(order){
+    if (order) {
         var success = osm.resume(order);
         res.sendStatus(201);
-    }else {
+    } else {
         res.sendStatus(404);
     }
 

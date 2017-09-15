@@ -30,7 +30,11 @@ var server = http.createServer(app);
 
 var io = require('socket.io').listen(app.listen(port));
 var ioController = require('../controller/socket_io_controller')(io);
-
+// setup websocket clients
+app.ws_clients = {
+    license: require('../websocket/license_client'),
+    payment: require('../websocket/payment_client')
+};
 /**
  * Listen on provided port, on all network interfaces.
  */

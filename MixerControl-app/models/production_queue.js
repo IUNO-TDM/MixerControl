@@ -14,15 +14,15 @@ const prog = {
             {
                 "components": [
                     {
-                        "ingredient": "Orangensaft",
+                        "ingredient": "198f1571-4846-4467-967a-00427ab0208d",
+                        "amount": 100
+                    },
+                    {
+                        "ingredient": "f6d361a9-5a6f-42ad-bff7-0913750809e4",
                         "amount": 5
                     },
                     {
-                        "ingredient": "Apfelsaft",
-                        "amount": 5
-                    },
-                    {
-                        "ingredient": "Johannisbeersaft",
+                        "ingredient": "f6d361a9-5a6f-42ad-bff7-0913750809e4",
                         "amount": 5
                     }
                 ],
@@ -92,13 +92,16 @@ var state_machine = new machina.Fsm({
         startProcessing: {
             _onEnter: function () {
                 if(queue[0]){
-                    var p = JSON.parse(queue[0].recipe.program);
-                    p.orderName = queue[0].orderName;
-                    pumpcontrol_service.startProgram(p);
+                    try{
+                        pumpcontrol_service.startProgram(this, queue[0].recipe);
+                    }
+                    catch (err) {
+                        logger.crit(err);
+                        this.transition("errorProcessing");
+                    }
                 } else {
                     this.transition("errorProcessing");
                 }
-
             },
             startedProcessing: "processingOrder",
             errorProcessing: "errorProcessing",
@@ -288,7 +291,9 @@ production_queue.getQueue = function () {
 production_queue.getStrippedQueue = function () {
     var rv = [];
     for (var i = 0; i < queue.length; i++) {
-        rv.push(queue[i].strip());
+        var o = queue[i].strip();
+        o.queuePlace = i;
+        rv.push(o);
     }
     return rv;
 }
