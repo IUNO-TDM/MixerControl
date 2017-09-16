@@ -153,27 +153,32 @@ export class OrderComponent implements OnInit, OnDestroy {
 
 
     this.route.params.subscribe(params => {
-
-
         this.orderProgressConnection = this.ordersSocketService.getUpdates('progress')
-            .subscribe(progress => this.progress = progress['progress']);
+            .subscribe(progress => {
+              if(progress.orderNumber === this.order.orderNumber){
+                this.progress = progress.progress;
+              }
+
+            });
         this.orderStateConnection =
           this.ordersSocketService.getUpdates('state')
             .subscribe(state => {
-              if (state != 'waitingPayment') {
-                if (this.qrDialogRef) {
-                  this.qrDialogRef.close();
+              if(state.orderNumber === this.order.orderNumber){
+                if (state != 'waitingPayment') {
+                  if (this.qrDialogRef) {
+                    this.qrDialogRef.close();
+                  }
+                  if (this.scanDialogRef) {
+                    this.scanDialogRef.close();
+                  }
                 }
-                if (this.scanDialogRef) {
-                  this.scanDialogRef.close();
-                }
+                this.refreshStepCards(state);
+                this.orderState = state
               }
-              this.refreshStepCards(state);
-              return this.orderState = state
+
             });
 
         this.ordersSocketService.joinRoom(params['id']);
-
       }
     );
 
@@ -208,7 +213,7 @@ export class OrderComponent implements OnInit, OnDestroy {
           }
         }
     });
-    this.productionSocketService.getUpdates('queue')
+    this.productionSocketService.joinRoom('queue')
 
   }
 

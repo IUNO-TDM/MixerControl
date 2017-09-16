@@ -36,14 +36,18 @@ function onOrderNamespaceConnect(socket) {
             if (typeof order !== 'undefined') {
 
                 var state = OSM.compositeState(order);
-                socket.emit("state", {"toState": state});
+                socket.emit("state", {"orderNumber": order.orderNumber,"toState": state});
 
                 if (typeof  order.progress !== 'undefined') {
 
-                    socket.emit("progress", {"progress": order.progress})
+                    socket.emit("progress", {"orderNumber": order.orderNumber,"progress": order.progress})
                 }
             }
         }
+    });
+
+    socket.on('leave', function (orderId) {
+      socket.leave(orderId);
     });
 
     socket.on('disconnect', function () {
@@ -75,7 +79,12 @@ function onProductionNamespaceConnect(socket) {
 
     });
 
-    socket.on('disconnect', function () {
+    socket.on('leave', function (roomId) {
+      socket.leave(roomId);
+    });
+
+
+  socket.on('disconnect', function () {
         logger.info('a user disconnected: ' + socket.id);
     });
 }
