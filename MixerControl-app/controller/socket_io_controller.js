@@ -119,7 +119,7 @@ function registerPumpControlEvents(orderNamespace) {
     });
 
     production_queue.on('progress', function (order, progress) {
-        orderNamespace.to(order.orderNumber).emit("progress", {"progress": progress});
+        orderNamespace.to(order.orderNumber).emit("progress", {"orderNumber": order.orderNumber, "progress": progress});
         orderNamespace.to('allOrders').emit("progress", {"orderNumber": order.orderNumber, "progress": progress});
     });
 
@@ -130,8 +130,9 @@ function registerOrderStateEvents(orderNamespace) {
     OSM.on("transition", function (data) {
         logger.info("[socket_io_controller] sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
         orderNamespace.to(data.client.orderNumber).emit("state", {
-            "fromState": data.fromState,
-            "toState": data.toState
+          "orderNumber": data.client.orderNumber,
+          "fromState": data.fromState,
+          "toState": data.toState
         });
         orderNamespace.to('allOrders').emit("state", {
             "orderNumber": data.client.orderNumber,
