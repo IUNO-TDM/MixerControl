@@ -159,6 +159,7 @@ export class OrderComponent implements OnInit, OnDestroy {
                 this.progress = progress.progress;
               }
 
+              return this.progress
             });
         this.orderStateConnection =
           this.ordersSocketService.getUpdates('state')
@@ -173,7 +174,7 @@ export class OrderComponent implements OnInit, OnDestroy {
                   }
                 }
                 this.refreshStepCards(state);
-                this.orderState = state
+                return this.orderState = state
               }
 
             });
