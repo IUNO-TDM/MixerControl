@@ -152,15 +152,26 @@ export class OrderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
 
-    this.route.params.subscribe(params => {
-        this.orderProgressConnection = this.ordersSocketService.getUpdates('progress')
-            .subscribe(progress => {
-              if(progress.orderNumber === this.order.orderNumber){
-                this.progress = progress.progress;
-              }
+    // this.route.params.subscribe(params => {
+    //
+    //   }
+    // );
 
-              return this.progress
-            });
+    var orderObservable = this.route.params.switchMap((params: Params) => Observable.fromPromise(this.orderService.getOrder(params['id'])));
+    // orderObservable;
+    orderObservable.subscribe(order => {
+        console.log(order);
+        this.order = order;
+
+
+        this.orderProgressConnection = this.ordersSocketService.getUpdates('progress')
+          .subscribe(progress => {
+            if(progress.orderNumber === this.order.orderNumber){
+              this.progress = progress.progress;
+            }
+
+            return this.progress
+          });
         this.orderStateConnection =
           this.ordersSocketService.getUpdates('state')
             .subscribe(state => {
@@ -179,15 +190,9 @@ export class OrderComponent implements OnInit, OnDestroy {
 
             });
 
-        this.ordersSocketService.joinRoom(params['id']);
-      }
-    );
+        this.ordersSocketService.joinRoom(this.order.orderNumber);
 
-    var orderObservable = this.route.params.switchMap((params: Params) => Observable.fromPromise(this.orderService.getOrder(params['id'])));
-    // orderObservable;
-    orderObservable.subscribe(order => {
-        console.log(order);
-        this.order = order;
+
         this.drinkService.getDrink(order.drinkId).then(drink => {
           this.drink = drink;
           this.userService.getUser(this.drink.authorId).then(user => this.user = user)
