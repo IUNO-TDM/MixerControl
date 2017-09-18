@@ -152,36 +152,47 @@ export class OrderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
 
-    this.route.params.subscribe(params => {
-
-
-        this.orderProgressConnection = this.ordersSocketService.getUpdates('progress')
-            .subscribe(progress => this.progress = progress['progress']);
-        this.orderStateConnection =
-          this.ordersSocketService.getUpdates('state')
-            .subscribe(state => {
-              if (state != 'waitingPayment') {
-                if (this.qrDialogRef) {
-                  this.qrDialogRef.close();
-                }
-                if (this.scanDialogRef) {
-                  this.scanDialogRef.close();
-                }
-              }
-              this.refreshStepCards(state);
-              return this.orderState = state
-            });
-
-        this.ordersSocketService.joinRoom(params['id']);
-
-      }
-    );
+    // this.route.params.subscribe(params => {
+    //
+    //   }
+    // );
 
     var orderObservable = this.route.params.switchMap((params: Params) => Observable.fromPromise(this.orderService.getOrder(params['id'])));
     // orderObservable;
     orderObservable.subscribe(order => {
         console.log(order);
         this.order = order;
+
+
+        this.orderProgressConnection = this.ordersSocketService.getUpdates('progress')
+          .subscribe(progress => {
+            if(progress.orderNumber === this.order.orderNumber){
+              this.progress = progress.progress;
+            }
+
+            return this.progress
+          });
+        this.orderStateConnection =
+          this.ordersSocketService.getUpdates('state')
+            .subscribe(state => {
+              if(state.orderNumber === this.order.orderNumber){
+                if (state != 'waitingPayment') {
+                  if (this.qrDialogRef) {
+                    this.qrDialogRef.close();
+                  }
+                  if (this.scanDialogRef) {
+                    this.scanDialogRef.close();
+                  }
+                }
+                this.refreshStepCards(state);
+                return this.orderState = state
+              }
+
+            });
+
+        this.ordersSocketService.joinRoom(this.order.orderNumber);
+
+
         this.drinkService.getDrink(order.drinkId).then(drink => {
           this.drink = drink;
           this.userService.getUser(this.drink.authorId).then(user => this.user = user)
@@ -208,7 +219,7 @@ export class OrderComponent implements OnInit, OnDestroy {
           }
         }
     });
-    this.productionSocketService.getUpdates('queue')
+    this.productionSocketService.joinRoom('queue')
 
   }
 

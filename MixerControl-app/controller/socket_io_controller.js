@@ -36,14 +36,18 @@ function onOrderNamespaceConnect(socket) {
             if (typeof order !== 'undefined') {
 
                 var state = OSM.compositeState(order);
-                socket.emit("state", {"toState": state});
+                socket.emit("state", {"orderNumber": order.orderNumber,"toState": state});
 
                 if (typeof  order.progress !== 'undefined') {
 
-                    socket.emit("progress", {"progress": order.progress})
+                    socket.emit("progress", {"orderNumber": order.orderNumber,"progress": order.progress})
                 }
             }
         }
+    });
+
+    socket.on('leave', function (orderId) {
+      socket.leave(orderId);
     });
 
     socket.on('disconnect', function () {
@@ -75,7 +79,12 @@ function onProductionNamespaceConnect(socket) {
 
     });
 
-    socket.on('disconnect', function () {
+    socket.on('leave', function (roomId) {
+      socket.leave(roomId);
+    });
+
+
+  socket.on('disconnect', function () {
         logger.info('a user disconnected: ' + socket.id);
     });
 }
@@ -110,7 +119,7 @@ function registerPumpControlEvents(orderNamespace) {
     });
 
     production_queue.on('progress', function (order, progress) {
-        orderNamespace.to(order.orderNumber).emit("progress", {"progress": progress});
+        orderNamespace.to(order.orderNumber).emit("progress", {"orderNumber": order.orderNumber, "progress": progress});
         orderNamespace.to('allOrders').emit("progress", {"orderNumber": order.orderNumber, "progress": progress});
     });
 
@@ -121,8 +130,9 @@ function registerOrderStateEvents(orderNamespace) {
     OSM.on("transition", function (data) {
         logger.info("[socket_io_controller] sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
         orderNamespace.to(data.client.orderNumber).emit("state", {
-            "fromState": data.fromState,
-            "toState": data.toState
+          "orderNumber": data.client.orderNumber,
+          "fromState": data.fromState,
+          "toState": data.toState
         });
         orderNamespace.to('allOrders').emit("state", {
             "orderNumber": data.client.orderNumber,
