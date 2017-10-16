@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {ComponentService} from "../services/component.service";
 import {Component as ModelComponent} from '../models/Component'
 
@@ -17,8 +17,8 @@ export class AdminAmountDialogComponent implements OnInit {
   amount: number;
   reset = true;
 
-  constructor(public dialogRef: MdDialogRef<AdminAmountDialogComponent>,
-              @Inject(MD_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<AdminAmountDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.pumpNr = data.pumpNr;
     this.oldAmount = data.oldAmount;

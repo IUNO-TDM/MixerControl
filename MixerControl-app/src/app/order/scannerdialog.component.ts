@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MdDialogRef, MD_DIALOG_DATA, MdSnackBar, MdSnackBarConfig} from '@angular/material';
+import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {OrderService} from "../services/order.service";
 import {QrScannerComponent} from 'angular2-qrscanner';
 import {DrinkService} from '../services/drink.service'
@@ -10,9 +10,9 @@ import {Router} from "@angular/router";
   selector: 'scan-dialog',
   template: `
 
-    <h2 md-dialog-title>Den Coupon vor die Kamera halten</h2>
+    <h2 mat-dialog-title>Den Coupon vor die Kamera halten</h2>
 
-    <md-dialog-content>
+    <mat-dialog-content>
       <qr-scanner
         [debug]="false"        
       [canvasWidth]="640"    
@@ -21,15 +21,15 @@ import {Router} from "@angular/router";
       [stopAfterScan]="true" 
       [updateTime]="500"     
       (onRead)="decodedOutput($event)"></qr-scanner>
-    </md-dialog-content>
+    </mat-dialog-content>
 
-    <md-dialog-actions >
+    <mat-dialog-actions >
       <button
-        md-raised-button
+        mat-raised-button
         color="primary"
-        md-dialog-close>schließen</button>
+        mat-dialog-close>schließen</button>
 
-    </md-dialog-actions>
+    </mat-dialog-actions>
   `,
   providers: [OrderService, DrinkService]
 })
@@ -42,11 +42,11 @@ export class ScanDialog implements OnInit{
   private qrScannerComponent: QrScannerComponent;
 
   constructor(
-    public dialogRef: MdDialogRef<ScanDialog>,
-    @Inject(MD_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ScanDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private orderService: OrderService,
     private drinkService: DrinkService,
-    public snackBar: MdSnackBar,
+    public snackBar: MatSnackBar,
     private router: Router) {}
 
   ngOnInit(){
@@ -68,11 +68,11 @@ export class ScanDialog implements OnInit{
           if(this.drink){
             console.log("dfghjkl");
             if(data.coin < this.drink.retailPrice) {
-              let config = new MdSnackBarConfig();
+              let config = new MatSnackBarConfig();
               this.snackBar.open("Der Coupon hat mit " + data.coin / 100000 + " IUNO zu wenig Guthaben", "", {duration: 5000});
               this.qrScannerComponent.startScanning()
             }else{
-              let config = new MdSnackBarConfig();
+              let config = new MatSnackBarConfig();
               this.snackBar.open("Auf dem Coupon verbleibt ein Guthaben von " + (data.coin - this.drink.retailPrice)/ 100000 + " IUNO", "", {duration: 5000});
               this.dialogRef.close();
             }
@@ -86,15 +86,15 @@ export class ScanDialog implements OnInit{
           console.log(resp);
           if(resp.status){
             if(resp.status == 404){
-              let config = new MdSnackBarConfig();
+              let config = new MatSnackBarConfig();
               let snackBarRef = this.snackBar.open("Der Zahlungsauftrag ist im PaymentService nicht vorhanden","Neuer Auftrag",{duration: 5000});
               snackBarRef.onAction().subscribe(()=> this.router.navigateByUrl('/drink/'+this.drink.id));
             }else if(resp.status == 422){
-              let config = new MdSnackBarConfig();
+              let config = new MatSnackBarConfig();
               this.snackBar.open("Ungültiger Coupon","OK",{duration: 5000});
               this.qrScannerComponent.startScanning();
             } else if(resp.status == 409){
-              let config = new MdSnackBarConfig();
+              let config = new MatSnackBarConfig();
               this.snackBar.open("Dieser Coupon wurde bereits für diesen Auftrag eingescannt.","",{duration: 5000});
               this.qrScannerComponent.startScanning();
             }else{

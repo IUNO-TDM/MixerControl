@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {ComponentService} from "../services/component.service";
 import {Component as ModelComponent} from '../models/Component'
 
@@ -16,8 +16,8 @@ export class AdminComponentDialogComponent implements OnInit{
  selectedValue: string;
 
   constructor(
-    public dialogRef: MdDialogRef<AdminComponentDialogComponent>,
-    @Inject(MD_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<AdminComponentDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private componentService: ComponentService,) {
 
     this.pumpNr = data.pumpNr;
