@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {MdDialogRef, MD_DIALOG_DATA} from '@angular/material';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {OrderService} from "../services/order.service";
 
 
@@ -16,8 +16,8 @@ export class QrDialog implements OnInit{
   elementType:  'url' | 'canvas' | 'img' = 'url';
 
   constructor(
-    public dialogRef: MdDialogRef<QrDialog>,
-    @Inject(MD_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<QrDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private orderService: OrderService,) {
 
 
