@@ -8,12 +8,14 @@ const CONFIG = require('../config/config_loader');
 const orderDB = require('../database/orderDB');
 const licenseManager = require('../adapter/license_manager_adapter');
 const juiceMachineService = require('../adapter/juice_machine_service_adapter');
-
+const EventEmitter = require('events').EventEmitter;
+const util = require('util');
 const LicenseService = function () {
     logger.info('[license_client] new instance');
 };
 
 const license_service = new LicenseService();
+util.inherits(LicenseService, EventEmitter);
 
 license_service.socket = io.connect(CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE
         .PROTOCOL + '://' + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
@@ -23,13 +25,17 @@ license_service.socket.on('connect', function () {
     logger.debug("[license_client] Connected to JMS");
 
     license_service.registerUpdates();
+    license_service.emit('connectionState',true);
 });
 license_service.socket.on('connect_error', function (error) {
     logger.debug("[license_client] Connection Error: " + error);
+  license_service.emit('connectionState',false);
 });
 
 license_service.socket.on('disconnect', function () {
     logger.debug("[license_client] Disconnected from JMS");
+    license_service.emit('connectionState',false);
+
 });
 
 license_service.socket.on('updateAvailable', function (data) {
@@ -72,6 +78,11 @@ license_service.unregisterUpdates = function () {
         license_service.socket.emit('leave', hsmId);
     });
 };
+
+license_service.getConnectionStatus = function () {
+  return this.socket.connected;
+}
+
 module.exports = license_service;
 
 
