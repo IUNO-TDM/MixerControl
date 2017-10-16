@@ -2,6 +2,7 @@
 
   <div class="row title">
     <div *ngIf="drink && order" class="left">Auftrag {{order.orderNumber}}: {{drink.title}}</div>
+    <my-internet-connection></my-internet-connection>
     <div class="right">
       <button mat-button (click)="Home()">zurück</button>
     </div>

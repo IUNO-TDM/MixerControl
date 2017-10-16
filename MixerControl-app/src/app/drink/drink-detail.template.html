@@ -3,6 +3,7 @@
 
   <div class="row title">
     <div *ngIf="drink" class="left"> Details: {{drink.title}}</div>
+    <my-internet-connection></my-internet-connection>
     <div class="right">
       <button mat-button (click)="getBack()">zurück</button>
     </div>
