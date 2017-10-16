@@ -40,11 +40,14 @@ import {AdminAmountDialogComponent} from "./admin/admin-amount-dialog.component"
 import {ProductionSocket} from "./services/production-socket.service";
 import {OrdersSocket} from "./services/orders-socket.service";
 import {SocketIoModule} from "ng-socket-io/socket-io.module";
+import {InternetConnectionComponent} from "./general/internetconnection.component";
+import {InternetConnectionSocket} from "./services/internetconnection-socket.service";
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    InternetConnectionComponent,
     routedComponents,
     PaymentComponent,
     QrDialog,
@@ -84,7 +87,7 @@ import {SocketIoModule} from "ng-socket-io/socket-io.module";
     MatSnackBarModule,
     SocketIoModule
   ],
-  providers: [ProductionSocket, OrdersSocket],
+  providers: [ProductionSocket, OrdersSocket, InternetConnectionSocket],
   bootstrap: [AppComponent],
   entryComponents: [QrDialog, ScanDialog, AdminComponentDialogComponent, AdminAmountDialogComponent]
 })

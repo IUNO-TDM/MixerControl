@@ -8,6 +8,7 @@ var production_queue = require('../models/production_queue');
 var OSM = require('../models/order_state_machine');
 var OrderDB = require('../database/orderDB');
 const async = require('async');
+var licenseService = require('../websocket/license_client');
 
 function onOrderNamespaceConnect(socket) {
     logger.info('[socket_io_controller] a user connected: ' + socket.id);
@@ -169,6 +170,34 @@ function registerProductionEvents(productionNamespace) {
 
 }
 
+function registerInternetConnectionEvents(connectionNamespace){
+  licenseService.on('connectionState', function (state) {
+    connectionNamespace.to('connectionState').emit('connectionState',state);
+  });
+}
+
+function onInternetConnectionNamespaceConnect(socket) {
+  logger.info('[socket_io_controller] a user connected: ' + socket.id);
+
+  socket.on('room', function (roomId) {
+    socket.join(roomId);
+
+    if (roomId == "connectionState") {
+      socket.emit("connectionState", licenseService.getConnectionStatus());
+    }
+
+  });
+
+  socket.on('leave', function (roomId) {
+    socket.leave(roomId);
+  });
+
+
+  socket.on('disconnect', function () {
+    logger.info('a user disconnected: ' + socket.id);
+  });
+}
+
 module.exports = function (io) {
     var orderNamespace = io.of('/orders');
     orderNamespace.on('connection', onOrderNamespaceConnect);
@@ -180,5 +209,10 @@ module.exports = function (io) {
     var productionNamespace = io.of('/production');
     productionNamespace.on('connection', onProductionNamespaceConnect);
     registerProductionEvents(productionNamespace);
+
+
+    var connectionNameSpace = io.of('/connectionState');
+    connectionNameSpace.on('connection',onInternetConnectionNamespaceConnect);
+    registerInternetConnectionEvents(connectionNameSpace);
 
 };
