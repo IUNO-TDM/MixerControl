@@ -88,7 +88,7 @@ router.put('/:id/payment', function (req, res, next) {
     let data = req.body;
     if (invoice !== undefined) {
         if (data !== undefined) {
-            if (data.startsWith("http://iuno.axoom.cloud/?")) {
+            if (data.startsWith("http://iuno.axoom.cloud/?") || data.startsWith("http://iuno.axoom.cloud/#")) {
                 data = data.substring(25);
             }
 
