@@ -1,33 +1,35 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {Drink} from '../models/Drink'
 import {DrinkService} from '../services/drink.service'
 import {UserService} from '../services/user.service'
-import {User} from "../models/User";
+import {ComponentService} from "../services/component.service";
+import *  as models from "../models/models";
 
 @Component({
   moduleId: module.id,
   selector: 'my-drinkList',
   templateUrl: 'drink-list.template.html',
-  providers: [DrinkService, UserService],
+  providers: [DrinkService, UserService, ComponentService],
   styleUrls: ['./drink-list.component.css'],
 })
 
 
 export class DrinkListComponent implements OnInit {
-  drinks: Drink[] = [];
-  users: User[] = [];
+  drinks: models.Drink[] = [];
+  users: models.User[] = [];
   error: any;
   gridcols: any = 2;
+  components: models.Component[] = [];
 
   constructor(
+    private componentService: ComponentService,
     private router: Router,
     private drinkService: DrinkService,
     private userService: UserService
   ) { }
   refreshUsers(): void{
-    let loadingUser = new User();
+    let loadingUser = new models.User();
     loadingUser.firstname = "User";
     loadingUser.lastname = "Loading";
     for(let drink of this.drinks){
@@ -54,9 +56,12 @@ export class DrinkListComponent implements OnInit {
       this.router.navigateByUrl("/");
   }
 
+
+
   ngOnInit(): void{
     this.getDrinks();
     this.resize(window.innerWidth);
+    this.componentService.getComponents().then(components => this.components = components);
   }
 
   resize(width) {

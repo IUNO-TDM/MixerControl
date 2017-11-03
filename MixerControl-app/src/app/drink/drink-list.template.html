@@ -5,9 +5,15 @@
     <my-internet-connection></my-internet-connection>
     <div class="right">Anzahl an Drinks: {{drinks.length}}</div>
   </div>
+  <mat-select placeholder="Kann Zutaten" multiple="true">
+    <mat-option *ngFor="let comp of components" [value]="comp.id">{{comp.name}}</mat-option>
+  </mat-select>
+  <mat-select placeholder="Muss Zutaten" multiple="true">
+    <mat-option *ngFor="let comp of components" [value]="comp.id">{{comp.name}}</mat-option>
+  </mat-select>
 
   <mat-grid-list class="drinklistgrid" cols="{{gridcols}}" row-height="1:1" gutterSize="1rem">
-    <mat-grid-tile [routerLink]="['/drinks', drink.id]"  *ngFor="let drink of drinks" style="background-color: #FBFBFB" >
+    <mat-grid-tile [routerLink]="['/drinks', drink.id]"  *ngFor="let drink of drinks | drinkFilter:{}" style="background-color: #FBFBFB" >
       <div class="drinkTileContent">
         <img mat-card-image class="drinkImg" src="/api/drinks/{{drink.id}}/image">
         <div class="components">
