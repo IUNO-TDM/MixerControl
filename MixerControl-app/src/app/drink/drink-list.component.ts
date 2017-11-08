@@ -21,6 +21,7 @@ export class DrinkListComponent implements OnInit {
   error: any;
   gridcols: any = 2;
   components: models.Component[] = [];
+  filterComponents: any;
 
   constructor(
     private componentService: ComponentService,
