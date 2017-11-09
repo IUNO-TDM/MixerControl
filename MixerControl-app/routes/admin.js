@@ -28,7 +28,7 @@ router.post('/production/resume', function (req, res, next) {
 router.get('/pumps', function (req, res, next) {
 
     jms_connector.getAllComponents(function (e, components) {
-        if (!e) {
+        if (!e && components) {
             var componentNameForId = function(components,id){
                 for(var i = 0 ; i < components.length; i++)
                 {

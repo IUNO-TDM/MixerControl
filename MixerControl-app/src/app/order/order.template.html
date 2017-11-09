@@ -2,124 +2,125 @@
 
   <div class="row title">
     <div *ngIf="drink && order" class="left">Auftrag {{order.orderNumber}}: {{drink.title}}</div>
+    <my-internet-connection></my-internet-connection>
     <div class="right">
-      <button md-button (click)="Home()">zurück</button>
+      <button mat-button (click)="Home()">zurück</button>
     </div>
   </div>
   <div class="orderStateContainer">
     <div class="stepIcons">
-      <md-grid-list cols="11" row-height="1:1" gutterSize="1rem">
-        <md-grid-tile class="order" colspan="2" rowspan="2">
+      <mat-grid-list cols="11" row-height="1:1" gutterSize="1rem">
+        <mat-grid-tile class="order" colspan="2" rowspan="2">
           <div class="stepIconTileContent">
             <img src="./assets/lnr-marketplace.svg">
           </div>
 
-        </md-grid-tile>
-        <md-grid-tile class="arrow" colspan="1" rowspan="2">
+        </mat-grid-tile>
+        <mat-grid-tile class="arrow" colspan="1" rowspan="2">
 
-        </md-grid-tile>
-        <md-grid-tile class="payment" colspan="2" rowspan="2">
+        </mat-grid-tile>
+        <mat-grid-tile class="payment" colspan="2" rowspan="2">
           <div class="stepIconTileContent">
             <img src="./assets/lnr-money.svg">
           </div>
-        </md-grid-tile>
-        <md-grid-tile class="arrow" colspan="1" rowspan="2">
+        </mat-grid-tile>
+        <mat-grid-tile class="arrow" colspan="1" rowspan="2">
 
-        </md-grid-tile>
-        <md-grid-tile class="license" colspan="2" rowspan="2">
+        </mat-grid-tile>
+        <mat-grid-tile class="license" colspan="2" rowspan="2">
           <div class="stepIconTileContent">
             <img src="./assets/lnr-license.svg">
           </div>
-        </md-grid-tile>
-        <md-grid-tile class="arrow" colspan="1" rowspan="2">
+        </mat-grid-tile>
+        <mat-grid-tile class="arrow" colspan="1" rowspan="2">
 
-        </md-grid-tile>
-        <md-grid-tile class="production" colspan="2" rowspan="2">
+        </mat-grid-tile>
+        <mat-grid-tile class="production" colspan="2" rowspan="2">
           <div class="stepIconTileContent">
             <img src="./assets/lnr-coffee-cup.svg">
           </div>
-        </md-grid-tile>
-      </md-grid-list>
+        </mat-grid-tile>
+      </mat-grid-list>
     </div>
 
     <div *ngIf="orderState" class="orderStateDetails" [ngSwitch]="orderState.toState">
       <div class="orderSteps" *ngSwitchCase="'waitingOffer'">
-        <md-card class="orderStepsCard">
-          <!--<md-card-content>-->
-          <md-card-content>
+        <mat-card class="orderStepsCard">
+          <!--<mat-card-content>-->
+          <mat-card-content>
             <div class="orderStepsListContainer">
-              <md-list class="orderStepsList">
-                <md-list-item>
-                  <md-icon md-list-icon>play_arrow</md-icon>
-                  <p md-line>Lizenzkauf wird initiiert</p>
-                </md-list-item>
-                <md-list-item>
-                  <!--<md-icon md-list-icon>done</md-icon>-->
-                  <p md-line>Getränk bezahlen</p>
-                </md-list-item>
-                <md-list-item>
-                  <!--<md-icon md-list-icon>done</md-icon>-->
-                  <p md-line>Lizenzgebühr bezahlen</p>
-                </md-list-item>
-                <md-list-item>
-                  <!--<md-icon md-list-icon>done</md-icon>-->
-                  <p md-line>Lizenz vom Marktplatz laden</p>
-                </md-list-item>
-                <md-list-item>
-                  <!--<md-icon md-list-icon>done</md-icon>-->
-                  <p md-line>Getränk zubereiten</p>
-                </md-list-item>
+              <mat-list class="orderStepsList">
+                <mat-list-item>
+                  <mat-icon mat-list-icon>play_arrow</mat-icon>
+                  <p mat-line>Lizenzkauf wird initiiert</p>
+                </mat-list-item>
+                <mat-list-item>
+                  <!--<mat-icon mat-list-icon>done</mat-icon>-->
+                  <p mat-line>Getränk bezahlen</p>
+                </mat-list-item>
+                <mat-list-item>
+                  <!--<mat-icon mat-list-icon>done</mat-icon>-->
+                  <p mat-line>Lizenzgebühr bezahlen</p>
+                </mat-list-item>
+                <mat-list-item>
+                  <!--<mat-icon mat-list-icon>done</mat-icon>-->
+                  <p mat-line>Lizenz vom Marktplatz laden</p>
+                </mat-list-item>
+                <mat-list-item>
+                  <!--<mat-icon mat-list-icon>done</mat-icon>-->
+                  <p mat-line>Getränk zubereiten</p>
+                </mat-list-item>
 
-              </md-list>
+              </mat-list>
             </div>
-          </md-card-content>
+          </mat-card-content>
 
-        </md-card>
+        </mat-card>
       </div>
       <div class="orderSteps" *ngSwitchCase="'waitingPayment'">
         <div class="orderStepsFrame">
-          <md-card class="orderTableCard">
-            <md-card-header>Rechnung</md-card-header>
-            <md-card-content class="orderTableContainer">
-              <md-table class="orderTable" #table [dataSource]="dataSource">
-                <ng-container mdColumnDef="Pos">
-                  <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'"> Pos</md-header-cell>
-                  <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Pos}}</md-cell>
+          <mat-card class="orderTableCard">
+            <mat-card-header>Rechnung</mat-card-header>
+            <mat-card-content class="orderTableContainer">
+              <mat-table class="orderTable" #table [dataSource]="dataSource">
+                <ng-container matColumnDef="Pos">
+                  <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'"> Pos</mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Pos}}</mat-cell>
                 </ng-container>
-                <ng-container mdColumnDef="Menge">
-                  <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'"> Menge</md-header-cell>
-                  <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Menge}}</md-cell>
+                <ng-container matColumnDef="Menge">
+                  <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'"> Menge</mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Menge}}</mat-cell>
                 </ng-container>
-                <ng-container mdColumnDef="Artikel">
-                  <md-header-cell *mdHeaderCellDef [ngClass]="'titleWidthClass'"> Artikel</md-header-cell>
-                  <md-cell *mdCellDef="let row" [ngClass]="'titleWidthClass'"> {{row.Artikel}}</md-cell>
+                <ng-container matColumnDef="Artikel">
+                  <mat-header-cell *matHeaderCellDef [ngClass]="'titleWidthClass'"> Artikel</mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'titleWidthClass'"> {{row.Artikel}}</mat-cell>
                 </ng-container>
-                <ng-container mdColumnDef="UnterPosPreis">
-                  <md-header-cell *mdHeaderCellDef [ngClass]="'priceWidthClass'"></md-header-cell>
-                  <md-cell *mdCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.UnterPosPreis}}</md-cell>
+                <ng-container matColumnDef="UnterPosPreis">
+                  <mat-header-cell *matHeaderCellDef [ngClass]="'priceWidthClass'"></mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.UnterPosPreis}}</mat-cell>
                 </ng-container>
-                <ng-container mdColumnDef="Preis">
-                  <md-header-cell *mdHeaderCellDef [ngClass]="'priceWidthClass'"> Preis</md-header-cell>
-                  <md-cell *mdCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Preis}}</md-cell>
-                </ng-container>
-
-                <ng-container mdColumnDef="Gesamt">
-                  <md-header-cell *mdHeaderCellDef [ngClass]="'priceWidthClass'"> Gesamt</md-header-cell>
-                  <md-cell *mdCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Gesamt}}</md-cell>
+                <ng-container matColumnDef="Preis">
+                  <mat-header-cell *matHeaderCellDef [ngClass]="'priceWidthClass'"> Preis</mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Preis}}</mat-cell>
                 </ng-container>
 
-                <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-                <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
-              </md-table>
-            </md-card-content>
+                <ng-container matColumnDef="Gesamt">
+                  <mat-header-cell *matHeaderCellDef [ngClass]="'priceWidthClass'"> Gesamt</mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Gesamt}}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+            </mat-card-content>
             <div class="sumPrice" *ngIf="drink">zu bezahlen: {{drink.retailPrice / 100000}} IUNO</div>
-            <md-card-actions>
+            <mat-card-actions>
               <div class="buttonHorizontalCenter">
-                <button md-raised-button color="primary" (click)="ShowPaymentModalQR()">Wallet App</button>
-                <button md-raised-button color="primary" (click)="ShowPaymentModalScan()">Coupon scannen</button>
+                <button mat-raised-button color="primary" (click)="ShowPaymentModalQR()">Wallet App</button>
+                <button mat-raised-button color="primary" (click)="ShowPaymentModalScan()">Coupon scannen</button>
               </div>
-            </md-card-actions>
-          </md-card>
+            </mat-card-actions>
+          </mat-card>
 
         </div>
 
@@ -127,267 +128,267 @@
 
       <div class="orderSteps" *ngSwitchCase="'waitingLicenseAvailable'">
         <div class="orderStepsFrame">
-          <md-card class="orderStepsCard">
-            <md-card-content>
+          <mat-card class="orderStepsCard">
+            <mat-card-content>
               <div class="orderStepsListContainer">
-                <md-list class="orderStepsList">
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzkauf getätigt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Getränk bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>play_arrow</md-icon>
-                    <p md-line>Lizenzgebühr wird bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <!--<md-icon md-list-icon>done</md-icon>-->
-                    <p md-line>Lizenz vom Marktplatz laden</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <!--<md-icon md-list-icon>done</md-icon>-->
-                    <p md-line>Getränk zubereiten</p>
-                  </md-list-item>
+                <mat-list class="orderStepsList">
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzkauf getätigt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Getränk bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>play_arrow</mat-icon>
+                    <p mat-line>Lizenzgebühr wird bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <!--<mat-icon mat-list-icon>done</mat-icon>-->
+                    <p mat-line>Lizenz vom Marktplatz laden</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <!--<mat-icon mat-list-icon>done</mat-icon>-->
+                    <p mat-line>Getränk zubereiten</p>
+                  </mat-list-item>
 
-                </md-list>
+                </mat-list>
               </div>
-            </md-card-content>
-          </md-card>
+            </mat-card-content>
+          </mat-card>
 
         </div>
       </div>
 
       <div class="orderSteps" *ngSwitchCase="'waitingLicense'">
         <div class="orderStepsFrame">
-          <md-card class="orderStepsCard">
-            <md-card-content>
+          <mat-card class="orderStepsCard">
+            <mat-card-content>
               <div class="orderStepsListContainer">
-                <md-list class="orderStepsList">
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzkauf getätigt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Getränk bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzgebühr bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>play_arrow</md-icon>
-                    <p md-line>Lizenz vom Marktplatz laden</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <!--<md-icon md-list-icon>done</md-icon>-->
-                    <p md-line>Getränk zubereiten</p>
-                  </md-list-item>
-                </md-list>
+                <mat-list class="orderStepsList">
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzkauf getätigt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Getränk bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzgebühr bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>play_arrow</mat-icon>
+                    <p mat-line>Lizenz vom Marktplatz laden</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <!--<mat-icon mat-list-icon>done</mat-icon>-->
+                    <p mat-line>Getränk zubereiten</p>
+                  </mat-list-item>
+                </mat-list>
               </div>
-            </md-card-content>
-          </md-card>
+            </mat-card-content>
+          </mat-card>
         </div>
       </div>
       <div class="orderSteps" *ngSwitchCase="'waitForProduction'">
         <div class="orderStepsFrame">
-          <md-card class="orderStepsCard">
-            <md-card-content>
+          <mat-card class="orderStepsCard">
+            <mat-card-content>
               <div class="orderStepsListContainer">
-                <md-list class="orderStepsList">
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzkauf getätigt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Getränk bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzgebühr bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenz eingespielt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>pause</md-icon>
-                    <p md-line>Getränk zubereiten</p>
-                  </md-list-item>
-                </md-list>
+                <mat-list class="orderStepsList">
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzkauf getätigt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Getränk bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzgebühr bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenz eingespielt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>pause</mat-icon>
+                    <p mat-line>Getränk zubereiten</p>
+                  </mat-list-item>
+                </mat-list>
               </div>
               <p *ngIf="queuePlace>0"> Auftrag in Warteschlangenposition {{queuePlace}}</p>
               <p *ngIf="queuePlace==0"> Servicemodus aktiv. Ihr Auftrag ist der nächste.</p>
               <p *ngIf="queuePlace<0"> Auftrag in der Warteschlange</p>
-            </md-card-content>
-          </md-card>
+            </mat-card-content>
+          </mat-card>
         </div>
       </div>
       <div class="orderSteps" *ngSwitchCase="'readyForProduction'">
         <div class="orderStepsFrame">
-          <md-card class="orderStepsCard">
-            <md-card-content>
+          <mat-card class="orderStepsCard">
+            <mat-card-content>
               <div class="orderStepsListContainer">
-                <md-list class="orderStepsList">
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzkauf getätigt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Getränk bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzgebühr bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenz eingespielt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>play_circle_outline</md-icon>
-                    <p md-line>Getränk kann zubereitet werden</p>
-                  </md-list-item>
-                </md-list>
+                <mat-list class="orderStepsList">
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzkauf getätigt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Getränk bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzgebühr bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenz eingespielt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>play_circle_outline</mat-icon>
+                    <p mat-line>Getränk kann zubereitet werden</p>
+                  </mat-list-item>
+                </mat-list>
               </div>
-            </md-card-content>
-            <md-card-actions>
-              <button md-raised-button color="primary" (click)="ProductionStart()">Getränk zubereiten</button>
-            </md-card-actions>
-          </md-card>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" (click)="ProductionStart()">Getränk zubereiten</button>
+            </mat-card-actions>
+          </mat-card>
         </div>
       </div>
       <div class="orderSteps" *ngSwitchCase="'startProduction'">
         <div class="orderStepsFrame">
-          <md-card class="orderStepsCard">
-            <md-card-content>
+          <mat-card class="orderStepsCard">
+            <mat-card-content>
               <div class="orderStepsListContainer">
-                <md-list class="orderStepsList">
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzkauf getätigt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Getränk bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzgebühr bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenz eingespielt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>play_arrow</md-icon>
-                    <p md-line>Getränk wird zubereitet</p>
-                  </md-list-item>
-                </md-list>
+                <mat-list class="orderStepsList">
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzkauf getätigt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Getränk bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzgebühr bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenz eingespielt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>play_arrow</mat-icon>
+                    <p mat-line>Getränk wird zubereitet</p>
+                  </mat-list-item>
+                </mat-list>
               </div>
-            </md-card-content>
-          </md-card>
+            </mat-card-content>
+          </mat-card>
         </div>
       </div>
       <div class="orderSteps" *ngSwitchCase="'inProduction'">
         <div class="orderStepsFrame">
-          <md-card class="orderStepsCard">
-            <md-card-content>
+          <mat-card class="orderStepsCard">
+            <mat-card-content>
               <div class="orderStepsListContainer">
-                <md-list class="orderStepsList">
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzkauf getätigt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Getränk bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzgebühr bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenz eingespielt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>play_arrow</md-icon>
-                    <p md-line>Getränk wird zubereitet</p>
-                  </md-list-item>
-                </md-list>
+                <mat-list class="orderStepsList">
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzkauf getätigt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Getränk bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzgebühr bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenz eingespielt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>play_arrow</mat-icon>
+                    <p mat-line>Getränk wird zubereitet</p>
+                  </mat-list-item>
+                </mat-list>
               </div>
-            </md-card-content>
-            <md-card-actions>
-              <md-progress-bar value="{{progress}}"></md-progress-bar>
-            </md-card-actions>
-          </md-card>
+            </mat-card-content>
+            <mat-card-actions>
+              <mat-progress-bar value="{{progress}}"></mat-progress-bar>
+            </mat-card-actions>
+          </mat-card>
         </div>
       </div>
       <div class="orderSteps" *ngSwitchCase="'productionFinished'">
         <div class="orderStepsFrame">
-          <md-card class="orderStepsCard">
-            <md-card-content>
+          <mat-card class="orderStepsCard">
+            <mat-card-content>
               <div class="orderStepsListContainer">
-                <md-list class="orderStepsList">
-                  <md-list-item>
-                    <md-icon md-list-icon="">done</md-icon>
-                    <p md-line>Lizenzkauf getätigt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Getränk bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenzgebühr bezahlt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Lizenz eingespielt</p>
-                  </md-list-item>
-                  <md-list-item>
-                    <md-icon md-list-icon>done</md-icon>
-                    <p md-line>Getränk zubereitet</p>
-                  </md-list-item>
+                <mat-list class="orderStepsList">
+                  <mat-list-item>
+                    <mat-icon mat-list-icon="">done</mat-icon>
+                    <p mat-line>Lizenzkauf getätigt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Getränk bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenzgebühr bezahlt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Lizenz eingespielt</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>done</mat-icon>
+                    <p mat-line>Getränk zubereitet</p>
+                  </mat-list-item>
 
-                </md-list>
+                </mat-list>
               </div>
-            </md-card-content>
-            <md-card-actions>
-              <button md-raised-button color="primary" (click)="Home()">Neues Getränk bestellen</button>
-            </md-card-actions>
-          </md-card>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" (click)="Home()">Neues Getränk bestellen</button>
+            </mat-card-actions>
+          </mat-card>
         </div>
       </div>
       <div class="orderSteps" *ngSwitchCase="'error'">
         <div class="orderStepsFrame">
-          <md-card class="orderStepsCard">
-            <!--<md-card-content>-->
-            <md-grid-list cols="5" row-height="5:1">
+          <mat-card class="orderStepsCard">
+            <!--<mat-card-content>-->
+            <mat-grid-list cols="5" row-height="5:1">
 
-              <md-grid-tile>
-              </md-grid-tile>
-              <md-grid-tile colspan="4">
+              <mat-grid-tile>
+              </mat-grid-tile>
+              <mat-grid-tile colspan="4">
                 <div class="step production">Leider gab es einen Fehler</div>
-              </md-grid-tile>
-            </md-grid-list>
+              </mat-grid-tile>
+            </mat-grid-list>
             <p>Bitte melden Sie sich beim Standpersonal.</p>
-            <!--</md-card-content>-->
-          </md-card>
+            <!--</mat-card-content>-->
+          </mat-card>
         </div>
       </div>
       <div class="orderSteps" *ngSwitchDefault>
-        <md-card class="orderStepsCard">
-          <md-card-content>
+        <mat-card class="orderStepsCard">
+          <mat-card-content>
 
-          </md-card-content>
-        </md-card>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
 
