@@ -10,6 +10,7 @@ const licenseManager = require('../adapter/license_manager_adapter');
 const juiceMachineService = require('../adapter/juice_machine_service_adapter');
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
+const authServer = require('../adapter/auth_service_adapter');
 const LicenseService = function () {
     logger.info('[license_client] new instance');
 };
@@ -17,75 +18,83 @@ const LicenseService = function () {
 const license_service = new LicenseService();
 util.inherits(LicenseService, EventEmitter);
 
-license_service.socket = io.connect(CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE
-        .PROTOCOL + '://' + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
-    + ":" + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT + "/licenses");
 
-license_service.socket.on('connect', function () {
-    logger.debug("[license_client] Connected to JMS");
+authServer.getAccessToken(function (err, token) {
 
-    license_service.registerUpdates();
-    license_service.emit('connectionState',true);
-});
-license_service.socket.on('connect_error', function (error) {
-    logger.debug("[license_client] Connection Error: " + error);
-  license_service.emit('connectionState',false);
-});
-
-license_service.socket.on('disconnect', function () {
-    logger.debug("[license_client] Disconnected from JMS");
-    license_service.emit('connectionState',false);
-
-});
-
-license_service.socket.on('updateAvailable', function (data) {
-    logger.debug("[license_client] License update available for " + JSON.stringify(data));
-    const orderStateMachine = require('../models/order_state_machine');
-
-    if (data) {
-        const order = orderDB.getOrderByOfferId(data.offerId);
-        if (!order) {
-            return;
-        }
-        orderStateMachine.licenseAvailable(order);
-        if (order) {
-            updateCMDongle(data.hsmId, function (err) {
-                if (err) {
-                    orderStateMachine.error(order)
-                }
-
-                orderStateMachine.licenseArrived(order);
-            });
-
-        }
+    if (err) {
+        logger.crit(err);
     }
+
+    license_service.socket = io(CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE
+            .PROTOCOL + '://' + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
+        + ":" + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT + "/licenses", {
+        extraHeaders: {
+            Authorization: 'Bearer ' + (token ? token.accessToken : '')
+        }
+    });
+
+    license_service.socket.on('connect', function () {
+        logger.debug("[license_client] Connected to JMS");
+
+        license_service.registerUpdates();
+        license_service.emit('connectionState', true);
+    });
+    license_service.socket.on('connect_error', function (error) {
+        logger.debug("[license_client] Connection Error: " + error);
+        license_service.emit('connectionState', false);
+    });
+
+    license_service.socket.on('disconnect', function () {
+        logger.debug("[license_client] Disconnected from JMS");
+        license_service.emit('connectionState', false);
+
+    });
+
+    license_service.socket.on('updateAvailable', function (data) {
+        logger.debug("[license_client] License update available for " + JSON.stringify(data));
+        const orderStateMachine = require('../models/order_state_machine');
+
+        if (data) {
+            const order = orderDB.getOrderByOfferId(data.offerId);
+            if (!order) {
+                return;
+            }
+            orderStateMachine.licenseAvailable(order);
+            if (order) {
+                updateCMDongle(data.hsmId, function (err) {
+                    if (err) {
+                        orderStateMachine.error(order)
+                    }
+
+                    orderStateMachine.licenseArrived(order);
+                });
+
+            }
+        }
+    });
+
+    license_service.registerUpdates = function () {
+        licenseManager.getHsmId(function (err, hsmId) {
+            if (err || !hsmId) {
+                logger.warn('[license_client] Could not register for license updates! Missing HSM ID');
+            }
+            license_service.socket.emit('room', hsmId);
+        });
+    };
+
+    license_service.unregisterUpdates = function () {
+        licenseManager.getHsmId(function (err, hsmId) {
+            if (err || !hsmId) {
+                logger.warn('[license_client] Could not unregister for license updates! Missing HSM ID');
+            }
+            license_service.socket.emit('leave', hsmId);
+        });
+    };
+
+    license_service.getConnectionStatus = function () {
+        return this.socket.connected;
+    };
 });
-
-license_service.registerUpdates = function () {
-    licenseManager.getHsmId(function(err, hsmId) {
-        if (err || !hsmId) {
-            logger.warn('[license_client] Could not register for license updates! Missing HSM ID');
-        }
-        license_service.socket.emit('room', hsmId);
-    });
-};
-
-license_service.unregisterUpdates = function () {
-    licenseManager.getHsmId(function(err, hsmId) {
-        if (err || !hsmId) {
-            logger.warn('[license_client] Could not unregister for license updates! Missing HSM ID');
-        }
-        license_service.socket.emit('leave', hsmId);
-    });
-};
-
-license_service.getConnectionStatus = function () {
-  return this.socket.connected;
-}
-
-module.exports = license_service;
-
-
 
 function updateCMDongle(hsmId, callback) {
     if (license_service.isUpdating) {
@@ -156,3 +165,6 @@ function updateCMDongle(hsmId, callback) {
         });
     });
 }
+
+
+module.exports = license_service;
