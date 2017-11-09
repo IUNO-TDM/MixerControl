@@ -127,3 +127,11 @@ header .projectTitle {
   /* Support for IE. */
   font-feature-settings: 'liga';
 }
+
+.mat-select-panel{
+  max-height:512px !important;
+}
+
+.mat-expansion-panel-header{
+  max-height: 40px !important;
+}
