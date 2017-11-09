@@ -20,7 +20,7 @@ import {
   MatProgressSpinnerModule,
   MatProgressBarModule,
   MatIconModule,
-  MatListModule, MatTabsModule, MatSelectModule, MatSliderModule, MatSnackBarModule,
+  MatListModule, MatTabsModule, MatSelectModule, MatSliderModule, MatSnackBarModule, MatExpansionModule, MatChipsModule,
 } from '@angular/material';
 import 'hammerjs';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -42,6 +42,7 @@ import {OrdersSocket} from "./services/orders-socket.service";
 import {SocketIoModule} from "ng-socket-io/socket-io.module";
 import {InternetConnectionComponent} from "./general/internetconnection.component";
 import {InternetConnectionSocket} from "./services/internetconnection-socket.service";
+import {DrinkFilterPipe} from "./drink/drink-filter-pipe";
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import {InternetConnectionSocket} from "./services/internetconnection-socket.ser
     AdminProductionComponent,
     AdminServiceComponent,
     AdminComponentDialogComponent,
-    AdminAmountDialogComponent
+    AdminAmountDialogComponent,
+    DrinkFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -85,7 +87,9 @@ import {InternetConnectionSocket} from "./services/internetconnection-socket.ser
     MatSelectModule,
     MatSliderModule,
     MatSnackBarModule,
-    SocketIoModule
+    SocketIoModule,
+    MatExpansionModule,
+    MatChipsModule
   ],
   providers: [ProductionSocket, OrdersSocket, InternetConnectionSocket],
   bootstrap: [AppComponent],
