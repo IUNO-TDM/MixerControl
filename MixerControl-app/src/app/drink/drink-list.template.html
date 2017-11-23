@@ -1,24 +1,41 @@
 <div class="container">
 
   <div class="row title">
-    <div class="left">Verfügbare Cocktails</div>
-    <div class="right">Anzahl an Drinks: {{drinks.length}}</div>
+    <div class="left">Verfügbare Cocktails: {{drinks.length}}</div>
+
+
+
+    <my-internet-connection></my-internet-connection>
+
+    <mat-expansion-panel class="right">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Filter</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field>
+        <mat-select placeholder="Nur Cocktails mit:" multiple [(ngModel)]="filterComponents"
+                    mat-container-class="mySelect">
+          <mat-option *ngFor="let comp of components" [value]="comp.id">{{comp.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-expansion-panel>
   </div>
 
-  <md-grid-list class="drinklistgrid" cols="{{gridcols}}" row-height="1:1" gutterSize="1rem">
-    <md-grid-tile [routerLink]="['/drinks', drink.id]"  *ngFor="let drink of drinks" style="background-color: #FBFBFB" >
+
+  <mat-grid-list class="drinklistgrid" cols="{{gridcols}}" row-height="1:1" gutterSize="1rem">
+    <mat-grid-tile [routerLink]="['/drinks', drink.id]" *ngFor="let drink of drinks | drinkFilter:filterComponents"
+                   style="background-color: #FBFBFB">
       <div class="drinkTileContent">
-        <img md-card-image class="drinkImg" src="/api/drinks/{{drink.id}}/image">
-        <div class="components">
-          <!--<p>Beinhaltet:</p>-->
-          <ul class="componentsList" >
-            <li class="componentsLi" *ngFor="let component of drink.components">{{component.name}}</li>
-          </ul>
-        </div>
+        <img mat-card-image class="drinkImg" src="/api/drinks/{{drink.id}}/image">
+        <!--<div class="components">-->
+        <!--&lt;!&ndash;<p>Beinhaltet:</p>&ndash;&gt;-->
+        <!--<ul class="componentsList" >-->
+        <!--<li class="componentsLi" *ngFor="let component of drink.components">{{component.name}}</li>-->
+        <!--</ul>-->
+        <!--</div>-->
 
       </div>
 
-      <md-grid-tile-footer>{{drink.title}}</md-grid-tile-footer>
-    </md-grid-tile>
-  </md-grid-list>
+      <mat-grid-tile-footer>{{drink.title}}</mat-grid-tile-footer>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>

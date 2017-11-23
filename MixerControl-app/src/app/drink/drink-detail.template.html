@@ -3,12 +3,13 @@
 
   <div class="row title">
     <div *ngIf="drink" class="left"> Details: {{drink.title}}</div>
+    <my-internet-connection></my-internet-connection>
     <div class="right">
-      <button md-button (click)="getBack()">zurück</button>
+      <button mat-button (click)="getBack()">zurück</button>
     </div>
   </div>
   <div class="cardContainer">
-    <md-card>
+    <mat-card>
       <h1 *ngIf="drink">{{drink.title}}</h1>
       <div class="drinkDetail" *ngIf="drink">
         <div class="drinkDetailImage">
@@ -31,13 +32,13 @@
             </div>
           </div>
           <div class="descriptionButton">
-            <button md-raised-button color="primary" (click)="onClickMe()">Kostenpflichtig bestellen</button>
+            <button mat-raised-button color="primary" (click)="onClickMe()">Kostenpflichtig bestellen</button>
           </div>
         </div>
 
       </div>
 
-    </md-card>
+    </mat-card>
   </div>
 
 

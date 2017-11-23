@@ -1,22 +1,22 @@
-<h2 md-dialog-title>Komponente für Pumpe {{pumpNr}} ändern</h2>
+<h2 mat-dialog-title>Komponente für Pumpe {{pumpNr}} ändern</h2>
 
-<md-dialog-content>
+<mat-dialog-content>
   <p>bisher: {{oldComponent.name}}</p>
 
-  <md-select placeholder="Component" name="Neue Komponente wählen" [(ngModel)]="selectedValue">
-    <md-option *ngFor="let component of components" [value]="component.id">{{ component.name }}</md-option>
-  </md-select>
+  <mat-select placeholder="Component" name="Neue Komponente wählen" [(ngModel)]="selectedValue">
+    <mat-option *ngFor="let component of components" [value]="component.id">{{ component.name }}</mat-option>
+  </mat-select>
 
-</md-dialog-content>
+</mat-dialog-content>
 
-<md-dialog-actions>
+<mat-dialog-actions>
 
   <button
-    md-raised-button color="primary" md-dialog-close="{{selectedValue}}">akzeptieren
+    mat-raised-button color="primary" mat-dialog-close="{{selectedValue}}">akzeptieren
   </button>
   <button
-    md-raised-button
-    color="primary" md-dialog-close="">abbrechen
+    mat-raised-button
+    color="primary" mat-dialog-close="">abbrechen
   </button>
 
-</md-dialog-actions>
+</mat-dialog-actions>

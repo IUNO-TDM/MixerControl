@@ -8,19 +8,19 @@ import {AppRoutingModule, routedComponents} from './app-routing.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  MdButtonModule,
-  MdCheckboxModule,
-  MdCardModule,
-  MdRadioModule,
-  MdGridListModule,
-  MdMenuModule,
-  MdToolbarModule,
-  MdTableModule,
-  MdDialogModule,
-  MdProgressSpinnerModule,
-  MdProgressBarModule,
-  MdIconModule,
-  MdListModule, MdTabsModule, MdSelectModule, MdSliderModule, MdSnackBarModule,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatCardModule,
+  MatRadioModule,
+  MatGridListModule,
+  MatMenuModule,
+  MatToolbarModule,
+  MatTableModule,
+  MatDialogModule,
+  MatProgressSpinnerModule,
+  MatProgressBarModule,
+  MatIconModule,
+  MatListModule, MatTabsModule, MatSelectModule, MatSliderModule, MatSnackBarModule, MatExpansionModule, MatChipsModule,
 } from '@angular/material';
 import 'hammerjs';
 import {CdkTableModule} from '@angular/cdk/table';
@@ -40,11 +40,15 @@ import {AdminAmountDialogComponent} from "./admin/admin-amount-dialog.component"
 import {ProductionSocket} from "./services/production-socket.service";
 import {OrdersSocket} from "./services/orders-socket.service";
 import {SocketIoModule} from "ng-socket-io/socket-io.module";
+import {InternetConnectionComponent} from "./general/internetconnection.component";
+import {InternetConnectionSocket} from "./services/internetconnection-socket.service";
+import {DrinkFilterPipe} from "./drink/drink-filter-pipe";
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    InternetConnectionComponent,
     routedComponents,
     PaymentComponent,
     QrDialog,
@@ -54,7 +58,8 @@ import {SocketIoModule} from "ng-socket-io/socket-io.module";
     AdminProductionComponent,
     AdminServiceComponent,
     AdminComponentDialogComponent,
-    AdminAmountDialogComponent
+    AdminAmountDialogComponent,
+    DrinkFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -62,29 +67,31 @@ import {SocketIoModule} from "ng-socket-io/socket-io.module";
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpModule,
-    MdButtonModule,
-    MdCheckboxModule,
-    MdCardModule,
-    MdRadioModule,
-    MdGridListModule,
-    MdMenuModule,
-    MdToolbarModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatRadioModule,
+    MatGridListModule,
+    MatMenuModule,
+    MatToolbarModule,
     NgxQRCodeModule,
     QrScannerModule,
-    MdTableModule,
+    MatTableModule,
     CdkTableModule,
-    MdDialogModule,
-    MdProgressSpinnerModule,
-    MdProgressBarModule,
-    MdIconModule,
-    MdListModule,
-    MdTabsModule,
-    MdSelectModule,
-    MdSliderModule,
-    MdSnackBarModule,
-    SocketIoModule
+    MatDialogModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatIconModule,
+    MatListModule,
+    MatTabsModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatSnackBarModule,
+    SocketIoModule,
+    MatExpansionModule,
+    MatChipsModule
   ],
-  providers: [ProductionSocket, OrdersSocket],
+  providers: [ProductionSocket, OrdersSocket, InternetConnectionSocket],
   bootstrap: [AppComponent],
   entryComponents: [QrDialog, ScanDialog, AdminComponentDialogComponent, AdminAmountDialogComponent]
 })

@@ -13,7 +13,7 @@ import {OrderService} from '../services/order.service'
 import {Subscription} from "rxjs";
 import {DataSource} from '@angular/cdk/collections';
 import {Observable} from "rxjs";
-import {MdDialog, MdDialogRef, MD_DIALOG_DATA, MdGridTile, MdGridList} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatGridTile, MatGridList} from '@angular/material';
 import {QrDialog} from "./qrdialog.component";
 import {ScanDialog} from "./scannerdialog.component";
 import {OrdersSocketService} from "../services/orders-socket.service";
@@ -32,8 +32,8 @@ export class OrderComponent implements OnInit, OnDestroy {
   queueConnection: Subscription;
   queueObservable: Observable<any>;
   queuePlace = -1;
-  scanDialogRef: MdDialogRef<ScanDialog> | null;
-  qrDialogRef: MdDialogRef<QrDialog> | null;
+  scanDialogRef: MatDialogRef<ScanDialog> | null;
+  qrDialogRef: MatDialogRef<QrDialog> | null;
   order: Order;
   drink: Drink;
   user: User;
@@ -66,7 +66,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   };
 
 
-  @ViewChildren(MdGridTile) gridTiles;
+  @ViewChildren(MatGridTile) gridTiles;
 
 
   constructor(private route: ActivatedRoute,
@@ -76,7 +76,7 @@ export class OrderComponent implements OnInit, OnDestroy {
               private orderService: OrderService,
               private productionSocketService: ProductionSocketService,
               private ordersSocketService: OrdersSocketService,
-              private dialog: MdDialog) {
+              private dialog: MatDialog) {
 
   }
 
@@ -152,36 +152,47 @@ export class OrderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
 
-    this.route.params.subscribe(params => {
-
-
-        this.orderProgressConnection = this.ordersSocketService.getUpdates('progress')
-            .subscribe(progress => this.progress = progress['progress']);
-        this.orderStateConnection =
-          this.ordersSocketService.getUpdates('state')
-            .subscribe(state => {
-              if (state != 'waitingPayment') {
-                if (this.qrDialogRef) {
-                  this.qrDialogRef.close();
-                }
-                if (this.scanDialogRef) {
-                  this.scanDialogRef.close();
-                }
-              }
-              this.refreshStepCards(state);
-              return this.orderState = state
-            });
-
-        this.ordersSocketService.joinRoom(params['id']);
-
-      }
-    );
+    // this.route.params.subscribe(params => {
+    //
+    //   }
+    // );
 
     var orderObservable = this.route.params.switchMap((params: Params) => Observable.fromPromise(this.orderService.getOrder(params['id'])));
     // orderObservable;
     orderObservable.subscribe(order => {
         console.log(order);
         this.order = order;
+
+
+        this.orderProgressConnection = this.ordersSocketService.getUpdates('progress')
+          .subscribe(progress => {
+            if(progress.orderNumber === this.order.orderNumber){
+              this.progress = progress.progress;
+            }
+
+            return this.progress
+          });
+        this.orderStateConnection =
+          this.ordersSocketService.getUpdates('state')
+            .subscribe(state => {
+              if(state.orderNumber === this.order.orderNumber){
+                if (state != 'waitingPayment') {
+                  if (this.qrDialogRef) {
+                    this.qrDialogRef.close();
+                  }
+                  if (this.scanDialogRef) {
+                    this.scanDialogRef.close();
+                  }
+                }
+                this.refreshStepCards(state);
+                return this.orderState = state
+              }
+
+            });
+
+        this.ordersSocketService.joinRoom(this.order.orderNumber);
+
+
         this.drinkService.getDrink(order.drinkId).then(drink => {
           this.drink = drink;
           this.userService.getUser(this.drink.authorId).then(user => this.user = user)
@@ -208,15 +219,21 @@ export class OrderComponent implements OnInit, OnDestroy {
           }
         }
     });
-    this.productionSocketService.getUpdates('queue')
+    this.productionSocketService.joinRoom('queue')
 
   }
 
 
   ngOnDestroy(): void {
-    this.orderProgressConnection.unsubscribe();
-    this.orderStateConnection.unsubscribe();
-    this.queueConnection.unsubscribe();
+    if(this.orderProgressConnection){
+      this.orderProgressConnection.unsubscribe();
+    }
+    if(this.orderStateConnection){
+      this.orderStateConnection.unsubscribe();
+    }
+    if(this.queueConnection){
+      this.queueConnection.unsubscribe();
+    }
   }
 
   ProductionStart() {

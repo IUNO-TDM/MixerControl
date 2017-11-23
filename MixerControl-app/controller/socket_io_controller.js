@@ -8,6 +8,7 @@ var production_queue = require('../models/production_queue');
 var OSM = require('../models/order_state_machine');
 var OrderDB = require('../database/orderDB');
 const async = require('async');
+var licenseService = require('../websocket/license_client');
 
 function onOrderNamespaceConnect(socket) {
     logger.info('[socket_io_controller] a user connected: ' + socket.id);
@@ -36,14 +37,18 @@ function onOrderNamespaceConnect(socket) {
             if (typeof order !== 'undefined') {
 
                 var state = OSM.compositeState(order);
-                socket.emit("state", {"toState": state});
+                socket.emit("state", {"orderNumber": order.orderNumber,"toState": state});
 
                 if (typeof  order.progress !== 'undefined') {
 
-                    socket.emit("progress", {"progress": order.progress})
+                    socket.emit("progress", {"orderNumber": order.orderNumber,"progress": order.progress})
                 }
             }
         }
+    });
+
+    socket.on('leave', function (orderId) {
+      socket.leave(orderId);
     });
 
     socket.on('disconnect', function () {
@@ -75,7 +80,12 @@ function onProductionNamespaceConnect(socket) {
 
     });
 
-    socket.on('disconnect', function () {
+    socket.on('leave', function (roomId) {
+      socket.leave(roomId);
+    });
+
+
+  socket.on('disconnect', function () {
         logger.info('a user disconnected: ' + socket.id);
     });
 }
@@ -110,7 +120,7 @@ function registerPumpControlEvents(orderNamespace) {
     });
 
     production_queue.on('progress', function (order, progress) {
-        orderNamespace.to(order.orderNumber).emit("progress", {"progress": progress});
+        orderNamespace.to(order.orderNumber).emit("progress", {"orderNumber": order.orderNumber, "progress": progress});
         orderNamespace.to('allOrders').emit("progress", {"orderNumber": order.orderNumber, "progress": progress});
     });
 
@@ -121,8 +131,9 @@ function registerOrderStateEvents(orderNamespace) {
     OSM.on("transition", function (data) {
         logger.info("[socket_io_controller] sent statechange " + data.toState + " for OrderNumber " + data.client.orderNumber);
         orderNamespace.to(data.client.orderNumber).emit("state", {
-            "fromState": data.fromState,
-            "toState": data.toState
+          "orderNumber": data.client.orderNumber,
+          "fromState": data.fromState,
+          "toState": data.toState
         });
         orderNamespace.to('allOrders').emit("state", {
             "orderNumber": data.client.orderNumber,
@@ -159,6 +170,34 @@ function registerProductionEvents(productionNamespace) {
 
 }
 
+function registerInternetConnectionEvents(connectionNamespace){
+  licenseService.on('connectionState', function (state) {
+    connectionNamespace.to('connectionState').emit('connectionState',state);
+  });
+}
+
+function onInternetConnectionNamespaceConnect(socket) {
+  logger.info('[socket_io_controller] a user connected: ' + socket.id);
+
+  socket.on('room', function (roomId) {
+    socket.join(roomId);
+
+    if (roomId == "connectionState") {
+      socket.emit("connectionState", licenseService.getConnectionStatus());
+    }
+
+  });
+
+  socket.on('leave', function (roomId) {
+    socket.leave(roomId);
+  });
+
+
+  socket.on('disconnect', function () {
+    logger.info('a user disconnected: ' + socket.id);
+  });
+}
+
 module.exports = function (io) {
     var orderNamespace = io.of('/orders');
     orderNamespace.on('connection', onOrderNamespaceConnect);
@@ -170,5 +209,10 @@ module.exports = function (io) {
     var productionNamespace = io.of('/production');
     productionNamespace.on('connection', onProductionNamespaceConnect);
     registerProductionEvents(productionNamespace);
+
+
+    var connectionNameSpace = io.of('/connectionState');
+    connectionNameSpace.on('connection',onInternetConnectionNamespaceConnect);
+    registerInternetConnectionEvents(connectionNameSpace);
 
 };

@@ -1,23 +1,23 @@
-<md-table class="ordersTable" #table [dataSource]="dataSource">
-  <ng-container mdColumnDef="OrderNr">
-    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">OrderNr.</md-header-cell>
-    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"><a [routerLink]="['/orders/', row.OrderNr]">{{row.OrderNr}}</a></md-cell>
+<mat-table class="ordersTable" #table [dataSource]="dataSource">
+  <ng-container matColumnDef="OrderNr">
+    <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'">OrderNr.</mat-header-cell>
+    <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"><a [routerLink]="['/orders/', row.OrderNr]">{{row.OrderNr}}</a></mat-cell>
   </ng-container>
-  <ng-container mdColumnDef="DrinkId">
-    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">DrinkId</md-header-cell>
-    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'">{{row.DrinkId}}</md-cell>
+  <ng-container matColumnDef="DrinkId">
+    <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'">DrinkId</mat-header-cell>
+    <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'">{{row.DrinkId}}</mat-cell>
   </ng-container>
-  <ng-container mdColumnDef="DrinkName">
-    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">DrinkName</md-header-cell>
-    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkName}}</md-cell>
-  </ng-container>
-
-  <ng-container mdColumnDef="State">
-    <md-header-cell *mdHeaderCellDef [ngClass]="'customWidthClass'">State</md-header-cell>
-    <md-cell *mdCellDef="let row" [ngClass]="'customWidthClass'"> {{row.State}}</md-cell>
+  <ng-container matColumnDef="DrinkName">
+    <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'">DrinkName</mat-header-cell>
+    <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkName}}</mat-cell>
   </ng-container>
 
+  <ng-container matColumnDef="State">
+    <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'">State</mat-header-cell>
+    <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.State}}</mat-cell>
+  </ng-container>
 
-  <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-  <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
-</md-table>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

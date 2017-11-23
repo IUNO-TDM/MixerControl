@@ -9,7 +9,7 @@ import {AdminService} from '../services/admin.service'
 import {Component as ModelComponent} from '../models/Component'
 import {Subscription} from "rxjs";
 import {AdminComponentDialogComponent} from "./admin-component-dialog.component";
-import {MdDialog, MdDialogRef} from "@angular/material";
+import {MatDialog, MatDialogRef} from "@angular/material";
 import {AdminAmountDialogComponent} from "./admin-amount-dialog.component";
 import {ProductionSocketService} from "../services/production-socket.service";
 
@@ -30,7 +30,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
   selectedValue: ModelComponent[] = null;
 
 
-  componentDialogRef: MdDialogRef<AdminComponentDialogComponent> | null;
+  componentDialogRef: MatDialogRef<AdminComponentDialogComponent> | null;
   componentDialogConfig = {
     disableClose: false,
     panelClass: 'custom-overlay-pane-class',
@@ -50,7 +50,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
     }
   };
 
-  amountDialogRef: MdDialogRef<AdminAmountDialogComponent> | null;
+  amountDialogRef: MatDialogRef<AdminAmountDialogComponent> | null;
   amountDialogConfig = {
     disableClose: false,
     panelClass: 'custom-overlay-pane-class',
@@ -73,7 +73,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
   constructor(private componentService: ComponentService, private adminService: AdminService,
               private productionSocketService: ProductionSocketService,
-              private dialog: MdDialog) {
+              private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
