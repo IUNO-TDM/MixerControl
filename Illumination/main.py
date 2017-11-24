@@ -5,7 +5,13 @@ import time
 
 from socketIO_client import SocketIO, BaseNamespace
 
+from dotstar import Adafruit_DotStar
+import Image
+
 endThreads = 0
+
+numpixels = 60          # Number of LEDs in strip
+filename  = "default.png" # Image file to load
 
 #####
 # Production Namespace
@@ -57,13 +63,41 @@ class dotStarsThread (threading.Thread):
     def __init__(self, name):
         threading.Thread.__init__(self)
         self.name = name
+
     def run(self):
         print "Starting " + self.name
+
+        strip     = Adafruit_DotStar(numpixels)
+        strip.begin()
+
+
+        print "Loading..."
+        img       = Image.open(filename).convert("RGB")
+        pixels    = img.load()
+        width     = img.size[0]
+        height    = img.size[1]
+        print "%dx%d pixels" % img.size
+
+        if(height > strip.numPixels()): height = strip.numPixels()
+
+        # Calculate gamma correction table, makes mid-range colors look 'right':
+        gamma = bytearray(256)
+        for i in range(256):
+	        gamma[i] = int(pow(float(i) / 255.0, 2.7) * 255.0 + 0.5)
+
         while not endThreads:
             now = time.time()
             frame = int(now * HZ)
 
-            # draw something
+            for x in range(width):           # For each column of image...
+                time.sleep(1.0 / 50)     # Pause 20 milliseconds (~50 fps)
+                for y in range(height):  # For each pixel in column...
+                    value = pixels[x, y]   # Read pixel in image
+                    strip.setPixelColor(y, # Set pixel in strip
+                      gamma[value[1]],     # Gamma-corrected red
+                      gamma[value[0]],     # Gamma-corrected green
+                      gamma[value[2]])     # Gamma-corrected blue
+                strip.show()             # Refresh LED strip
 
             delay = float(int(now * HZ) + 1) / HZ - now
             if delay > 1.0/HZ: print frame, delay
