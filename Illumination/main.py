@@ -2,6 +2,7 @@
 
 import threading
 import time
+import sys
 import os
 
 from socketIO_client import SocketIO, BaseNamespace
@@ -17,6 +18,10 @@ productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStar
 
 currentState = ""
 nextState = productionStates[0]
+
+mixerHost = 'localhost'
+if len (sys.argv) > 1:
+    mixerHost = sys.argv[1];
 
 #####
 # Production Namespace
@@ -50,7 +55,7 @@ class socketIoThread (threading.Thread):
 
     def run(self):
         print "Starting " + self.name
-        with SocketIO('localhost', 3000) as socketIO:
+        with SocketIO(mixerHost, 3000) as socketIO:
             print "SocketIO instantiated"
             production_namespace = socketIO.define(ProductionNamespace, '/production')
             production_namespace.on('state', onProductionStateHandler)
