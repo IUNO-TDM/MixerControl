@@ -2,6 +2,7 @@
 
 import threading
 import time
+import os
 
 from socketIO_client import SocketIO, BaseNamespace
 
@@ -11,13 +12,15 @@ import Image
 endThreads = 0
 
 numpixels = 60          # Number of LEDs in strip
-filename  = "default.png" # Image file to load
+
+productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStart", "startProcessing", "processingOrder", "finished", "errorProcessing", "productionPaused", "pumpControlServiceMode"]
+
+currentState = productionStates[0]
 
 #####
 # Production Namespace
 ###
 class ProductionNamespace(BaseNamespace):
-    productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStart", "startProcessing", "processingOrder", "finished", "errorProcessing", "productionPaused", "pumpControlServiceMode"]
     def on_connect(self):
         print('connected to namespace production')
         self.emit('room', 'state') # register room "state"
@@ -70,15 +73,25 @@ class dotStarsThread (threading.Thread):
         strip     = Adafruit_DotStar(numpixels)
         strip.begin()
 
+        images = {}
+        for state in productionStates:
+            filename = state+".png"
+            if not os.path.isfile(filename):
+                print filename + " missing"
+                continue
+            stateImage = {}
+            img = Image.open(filename).convert("RGB")
+            stateImage["image"] = img
+            stateImage["pixels"] = img.load()
+            stateImage["width"] = img.size[0]
+            height = img.size[1]
+            if(height > strip.numPixels()): height = strip.numPixels()
+            stateImage["height"] = height
+            images[state] = stateImage
 
-        print "Loading..."
-        img       = Image.open(filename).convert("RGB")
-        pixels    = img.load()
-        width     = img.size[0]
-        height    = img.size[1]
-        print "%dx%d pixels" % img.size
-
-        if(height > strip.numPixels()): height = strip.numPixels()
+        pixels    = images[currentState]["pixels"]
+        width     = images[currentState]["width"]
+        height    = images[currentState]["height"]
 
         # Calculate gamma correction table, makes mid-range colors look 'right':
         gamma = bytearray(256)
@@ -89,15 +102,14 @@ class dotStarsThread (threading.Thread):
             now = time.time()
             frame = int(now * HZ)
 
-            for x in range(width):           # For each column of image...
-                time.sleep(1.0 / 50)     # Pause 20 milliseconds (~50 fps)
-                for y in range(height):  # For each pixel in column...
-                    value = pixels[x, y]   # Read pixel in image
-                    strip.setPixelColor(y, # Set pixel in strip
-                      gamma[value[1]],     # Gamma-corrected red
-                      gamma[value[0]],     # Gamma-corrected green
-                      gamma[value[2]])     # Gamma-corrected blue
-                strip.show()             # Refresh LED strip
+            x = int(frame % width)
+            for y in range(height):  # For each pixel in column...
+                value = pixels[x, y]   # Read pixel in image
+                strip.setPixelColor(y, # Set pixel in strip
+                  gamma[value[1]],     # Gamma-corrected red
+                  gamma[value[0]],     # Gamma-corrected green
+                  gamma[value[2]])     # Gamma-corrected blue
+            strip.show()             # Refresh LED strip
 
             delay = float(int(now * HZ) + 1) / HZ - now
             if delay > 1.0/HZ: print frame, delay
