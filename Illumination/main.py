@@ -15,7 +15,8 @@ numpixels = 60          # Number of LEDs in strip
 
 productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStart", "startProcessing", "processingOrder", "finished", "errorProcessing", "productionPaused", "pumpControlServiceMode"]
 
-currentState = productionStates[0]
+currentState = ""
+nextState = productionStates[0]
 
 #####
 # Production Namespace
@@ -33,10 +34,11 @@ class ProductionNamespace(BaseNamespace):
         self.emit('room', 'state') # register room "state"
 
 def onProductionStateHandler( *args):
+    global nextState
     print('state', args)
 
-    if args[0] == "waitingOrder":
-        pass
+    if args[0] in productionStates:
+        nextState = args[0]
 
 #####
 # Socket IO Client
@@ -48,7 +50,7 @@ class socketIoThread (threading.Thread):
 
     def run(self):
         print "Starting " + self.name
-        with SocketIO('192.168.178.40', 3000) as socketIO:
+        with SocketIO('localhost', 3000) as socketIO:
             print "SocketIO instantiated"
             production_namespace = socketIO.define(ProductionNamespace, '/production')
             production_namespace.on('state', onProductionStateHandler)
@@ -72,6 +74,7 @@ class dotStarsThread (threading.Thread):
 
         strip     = Adafruit_DotStar(numpixels)
         strip.begin()
+        strip.setBrightness(128)
 
         images = {}
         for state in productionStates:
@@ -89,10 +92,6 @@ class dotStarsThread (threading.Thread):
             stateImage["height"] = height
             images[state] = stateImage
 
-        pixels    = images[currentState]["pixels"]
-        width     = images[currentState]["width"]
-        height    = images[currentState]["height"]
-
         # Calculate gamma correction table, makes mid-range colors look 'right':
         gamma = bytearray(256)
         for i in range(256):
@@ -101,6 +100,12 @@ class dotStarsThread (threading.Thread):
         while not endThreads:
             now = time.time()
             frame = int(now * HZ)
+            global currentState
+            if (currentState != nextState) and (nextState in images):
+                currentState = nextState
+                pixels    = images[currentState]["pixels"]
+                width     = images[currentState]["width"]
+                height    = images[currentState]["height"]
 
             x = int(frame % width)
             for y in range(height):  # For each pixel in column...
