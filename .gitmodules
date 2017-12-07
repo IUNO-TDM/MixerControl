@@ -1,0 +1,3 @@
+[submodule "Illumination/Adafruit_DotStar_Pi"]
+	path = Illumination/Adafruit_DotStar_Pi
+	url = https://github.com/IUNO-TDM/Adafruit_DotStar_Pi
