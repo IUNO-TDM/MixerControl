@@ -1,6 +1,7 @@
 const logger = require('../../global/logger');
 const CONFIG = require('../../config/config_loader');
 const request = require('request');
+const self = {};
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
