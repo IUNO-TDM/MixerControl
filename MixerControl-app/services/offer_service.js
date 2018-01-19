@@ -35,7 +35,7 @@ self.requestOfferForOrder = function (stateMachine, order) {
                     totalAmount += transfer.coin;
                 }
 
-                order.invoice.totalAmount = calculateRetailPriceForInvoice(offer.invoice);
+                order.invoice.totalAmount = calculateRetailPriceForeOffer(offer);
                 order.invoice.referenceId = order.orderNumber;
 
                 stateMachine.offerReceived(order);
@@ -48,15 +48,11 @@ self.requestOfferForOrder = function (stateMachine, order) {
     });
 };
 
-function calculateRetailPriceForInvoice(invoice) {
-    if (!invoice) {
-        return 0;
-    }
-
+function calculateRetailPriceForeOffer(offer) {
+    //Here could be a fancy algorithm
+    // But as every Drink costs the same at the moment, we just take the config value
     let retailPrice = 0;
-    for (let key in invoice.transfers) {
-        retailPrice += config.RETAIL_PRICE; //TODO: Make this configurable by the machine operator
-    }
+    retailPrice = config.RETAIL_PRICE;
     return retailPrice;
 }
 
