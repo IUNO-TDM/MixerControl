@@ -1,9 +1,7 @@
 const logger = require('../../global/logger');
 const CONFIG = require('../../config/config_loader');
 const request = require('request');
-const self = {
-    _hsmId: null,
-};
+const self = {};
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
@@ -97,10 +95,6 @@ self.getLicenseInformationForProductCodeOnHsm = function (productCode, hsmId, ca
 };
 
 self.getHsmId = function(callback) {
-    if (self._hsmId) {
-        return callback(null, self._hsmId);
-    }
-
     if (typeof(callback) !== 'function') {
         return logger.crit('[license_manager_adapter] missing callback');
     }
@@ -124,8 +118,7 @@ self.getHsmId = function(callback) {
             hsmId = data[0];
         }
 
-        self._hsmId = hsmId;
-        callback(err, self._hsmId);
+        callback(err, hsmId);
     });
 };
 
