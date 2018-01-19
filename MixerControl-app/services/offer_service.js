@@ -51,6 +51,8 @@ self.requestOfferForOrder = function (stateMachine, order) {
 function calculateRetailPriceForeOffer(offer) {
     //Here could be a fancy algorithm
     // But as every Drink costs the same at the moment, we just take the config value
+    // TODO this method has no deeper sense at this moment. But we wont touch it until we had a closer look at the use cases we want to implement
+    // see https://github.com/IUNO-TDM/MixerControl/issues/121
     let retailPrice = 0;
     retailPrice = config.RETAIL_PRICE;
     return retailPrice;
