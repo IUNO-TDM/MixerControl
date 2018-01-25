@@ -5,9 +5,10 @@ import time
 import sys
 import os
 
+import spidev
+
 from socketIO_client import SocketIO, BaseNamespace
 
-from dotstar import Adafruit_DotStar
 import Image
 
 endThreads = 0
@@ -73,13 +74,12 @@ class dotStarsThread (threading.Thread):
     def __init__(self, name):
         threading.Thread.__init__(self)
         self.name = name
+        self.spi = spidev.SpiDev()
 
     def run(self):
         print "Starting " + self.name
 
-        strip     = Adafruit_DotStar(numpixels)
-        strip.begin()
-        strip.setBrightness(128)
+        self.spi.open(1, 1)
 
         images = {}
         for state in productionStates:
@@ -102,6 +102,16 @@ class dotStarsThread (threading.Thread):
         for i in range(256):
 	        gamma[i] = int(pow(float(i) / 255.0, 2.7) * 255.0 + 0.5)
 
+        spiArray = bytearray(4 + numpixels * 4 + 4)
+
+        for i in range(len(spiArray)):
+            spiArray[i] = 0xff # global LED bits and end frame 0xffffffff
+
+        spiArray[0] = 0 # start frame 0x00000000
+        spiArray[1] = 0
+        spiArray[2] = 0
+        spiArray[3] = 0
+
         while not endThreads:
             now = time.time()
             frame = int(now * HZ)
@@ -115,16 +125,17 @@ class dotStarsThread (threading.Thread):
             x = int(frame % width)
             for y in range(height):  # For each pixel in column...
                 value = pixels[x, y]   # Read pixel in image
-                strip.setPixelColor(y, # Set pixel in strip
-                  gamma[value[1]],     # Gamma-corrected red
-                  gamma[value[0]],     # Gamma-corrected green
-                  gamma[value[2]])     # Gamma-corrected blue
-            strip.show()             # Refresh LED strip
+                spiArray[4 + y + 1] = gamma[value[2]]
+                spiArray[4 + y + 2] = gamma[value[0]]
+                spiArray[4 + y + 3] = gamma[value[1]]
+
+            self.spi.xfer2(spiArray)
 
             delay = float(int(now * HZ) + 1) / HZ - now
             if delay > 1.0/HZ: print frame, delay
             time.sleep(delay)
 
+        self.spi.close()
         print "Exiting " + self.name
 
 threads = []
