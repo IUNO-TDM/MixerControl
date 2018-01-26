@@ -13,7 +13,8 @@ import Image
 
 endThreads = 0
 
-numpixels = 60          # Number of LEDs in strip
+numPixels = 60          # Number of LEDs in strip
+maxBrightness = 15      # led driving current [0-31]
 
 productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStart", "startProcessing", "processingOrder", "finished", "errorProcessing", "productionPaused", "pumpControlServiceMode"]
 
@@ -80,7 +81,7 @@ class dotStarsThread (threading.Thread):
         print "Starting " + self.name
 
         self.spi.open(1, 1)
-        self.spi.max_speed_hz = 1000000
+        self.spi.max_speed_hz = 16000000
 
         images = {}
         for state in productionStates:
@@ -94,21 +95,22 @@ class dotStarsThread (threading.Thread):
             stateImage["pixels"] = img.load()
             stateImage["width"] = img.size[0]
             height = img.size[1]
-# TODO            if(height > strip.numPixels()): height = strip.numPixels()
+            if(height > numPixels): height = numPixels # limit number of pixels in case image is too large
             stateImage["height"] = height
             images[state] = stateImage
 
         # Calculate gamma correction table, makes mid-range colors look 'right':
         gamma = bytearray(256)
         for i in range(256):
-	        gamma[i] = int(pow(float(i) / 255.0, 2.7) * 31.0 + 0.5) # TODO fix brightness
+	        gamma[i] = int(pow(float(i) / 255.0, 2.7) * 255.0 + 0.5)
 
-        spiArray = [0xff] * (4 + numpixels * 4 + 1)
+        spiArray = [0b11100000 | (maxBrightness & 31)] * (4 + numPixels * 4 + 1)
 
         spiArray[0] = 0 # start frame 0x00000000
         spiArray[1] = 0
         spiArray[2] = 0
         spiArray[3] = 0
+        spiArray[(4 + numPixels * 4)] = 0xff # end frame
 
         while not endThreads:
             now = time.time()
