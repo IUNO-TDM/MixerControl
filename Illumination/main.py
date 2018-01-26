@@ -80,6 +80,7 @@ class dotStarsThread (threading.Thread):
         print "Starting " + self.name
 
         self.spi.open(1, 1)
+        self.spi.max_speed_hz = 1000000
 
         images = {}
         for state in productionStates:
@@ -93,19 +94,16 @@ class dotStarsThread (threading.Thread):
             stateImage["pixels"] = img.load()
             stateImage["width"] = img.size[0]
             height = img.size[1]
-            if(height > strip.numPixels()): height = strip.numPixels()
+# TODO            if(height > strip.numPixels()): height = strip.numPixels()
             stateImage["height"] = height
             images[state] = stateImage
 
         # Calculate gamma correction table, makes mid-range colors look 'right':
         gamma = bytearray(256)
         for i in range(256):
-	        gamma[i] = int(pow(float(i) / 255.0, 2.7) * 255.0 + 0.5)
+	        gamma[i] = int(pow(float(i) / 255.0, 2.7) * 31.0 + 0.5) # TODO fix brightness
 
-        spiArray = bytearray(4 + numpixels * 4 + 4)
-
-        for i in range(len(spiArray)):
-            spiArray[i] = 0xff # global LED bits and end frame 0xffffffff
+        spiArray = [0xff] * (4 + numpixels * 4 + 1)
 
         spiArray[0] = 0 # start frame 0x00000000
         spiArray[1] = 0
@@ -124,10 +122,10 @@ class dotStarsThread (threading.Thread):
 
             x = int(frame % width)
             for y in range(height):  # For each pixel in column...
-                value = pixels[x, y]   # Read pixel in image
-                spiArray[4 + y + 1] = gamma[value[2]]
-                spiArray[4 + y + 2] = gamma[value[0]]
-                spiArray[4 + y + 3] = gamma[value[1]]
+                value = pixels[x, y] # Read pixel in image
+                spiArray[4 + 4 * y + 1] = gamma[value[2]] # blue
+                spiArray[4 + 4 * y + 2] = gamma[value[1]] # green
+                spiArray[4 + 4 * y + 3] = gamma[value[0]] # red
 
             self.spi.xfer2(spiArray)
 
