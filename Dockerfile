@@ -1,4 +1,4 @@
-FROM node:boron
+FROM node
 RUN npm install pm2 -g
 
 # Create app directory
@@ -10,9 +10,10 @@ WORKDIR /usr/src/app
 
 COPY MixerControl-app /usr/src/app
 
+
 # Install app dependencies
 RUN npm install
-RUN npm install -g @angular/cli
+RUN npm install -g @angular/cli --unsafe
 
 RUN ng build
 

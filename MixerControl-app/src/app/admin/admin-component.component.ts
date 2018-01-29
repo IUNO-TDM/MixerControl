@@ -91,7 +91,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
   }
 
   loadContent(){
-    this.componentService.getComponents().then(components => this.components = components);
+    this.componentService.getComponents(false).then(components => this.components = components);
     this.adminService.getPumps().then(pumps => this.pumps = pumps);
     this.adminService.getStandardAmounts().then(amounts => this.standardAmounts = amounts);
 

@@ -28,7 +28,7 @@ export class AdminComponentDialogComponent implements OnInit{
 
   ngOnInit(){
 
-    this.componentService.getComponents().then(c =>
+    this.componentService.getComponents(false).then(c =>
       this.components = c
     );
   }

@@ -62,7 +62,7 @@ export class DrinkListComponent implements OnInit {
   ngOnInit(): void{
     this.getDrinks();
     this.resize(window.innerWidth);
-    this.componentService.getComponents().then(components => this.components = components);
+    this.componentService.getComponents(true).then(components => this.components = components);
   }
 
   resize(width) {

@@ -5,23 +5,31 @@ import time
 import sys
 import os
 
+import argparse
+
+import spidev
+
 from socketIO_client import SocketIO, BaseNamespace
 
-from dotstar import Adafruit_DotStar
 import Image
 
 endThreads = 0
 
-numpixels = 60          # Number of LEDs in strip
+numPixels = 60          # Number of LEDs in strip
+maxBrightness = 15      # led driving current [0-31]
 
 productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStart", "startProcessing", "processingOrder", "finished", "errorProcessing", "productionPaused", "pumpControlServiceMode"]
 
 currentState = ""
 nextState = productionStates[0]
 
-mixerHost = 'localhost'
-if len (sys.argv) > 1:
-    mixerHost = sys.argv[1];
+parser = argparse.ArgumentParser()
+parser.add_argument("--spidev", help="spi device to control dotstar pixels", default=0, type=int)
+parser.add_argument("--spics", help="chip select to control dotstar pixels", default=1, type=int)
+parser.add_argument("--host", help="the address of the host running MixerControl", default="localhost")
+parser.add_argument("--port", help="tcp port of the MixerControls socket.io", default=3000, type=int)
+
+args = parser.parse_args()
 
 #####
 # Production Namespace
@@ -55,7 +63,7 @@ class socketIoThread (threading.Thread):
 
     def run(self):
         print "Starting " + self.name
-        with SocketIO(mixerHost, 3000) as socketIO:
+        with SocketIO(args.host, args.port) as socketIO:
             print "SocketIO instantiated"
             production_namespace = socketIO.define(ProductionNamespace, '/production')
             production_namespace.on('state', onProductionStateHandler)
@@ -73,13 +81,13 @@ class dotStarsThread (threading.Thread):
     def __init__(self, name):
         threading.Thread.__init__(self)
         self.name = name
+        self.spi = spidev.SpiDev()
 
     def run(self):
         print "Starting " + self.name
 
-        strip     = Adafruit_DotStar(numpixels)
-        strip.begin()
-        strip.setBrightness(128)
+        self.spi.open(args.spidev, args.spics)
+        self.spi.max_speed_hz = 1600000
 
         images = {}
         for state in productionStates:
@@ -93,7 +101,7 @@ class dotStarsThread (threading.Thread):
             stateImage["pixels"] = img.load()
             stateImage["width"] = img.size[0]
             height = img.size[1]
-            if(height > strip.numPixels()): height = strip.numPixels()
+            if(height > numPixels): height = numPixels # limit number of pixels in case image is too large
             stateImage["height"] = height
             images[state] = stateImage
 
@@ -101,6 +109,8 @@ class dotStarsThread (threading.Thread):
         gamma = bytearray(256)
         for i in range(256):
 	        gamma[i] = int(pow(float(i) / 255.0, 2.7) * 255.0 + 0.5)
+
+        spiArray = [0b11100000 | (maxBrightness & 31)] * (4 + numPixels * 4 + 1)
 
         while not endThreads:
             now = time.time()
@@ -112,19 +122,26 @@ class dotStarsThread (threading.Thread):
                 width     = images[currentState]["width"]
                 height    = images[currentState]["height"]
 
+            spiArray[0] = 0 # start frame 0x00000000
+            spiArray[1] = 0
+            spiArray[2] = 0
+            spiArray[3] = 0
+
             x = int(frame % width)
             for y in range(height):  # For each pixel in column...
-                value = pixels[x, y]   # Read pixel in image
-                strip.setPixelColor(y, # Set pixel in strip
-                  gamma[value[1]],     # Gamma-corrected red
-                  gamma[value[0]],     # Gamma-corrected green
-                  gamma[value[2]])     # Gamma-corrected blue
-            strip.show()             # Refresh LED strip
+                value = pixels[x, y] # Read pixel in image
+                spiArray[4 + 4 * y + 0] = 0b11100000 | (maxBrightness & 31)
+                spiArray[4 + 4 * y + 1] = gamma[value[2]] # blue
+                spiArray[4 + 4 * y + 2] = gamma[value[1]] # green
+                spiArray[4 + 4 * y + 3] = gamma[value[0]] # red
 
-            delay = float(int(now * HZ) + 1) / HZ - now
-            if delay > 1.0/HZ: print frame, delay
-            time.sleep(delay)
+            spiArray[(4 + numPixels * 4)] = 0xff # end frame
 
+            self.spi.xfer2(spiArray)
+
+            time.sleep(float(frame + 1) / HZ - now)
+
+        self.spi.close()
         print "Exiting " + self.name
 
 threads = []
