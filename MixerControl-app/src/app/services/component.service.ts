@@ -11,9 +11,13 @@ export class ComponentService {
 
     constructor(private http: Http) { }
 
-    getComponents(): Promise<Component[]> {
+    getComponents(filtered): Promise<Component[]> {
+        let url = this.componentsUrl;
+        if (filtered) {
+            url = `${this.componentsUrl}/?filtered=true`;
+        }
         return this.http
-            .get(this.componentsUrl)
+            .get(url)
             .toPromise()
             .then(response => response.json() as Component[])
             .catch(this.handleError);
