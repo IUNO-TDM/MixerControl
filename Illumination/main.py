@@ -5,6 +5,8 @@ import time
 import sys
 import os
 
+import argparse
+
 import spidev
 
 from socketIO_client import SocketIO, BaseNamespace
@@ -21,9 +23,13 @@ productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStar
 currentState = ""
 nextState = productionStates[0]
 
-mixerHost = 'localhost'
-if len (sys.argv) > 1:
-    mixerHost = sys.argv[1];
+parser = argparse.ArgumentParser()
+parser.add_argument("--spidev", help="spi device to control dotstar pixels", default=0, type=int)
+parser.add_argument("--spics", help="chip select to control dotstar pixels", default=1, type=int)
+parser.add_argument("--host", help="the address of the host running MixerControl", default="localhost")
+parser.add_argument("--port", help="tcp port of the MixerControls socket.io", default=3000, type=int)
+
+args = parser.parse_args()
 
 #####
 # Production Namespace
@@ -57,7 +63,7 @@ class socketIoThread (threading.Thread):
 
     def run(self):
         print "Starting " + self.name
-        with SocketIO(mixerHost, 3000) as socketIO:
+        with SocketIO(args.host, args.port) as socketIO:
             print "SocketIO instantiated"
             production_namespace = socketIO.define(ProductionNamespace, '/production')
             production_namespace.on('state', onProductionStateHandler)
@@ -80,8 +86,8 @@ class dotStarsThread (threading.Thread):
     def run(self):
         print "Starting " + self.name
 
-        self.spi.open(1, 1)
-        self.spi.max_speed_hz = 16000000
+        self.spi.open(args.spidev, args.spics)
+        self.spi.max_speed_hz = 1600000
 
         images = {}
         for state in productionStates:
@@ -106,12 +112,6 @@ class dotStarsThread (threading.Thread):
 
         spiArray = [0b11100000 | (maxBrightness & 31)] * (4 + numPixels * 4 + 1)
 
-        spiArray[0] = 0 # start frame 0x00000000
-        spiArray[1] = 0
-        spiArray[2] = 0
-        spiArray[3] = 0
-        spiArray[(4 + numPixels * 4)] = 0xff # end frame
-
         while not endThreads:
             now = time.time()
             frame = int(now * HZ)
@@ -122,18 +122,24 @@ class dotStarsThread (threading.Thread):
                 width     = images[currentState]["width"]
                 height    = images[currentState]["height"]
 
+            spiArray[0] = 0 # start frame 0x00000000
+            spiArray[1] = 0
+            spiArray[2] = 0
+            spiArray[3] = 0
+
             x = int(frame % width)
             for y in range(height):  # For each pixel in column...
                 value = pixels[x, y] # Read pixel in image
+                spiArray[4 + 4 * y + 0] = 0b11100000 | (maxBrightness & 31)
                 spiArray[4 + 4 * y + 1] = gamma[value[2]] # blue
                 spiArray[4 + 4 * y + 2] = gamma[value[1]] # green
                 spiArray[4 + 4 * y + 3] = gamma[value[0]] # red
 
+            spiArray[(4 + numPixels * 4)] = 0xff # end frame
+
             self.spi.xfer2(spiArray)
 
-            delay = float(int(now * HZ) + 1) / HZ - now
-            if delay > 1.0/HZ: print frame, delay
-            time.sleep(delay)
+            time.sleep(float(frame + 1) / HZ - now)
 
         self.spi.close()
         print "Exiting " + self.name
