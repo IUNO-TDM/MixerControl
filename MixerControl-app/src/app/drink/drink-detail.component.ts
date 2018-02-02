@@ -1,12 +1,12 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { ActivatedRoute, Params, Router }   from '@angular/router';
+import {Component, OnInit, HostListener} from '@angular/core';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
-import {Drink} from '../models/Drink'
-import {User} from '../models/User'
-import {Order} from '../models/Order'
-import {DrinkService} from '../services/drink.service'
-import {UserService} from '../services/user.service'
-import {OrderService} from '../services/order.service'
+import {Drink} from '../models/Drink';
+import {User} from '../models/User';
+import {Order} from '../models/Order';
+import {DrinkService} from '../services/drink.service';
+import {UserService} from '../services/user.service';
+import {OrderService} from '../services/order.service';
 
 
 @Component({
@@ -21,10 +21,11 @@ export class DrinkDetailComponent implements OnInit {
   drink: Drink;
   user: User;
   error: any;
-  orderURL = "NULL";
-  components = "";
+  orderURL = 'NULL';
+  components = '';
 
   gridcols: any = 2;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private drinkService: DrinkService,
@@ -39,9 +40,9 @@ export class DrinkDetailComponent implements OnInit {
     this.route.params.switchMap((params: Params) => this.drinkService.getDrink(params['id']))
       .subscribe(drink => {
         this.drink = drink;
-        let _components: string[] = [];
-        for (let entry of this.drink.components) {
-            _components.push(entry.name);
+        const _components: string[] = [];
+        for (const entry of this.drink.components) {
+          _components.push(entry.name);
         }
         this.components = _components.join(', ');
         this.userService.getUser(this.drink.authorId).then(user => this.user = user)
@@ -49,18 +50,19 @@ export class DrinkDetailComponent implements OnInit {
       });
 
   }
- getBack(): void{
-      this.router.navigateByUrl("/drinks")
+
+  getBack(): void {
+    this.router.navigateByUrl('/drinks');
   }
 
   onClickMe() {
-    var order = new Order();
+    const order = new Order();
     order.drinkId = this.drink.id;
-    order.orderName = "Detlef Drinker";
+    order.orderName = 'Detlef Drinker';
     this.orderService.createOrder(order).then(orderLocation => {
 
       this.orderURL = orderLocation;
-      let orderNumber = this.orderURL.split('/').pop();
+      const orderNumber = this.orderURL.split('/').pop();
 
       this.router.navigateByUrl(`/orders/${orderNumber}`);
     });

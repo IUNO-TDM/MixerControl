@@ -10,15 +10,17 @@ body{
 
 }
 
-.container{
-  width: 100%;
-  margin-bottom: 55px;
+.app-container{
+  position: absolute;
+  top: 80px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 5px;
   /*overflow: hidden;*/
 }
 
-.containerInner{
-  overflow:visible;
-}
+
 .loader {
   background-position: center center;
   background-repeat: no-repeat;
@@ -44,6 +46,7 @@ header .projectTitle {
   font-family: 'open_sanslight';
   text-decoration: none;
 }
+
 
 @media only screen and (max-width: 350px) {
   header .projectTitle{
@@ -134,3 +137,8 @@ header .projectTitle {
 .mat-expansion-panel-header{
   max-height: 40px !important;
 }
+
+body{
+  margin: 0px;
+}
+

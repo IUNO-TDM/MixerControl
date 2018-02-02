@@ -39,10 +39,12 @@ import {AdminComponentDialogComponent} from "./admin/admin-component-dialog.comp
 import {AdminAmountDialogComponent} from "./admin/admin-amount-dialog.component";
 import {ProductionSocket} from "./services/production-socket.service";
 import {OrdersSocket} from "./services/orders-socket.service";
-import {SocketIoModule} from "ng-socket-io/socket-io.module";
+import {SocketIoModule} from "ng-socket-io";
 import {InternetConnectionComponent} from "./general/internetconnection.component";
 import {InternetConnectionSocket} from "./services/internetconnection-socket.service";
 import {DrinkFilterPipe} from "./drink/drink-filter-pipe";
+import {RecipeOverviewModule} from "./recipe-overview/recipe-overview.module";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -89,7 +91,9 @@ import {DrinkFilterPipe} from "./drink/drink-filter-pipe";
     MatSnackBarModule,
     SocketIoModule,
     MatExpansionModule,
-    MatChipsModule
+    MatChipsModule,
+    RecipeOverviewModule,
+    HttpClientModule
   ],
   providers: [ProductionSocket, OrdersSocket, InternetConnectionSocket],
   bootstrap: [AppComponent],

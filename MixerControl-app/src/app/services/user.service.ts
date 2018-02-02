@@ -19,7 +19,6 @@ export class UserService {
       .toPromise()
       .then(response => {
         let drink =  response.json() as User;
-        console.log(drink);
         return drink;
       })
       .catch(this.handleError);

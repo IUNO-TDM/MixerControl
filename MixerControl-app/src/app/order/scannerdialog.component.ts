@@ -54,7 +54,7 @@ export class ScanDialog implements OnInit{
     this.orderService.getPaymentRequest(this.data.order.orderNumber)
       .then(paymentRequest =>  this.paymentRequest = paymentRequest);
 
-    this.drinkService.getDrink(this.data.order.drinkId).then(drink => this.drink = drink);
+    this.drinkService.getDrink(this.data.order.drinkId).subscribe(drink => this.drink = drink);
   }
 
   decodedOutput(text: string) {

@@ -1,0 +1,90 @@
+@import '~@angular/material/theming';
+
+
+.recipecard{
+  width: 200px;
+  height: 400px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+
+.mat-card-image{
+  /*background-color: greenyellow;*/
+  margin: 0px -24px 16px -24px;
+  background-color: #CDB7A5;
+
+}
+
+
+@media only screen and (max-width: 600px){
+  .mat-card-image{
+    /*background-color: greenyellow;*/
+    margin: 0px -16px 16px -16px;
+
+  }
+
+
+}
+
+
+.recipecard:hover{
+  @include mat-elevation(7);
+  cursor: pointer;
+}
+
+
+.recipe-title{
+  text-align: center;
+
+
+}
+
+.mat-card-avatar {
+  height: 60px;
+  width: 60px;
+}
+
+h3{
+  height: 40px;
+}
+
+.list-container{
+  height: 100%;
+  width: 100%;
+}
+
+mat-drawer{
+  width: 20vw;
+  background-color: #fafafa;
+  overflow: hidden;
+
+}
+
+mat-drawer-container{
+  height: 100%;
+}
+
+.filter-card{
+  margin-right: 10px;
+  //margin-top: 5px;
+  background-color: #f9f9f9;
+}
+
+.logo-space img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+mat-button-toggle{
+  font-size: x-large;
+  font-family: Emojione;
+}
+.mat-button-toggle{
+  color: rgba(0,0,0,1);
+}
+
+.logo-space{
+  width: 60%;
+}
