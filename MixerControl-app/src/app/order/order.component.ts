@@ -130,22 +130,22 @@ export class OrderComponent implements OnInit, OnDestroy {
     }
     // console.log(this.gridTiles);
 
-    const tile1 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('order'));
-    const tile2 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
-    const tile3 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('license'));
-    const tile4 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('production'));
-
-    for (const t of [tile1, tile2, tile3, tile4]) {
-      const cl = t._element.nativeElement.classList;
-      cl.remove('step1');
-      cl.remove('step2');
-      cl.remove('step3');
-      cl.remove('step4');
-    }
-    tile1._element.nativeElement.classList.add('step' + step1);
-    tile2._element.nativeElement.classList.add('step' + step2);
-    tile3._element.nativeElement.classList.add('step' + step3);
-    tile4._element.nativeElement.classList.add('step' + step4);
+    // const tile1 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('order'));
+    // const tile2 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
+    // const tile3 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('license'));
+    // const tile4 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('production'));
+    //
+    // for (const t of [tile1, tile2, tile3, tile4]) {
+    //   const cl = t._element.nativeElement.classList;
+    //   cl.remove('step1');
+    //   cl.remove('step2');
+    //   cl.remove('step3');
+    //   cl.remove('step4');
+    // }
+    // tile1._element.nativeElement.classList.add('step' + step1);
+    // tile2._element.nativeElement.classList.add('step' + step2);
+    // tile3._element.nativeElement.classList.add('step' + step3);
+    // tile4._element.nativeElement.classList.add('step' + step4);
   }
 
 

@@ -45,6 +45,7 @@ import {InternetConnectionSocket} from "./services/internetconnection-socket.ser
 import {DrinkFilterPipe} from "./drink/drink-filter-pipe";
 import {RecipeOverviewModule} from "./recipe-overview/recipe-overview.module";
 import {HttpClientModule} from "@angular/common/http";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 
 @NgModule({
@@ -93,7 +94,8 @@ import {HttpClientModule} from "@angular/common/http";
     MatExpansionModule,
     MatChipsModule,
     RecipeOverviewModule,
-    HttpClientModule
+    HttpClientModule,
+    FlexLayoutModule
   ],
   providers: [ProductionSocket, OrdersSocket, InternetConnectionSocket],
   bootstrap: [AppComponent],

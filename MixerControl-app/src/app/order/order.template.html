@@ -1,49 +1,31 @@
-<div class="container">
-
-  <div class="row title">
-    <div *ngIf="drink && order" class="left">Auftrag {{order.orderNumber}}: {{drink.title}}</div>
-    <my-internet-connection></my-internet-connection>
-    <div class="right">
-      <button mat-button (click)="Home()">zurück</button>
-    </div>
+<div fxLayout="column" class="order-container">
+  <div fxFlex="40px">
+    <button mat-raised-button (click)="Home()">
+      <mat-icon>home</mat-icon>
+    </button>
   </div>
-  <div class="orderStateContainer">
-    <div class="stepIcons">
-      <mat-grid-list cols="11" row-height="1:1" gutterSize="1rem">
-        <mat-grid-tile class="order" colspan="2" rowspan="2">
-          <div class="stepIconTileContent">
-            <img src="./assets/lnr-marketplace.svg">
-          </div>
+  <div fxFlex class="orderStateContainer" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="15px">
+    <div fxFlex="nogrow" fxFlexOffset="50px" class="step-icons-container" fxLayout="row" fxLayoutAlign="center center">
+      <div fxLayout="row" class="stepIcons">
+        <div fxFlex="19" class="stepIconTileContent">
+          <img src="./assets/lnr-marketplace.svg">
+        </div>
+        <div fxFlex="8" class="arrow"></div>
 
-        </mat-grid-tile>
-        <mat-grid-tile class="arrow" colspan="1" rowspan="2">
-
-        </mat-grid-tile>
-        <mat-grid-tile class="payment" colspan="2" rowspan="2">
-          <div class="stepIconTileContent">
-            <img src="./assets/lnr-money.svg">
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile class="arrow" colspan="1" rowspan="2">
-
-        </mat-grid-tile>
-        <mat-grid-tile class="license" colspan="2" rowspan="2">
-          <div class="stepIconTileContent">
-            <img src="./assets/lnr-license.svg">
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile class="arrow" colspan="1" rowspan="2">
-
-        </mat-grid-tile>
-        <mat-grid-tile class="production" colspan="2" rowspan="2">
-          <div class="stepIconTileContent">
-            <img src="./assets/lnr-coffee-cup.svg">
-          </div>
-        </mat-grid-tile>
-      </mat-grid-list>
+        <div fxFlex="19" class="stepIconTileContent">
+          <img src="./assets/lnr-money.svg">
+        </div>
+        <div fxFlex="8" class="arrow"></div>
+        <div fxFlex="19" class="stepIconTileContent">
+          <img src="./assets/lnr-license.svg">
+        </div>
+        <div fxFlex="8" class="arrow"></div>
+        <div fxFlex="19" class="stepIconTileContent">
+          <img src="./assets/lnr-coffee-cup.svg">
+        </div>
+      </div>
     </div>
-
-    <div *ngIf="orderState" class="orderStateDetails" [ngSwitch]="orderState.toState">
+    <div fxFlex="grow" *ngIf="orderState" class="orderStateDetails" [ngSwitch]="orderState.toState">
       <div class="orderSteps" *ngSwitchCase="'waitingOffer'">
         <mat-card class="orderStepsCard">
           <!--<mat-card-content>-->
@@ -393,4 +375,9 @@
     </div>
 
   </div>
+
+
+</div>
+
+
 
