@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Rx';
 
 import {Order} from '../models/Order';
@@ -19,8 +19,8 @@ export class OrderService {
   }
 
 
-  createOrder(order: Order): Observable<string> {
-    return this.http.post<Order>(this.ordersUrl, order, { observe: 'response' }).map(response => response.headers.get('Location'));
+  createOrder(order: Order): Observable<Order> {
+    return this.http.post<Order>(this.ordersUrl, order);
   }
 
   getPaymentRequest(id: string): Observable<string> {

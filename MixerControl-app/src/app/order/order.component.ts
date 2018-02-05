@@ -12,8 +12,8 @@ import {UserService} from '../services/user.service';
 import {OrderService} from '../services/order.service';
 import {DataSource} from '@angular/cdk/collections';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatGridTile, MatGridList} from '@angular/material';
-import {QrDialog} from './qrdialog.component';
-import {ScanDialog} from './scannerdialog.component';
+import {QrDialogComponent} from './qrdialog.component';
+import {ScanDialogComponent} from './scannerdialog.component';
 import {OrdersSocketService} from '../services/orders-socket.service';
 import {ProductionSocketService} from '../services/production-socket.service';
 import {Subscription} from 'rxjs/Subscription';
@@ -32,8 +32,8 @@ export class OrderComponent implements OnInit, OnDestroy {
   queueConnection: Subscription;
   queueObservable: Observable<any>;
   queuePlace = -1;
-  scanDialogRef: MatDialogRef<ScanDialog> | null;
-  qrDialogRef: MatDialogRef<QrDialog> | null;
+  scanDialogRef: MatDialogRef<ScanDialogComponent> | null;
+  qrDialogRef: MatDialogRef<QrDialogComponent> | null;
   order: Order;
   drink: Drink;
   user: User;
@@ -68,6 +68,10 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   @ViewChildren(HTMLDivElement) divs;
 
+  @ViewChild('order') orderDiv;
+  @ViewChild('payment') paymentDiv;
+  @ViewChild('license') licenseDiv;
+  @ViewChild('production') productionDiv;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -130,22 +134,18 @@ export class OrderComponent implements OnInit, OnDestroy {
     }
     // console.log(this.gridTiles);
 
-    const tile1 = this.divs.find(x => x._element.nativeElement.classList.contains('order'));
-    const tile2 = this.divs.find(x => x._element.nativeElement.classList.contains('payment'));
-    const tile3 = this.divs.find(x => x._element.nativeElement.classList.contains('license'));
-    const tile4 = this.divs.find(x => x._element.nativeElement.classList.contains('production'));
 
-    for (const t of [tile1, tile2, tile3, tile4]) {
-      const cl = t._element.nativeElement.classList;
+    for (const t of [this.orderDiv, this.paymentDiv, this.licenseDiv, this.productionDiv]) {
+      const cl = t.nativeElement.classList;
       cl.remove('step1');
       cl.remove('step2');
       cl.remove('step3');
       cl.remove('step4');
     }
-    tile1._element.nativeElement.classList.add('step' + step1);
-    tile2._element.nativeElement.classList.add('step' + step2);
-    tile3._element.nativeElement.classList.add('step' + step3);
-    tile4._element.nativeElement.classList.add('step' + step4);
+    this.orderDiv.nativeElement.classList.add('step' + step1);
+    this.paymentDiv.nativeElement.classList.add('step' + step2);
+    this.licenseDiv.nativeElement.classList.add('step' + step3);
+    this.productionDiv.nativeElement.classList.add('step' + step4);
   }
 
 
@@ -238,7 +238,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   ShowPaymentModalQR() {
     // this.showDialog = true;
     this.config.data.order = this.order;
-    this.qrDialogRef = this.dialog.open(QrDialog, this.config);
+    this.qrDialogRef = this.dialog.open(QrDialogComponent, this.config);
 
     // this.qrDialogRef.beforeClose().subscribe((result: string) => {
     //   // this.lastBeforeCloseResult = result;
@@ -251,7 +251,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ShowPaymentModalScan() {
     this.config.data.order = this.order;
-    this.scanDialogRef = this.dialog.open(ScanDialog, this.config);
+    this.scanDialogRef = this.dialog.open(ScanDialogComponent, this.config);
     this.scanDialogRef.afterClosed().subscribe((result: string) => {
       // this.lastAfterClosedResult = result;
       this.scanDialogRef = null;

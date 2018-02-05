@@ -36,8 +36,9 @@ router.post('/', function (req, res, next) {
             osm.init(order);
 
             var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-            res.set('Location', fullUrl + orderNumber);
-            res.sendStatus(201);
+            res.set('Location', fullUrl +'/'+ orderNumber);
+            res.status(201);
+            res.send(OrderDB.getOrder(orderNumber).strip());
         }
 
     });

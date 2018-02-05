@@ -28,14 +28,12 @@ export class RecipeDetailComponent implements OnInit {
     const order = new Order();
     order.drinkId = this.drink.id;
     order.orderName = 'Detlef Drinker';
-    this.orderService.createOrder(order).then(orderLocation => {
+    this.orderService.createOrder(order).subscribe(order2 => {
 
-      const orderURL = orderLocation;
-      const orderNumber = orderURL.split('/').pop();
 
-      this.router.navigateByUrl(`/orders/${orderNumber}`);
+      this.router.navigateByUrl(`/orders/${order2.orderNumber}`);
       this.dialogRef.close();
-    });
+    }, error2 => console.log(error2));
   }
 
   setStyles() {
