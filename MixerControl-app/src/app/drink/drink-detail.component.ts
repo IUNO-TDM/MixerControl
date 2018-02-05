@@ -59,7 +59,7 @@ export class DrinkDetailComponent implements OnInit {
     const order = new Order();
     order.drinkId = this.drink.id;
     order.orderName = 'Detlef Drinker';
-    this.orderService.createOrder(order).then(orderLocation => {
+    this.orderService.createOrder(order).subscribe(orderLocation => {
 
       this.orderURL = orderLocation;
       const orderNumber = this.orderURL.split('/').pop();

@@ -10,14 +10,14 @@ import {Order} from '../models/Order';
 import {DrinkService} from '../services/drink.service';
 import {UserService} from '../services/user.service';
 import {OrderService} from '../services/order.service';
-import {Subscription} from 'rxjs';
 import {DataSource} from '@angular/cdk/collections';
-import {Observable} from 'rxjs';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatGridTile, MatGridList} from '@angular/material';
 import {QrDialog} from './qrdialog.component';
 import {ScanDialog} from './scannerdialog.component';
 import {OrdersSocketService} from '../services/orders-socket.service';
 import {ProductionSocketService} from '../services/production-socket.service';
+import {Subscription} from 'rxjs/Subscription';
+import {Observable} from 'rxjs/Observable';
 
 
 @Component({
@@ -66,7 +66,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   };
 
 
-  @ViewChildren(MatGridTile) gridTiles;
+  @ViewChildren(HTMLDivElement) divs;
 
 
   constructor(private route: ActivatedRoute,
@@ -92,32 +92,32 @@ export class OrderComponent implements OnInit, OnDestroy {
     let step2 = 0;
     let step3 = 0;
     let step4 = 0;
-    if (state == 'uninitialized' || state == 'error') {
+    if (state === 'uninitialized' || state === 'error') {
       step1 = 0;
       step2 = 0;
       step3 = 0;
       step4 = 0;
-    } else if (state == 'waitingOffer' || state == 'waitingPaymentRequest') {
+    } else if (state === 'waitingOffer' || state === 'waitingPaymentRequest') {
       step1 = 2;
       step2 = 0;
       step3 = 0;
       step4 = 0;
-    } else if (state == 'waitingPayment' || state == 'waitingLicenseAvailable') {
+    } else if (state === 'waitingPayment' || state === 'waitingLicenseAvailable') {
       step1 = 3;
       step2 = 2;
       step3 = 0;
       step4 = 0;
-    } else if (state == 'waitingLicense') {
+    } else if (state === 'waitingLicense') {
       step1 = 3;
       step2 = 3;
       step3 = 2;
       step4 = 0;
-    } else if (state == 'waitForProduction' || state == 'readyForProduction' || state == 'orderPaused') {
+    } else if (state === 'waitForProduction' || state === 'readyForProduction' || state === 'orderPaused') {
       step1 = 3;
       step2 = 3;
       step3 = 3;
       step4 = 2;
-    } else if (state == 'inProduction' || state == 'startProduction') {
+    } else if (state === 'inProduction' || state === 'startProduction') {
       step1 = 3;
       step2 = 3;
       step3 = 3;
@@ -130,32 +130,26 @@ export class OrderComponent implements OnInit, OnDestroy {
     }
     // console.log(this.gridTiles);
 
-    // const tile1 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('order'));
-    // const tile2 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('payment'));
-    // const tile3 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('license'));
-    // const tile4 = this.gridTiles.find(x => x._element.nativeElement.classList.contains('production'));
-    //
-    // for (const t of [tile1, tile2, tile3, tile4]) {
-    //   const cl = t._element.nativeElement.classList;
-    //   cl.remove('step1');
-    //   cl.remove('step2');
-    //   cl.remove('step3');
-    //   cl.remove('step4');
-    // }
-    // tile1._element.nativeElement.classList.add('step' + step1);
-    // tile2._element.nativeElement.classList.add('step' + step2);
-    // tile3._element.nativeElement.classList.add('step' + step3);
-    // tile4._element.nativeElement.classList.add('step' + step4);
+    const tile1 = this.divs.find(x => x._element.nativeElement.classList.contains('order'));
+    const tile2 = this.divs.find(x => x._element.nativeElement.classList.contains('payment'));
+    const tile3 = this.divs.find(x => x._element.nativeElement.classList.contains('license'));
+    const tile4 = this.divs.find(x => x._element.nativeElement.classList.contains('production'));
+
+    for (const t of [tile1, tile2, tile3, tile4]) {
+      const cl = t._element.nativeElement.classList;
+      cl.remove('step1');
+      cl.remove('step2');
+      cl.remove('step3');
+      cl.remove('step4');
+    }
+    tile1._element.nativeElement.classList.add('step' + step1);
+    tile2._element.nativeElement.classList.add('step' + step2);
+    tile3._element.nativeElement.classList.add('step' + step3);
+    tile4._element.nativeElement.classList.add('step' + step4);
   }
 
 
   ngOnInit(): void {
-
-
-    // this.route.params.subscribe(params => {
-    //
-    //   }
-    // );
 
     const orderObservable = this.route.params.switchMap((params: Params) => this.orderService.getOrder(params['id']));
     // orderObservable;
@@ -176,7 +170,7 @@ export class OrderComponent implements OnInit, OnDestroy {
           this.ordersSocketService.getUpdates('state')
             .subscribe(state => {
               if (state.orderNumber === this.order.orderNumber) {
-                if (state != 'waitingPayment') {
+                if (state !== 'waitingPayment') {
                   if (this.qrDialogRef) {
                     this.qrDialogRef.close();
                   }
@@ -201,7 +195,7 @@ export class OrderComponent implements OnInit, OnDestroy {
       },
       err => {
         console.log(err);
-        if (err && err.status && err.status == 404) {
+        if (err && err.status && err.status === 404) {
           this.router.navigateByUrl('/');
         }
       },

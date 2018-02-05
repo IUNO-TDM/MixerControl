@@ -71,7 +71,7 @@ router.get('/:id/paymentRequest', function (req, res, next) {
     }
 
     if (order.paymentRequest !== undefined) {
-        res.send(order.paymentRequest);
+        res.send({PaymentRequest:order.paymentRequest});
     } else {
         res.sendStatus(404);
     }

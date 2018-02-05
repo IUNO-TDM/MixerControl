@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {OrderService} from "../services/order.service";
+import {OrderService} from '../services/order.service';
 
 
 @Component({
@@ -10,30 +10,26 @@ import {OrderService} from "../services/order.service";
   styleUrls: ['./qrdialog.component.css']
 
 })
-export class QrDialog implements OnInit{
-  errorMessage= "";
-  paymentRequest = "";
+export class QrDialogComponent implements OnInit{
+  errorMessage= '';
+  paymentRequest = '';
   elementType:  'url' | 'canvas' | 'img' = 'url';
 
   constructor(
-    public dialogRef: MatDialogRef<QrDialog>,
+    public dialogRef: MatDialogRef<QrDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private orderService: OrderService,) {
-
-
-    // this.paymentRequest = data.message;
-
+    private orderService: OrderService, ) {
   }
 
   ngOnInit(){
 
     this.orderService.getPaymentRequest(this.data.order.orderNumber)
-      .then(paymentRequest => {
+      .subscribe(paymentRequest => {
         this.paymentRequest = paymentRequest;
-        this.errorMessage = "";
-      }).catch(error => {
+        this.errorMessage = '';
+      }, error => {
         this.errorMessage = error;
-        this.paymentRequest = "";
+        this.paymentRequest = '';
     });
 
   }
