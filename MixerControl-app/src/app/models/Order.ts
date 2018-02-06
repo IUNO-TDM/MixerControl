@@ -5,6 +5,6 @@ export class Order {
   drinkId: string;
 
   orderName?: string;
-  orderNumber?: string;
+  orderNumber?: number;
 
 }

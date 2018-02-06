@@ -34,7 +34,8 @@ export class OrderComponent implements OnInit, OnDestroy {
   queuePlace = -1;
   scanDialogRef: MatDialogRef<ScanDialogComponent> | null;
   qrDialogRef: MatDialogRef<QrDialogComponent> | null;
-  order: Order;
+  orderToBeDisplayed: Order;
+  a: Order;
   drink: Drink;
   user: User;
   error: any;
@@ -150,17 +151,15 @@ export class OrderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
     const orderObservable = this.route.params.switchMap((params: Params) => this.orderService.getOrder(params['id']));
     // orderObservable;
-    orderObservable.subscribe(order => {
-        console.log(order);
-        this.order = order;
-
+    orderObservable.subscribe(o => {
+        console.log(o);
+        this.orderToBeDisplayed = o;
 
         this.orderProgressConnection = this.ordersSocketService.getUpdates('progress')
           .subscribe(progress => {
-            if (progress.orderNumber === this.order.orderNumber) {
+            if (progress.orderNumber === this.orderToBeDisplayed.orderNumber) {
               this.progress = progress.progress;
             }
 
@@ -169,7 +168,7 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.orderStateConnection =
           this.ordersSocketService.getUpdates('state')
             .subscribe(state => {
-              if (state.orderNumber === this.order.orderNumber) {
+              if (state.orderNumber === this.orderToBeDisplayed.orderNumber) {
                 if (state !== 'waitingPayment') {
                   if (this.qrDialogRef) {
                     this.qrDialogRef.close();
@@ -184,10 +183,10 @@ export class OrderComponent implements OnInit, OnDestroy {
 
             });
 
-        this.ordersSocketService.joinRoom(this.order.orderNumber);
+        this.ordersSocketService.joinRoom(String(this.orderToBeDisplayed.orderNumber));
 
 
-        this.drinkService.getDrink(order.drinkId).subscribe(drink => {
+        this.drinkService.getDrink(o.drinkId).subscribe(drink => {
           this.drink = drink;
           this.userService.getUser(this.drink.authorId).then(user => this.user = user,
               error => this.error = error);
@@ -201,15 +200,15 @@ export class OrderComponent implements OnInit, OnDestroy {
       },
       () => console.log('yay'));
 
-    const drinkObservable = orderObservable.switchMap((order: Order) => this.drinkService.getDrink(order.drinkId));
+    const drinkObservable = orderObservable.switchMap((o: Order) => this.drinkService.getDrink(o.drinkId));
     this.dataSource = new ExampleDataSource(drinkObservable);
 
     this.queueObservable = this.productionSocketService.getUpdates('queue');
     this.queueConnection = this.queueObservable.subscribe(queue => {
       const list = queue as Array<any>;
-      for (const order of list) {
-        if (order.orderNumber === this.order.orderNumber) {
-          this.queuePlace = order.queuePlace;
+      for (const o of list) {
+        if (o.orderNumber === this.orderToBeDisplayed.orderNumber) {
+          this.queuePlace = o.queuePlace;
         }
       }
     });
@@ -237,7 +236,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ShowPaymentModalQR() {
     // this.showDialog = true;
-    this.config.data.order = this.order;
+    this.config.data.order = this.orderToBeDisplayed;
     this.qrDialogRef = this.dialog.open(QrDialogComponent, this.config);
 
     // this.qrDialogRef.beforeClose().subscribe((result: string) => {
@@ -250,7 +249,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   ShowPaymentModalScan() {
-    this.config.data.order = this.order;
+    this.config.data.order = this.orderToBeDisplayed;
     this.scanDialogRef = this.dialog.open(ScanDialogComponent, this.config);
     this.scanDialogRef.afterClosed().subscribe((result: string) => {
       // this.lastAfterClosedResult = result;

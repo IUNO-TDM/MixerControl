@@ -5,6 +5,10 @@
     </button>
   </div>
   <div fxFlex class="orderStateContainer" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="15px">
+    <div *ngIf="drink && orderToBeDisplayed">
+      <h1>Auftrag {{orderToBeDisplayed.orderNumber}}: {{drink.title}}</h1>
+
+    </div>
     <div fxFlex="nogrow" fxFlexOffset="50px" class="step-icons-container" fxLayout="row" fxLayoutAlign="center center">
       <div fxLayout="row" class="stepIcons">
         <div fxFlex="19" class="stepIconTileContent" #order>
