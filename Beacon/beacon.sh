@@ -12,7 +12,7 @@ hciconfig hci0 up
 hciconfig hci0 leadv 3
 hciconfig hci0 noscan
 
-while (1); do
+while ( true ); do
     # iBeacon
     hcitool -i hci0 cmd 0x08 0x0008 1E 02 01 1A 1A FF 4C 00 02 15 1E 80 9A 70 DF 5E 4C 81 BF E0 54 9D 55 2D 0B AF 00 00 00 00 C8
     sleep $BCTIME
