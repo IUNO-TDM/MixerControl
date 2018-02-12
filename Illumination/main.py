@@ -23,6 +23,8 @@ productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStar
 currentState = ""
 nextState = productionStates[0]
 
+productionProgress = 0
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--spidev", help="spi device to control dotstar pixels", default=0, type=int)
 parser.add_argument("--spics", help="chip select to control dotstar pixels", default=1, type=int)
@@ -49,9 +51,8 @@ class OrderNamespace(BaseNamespace):
 
 def onOrderProgressHandler( *args):
     global productionProgress
-    productionProgress = args[0]
-    print('progress', args)
-    print('progress', args[0]["progress"])
+    productionProgress = args[0]["progress"]
+    print('progress', productionProgress)
 
 #####
 # Production Namespace
@@ -122,8 +123,8 @@ class dotStars():
         # end frame
         self.spiArray[(4 + numPixels * 4)] = 0xff
 
-    def open(self):
-        self.spi.open(args.spidev, args.spics)
+    def open(self, spidev, spics):
+        self.spi.open(spidev, spics)
         self.spi.max_speed_hz = 1600000
 
     def setPixel(self, index, r, g, b):
@@ -169,6 +170,9 @@ class dotStarsThread (threading.Thread):
             stateImage["pixels"] = img.load()
             stateImage["width"] = img.size[0]
 
+            progressImage = Image.open("progress.png").convert("RGBA")
+            self.progressPixels = progressImage.load()
+
             # limit number of pixels in case image is too large
             height = img.size[1]
             if (height > numPixels): height = numPixels
@@ -179,7 +183,7 @@ class dotStarsThread (threading.Thread):
     def run(self):
         print "Starting " + self.name
         ds = dotStars()
-        ds.open()
+        ds.open(args.spidev, args.spics)
         
         while not endThreads:
             now = time.time()
@@ -194,7 +198,20 @@ class dotStarsThread (threading.Thread):
             x = int(frame % width)
             for y in range(height):  # For each pixel in column...
                 value = pixels[x, y] # Read pixel in image
-                ds.setPixel(y, value[0], value[1], value[2])
+                r = value[0]
+                g = value[1]
+                b = value[2]
+                if (currentState == "processingOrder"):
+                    alpha = self.progressPixels[productionProgress, y][3]
+                    red   = self.progressPixels[productionProgress, y][0]
+                    green = self.progressPixels[productionProgress, y][1]
+                    blue  = self.progressPixels[productionProgress, y][2]
+                    alphaN = 255 - alpha
+                    r = (alphaN * r + alpha * red) / 255
+                    g = (alphaN * g + alpha * green) / 255
+                    b = (alphaN * b + alpha * blue) / 255
+
+                ds.setPixel(y, r, g, b)
 
             ds.show()
 
