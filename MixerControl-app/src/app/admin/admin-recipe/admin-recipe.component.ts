@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Component as TdmComponent} from '../../models/Component';
 import {TdmProgram} from '../../juice-program-configurator/models/tdmprogram';
 import {ComponentService} from "../../services/component.service";
 import {AdminService} from "../../services/admin.service";
 import {Subscription} from "rxjs/Rx";
 import {ProductionSocketService} from "../../services/production-socket.service";
+import {JuiceProgramConfiguratorComponent} from "../../juice-program-configurator/juice-program-configurator.component";
 
 @Component({
     selector: 'app-admin-recipe',
@@ -14,10 +15,13 @@ import {ProductionSocketService} from "../../services/production-socket.service"
 })
 export class AdminRecipeComponent implements OnInit {
 
+    @ViewChild(JuiceProgramConfiguratorComponent) juiceProgramConfigurator: JuiceProgramConfiguratorComponent;
+
     pcModeConnection: Subscription;
     components: TdmComponent[];
     program = new TdmProgram();
     pcMode: string;
+
 
     constructor(
         private componentService: ComponentService,

@@ -1,9 +1,9 @@
 <div class="section">
-    <juice-program-configurator [program]=program [components]=components></juice-program-configurator>
+    <juice-program-configurator #juiceProgramConfigurator [program]=program [components]=components></juice-program-configurator>
 </div>
 
 <div class="section">
-    <button (click)="onProduce()" [disabled]="pcMode !='idle'" mat-raised-button color="primary" class="mat-elevation-z1">
+    <button (click)="onProduce()" [disabled]="pcMode !='idle' || juiceProgramConfigurator.getErrorText().length > 0" mat-raised-button color="primary" class="mat-elevation-z1">
         Produzieren
     </button>
 </div>
