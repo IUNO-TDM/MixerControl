@@ -1,6 +1,6 @@
-import {Component} from './Component'
+import {TdmComponent} from './tdmcomponent'
 
-export class Program {
+export class TdmProgram {
     id: string;
     amountPerMillisecond = 0.01;
     sequences: TdmSequence[] = [];
@@ -126,7 +126,7 @@ export class Program {
 
 export class TdmSequence {
     id: string;
-    component: Component;
+    component: TdmComponent;
     phases: TdmPhase[] = [];
 
     clear() {

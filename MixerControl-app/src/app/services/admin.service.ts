@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http, Response, RequestOptions} from '@angular/http';
 import {Pump} from '../models/Pump';
-import {Program} from '../models/Program';
+import {TdmProgram} from '../juice-program-configurator/models/tdmprogram';
 
 
 @Injectable()
@@ -92,9 +92,9 @@ export class AdminService {
         return this.http.put(url, body, null).toPromise();
     }
 
-    runProgram(program: Program) {
+    runProgram(program: TdmProgram) {
         let url = `${this.adminUrl}program`;
-        return this.http.post(url, program.getJSON())
+        return this.http.post(url, program.getJSON()).toPromise();
     }
 
     private handleError(error: any): Promise<any> {

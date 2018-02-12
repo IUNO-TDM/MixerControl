@@ -1,0 +1,100 @@
+<div class="tdm-program" fxLayout="column" fxFlexFill>
+    <div *ngIf="program.sequences.length == 0" class="tdm-empty-program-box" fxLayoutAlign="center center">
+        <a href="javascript:void(0);" class="tdm-link" (click)="openAddComponentDialog()">Zutat hinzufügen</a>
+    </div>
+    <div *ngIf="program.sequences.length > 0">
+        <!-- sequences -->
+        <div *ngFor="let sequence of program.sequences; index as sequenceIndex; first as isFirst" class="tdm-sequence"
+             fxLayout="row">
+            <!-- component name -->
+            <div class="tdm-sequence-label" fxFlex="20" fxFlexAlign="stretch" fxLayoutAlign="left center">
+                <div class="valign" fxLayout="row">
+                    <a (click)="removeSequence(sequence)" class="tdm-sequence-remove-button">
+                        <img src="/assets/images/delete-icon.png" width="16px" height="16px">
+                    </a>
+                    <div class="tdm-component-label">{{sequence.component.name}}</div>
+                </div>
+            </div>
+            <!-- phases -->
+            <div class="tdm-sequence-content" fxFlex="70" fxFlexAlign="stretch" style="position: relative;">
+                <div *ngFor="let phase of sequence.phases; index as phaseIndex;" fxFlexAlign="stretch" class="tdm-phase"
+                     style.left="{{getPhaseStart(phase)}}px"
+                     style.width="{{getPhaseWidth(phase)}}px" (mousedown)="startMouseDragPhaseStart(phase, $event)"
+                     (touchstart)="startTouchDragPhaseStart(phase, $event)"
+                     (click)="phaseClicked(phase, $event)" fxLayout="row">
+                    <div class="tdm-phase-content" fxLayoutAlign="left center" fxFlex="calc(100% - 30px);">
+                        <div class="tdm-phase-content-throughput" style.height="{{phase.throughput}}%"></div>
+                        <div class="tdm-phase-content-label">{{getPhaseAmountLabel(phase)}}</div>
+                    </div>
+                    <div class="tdm-phase-throughput-handle" (mousedown)="startMouseDragThroughputHandle(phase, $event)"
+                         (touchstart)="startTouchDragThroughputHandle(phase, $event)"
+                         fxLayoutAlign="center center" fxFlex="30px">
+                        <div class="tdm-phase-throughput-caret"></div>
+                    </div>
+                </div>
+                <div *ngIf="snapLineOffset != -1" class="tdm-sequence-snapline"
+                     style.left="{{getSnapLineStart()}}px"></div>
+            </div>
+            <!-- total amount of sequence -->
+            <div class="tdm-sequence-total-label" fxFlex="10" fxFlexAlign="stretch" fxLayoutAlign="center center">
+                <div class="valign total-label change-amount">{{getSequenceAmountLabel(sequence)}}</div>
+            </div>
+        </div>
+
+        <!-- pauses -->
+        <div *ngIf="program.hasPause()" class="tdm-sequence" fxLayout="row">
+            <div class="tdm-sequence-label" fxFlex="20" fxFlexAlign="stretch" fxLayoutAlign="left center">
+                <div class="valign" fxLayout="row">
+                    <div class="tdm-component-label" style="margin-left: 21px">Pausen</div>
+                </div>
+            </div>
+            <!-- pause-phases -->
+            <div class="tdm-sequence-content" fxFlex="70" fxFlexAlign="stretch" style="position: relative;">
+                <div *ngFor="let phase of program.pauseSequence.phases; index as phaseIndex;" fxFlexAlign="stretch"
+                     class="tdm-pause-phase"
+                     style.left="{{getPhaseStart(phase)}}px" style.width="{{getPhaseWidth(phase)}}px" fxLayout="row">
+                    <div class="tdm-pause-phase-content" fxLayoutAlign="left center" fxFlex="calc(100% - 30px);">
+                        <div class="tdm-pause-phase-content-label">{{getPausePhaseLabel(phase)}}</div>
+                    </div>
+                </div>
+                <div *ngIf="snapLineOffset != -1" class="tdm-sequence-snapline"
+                     style.left="{{getSnapLineStart()}}px"></div>
+            </div>
+            <!-- total amount of sequence -->
+            <div class="tdm-sequence-total-label" fxFlex="10" fxFlexAlign="stretch" fxLayoutAlign="center center">
+                <div class="valign total-label change-amount" [ngClass]="{'tdm-error': hasTotalPauseError()}">
+                    {{getTotalPauseLabel(program.pauseSequence)}}
+                </div>
+            </div>
+        </div>
+
+        <div class="tdm-sequence" fxLayout="row">
+            <div class="tdm-footer-label" fxFlex="20" fxFlexAlign="stretch" fxLayoutAlign="left center">
+                <div class="valign" fxLayout="row">
+                    <div class="tdm-component-label" style="margin-left: 21px;">
+                        <a (click)="openAddComponentDialog()" class="tdm-link">Zutat hinzufügen</a>
+                        <!-- <mat-form-field>
+                            <mat-select placeholder="Zutat hinzufügen">
+                              <mat-option *ngFor="let component of components" [value]="component.id">
+                                {{ component.name }}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>           -->
+                    </div>
+                </div>
+            </div>
+            <!-- error messages -->
+            <div [innerHTML]="getErrorText()" class="tdm-program-error" fxFlex="70" fxFlexAlign="stretch"
+                 fxLayoutAlign="center center"
+                 style="position: relative;">
+            </div>
+            <!-- total amount -->
+            <div class="tdm-footer-total-label" fxFlex="10" fxFlexAlign="stretch" fxLayoutAlign="center center">
+                <div class="total-label"
+                     [ngClass]="{'tdm-error': hasMaxTotalAmountError() || hasMinTotalAmountError()}">
+                    {{getTotalAmountLabel(program)}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

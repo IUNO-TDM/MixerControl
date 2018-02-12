@@ -54,6 +54,8 @@ import {DrinkFilterPipe} from './drink/drink-filter-pipe';
 import {RecipeOverviewModule} from './recipe-overview/recipe-overview.module';
 import {HttpClientModule} from '@angular/common/http';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {JuiceProgramConfiguratorModule} from './juice-program-configurator/juice-program-configurator.module';
+import {AdminRecipeComponent } from './admin/admin-recipe/admin-recipe.component';
 
 
 @NgModule({
@@ -70,7 +72,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
         AdminServiceComponent,
         AdminComponentDialogComponent,
         AdminAmountDialogComponent,
-        DrinkFilterPipe
+        DrinkFilterPipe,
+        AdminRecipeComponent
     ],
     imports: [
         BrowserModule,
@@ -104,7 +107,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
         MatChipsModule,
         RecipeOverviewModule,
         HttpClientModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        JuiceProgramConfiguratorModule
     ],
     providers: [ProductionSocket, OrdersSocket, InternetConnectionSocket],
     bootstrap: [AppComponent],

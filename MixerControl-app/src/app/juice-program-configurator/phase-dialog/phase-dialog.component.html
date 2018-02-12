@@ -1,0 +1,22 @@
+<form name="clientForm" novalidate (ngSubmit)="actionChangePhase($event)">
+    <h1 mat-dialog-title>Phase bearbeiten</h1>
+
+    <div mat-dialog-content>
+        <mat-form-field style="width: 100%">
+            <input onfocus="this.select()" matInput type="number" placeholder="Menge in Milliliter"
+                   value="{{phase.amount}}" [formControl]="amountFormControl" [(ngModel)]="amount">
+            <mat-error *ngIf="amountFormControl.hasError('email') && !amountFormControl.hasError('required')">
+                Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="amountFormControl.hasError('required')">
+                Email is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close type="button">Abbrechen</button>
+        <button mat-raised-button (click)="actionRemovePhase()" type="button">Löschen</button>
+        <button mat-raised-button (click)="actionSplitPhase()" type="button">Abtrennen</button>
+        <button mat-raised-button (click)="actionChangePhase($event)" type="submit">Menge ändern</button>
+    </mat-dialog-actions>
+</form>
