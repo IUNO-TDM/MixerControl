@@ -41,6 +41,7 @@ class ProductionNamespace(BaseNamespace):
 
     def on_disconnect(self):
         print('disconnect from namespace production')
+        nextState = productionStates[0]
 
     def on_reconnect(self):
         print('reconnect to namespace production')
@@ -74,6 +75,45 @@ class socketIoThread (threading.Thread):
             print "Exiting " + self.name
 
 #####
+# DotStar SPI class
+###
+class dotStars():
+    def __init__(self):
+        # Calculate gamma correction table, makes mid-range colors look 'right':
+        self.gamma = bytearray(256)
+        for i in range(256):
+	        self.gamma[i] = int(pow(float(i) / 255.0, 2.7) * 255.0 + 0.5)
+
+        self.spi = spidev.SpiDev()
+
+        self.spiArray = [0b11100000 | (maxBrightness & 31)] * (4 + numPixels * 4 + 1)
+
+        # start frame 0x00000000
+        self.spiArray[0] = 0
+        self.spiArray[1] = 0
+        self.spiArray[2] = 0
+        self.spiArray[3] = 0
+
+        # end frame
+        self.spiArray[(4 + numPixels * 4)] = 0xff
+
+    def open(self):
+        self.spi.open(args.spidev, args.spics)
+        self.spi.max_speed_hz = 1600000
+
+    def setPixel(self, index, r, g, b):
+#        self.spiArray[4 + 4 * index + 0] = 0b11100000 | (maxBrightness & 31)
+        self.spiArray[4 + 4 * index + 1] = self.gamma[b] # blue
+        self.spiArray[4 + 4 * index + 2] = self.gamma[g] # green
+        self.spiArray[4 + 4 * index + 3] = self.gamma[r] # red
+
+    def show(self):
+        self.spi.writebytes(self.spiArray)
+
+    def close(self):
+        self.spi.close()
+
+#####
 # Dot Stars Animator
 ###
 HZ = 50
@@ -81,15 +121,10 @@ class dotStarsThread (threading.Thread):
     def __init__(self, name):
         threading.Thread.__init__(self)
         self.name = name
-        self.spi = spidev.SpiDev()
+        self.loadImages()
 
-    def run(self):
-        print "Starting " + self.name
-
-        self.spi.open(args.spidev, args.spics)
-        self.spi.max_speed_hz = 1600000
-
-        images = {}
+    def loadImages(self):
+        self.images = {}
         for state in productionStates:
             filename = state+".png"
 
@@ -108,58 +143,53 @@ class dotStarsThread (threading.Thread):
             stateImage["image"] = img
             stateImage["pixels"] = img.load()
             stateImage["width"] = img.size[0]
+
+            # limit number of pixels in case image is too large
             height = img.size[1]
-            if (height > numPixels): height = numPixels # limit number of pixels in case image is too large
+            if (height > numPixels): height = numPixels
             stateImage["height"] = height
-            images[state] = stateImage
 
-        # Calculate gamma correction table, makes mid-range colors look 'right':
-        gamma = bytearray(256)
-        for i in range(256):
-	        gamma[i] = int(pow(float(i) / 255.0, 2.7) * 255.0 + 0.5)
+            self.images[state] = stateImage
 
-        spiArray = [0b11100000 | (maxBrightness & 31)] * (4 + numPixels * 4 + 1)
-
+    def run(self):
+        print "Starting " + self.name
+        ds = dotStars()
+        ds.open()
+        
         while not endThreads:
             now = time.time()
             frame = int(now * HZ)
             global currentState
-            if (currentState != nextState) and (nextState in images):
+            if (currentState != nextState) and (nextState in self.images):
                 currentState = nextState
-                pixels    = images[currentState]["pixels"]
-                width     = images[currentState]["width"]
-                height    = images[currentState]["height"]
-
-            spiArray[0] = 0 # start frame 0x00000000
-            spiArray[1] = 0
-            spiArray[2] = 0
-            spiArray[3] = 0
+                pixels    = self.images[currentState]["pixels"]
+                width     = self.images[currentState]["width"]
+                height    = self.images[currentState]["height"]
 
             x = int(frame % width)
             for y in range(height):  # For each pixel in column...
                 value = pixels[x, y] # Read pixel in image
-                spiArray[4 + 4 * y + 0] = 0b11100000 | (maxBrightness & 31)
-                spiArray[4 + 4 * y + 1] = gamma[value[2]] # blue
-                spiArray[4 + 4 * y + 2] = gamma[value[1]] # green
-                spiArray[4 + 4 * y + 3] = gamma[value[0]] # red
+                ds.setPixel(y, value[0], value[1], value[2])
 
-            spiArray[(4 + numPixels * 4)] = 0xff # end frame
-
-            self.spi.xfer2(spiArray)
+            ds.show()
 
             time.sleep(float(frame + 1) / HZ - now)
 
-        self.spi.close()
+        ds.close()
         print "Exiting " + self.name
+
+#######
+# main
+###
 
 threads = []
 
 # start Threads
-thread = socketIoThread ("SocketIo")
+thread = dotStarsThread ("DotStars")
 thread.start()
 threads.append(thread)
 
-thread = dotStarsThread ("DotStars")
+thread = socketIoThread ("SocketIO")
 thread.start()
 threads.append(thread)
 
