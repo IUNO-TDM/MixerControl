@@ -32,6 +32,28 @@ parser.add_argument("--port", help="tcp port of the MixerControls socket.io", de
 args = parser.parse_args()
 
 #####
+# Orders Namespace
+###
+class OrderNamespace(BaseNamespace):
+    def on_connect(self):
+        print('connected to namespace orders')
+        self.emit('room', 'allOrders') # register room "allOrders"
+
+    def on_disconnect(self):
+        print('disconnect from namespace production')
+        nextState = productionStates[0]
+
+    def on_reconnect(self):
+        print('reconnect to namespace production')
+        self.emit('room', 'allOrders') # register room "allOrders"
+
+def onOrderProgressHandler( *args):
+    global productionProgress
+    productionProgress = args[0]
+    print('progress', args)
+    print('progress', args[0]["progress"])
+
+#####
 # Production Namespace
 ###
 class ProductionNamespace(BaseNamespace):
@@ -65,9 +87,12 @@ class socketIoThread (threading.Thread):
     def run(self):
         print "Starting " + self.name
         with SocketIO(args.host, args.port) as socketIO:
-            print "SocketIO instantiated"
             production_namespace = socketIO.define(ProductionNamespace, '/production')
             production_namespace.on('state', onProductionStateHandler)
+
+            # this is no good namespace, see https://github.com/IUNO-TDM/MixerControl/issues/129
+            order_namespace = socketIO.define(OrderNamespace, '/orders')
+            order_namespace.on('progress', onOrderProgressHandler)
 
             while not endThreads:
                 socketIO.wait(1)
