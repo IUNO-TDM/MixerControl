@@ -34,9 +34,8 @@ import 'hammerjs';
 import {CdkTableModule} from '@angular/cdk/table';
 
 
-import {NgxQRCodeModule} from '@techiediaries/ngx-qrcode';
+import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {QrScannerModule} from 'angular2-qrscanner';
-import {PaymentComponent} from './order/payment.component';
 import {QrDialogComponent} from './order/qrdialog.component';
 import {ScanDialogComponent} from './order/scannerdialog.component';
 import {AdminComponentComponent} from './admin/admin-component.component';
@@ -63,7 +62,6 @@ import {AdminRecipeComponent } from './admin/admin-recipe/admin-recipe.component
         AppComponent,
         InternetConnectionComponent,
         routedComponents,
-        PaymentComponent,
         QrDialogComponent,
         ScanDialogComponent,
         AdminComponentComponent,

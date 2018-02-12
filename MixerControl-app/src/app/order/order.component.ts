@@ -1,6 +1,6 @@
 import {
-  Component, OnInit, Inject, OnDestroy, ViewChild, QueryList, ElementRef, ContentChildren,
-  ViewChildren
+    Component, OnInit, Inject, OnDestroy, ViewChild, QueryList, ElementRef, ContentChildren,
+    ViewChildren, forwardRef
 } from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
@@ -65,9 +65,6 @@ export class OrderComponent implements OnInit, OnDestroy {
       order: new Order
     }
   };
-
-
-  @ViewChildren(HTMLDivElement) divs;
 
   @ViewChild('order') orderDiv;
   @ViewChild('payment') paymentDiv;
