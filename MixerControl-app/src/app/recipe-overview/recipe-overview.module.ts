@@ -17,8 +17,8 @@ import {FormsModule} from '@angular/forms';
 @NgModule({
     imports: [
         CommonModule,
-        BrowserAnimationsModule,
-        // NoopAnimationsModule,
+        // BrowserAnimationsModule,
+        NoopAnimationsModule,
         FormsModule,
         MatCardModule,
         MatDialogModule,
