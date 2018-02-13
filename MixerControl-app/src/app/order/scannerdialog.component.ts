@@ -13,14 +13,15 @@ import {Router} from '@angular/router';
     <h2 mat-dialog-title>Den Coupon vor die Kamera halten</h2>
 
     <mat-dialog-content>
-      <qr-scanner
-        [debug]="false"
-        [canvasWidth]="640"
-        [canvasHeight]="480"
-        [mirror]="false"
-        [stopAfterScan]="true"
-        [updateTime]="500"
-        (onRead)="decodedOutput($event)"></qr-scanner>
+      <div style="width:640px; height:480px; ">
+        <qr-scanner
+          [debug]="false"
+          [canvasWidth]="640"
+          [canvasHeight]="480"
+          [stopAfterScan]="true"
+          [updateTime]="500"></qr-scanner>
+      </div>
+
     </mat-dialog-content>
 
     <mat-dialog-actions>
@@ -56,6 +57,43 @@ export class ScanDialogComponent implements OnInit {
       .subscribe(paymentRequest => this.paymentRequest = paymentRequest);
 
     this.drinkService.getDrink(this.data.order.drinkId).subscribe(drink => this.drink = drink);
+    this.startScanning();
+  }
+
+
+  startScanning() {
+    this.qrScannerComponent.getMediaDevices().then(devices => {
+      console.log(devices);
+      const videoDevices: MediaDeviceInfo[] = [];
+      for (const device of devices) {
+        if (device.kind.toString() === 'videoinput') {
+          videoDevices.push(device);
+        }
+      }
+      if (videoDevices.length > 0) {
+        let choosenDev;
+        for (const dev of videoDevices) {
+          if (dev.label.includes('front')) {
+            choosenDev = dev;
+            break;
+          }
+        }
+        if (choosenDev) {
+          this.qrScannerComponent.chooseCamera.next(choosenDev);
+        } else {
+          this.qrScannerComponent.chooseCamera.next(videoDevices[0]);
+        }
+      }
+    });
+
+    this.qrScannerComponent.capturedQr.subscribe(result => {
+      this.decodedOutput(result);
+      this.qrScannerComponent.stopScanning();
+    });
+  }
+
+  stopScanning() {
+    this.qrScannerComponent.stopScanning();
   }
 
   decodedOutput(text: string) {
@@ -71,7 +109,7 @@ export class ScanDialogComponent implements OnInit {
             const config = new MatSnackBarConfig();
             this.snackBar.open('Der Coupon hat mit ' + avPair.coin / 100000 +
               ' IUNO zu wenig Guthaben', '', {duration: 5000});
-            this.qrScannerComponent.startScanning();
+            this.startScanning();
           } else {
             const config = new MatSnackBarConfig();
             this.snackBar.open('Auf dem Coupon verbleibt ein Guthaben von ' +
@@ -91,22 +129,22 @@ export class ScanDialogComponent implements OnInit {
             const snackBarRef = this.snackBar.open('Der Zahlungsauftrag ist im PaymentService nicht vorhanden',
               'Neuer Auftrag', {duration: 5000});
             snackBarRef.onAction().subscribe(() => this.router.navigateByUrl('/drink/' + this.drink.id));
-          }else if (error2.status === 422) {
+          } else if (error2.status === 422) {
             const config = new MatSnackBarConfig();
             this.snackBar.open('Ungültiger Coupon', 'OK', {duration: 5000});
-            this.qrScannerComponent.startScanning();
+            this.startScanning();
           } else if (error2.status === 409) {
             const config = new MatSnackBarConfig();
             this.snackBar.open('Dieser Coupon wurde bereits für diesen Auftrag eingescannt.', '',
               {duration: 5000});
-            this.qrScannerComponent.startScanning();
-          }else {
+            this.startScanning();
+          } else {
             this.snackBar.open(error2, '', {duration: 5000});
-            this.qrScannerComponent.startScanning();
+            this.startScanning();
           }
-        }else {
+        } else {
           this.snackBar.open(error2, '', {duration: 5000});
-          this.qrScannerComponent.startScanning();
+          this.startScanning();
         }
       });
 

@@ -35,7 +35,7 @@ import {CdkTableModule} from '@angular/cdk/table';
 
 
 import {NgxQRCodeModule} from 'ngx-qrcode2';
-import {QrScannerModule} from 'angular2-qrscanner';
+import {NgQrScannerModule} from 'angular2-qrscanner';
 import {QrDialogComponent} from './order/qrdialog.component';
 import {ScanDialogComponent} from './order/scannerdialog.component';
 import {AdminComponentComponent} from './admin/admin-component.component';
@@ -88,7 +88,7 @@ import {AdminRecipeComponent } from './admin/admin-recipe/admin-recipe.component
         MatMenuModule,
         MatToolbarModule,
         NgxQRCodeModule,
-        QrScannerModule,
+        NgQrScannerModule,
         MatTableModule,
         CdkTableModule,
         MatDialogModule,
