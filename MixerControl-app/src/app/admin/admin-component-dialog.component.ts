@@ -11,7 +11,7 @@ import {Component as ModelComponent} from '../models/Component'
 })
 export class AdminComponentDialogComponent implements OnInit{
  pumpNr = 1;
- oldComponent = "sdfghjkm";
+ oldComponent: ModelComponent;
  components: ModelComponent[];
  selectedValue: string;
 
@@ -22,7 +22,6 @@ export class AdminComponentDialogComponent implements OnInit{
 
     this.pumpNr = data.pumpNr;
     this.oldComponent = data.oldComponent;
-    // this.paymentRequest = data.message;
 
   }
 

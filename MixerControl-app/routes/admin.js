@@ -1,14 +1,15 @@
 /**
  * Created by goergch on 23.01.17.
  */
-var express = require('express');
-var router = express.Router();
-var logger = require('../global/logger');
-var production_queue = require('../models/production_queue');
-var pumpcontrol_service = require('../services/pumpcontrol_service');
-
+const express = require('express');
+const router = express.Router();
+const logger = require('../global/logger');
+const production_queue = require('../models/production_queue');
+const pumpcontrol_service = require('../services/pumpcontrol_service');
+const programConverter = require('../services/program_converter');
 const async = require('async');
-var jms_connector = require('../adapter/juice_machine_service_adapter');
+const jms_connector = require('../adapter/juice_machine_service_adapter');
+
 router.post('/production/startConfirm', function (req, res, next) {
     production_queue.startConfirmed();
     res.sendStatus(200);
@@ -164,4 +165,44 @@ router.post('/pumps/service', function (req, res, next) {
     res.sendStatus(200);
 
 });
+
+router.post('/program', function(req, res, next) {
+
+    // req.body = {
+    //     "amount-per-millisecond": 0.01,
+    //     "sequences": [
+    //         {
+    //             "ingredient-id": "4cfa2890-6abd-4e21-a7ab-17613ed9a5c9",
+    //             "phases": [
+    //                 {
+    //                     "start": 0,
+    //                     "amount": 50,
+    //                     "throughput": 100
+    //                 }
+    //             ]
+    //         },
+    //         {
+    //             "ingredient-id": "570a5df0-a044-4e22-b6e6-b10af872d75c",
+    //             "phases": [
+    //                 {
+    //                     "start": 0,
+    //                     "amount": 50,
+    //                     "throughput": 100
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // };
+
+    const machineProgram = programConverter.convertProgramToMachineProgram(req.body);
+    const machineProgramString = JSON.stringify(machineProgram);
+
+    pumpcontrol_service.startProgram(production_queue, {
+        productCode: 0,
+        program: machineProgramString
+    });
+
+    res.sendStatus(200);
+});
+
 module.exports = router;

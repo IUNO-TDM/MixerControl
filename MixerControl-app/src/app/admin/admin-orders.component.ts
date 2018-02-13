@@ -54,8 +54,8 @@ interface Dictionary<T> {
 export class OrdersDataSource extends DataSource<any> {
   ordersObservable: Observable<any>;
   ordersStatesObservable: Observable<any>;
-  orders = new Map<string, Order>();
-  orderStates = new Map<string,string>();
+  orders = new Map<number, Order>();
+  orderStates = new Map<number, string>();
   constructor(private ordersSocketService: OrdersSocketService) {
     super();
   }
@@ -73,7 +73,7 @@ export class OrdersDataSource extends DataSource<any> {
     this.ordersSocketService.joinRoom('allOrders');
 
     this.ordersObservable = this.ordersSocketService.getUpdates('add').map(order => {
-      var o: Order = order;
+      const o: Order = order;
       this.orders.set(o.orderNumber, o);
       console.log(o);
       return this.orders;
@@ -89,20 +89,20 @@ export class OrdersDataSource extends DataSource<any> {
 
     return Observable.merge(this.ordersObservable, this.ordersStatesObservable,2).map(() => {
     // return this.ordersObservable.map(() => {
-      var array = new Array<OrderLine>();
+      let array = new Array<OrderLine>();
       // console.log(this.orders);
-      for (let order of Array.from(this.orders.values())) {
-        var orderLine = new OrderLine();
-        orderLine.DrinkId = order.drinkId;
-        orderLine.DrinkName = order.orderName;
-        orderLine.OrderNr = String(order.orderNumber);
-        if(this.orderStates.has(order.orderNumber)){
-          orderLine.State = this.orderStates.get(order.orderNumber);
+      for (const o of Array.from(this.orders.values())) {
+        let orderLine = new OrderLine();
+        orderLine.DrinkId = o.drinkId;
+        orderLine.DrinkName = o.orderName;
+        orderLine.OrderNr = String(o.orderNumber);
+        if(this.orderStates.has(o.orderNumber)) {
+          orderLine.State = this.orderStates.get(o.orderNumber);
         }
         array.push(orderLine);
       }
       return array;
-    })
+    });
 
   }
 

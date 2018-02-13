@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Zutat hinzufügen</h1>
+
+<div mat-dialog-content>
+    <mat-list>
+        <mat-list-item *ngFor="let component of components" (click)="componentSelected(component)">
+            {{component.name}}
+        </mat-list-item>
+    </mat-list>
+</div>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Abbrechen</button>
+</mat-dialog-actions>
