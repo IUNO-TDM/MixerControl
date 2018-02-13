@@ -22,16 +22,4 @@ export class DrinkService {
     return this.http
       .get<Drink>(url);
   }
-
-
-  getDrinkBackgroundColor(id: string): Observable<any> {
-    let url = `${this.drinksUrl}/${id}/image/backgroundColor`;
-    return this.http.get(url,{ responseType: 'text' });
-  }
-
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
-    return Promise.reject(error.message || error);
-  }
 }

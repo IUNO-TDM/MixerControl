@@ -23,4 +23,5 @@ export class Drink {
 
   components?: models.Component[] = [];
 
+  backgroundColor?: string;
 }

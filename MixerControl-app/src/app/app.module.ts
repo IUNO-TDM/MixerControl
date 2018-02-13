@@ -49,7 +49,6 @@ import {OrdersSocket} from './services/orders-socket.service';
 import {SocketIoModule} from 'ng-socket-io';
 import {InternetConnectionComponent} from './general/internetconnection.component';
 import {InternetConnectionSocket} from './services/internetconnection-socket.service';
-import {DrinkFilterPipe} from './drink/drink-filter-pipe';
 import {RecipeOverviewModule} from './recipe-overview/recipe-overview.module';
 import {HttpClientModule} from '@angular/common/http';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -70,7 +69,6 @@ import {AdminRecipeComponent } from './admin/admin-recipe/admin-recipe.component
         AdminServiceComponent,
         AdminComponentDialogComponent,
         AdminAmountDialogComponent,
-        DrinkFilterPipe,
         AdminRecipeComponent
     ],
     imports: [
