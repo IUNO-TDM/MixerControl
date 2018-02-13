@@ -92,16 +92,24 @@ class dotStarsThread (threading.Thread):
         images = {}
         for state in productionStates:
             filename = state+".png"
+
+            # if no machine specific illumination pattern is there, try the standard pattern
             if not os.path.isfile(filename):
-                print filename + " missing"
+                print filename + " missing, trying to load standard pattern"
+                filename = "standard-" + filename
+
+            # if standard pattern is missing, continue with next pattern
+            if not os.path.isfile(filename):
+                print "illumination pattern for state " + state + " is not available"
                 continue
+
             stateImage = {}
             img = Image.open(filename).convert("RGB")
             stateImage["image"] = img
             stateImage["pixels"] = img.load()
             stateImage["width"] = img.size[0]
             height = img.size[1]
-            if(height > numPixels): height = numPixels # limit number of pixels in case image is too large
+            if (height > numPixels): height = numPixels # limit number of pixels in case image is too large
             stateImage["height"] = height
             images[state] = stateImage
 
