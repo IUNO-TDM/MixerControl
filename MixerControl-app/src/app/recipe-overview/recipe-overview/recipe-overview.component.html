@@ -23,7 +23,7 @@
         </div>
         <br>
         <div fxLayout="column" fxLayoutAlign="center">
-          <button mat-button (click)="resetFilter()" [disabled]="!resetEnabled">Filter Reset</button>
+          <button mat-button (click)="resetFilter()" [disabled]="!resetEnabled">Vorlieben Zurücksetzen</button>
           {{(drinks|recipeFilter: filterData).length}} Drink{{(drinks|recipeFilter: filterData).length == 1?'':'s'}} sind mit diesen Vorlieben verfügbar
         </div>
 
