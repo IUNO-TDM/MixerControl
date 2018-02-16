@@ -19,7 +19,6 @@ maxBrightness = 15      # led driving current [0-31]
 
 productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStart", "startProcessing", "processingOrder", "finished", "errorProcessing", "productionPaused", "pumpControlServiceMode"]
 
-currentState = ""
 nextState = productionStates[0]
 
 productionProgress = 0
@@ -100,6 +99,25 @@ class socketIoThread (threading.Thread):
             print "Exiting " + self.name
 
 #####
+# one time overlay
+###
+class OneTimeOverlay():
+    def __init__(self, image):
+        self.image = image
+        self.width = self.image.size[0]
+        self.startFrame = 0
+
+    def startOverlay(self, frame):
+        self.startFrame = frame
+
+    def paste(self, frame, background):
+        x = frame - self.startFrame
+        if (self.width < x):
+            return background
+        overlay = self.image.crop((x, 0, x+1, self.image.size[1]))
+        return Image.alpha_composite(background, overlay)
+
+#####
 # Dot Stars Animator
 ###
 HZ = 50
@@ -107,10 +125,15 @@ class dotStarsThread (threading.Thread):
     def __init__(self, name):
         threading.Thread.__init__(self)
         self.name = name
+        self.currentState = ""
         self.loadImages()
 
     def loadImages(self):
+        progressImage = Image.open("progress.png").convert("RGBA")
+        self.progressPixels = progressImage.load()
+
         self.images = {}
+
         for state in productionStates:
             filename = state+".png"
 
@@ -125,13 +148,9 @@ class dotStarsThread (threading.Thread):
                 continue
 
             stateImage = {}
-            img = Image.open(filename).convert("RGB")
+            img = Image.open(filename).convert("RGBA")
             stateImage["image"] = img
-            stateImage["pixels"] = img.load()
             stateImage["width"] = img.size[0]
-
-            progressImage = Image.open("progress.png").convert("RGBA")
-            self.progressPixels = progressImage.load()
 
             # limit number of pixels in case image is too large
             height = img.size[1]
@@ -145,23 +164,35 @@ class dotStarsThread (threading.Thread):
         ds = DotStar.DotStar(numPixels, maxBrightness)
         ds.open(args.spidev, args.spics)
         
+        finishedOverlay = OneTimeOverlay(self.images["finished"]["image"])
+
         while not endThreads:
             now = time.time()
             frame = int(now * HZ)
-            global currentState
-            if (currentState != nextState) and (nextState in self.images):
-                currentState = nextState
-                pixels    = self.images[currentState]["pixels"]
-                width     = self.images[currentState]["width"]
-                height    = self.images[currentState]["height"]
+            if (self.currentState != nextState):
+                if ("finished" == nextState):
+                    finishedOverlay.startOverlay(frame)
+
+                if (nextState in self.images):
+                    self.currentState = nextState
+                    img       = self.images[nextState]["image"]
+                    width     = self.images[nextState]["width"]
+                    height    = self.images[nextState]["height"]
 
             x = int(frame % width)
+
+            bg = img.crop((x, 0, x+1, img.size[1]))
+            overlayed = finishedOverlay.paste(frame, bg)
+
             for y in range(height):  # For each pixel in column...
-                value = pixels[x, y] # Read pixel in image
+                pixels = overlayed.load()
+                value = pixels[0, y] # Read pixel in image
                 r = value[0]
                 g = value[1]
                 b = value[2]
-                if (currentState == "processingOrder"):
+
+                # overlay progress image in state processingOrder
+                if (self.currentState == "processingOrder"):
                     alpha = self.progressPixels[productionProgress, y][3]
                     red   = self.progressPixels[productionProgress, y][0]
                     green = self.progressPixels[productionProgress, y][1]
