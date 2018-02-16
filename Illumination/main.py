@@ -131,8 +131,7 @@ class dotStarsThread (threading.Thread):
         self.loadImages()
 
     def loadImages(self):
-        progressImage = Image.open("progress.png").convert("RGBA")
-        self.progressPixels = progressImage.load()
+        self.progressImage = Image.open("progress.png").convert("RGBA")
 
         self.images = {}
 
@@ -169,9 +168,11 @@ class dotStarsThread (threading.Thread):
         finishedOverlay = OneTimeOverlay(self.images["finished"]["image"])
 
         while not endThreads:
+            # calculate current framenumber
             now = time.time()
             frame = int(now * HZ)
 
+            # handle state changes
             while (not nextStates.empty()):
                 nextState = nextStates.get()
                 if ("finished" == nextState):
@@ -183,28 +184,25 @@ class dotStarsThread (threading.Thread):
                     width     = self.images[nextState]["width"]
                     height    = self.images[nextState]["height"]
 
+            # get background image column
             x = int(frame % width)
-
             bg = img.crop((x, 0, x+1, img.size[1]))
-            overlayed = finishedOverlay.paste(frame, bg)
 
+            # conditionally overlay finished image
+            column = finishedOverlay.paste(frame, bg)
+
+            # overlay progress image in state processingOrder
+            if (self.currentState == "processingOrder"):
+                progress = self.progressImage.crop((productionProgress, 0, productionProgress+1, height))
+                column = Image.alpha_composite(column, progress)
+
+            pixels = column.load()
             for y in range(height):  # For each pixel in column...
-                pixels = overlayed.load()
+
                 value = pixels[0, y] # Read pixel in image
                 r = value[0]
                 g = value[1]
                 b = value[2]
-
-                # overlay progress image in state processingOrder
-                if (self.currentState == "processingOrder"):
-                    alpha = self.progressPixels[productionProgress, y][3]
-                    red   = self.progressPixels[productionProgress, y][0]
-                    green = self.progressPixels[productionProgress, y][1]
-                    blue  = self.progressPixels[productionProgress, y][2]
-                    alphaN = 255 - alpha
-                    r = (alphaN * r + alpha * red) / 255
-                    g = (alphaN * g + alpha * green) / 255
-                    b = (alphaN * b + alpha * blue) / 255
 
                 ds.setPixel(y, r, g, b)
 
