@@ -24,6 +24,7 @@ import {AdminComponent} from './admin.component';
 import {InternetconnectionModule} from '../internetconnection/internetconnection.module';
 import {FormsModule} from '@angular/forms';
 import {routing} from "./admin.routing";
+import { AdminWalletComponent } from './admin-wallet/admin-wallet.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {routing} from "./admin.routing";
     AdminProductionComponent,
     AdminRecipeComponent,
     AdminServiceComponent,
+    AdminWalletComponent,
   ], imports: [
     CommonModule,
     FormsModule,

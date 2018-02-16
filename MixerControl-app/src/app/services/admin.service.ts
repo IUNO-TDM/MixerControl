@@ -14,7 +14,7 @@ export class AdminService {
   }
 
 
-  getBalance(): Observable<Balance> {
+  getWalletBalance(): Observable<Balance> {
     const url = `${this.adminUrl}wallet/balance`;
     return this.http.get<Balance>(url);
   }

@@ -62,7 +62,8 @@ export class OrderComponent implements OnInit, OnDestroy {
       right: ''
     },
     data: {
-      order: new Order
+      order: new Order,
+      drink: new Drink
     }
   };
 
@@ -234,6 +235,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   ShowPaymentModalQR() {
     // this.showDialog = true;
     this.config.data.order = this.orderToBeDisplayed;
+    this.config.data.drink = this.drink;
     this.qrDialogRef = this.dialog.open(QrDialogComponent, this.config);
 
     // this.qrDialogRef.beforeClose().subscribe((result: string) => {
@@ -247,6 +249,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
   ShowPaymentModalScan() {
     this.config.data.order = this.orderToBeDisplayed;
+    this.config.data.drink = this.drink;
     this.scanDialogRef = this.dialog.open(ScanDialogComponent, this.config);
     this.scanDialogRef.afterClosed().subscribe((result: string) => {
       // this.lastAfterClosedResult = result;
