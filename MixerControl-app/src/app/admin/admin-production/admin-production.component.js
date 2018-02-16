@@ -13,7 +13,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const socketio_service_1 = require("../services/socketio.service");
-const admin_service_1 = require("../services/admin.service");
+const admin_service_1 = require("../../services/admin.service");
 let AdminProductionComponent = class AdminProductionComponent {
     constructor(socketService, adminService) {
         this.socketService = socketService;
@@ -46,9 +46,9 @@ AdminProductionComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: 'my-admin-production',
-        templateUrl: 'admin-production.template.html',
+        templateUrl: 'admin-production/admin-production.template.html',
         providers: [socketio_service_1.SocketService, admin_service_1.AdminService]
-    }), 
+    }),
     __metadata('design:paramtypes', [socketio_service_1.SocketService, admin_service_1.AdminService])
 ], AdminProductionComponent);
 exports.AdminProductionComponent = AdminProductionComponent;

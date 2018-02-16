@@ -13,7 +13,8 @@ import {OrderService} from '../../services/order.service';
 })
 export class RecipeDetailComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<RecipeDetailComponent>, @Inject(MAT_DIALOG_DATA) public data, private router: Router, private orderService: OrderService) {
+  constructor(public dialogRef: MatDialogRef<RecipeDetailComponent>, @Inject(MAT_DIALOG_DATA) public data,
+              private router: Router, private orderService: OrderService) {
     this.drink = data.drink;
     this.user = data.user;
   }

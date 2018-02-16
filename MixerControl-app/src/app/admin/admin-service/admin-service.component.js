@@ -13,7 +13,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require('@angular/core');
 const socketio_service_1 = require("../services/socketio.service");
-const admin_service_1 = require("../services/admin.service");
+const admin_service_1 = require("../../services/admin.service");
 let AdminServiceComponent = class AdminServiceComponent {
     constructor(socketService, adminService) {
         this.socketService = socketService;
@@ -55,9 +55,9 @@ AdminServiceComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: 'my-admin-service',
-        templateUrl: 'admin-service.template.html',
+        templateUrl: 'admin-service/admin-service.template.html',
         providers: [socketio_service_1.SocketService, admin_service_1.AdminService]
-    }), 
+    }),
     __metadata('design:paramtypes', [socketio_service_1.SocketService, admin_service_1.AdminService])
 ], AdminServiceComponent);
 exports.AdminServiceComponent = AdminServiceComponent;

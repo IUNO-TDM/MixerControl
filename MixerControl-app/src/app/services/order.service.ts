@@ -34,11 +34,11 @@ export class OrderService {
     return this.http.put<AdressValuePair>(url, payment);
   }
 
-  sendProductionStart(id: string): Observable<any> {
+  sendProductionStart(id: string): Observable<HttpResponse<Object>> {
     // const headers = new Headers({ 'Content-Type': 'text/plain' });
     // const options = new RequestOptions({ headers: headers });
     const url = `${this.ordersUrl}${id}/productionStart`;
 
-    return this.http.put(url, 'true');
+    return this.http.put(url, 'true', {observe: 'response'});
   }
 }

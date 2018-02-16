@@ -10,6 +10,8 @@ const programConverter = require('../services/program_converter');
 const async = require('async');
 const jms_connector = require('../adapter/juice_machine_service_adapter');
 
+const payment_connector = require('../adapter/payment_service_adapter');
+
 router.post('/production/startConfirm', function (req, res, next) {
     production_queue.startConfirmed();
     res.sendStatus(200);
@@ -24,6 +26,18 @@ router.post('/production/resume', function (req, res, next) {
     production_queue.resumeProduction();
     res.sendStatus(200);
 
+});
+
+router.get('/wallet/balance', function(req, res, next){
+  payment_connector.getWalletBalance(function(e,balance){
+    if(e){
+      res.status(500).send(e);
+    } else if(!balance){
+      res.sendStatus(500);
+    }else {
+      res.status(200).send(balance);
+    }
+  });
 });
 
 router.get('/pumps', function (req, res, next) {
@@ -167,33 +181,6 @@ router.post('/pumps/service', function (req, res, next) {
 });
 
 router.post('/program', function(req, res, next) {
-
-    // req.body = {
-    //     "amount-per-millisecond": 0.01,
-    //     "sequences": [
-    //         {
-    //             "ingredient-id": "4cfa2890-6abd-4e21-a7ab-17613ed9a5c9",
-    //             "phases": [
-    //                 {
-    //                     "start": 0,
-    //                     "amount": 50,
-    //                     "throughput": 100
-    //                 }
-    //             ]
-    //         },
-    //         {
-    //             "ingredient-id": "570a5df0-a044-4e22-b6e6-b10af872d75c",
-    //             "phases": [
-    //                 {
-    //                     "start": 0,
-    //                     "amount": 50,
-    //                     "throughput": 100
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // };
-
     const machineProgram = programConverter.convertProgramToMachineProgram(req.body);
     const machineProgramString = JSON.stringify(machineProgram);
 
@@ -204,5 +191,6 @@ router.post('/program', function(req, res, next) {
 
     res.sendStatus(200);
 });
+
 
 module.exports = router;

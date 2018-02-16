@@ -10,18 +10,17 @@ import {OrderService} from '../services/order.service';
   styleUrls: ['./qrdialog.component.css']
 
 })
-export class QrDialogComponent implements OnInit{
-  errorMessage= '';
+export class QrDialogComponent implements OnInit {
+  errorMessage = '';
   paymentRequest = '';
-  elementType:  'url' | 'canvas' | 'img' = 'url';
+  elementType: 'url' | 'canvas' | 'img' = 'url';
 
-  constructor(
-    public dialogRef: MatDialogRef<QrDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private orderService: OrderService, ) {
+  constructor(public dialogRef: MatDialogRef<QrDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private orderService: OrderService,) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
 
     this.orderService.getPaymentRequest(this.data.order.orderNumber)
       .subscribe(paymentRequest => {
@@ -30,7 +29,7 @@ export class QrDialogComponent implements OnInit{
       }, error => {
         this.errorMessage = error;
         this.paymentRequest = '';
-    });
+      });
 
   }
 

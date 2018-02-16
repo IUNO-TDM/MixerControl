@@ -3,12 +3,13 @@
  */
 
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {AdminService} from "../services/admin.service";
-import {Subscription, Observable} from "rxjs";
-import {Order} from "../models/models"
+import {AdminService} from '../../services/admin.service';
+import {Order} from '../../models/models';
 
 import {DataSource} from '@angular/cdk/collections';
-import {ProductionSocketService} from "../services/production-socket.service";
+import {ProductionSocketService} from '../../services/production-socket.service';
+import {Subscription} from "rxjs/Subscription";
+import {Observable} from "rxjs/Observable";
 @Component({
     moduleId: module.id,
     selector: 'my-admin-production',
@@ -19,7 +20,7 @@ import {ProductionSocketService} from "../services/production-socket.service";
 export class AdminProductionComponent implements OnInit, OnDestroy {
     queueConnection: Subscription;
     // stateConnection: Subscription;
-    state = "";
+    state = '';
     queue = new Array<Order>();
 
     orders = new Array<Order>();
@@ -82,21 +83,21 @@ export class ProductionDataSource extends DataSource<any> {
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<ProductionLine[]> {
-    this.productionSocketService.joinRoom('queue')
+    this.productionSocketService.joinRoom('queue');
     this.queueObservable = this.productionSocketService.getUpdates('queue');
-    return this.queueObservable.map(queue =>{
-      var array = new Array<ProductionLine>();
+    return this.queueObservable.map(queue => {
+      const array = new Array<ProductionLine>();
       console.log(queue);
-      for (let o of queue) {
-        var order = o as Order;
-        var productionLine = new ProductionLine();
+      for (const o of queue) {
+        const order = o as Order;
+        const productionLine = new ProductionLine();
         productionLine.DrinkId = order.drinkId;
         productionLine.DrinkName = order.orderName;
         productionLine.OrderNr = String(order.orderNumber);
         array.push(productionLine);
       }
       return array;
-    })
+    });
 
   }
 

@@ -3,15 +3,15 @@
  */
 
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import * as models from '../models/models';
-import {ComponentService} from '../services/component.service';
-import {AdminService} from '../services/admin.service'
-import {Component as ModelComponent} from '../models/Component'
-import {Subscription} from "rxjs";
-import {AdminComponentDialogComponent} from "./admin-component-dialog.component";
-import {MatDialog, MatDialogRef} from "@angular/material";
-import {AdminAmountDialogComponent} from "./admin-amount-dialog.component";
-import {ProductionSocketService} from "../services/production-socket.service";
+import * as models from '../../models/models';
+import {ComponentService} from '../../services/component.service';
+import {AdminService} from '../../services/admin.service';
+import {Component as ModelComponent} from '../../models/Component';
+import {AdminComponentDialogComponent} from '../admin-component-dialog/admin-component-dialog.component';
+import {MatDialog, MatDialogRef} from '@angular/material';
+import {AdminAmountDialogComponent} from '../admin-amount-dialog/admin-amount-dialog.component';
+import {ProductionSocketService} from '../../services/production-socket.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   moduleId: module.id,
@@ -78,9 +78,9 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadContent();
-    this.productionSocketService.joinRoom("amountWarning");
-    this.productionSocketService.getUpdates("amountWarning").subscribe(warning => {
-    // this.amountWarningConnection = this.socketService.get("/production", "amountWarning", "amountWarning").subscribe(warning => {
+    this.productionSocketService.joinRoom('amountWarning');
+    this.productionSocketService.getUpdates('amountWarning').subscribe(warning => {
+      // this.amountWarningConnection = this.socketService.get("/production", "amountWarning", "amountWarning").subscribe(warning => {
       this.warnings[warning.pumpNr] = warning;
     });
 
@@ -90,10 +90,10 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
   }
 
-  loadContent(){
-    this.componentService.getComponents(false).then(components => this.components = components);
-    this.adminService.getPumps().then(pumps => this.pumps = pumps);
-    this.adminService.getStandardAmounts().then(amounts => this.standardAmounts = amounts);
+  loadContent() {
+    this.componentService.getComponents(false).subscribe(components => this.components = components);
+    this.adminService.getPumps().subscribe(pumps => this.pumps = pumps);
+    this.adminService.getStandardAmounts().subscribe(amounts => this.standardAmounts = amounts);
 
   }
 
@@ -104,12 +104,12 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
     this.amountDialogRef.afterClosed().subscribe((result: any) => {
       // this.lastAfterClosedResult = result;
-      if(result){
+      if (result) {
         console.log(result);
-        if(result.reset){
-          this.adminService.resetComponent(pump.nr, result.amount).then(response => console.log(response));
+        if (result.reset) {
+          this.adminService.resetComponent(pump.nr, result.amount).subscribe(response => console.log(response));
         }
-        this.adminService.setStandardAmount(pump.nr, result.amount).then(() => this.loadContent());
+        this.adminService.setStandardAmount(pump.nr, result.amount).subscribe(() => this.loadContent());
 
       }
       this.amountDialogRef = null;
@@ -124,8 +124,8 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
     this.componentDialogRef.afterClosed().subscribe((result: string) => {
       // this.lastAfterClosedResult = result;
-      if(result){
-        this.adminService.setPump(pump.nr,result).then(() => this.loadContent());
+      if (result) {
+        this.adminService.setPump(pump.nr, result).subscribe(() => this.loadContent());
       }
       this.componentDialogRef = null;
     });

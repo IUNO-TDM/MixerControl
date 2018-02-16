@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {ComponentService} from "../services/component.service";
-import {Component as ModelComponent} from '../models/Component'
+import {Component as ModelComponent} from '../../models/Component';
 
 @Component({
   selector: 'amount-dialog',
@@ -29,13 +28,13 @@ export class AdminAmountDialogComponent implements OnInit {
 
   }
 
-  result(){
-    var res = {'reset': this.reset, 'amount': this.amount};
+  result() {
+    const res = {'reset': this.reset, 'amount': this.amount};
     // console.log(res);
     return res;
   }
 
-  Accept(){
+  Accept() {
     this.dialogRef.close(this.result());
   }
 

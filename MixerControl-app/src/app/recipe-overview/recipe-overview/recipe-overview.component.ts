@@ -55,7 +55,7 @@ export class RecipeOverviewComponent implements OnInit {
 
   ngOnInit() {
     this.getDrinks();
-    this.componentService.getComponents(true).then(components => {
+    this.componentService.getComponents(true).subscribe(components => {
       for (const comp of components) {
         this.componentSelection[comp.id] = 'n';
       }
@@ -78,7 +78,7 @@ export class RecipeOverviewComponent implements OnInit {
     for (const drink of this.drinks) {
       if (!this.users[drink.authorId]) {
         this.users[drink.authorId] = loadingUser;
-        this.userService.getUser(drink.authorId).then(user => {
+        this.userService.getUser(drink.authorId).subscribe(user => {
           this.users[drink.authorId] = user;
         });
       }
@@ -113,8 +113,8 @@ export class RecipeOverviewComponent implements OnInit {
   }
 
   filterChanged(change: MatButtonToggleChange) {
-    let include: string[] = new Array<string>()
-    let exclude: string[] = new Array<string>()
+    const include: string[] = new Array<string>();
+    const exclude: string[] = new Array<string>();
     for (const comp in this.componentSelection) {
       if (this.componentSelection[comp] === 'i') {
         include.push(comp);
@@ -141,27 +141,28 @@ export class RecipeOverviewComponent implements OnInit {
 
 function hashCode(str) {
   let hash = 0;
-  if (str.length === 0) return hash;
+  if (str.length === 0) {
+    return hash;
+  }
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
+    hash = ((hash * 32) - hash) + char;
+    hash &= hash; // Convert to 32bit integer
   }
   return hash;
 }
 
 function randomInt(low, high, seed?) {
   if (seed) {
-    let hash = hashCode(seed);
-    return ((hash < 0 ? hash * -1 : hash) % (high + 1)) + low
-  }
-  else {
+    const hash = hashCode(seed);
+    return ((hash < 0 ? hash * -1 : hash) % (high + 1)) + low;
+  } else {
     return Math.floor(Math.random() * (high - low) + low);
   }
 }
 
 function getRandomBackgroundColor(seed) {
-  let colors = [
+  const colors = [
     '#0078ff',
     '#bd00ff',
     '#ff9a00',

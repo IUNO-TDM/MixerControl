@@ -12,8 +12,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
-const component_service_1 = require('../services/component.service');
-const admin_service_1 = require('../services/admin.service');
+const component_service_1 = require('../../services/component.service');
+const admin_service_1 = require('../../services/admin.service');
 const socketio_service_1 = require('../services/socketio.service');
 let AdminComponentComponent = class AdminComponentComponent {
     constructor(componentService, adminService, socketService) {
@@ -54,9 +54,9 @@ AdminComponentComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: 'my-admin-component',
-        templateUrl: 'admin-component.template.html',
+        templateUrl: 'admin-component/admin-component.template.html',
         providers: [component_service_1.ComponentService, admin_service_1.AdminService, socketio_service_1.SocketService]
-    }), 
+    }),
     __metadata('design:paramtypes', [component_service_1.ComponentService, admin_service_1.AdminService, socketio_service_1.SocketService])
 ], AdminComponentComponent);
 exports.AdminComponentComponent = AdminComponentComponent;

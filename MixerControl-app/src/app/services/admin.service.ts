@@ -1,104 +1,90 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, Response, RequestOptions} from '@angular/http';
 import {Pump} from '../models/Pump';
 import {TdmProgram} from '../juice-program-configurator/models/tdmprogram';
+import {Observable} from 'rxjs/Observable';
+import {Balance} from '../models/Balance';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 
 
 @Injectable()
 export class AdminService {
-    private adminUrl = 'api/admin/';  // URL to web api
+  private adminUrl = 'api/admin/';  // URL to web api
 
-    constructor(private http: Http) {
-    }
+  constructor(private http: HttpClient) {
+  }
 
 
-    resumeProduction(): Promise<Number> {
-        let url = `${this.adminUrl}production/resume`;
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-        let body = "";
-        return this.http.post(url, body, options).toPromise().then(response => response.status);
-    }
+  getBalance(): Observable<Balance> {
+    const url = `${this.adminUrl}wallet/balance`;
+    return this.http.get<Balance>(url);
+  }
 
-    pauseProduction(): Promise<Number> {
-        let url = `${this.adminUrl}production/pause`;
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-        let body = "";
-        return this.http.post(url, body, options).toPromise().then(response => response.status);
-    }
 
-    startProcessing(): Promise<Number> {
-        let url = `${this.adminUrl}production/startConfirm`;
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-        let body = "";
-        return this.http.post(url, body, options).toPromise().then(response => response.status);
-    }
+  resumeProduction(): Observable<number> {
+    const url = `${this.adminUrl}production/resume`;
 
-    setServiceMode(active: boolean): Promise<Number> {
-        let url = `${this.adminUrl}pumps/service`;
+    return this.http.post(url, {}, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+  }
 
-        let body = "false";
-        if (active) {
-            body = "true";
-        }
+  pauseProduction(): Observable<any> {
+    const url = `${this.adminUrl}production/pause`;
 
-        return this.http.post(url, body, null).toPromise().then(response => response.status);
-    }
+    return this.http.post(url, {}, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+  }
 
-    getPumps(): Promise<Pump[]> {
-        let url = `${this.adminUrl}pumps`;
-        return this.http
-            .get(url)
-            .toPromise()
-            .then(response => response.json() as Pump[])
-            .catch(this.handleError);
-    }
+  startProcessing(): Observable<Number> {
+    const url = `${this.adminUrl}production/startConfirm`;
+    return this.http.post(url, {}, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+  }
 
-    setPump(pumpId: string, componentId: string): Promise<number> {
-        let url = `${this.adminUrl}pumps/${pumpId}`;
-        // let headers = new Headers({ 'Content-Type': 'application/json' });
-        // let options = new RequestOptions({ headers: headers });
-        let body = componentId;
-        return this.http.put(url, body, null).toPromise().then(response => response.status);
-    }
+  setServiceMode(active: boolean): Observable<Number> {
+    const url = `${this.adminUrl}pumps/service`;
+    const body = active ? 'true' : 'false';
 
-    activatePump(pumpId: string, activate: boolean) {
-        let url = `${this.adminUrl}pumps/${pumpId}/active`;
-        // let headers = new Headers({ 'Content-Type': 'application/json' });
-        // let options = new RequestOptions({ headers: headers });
-        let body = activate ? 'true' : 'false';
-        return this.http.post(url, body, null).toPromise().then(response => response.status);
-    }
+    return this.http.post(url, body, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+  }
 
-    getStandardAmounts(): Promise<any> {
-        let url = `${this.adminUrl}pumps/standardAmount`;
-        return this.http
-            .get(url)
-            .toPromise()
-            .then(response => response.json() as any[])
-    }
+  getPumps(): Observable<Pump[]> {
+    const url = `${this.adminUrl}pumps`;
+    return this.http.get<Pump[]>(url);
+  }
 
-    resetComponent(pumpId: string, amount: string): Promise<Response> {
-        let url = `${this.adminUrl}pumps/${pumpId}/amount`;
-        let body = amount;
-        return this.http.put(url, body, null).toPromise();
-    }
+  setPump(pumpId: string, componentId: string): Observable<number> {
+    const url = `${this.adminUrl}pumps/${pumpId}`;
+    const body = componentId;
 
-    setStandardAmount(pumpId: string, amount: string): Promise<Response> {
-        let url = `${this.adminUrl}pumps/${pumpId}/standardAmount`;
-        let body = amount;
-        return this.http.put(url, body, null).toPromise();
-    }
+    return this.http.post(url, body, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+  }
 
-    runProgram(program: TdmProgram) {
-        let url = `${this.adminUrl}program`;
-        return this.http.post(url, program.getJSON()).toPromise();
-    }
+  activatePump(pumpId: string, activate: boolean): Observable<number> {
+    const url = `${this.adminUrl}pumps/${pumpId}/active`;
+    const body = activate ? 'true' : 'false';
 
-    private handleError(error: any): Promise<any> {
-        console.error('An error occurred', error);
-        return Promise.reject(error.message || error);
-    }
+    return this.http.post(url, body, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+  }
+
+  getStandardAmounts(): Observable<object> {
+    const url = `${this.adminUrl}pumps/standardAmount`;
+    return this.http.get(url);
+  }
+
+  resetComponent(pumpId: string, amount: string): Observable<HttpResponse<Object>> {
+    const url = `${this.adminUrl}pumps/${pumpId}/amount`;
+    const body = amount;
+
+    return this.http.post(url, body, {observe: 'response'});
+  }
+
+  setStandardAmount(pumpId: string, amount: string): Observable<HttpResponse<Object>> {
+    const url = `${this.adminUrl}pumps/${pumpId}/standardAmount`;
+    const body = amount;
+
+    return this.http.post(url, body, {observe: 'response'});
+  }
+
+  runProgram(program: TdmProgram): Observable<HttpResponse<Object>> {
+    const url = `${this.adminUrl}program`;
+    return this.http.post<TdmProgram>(url, program, {observe: 'response'});
+  }
+
 }

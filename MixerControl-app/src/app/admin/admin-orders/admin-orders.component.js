@@ -34,9 +34,9 @@ AdminOrdersComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: 'my-admin-orders',
-        templateUrl: 'admin-orders.template.html',
+        templateUrl: 'admin-orders/admin-orders.template.html',
         providers: [socketio_service_1.SocketService]
-    }), 
+    }),
     __metadata('design:paramtypes', [socketio_service_1.SocketService])
 ], AdminOrdersComponent);
 exports.AdminOrdersComponent = AdminOrdersComponent;

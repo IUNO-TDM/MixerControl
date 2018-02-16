@@ -6,10 +6,12 @@
  */
 
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import { Observable} from "rxjs";
-import {Order} from "../models/models"
+import {Order} from '../../models/models';
 import {DataSource} from '@angular/cdk/collections';
-import {OrdersSocketService} from "../services/orders-socket.service";
+import {OrdersSocketService} from '../../services/orders-socket.service';
+import {Observable} from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/merge';
 
 @Component({
   moduleId: module.id,
@@ -30,7 +32,7 @@ export class AdminOrdersComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.dataSource = new OrdersDataSource(this.ordersSocketService)
+    this.dataSource = new OrdersDataSource(this.ordersSocketService);
   }
 
   ngOnDestroy(): void {
@@ -63,13 +65,6 @@ export class OrdersDataSource extends DataSource<any> {
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<OrderLine[]> {
 
-
-    // this.ordersObservable = this.socketService.get("/orders", "allOrders", "add").map(order => {
-    //   var o: Order = order;
-    //   this.orders.set(o.orderNumber, o);
-    //
-    //   return this.orders;
-    // });
     this.ordersSocketService.joinRoom('allOrders');
 
     this.ordersObservable = this.ordersSocketService.getUpdates('add').map(order => {
@@ -87,16 +82,16 @@ export class OrdersDataSource extends DataSource<any> {
 
 
 
-    return Observable.merge(this.ordersObservable, this.ordersStatesObservable,2).map(() => {
+    return Observable.merge(this.ordersObservable, this.ordersStatesObservable, 2).map(() => {
     // return this.ordersObservable.map(() => {
-      let array = new Array<OrderLine>();
+      const array = new Array<OrderLine>();
       // console.log(this.orders);
       for (const o of Array.from(this.orders.values())) {
-        let orderLine = new OrderLine();
+        const orderLine = new OrderLine();
         orderLine.DrinkId = o.drinkId;
         orderLine.DrinkName = o.orderName;
         orderLine.OrderNr = String(o.orderNumber);
-        if(this.orderStates.has(o.orderNumber)) {
+        if (this.orderStates.has(o.orderNumber)) {
           orderLine.State = this.orderStates.get(o.orderNumber);
         }
         array.push(orderLine);

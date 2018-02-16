@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Component as TdmComponent} from '../../models/Component';
 import {TdmProgram} from '../../juice-program-configurator/models/tdmprogram';
-import {ComponentService} from "../../services/component.service";
-import {AdminService} from "../../services/admin.service";
-import {Subscription} from "rxjs/Rx";
-import {ProductionSocketService} from "../../services/production-socket.service";
-import {JuiceProgramConfiguratorComponent} from "../../juice-program-configurator/juice-program-configurator.component";
+import {ComponentService} from '../../services/component.service';
+import {AdminService} from '../../services/admin.service';
+import {ProductionSocketService} from '../../services/production-socket.service';
+import {JuiceProgramConfiguratorComponent} from '../../juice-program-configurator/juice-program-configurator.component';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-admin-recipe',
@@ -31,7 +31,7 @@ export class AdminRecipeComponent implements OnInit {
 
     ngOnInit() {
 
-        this.componentService.getComponents(false).then(components => this.components = components);
+        this.componentService.getComponents(false).subscribe(components => this.components = components);
 
         this.pcModeConnection = this.productionSocketService.getUpdates('pumpControlMode')
             .subscribe(state => {

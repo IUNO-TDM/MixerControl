@@ -1,8 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RecipeOverviewComponent} from './recipe-overview/recipe-overview.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import {
     MatButtonModule, MatButtonToggleModule, MatCardModule, MatChipsModule, MatDialogModule,
@@ -13,12 +11,12 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {RecipeDetailComponent} from './recipe-detail/recipe-detail.component';
 import {RecipeFilterPipe} from './recipe-overview/recipe-filter-pipe';
 import {FormsModule} from '@angular/forms';
+import {routing} from './recipe-overview.routing';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
     imports: [
         CommonModule,
-        // BrowserAnimationsModule,
-        NoopAnimationsModule,
         FormsModule,
         MatCardModule,
         MatDialogModule,
@@ -28,10 +26,12 @@ import {FormsModule} from '@angular/forms';
         MatSidenavModule,
         MatButtonToggleModule,
         MatIconModule,
-        MatTooltipModule
+        MatTooltipModule,
+        routing,
+      HttpClientModule,
+
     ],
     declarations: [RecipeOverviewComponent, RecipeDetailComponent, RecipeFilterPipe],
-    exports: [RecipeOverviewComponent],
     entryComponents: [RecipeDetailComponent]
 })
 export class RecipeOverviewModule {

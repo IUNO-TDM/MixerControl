@@ -185,7 +185,7 @@ export class OrderComponent implements OnInit, OnDestroy {
 
         this.drinkService.getDrink(o.drinkId).subscribe(drink => {
           this.drink = drink;
-          this.userService.getUser(this.drink.authorId).then(user => this.user = user,
+          this.userService.getUser(this.drink.authorId).subscribe(user => this.user = user,
               error => this.error = error);
         });
       },
