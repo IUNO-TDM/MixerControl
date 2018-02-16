@@ -26,7 +26,7 @@ nextStates.put(productionStates[0])
 productionProgress = 0
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--spidev", help="spi device to control dotstar pixels", default=0, type=int)
+parser.add_argument("--spidev", help="spi device to control dotstar pixels", default=1, type=int)
 parser.add_argument("--spics", help="chip select to control dotstar pixels", default=1, type=int)
 parser.add_argument("--host", help="the address of the host running MixerControl", default="localhost")
 parser.add_argument("--port", help="tcp port of the MixerControls socket.io", default=3000, type=int)
@@ -130,42 +130,49 @@ class dotStarsThread (threading.Thread):
         self.currentState = ""
         self.loadImages()
 
+    def tryLoadImage(self, filename):
+        # if no machine specific illumination pattern is there, try the standard pattern
+        if not os.path.isfile(filename):
+            print filename + " missing, trying to load standard pattern"
+            filename = "standard-" + filename
+
+        # if standard pattern is missing, continue with next pattern
+        if not os.path.isfile(filename):
+            print filename + " is not available"
+            return
+
+        image = Image.open(filename).convert("RGBA")
+        assert numPixels == image.size[1]
+        return image
+
     def loadImages(self):
         self.progressImage = Image.open("progress.png").convert("RGBA")
 
         self.images = {}
+        self.oneTimeOverlays = {}
 
         for state in productionStates:
-            filename = state+".png"
+            img = self.tryLoadImage("overlay-"+state+".png")
+            if (img):
+                self.oneTimeOverlays[state] = OneTimeOverlay(img)
 
-            # if no machine specific illumination pattern is there, try the standard pattern
-            if not os.path.isfile(filename):
-                print filename + " missing, trying to load standard pattern"
-                filename = "standard-" + filename
+            img = self.tryLoadImage(state+".png")
+            if (img):
+                stateImage = {}
+                stateImage["image"] = img
+                stateImage["width"] = img.size[0]
 
-            # if standard pattern is missing, continue with next pattern
-            if not os.path.isfile(filename):
-                print "illumination pattern for state " + state + " is not available"
-                continue
+                # limit number of pixels in case image is too large
+                height = img.size[1]
+                if (height > numPixels): height = numPixels
+                stateImage["height"] = height
 
-            stateImage = {}
-            img = Image.open(filename).convert("RGBA")
-            stateImage["image"] = img
-            stateImage["width"] = img.size[0]
-
-            # limit number of pixels in case image is too large
-            height = img.size[1]
-            if (height > numPixels): height = numPixels
-            stateImage["height"] = height
-
-            self.images[state] = stateImage
+                self.images[state] = stateImage
 
     def run(self):
         print "Starting " + self.name
         ds = DotStar.DotStar(numPixels, maxBrightness)
         ds.open(args.spidev, args.spics)
-        
-        finishedOverlay = OneTimeOverlay(self.images["finished"]["image"])
 
         while not endThreads:
             # calculate current framenumber
@@ -175,8 +182,8 @@ class dotStarsThread (threading.Thread):
             # handle state changes
             while (not nextStates.empty()):
                 nextState = nextStates.get()
-                if ("finished" == nextState):
-                    finishedOverlay.startOverlay(frame)
+                if (nextState in self.oneTimeOverlays.keys()):
+                    self.oneTimeOverlays[nextState].startOverlay(frame)
 
                 if (nextState in self.images):
                     self.currentState = nextState
@@ -186,10 +193,11 @@ class dotStarsThread (threading.Thread):
 
             # get background image column
             x = int(frame % width)
-            bg = img.crop((x, 0, x+1, img.size[1]))
+            column = img.crop((x, 0, x+1, img.size[1]))
 
-            # conditionally overlay finished image
-            column = finishedOverlay.paste(frame, bg)
+            # conditionally overlay one time patterns
+            for overlay in self.oneTimeOverlays.itervalues():
+                column = overlay.paste(frame, column)
 
             # overlay progress image in state processingOrder
             if (self.currentState == "processingOrder"):
@@ -198,7 +206,6 @@ class dotStarsThread (threading.Thread):
 
             pixels = column.load()
             for y in range(height):  # For each pixel in column...
-
                 value = pixels[0, y] # Read pixel in image
                 r = value[0]
                 g = value[1]
