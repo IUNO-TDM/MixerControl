@@ -54,6 +54,5 @@
   src: local('emojione'),
   local('emojione'),
   url(../fonts/emojione.woff2) format('woff2'),
-  url(../fonts/emojione.woff) format('woff'),
-  url(../fonts/emojione.ttf) format('truetype');
+  url(../fonts/emojione.woff) format('woff');
 }
