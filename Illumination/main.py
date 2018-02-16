@@ -5,6 +5,7 @@ import time
 import sys
 import os
 import argparse
+import Queue as queue
 
 import DotStar
 
@@ -19,7 +20,8 @@ maxBrightness = 15      # led driving current [0-31]
 
 productionStates = ["uninitialized", "waitingPump", "waitingOrder", "waitingStart", "startProcessing", "processingOrder", "finished", "errorProcessing", "productionPaused", "pumpControlServiceMode"]
 
-nextState = productionStates[0]
+nextStates = queue.Queue()
+nextStates.put(productionStates[0])
 
 productionProgress = 0
 
@@ -73,7 +75,7 @@ def onProductionStateHandler( *args):
     print('state', args)
 
     if args[0] in productionStates:
-        nextState = args[0]
+        nextStates.put(args[0])
 
 #####
 # Socket IO Client
@@ -169,7 +171,9 @@ class dotStarsThread (threading.Thread):
         while not endThreads:
             now = time.time()
             frame = int(now * HZ)
-            if (self.currentState != nextState):
+
+            while (not nextStates.empty()):
+                nextState = nextStates.get()
                 if ("finished" == nextState):
                     finishedOverlay.startOverlay(frame)
 
