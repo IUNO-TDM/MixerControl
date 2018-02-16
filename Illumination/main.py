@@ -34,33 +34,13 @@ parser.add_argument("--port", help="tcp port of the MixerControls socket.io", de
 args = parser.parse_args()
 
 #####
-# Orders Namespace
-###
-class OrderNamespace(BaseNamespace):
-    def on_connect(self):
-        print('connected to namespace orders')
-        self.emit('room', 'allOrders') # register room "allOrders"
-
-    def on_disconnect(self):
-        print('disconnect from namespace production')
-        nextState = productionStates[0]
-
-    def on_reconnect(self):
-        print('reconnect to namespace production')
-        self.emit('room', 'allOrders') # register room "allOrders"
-
-def onOrderProgressHandler( *args):
-    global productionProgress
-    productionProgress = args[0]["progress"]
-    print('progress', productionProgress)
-
-#####
 # Production Namespace
 ###
 class ProductionNamespace(BaseNamespace):
     def on_connect(self):
         print('connected to namespace production')
         self.emit('room', 'state') # register room "state"
+        self.emit('room', 'pumpControl') # register room "pumpControl"
 
     def on_disconnect(self):
         print('disconnect from namespace production')
@@ -69,6 +49,7 @@ class ProductionNamespace(BaseNamespace):
     def on_reconnect(self):
         print('reconnect to namespace production')
         self.emit('room', 'state') # register room "state"
+        self.emit('room', 'pumpControl') # register room "pumpControl"
 
 def onProductionStateHandler( *args):
     global nextState
@@ -76,6 +57,11 @@ def onProductionStateHandler( *args):
 
     if args[0] in productionStates:
         nextStates.put(args[0])
+
+def onProgressHandler( *args):
+    global productionProgress
+    productionProgress = args[0]
+    print('progress', productionProgress)
 
 #####
 # Socket IO Client
@@ -90,10 +76,7 @@ class socketIoThread (threading.Thread):
         with SocketIO(args.host, args.port) as socketIO:
             production_namespace = socketIO.define(ProductionNamespace, '/production')
             production_namespace.on('state', onProductionStateHandler)
-
-            # this is no good namespace, see https://github.com/IUNO-TDM/MixerControl/issues/129
-            order_namespace = socketIO.define(OrderNamespace, '/orders')
-            order_namespace.on('progress', onOrderProgressHandler)
+            production_namespace.on('progress', onProgressHandler)
 
             while not endThreads:
                 socketIO.wait(1)
