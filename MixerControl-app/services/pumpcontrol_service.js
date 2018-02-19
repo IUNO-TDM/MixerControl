@@ -201,7 +201,7 @@ const onWebSocketMessage = function (message) {
             pumpcontrol_service.emit('amountWarning', messageObject.amountWarning);
             pumpAmountWarnings[messageObject.amountWarning.pumpNr] = messageObject.amountWarning;
         } else {
-            console.log("Unrecognized message from PumpControl: " + message);
+            console.log("Unrecognized message from PumpControl: " + JSON.stringify(message));
         }
     } else {
         console.log("Got non text message from PumpControl");

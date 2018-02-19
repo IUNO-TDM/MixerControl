@@ -50,15 +50,21 @@ export class AdminProductionComponent implements OnInit, OnDestroy {
     }
 
     ResumeProduction(): void {
-        this.adminService.resumeProduction();
+        this.adminService.resumeProduction().subscribe(status => {
+            console.log(status)
+        });
     }
 
     PauseProduction(): void {
-        this.adminService.pauseProduction();
+        this.adminService.pauseProduction().subscribe(status => {
+            console.log(status)
+        });;
     }
 
     StartProcessing(): void {
-        this.adminService.startProcessing();
+        this.adminService.startProcessing().subscribe(status => {
+            console.log(status)
+        });
     }
 
 
