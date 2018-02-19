@@ -34,7 +34,7 @@ a:hover {
   color: #000; }
 
 header {
-  background-image: url('../assets/header.png');
+  background-image: url('/assets/header.png');
   background-size: cover;
   background-color: blue;
   height: 80px;
