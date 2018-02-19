@@ -8,7 +8,6 @@ import async from 'async';
 
 export class RecipeFilterPipe implements PipeTransform {
     transform(items: any, filter: any): any {
-        console.log(filter);
         if (!items || !filter || !(items as Drink[]) || filter.length === 0) {
             return items;
         }
@@ -50,6 +49,18 @@ export class RecipeFilterPipe implements PipeTransform {
                 filteredDrinks.push(drink);
             }
         }
+
+
+        /**
+         * Show special offer
+         */
+
+        if (filteredDrinks.length <= 0 && exclude && exclude.length >= 8) {
+            filteredDrinks.push(drinks.find(function (drink) {
+                return drink.id == 'c9fcefb2-3869-44b0-9f10-e466b3bc1919';
+            }));
+        }
+
         return filteredDrinks;
     }
 }
