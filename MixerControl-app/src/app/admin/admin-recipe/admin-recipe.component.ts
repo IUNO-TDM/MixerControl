@@ -6,7 +6,6 @@ import {AdminService} from '../../services/admin.service';
 import {ProductionSocketService} from '../../services/production-socket.service';
 import {JuiceProgramConfiguratorComponent} from '../../juice-program-configurator/juice-program-configurator.component';
 import {Subscription} from 'rxjs/Subscription';
-import {createErrorResponse} from "../../../../public/scripts/angular-in-memory-web-api";
 
 @Component({
     selector: 'app-admin-recipe',
