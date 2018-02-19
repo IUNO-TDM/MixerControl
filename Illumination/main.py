@@ -44,7 +44,7 @@ class ProductionNamespace(BaseNamespace):
 
     def on_disconnect(self):
         print('disconnect from namespace production')
-        nextState = productionStates[0]
+        nextStates.put(productionStates[0])
 
     def on_reconnect(self):
         print('reconnect to namespace production')
@@ -52,7 +52,6 @@ class ProductionNamespace(BaseNamespace):
         self.emit('room', 'pumpControl') # register room "pumpControl"
 
 def onProductionStateHandler( *args):
-    global nextState
     print('state', args)
 
     if args[0] in productionStates:
