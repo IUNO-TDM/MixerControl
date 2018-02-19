@@ -64,20 +64,20 @@ export class AdminServiceComponent implements OnInit, OnDestroy {
   }
 
   ActivateService() {
-    this.adminService.setServiceMode(true);
+    this.adminService.setServiceMode(true).subscribe(response => {});
   }
 
   DeactivateService() {
-    this.adminService.setServiceMode(false);
+    this.adminService.setServiceMode(false).subscribe(response => {});
   }
 
   SetPump(nr: string, activate: boolean) {
-    this.adminService.activatePump(nr, activate);
+    this.adminService.activatePump(nr, activate).subscribe();
   }
 
   SetAllPumps(activate: boolean) {
     for (let i = 0; i < this.pumps.length; i++) {
-      this.adminService.activatePump(this.pumps[i].nr, activate);
+      this.adminService.activatePump(this.pumps[i].nr, activate).subscribe();
     }
   }
 }
