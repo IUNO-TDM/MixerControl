@@ -84,7 +84,7 @@ export class AdminService {
 
   runProgram(program: TdmProgram): Observable<HttpResponse<Object>> {
     const url = `${this.adminUrl}program`;
-    return this.http.post<TdmProgram>(url, program, {observe: 'response'});
+    return this.http.post<TdmProgram>(url, program.getJSON(), {observe: 'response'});
   }
 
 }
