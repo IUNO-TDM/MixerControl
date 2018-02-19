@@ -184,7 +184,8 @@ class dotStarsThread (threading.Thread):
             # overlay progress image in state processingOrder
             if (self.currentState == "processingOrder"):
                 progress = self.progressImage.crop((productionProgress, 0, productionProgress+1, height))
-                column = Image.alpha_composite(column, progress)
+                if (progress):
+                    column = Image.alpha_composite(column, progress)
 
             pixels = column.load()
             for y in range(height):  # For each pixel in column...
