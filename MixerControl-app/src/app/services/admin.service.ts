@@ -68,23 +68,21 @@ export class AdminService {
         return this.http.get(url);
     }
 
-    resetComponent(pumpId: string, amount: string): Observable<HttpResponse<Object>> {
+    resetComponent(pumpId: string, amount: string): Observable<number> {
         const url = `${this.adminUrl}pumps/${pumpId}/amount`;
-        const body = amount;
 
-        return this.http.post(url, body, {observe: 'response'});
+        return this.http.post(url, amount, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
     }
 
-    setStandardAmount(pumpId: string, amount: string): Observable<HttpResponse<Object>> {
+    setStandardAmount(pumpId: string, amount: string): Observable<number> {
         const url = `${this.adminUrl}pumps/${pumpId}/standardAmount`;
-        const body = amount;
 
-        return this.http.post(url, body, {observe: 'response'});
+        return this.http.post(url, amount, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
     }
 
-    runProgram(program: TdmProgram): Observable<HttpResponse<Object>> {
+    runProgram(program: TdmProgram): Observable<number> {
         const url = `${this.adminUrl}program`;
-        return this.http.post<TdmProgram>(url, program.getJSON(), {observe: 'response'});
+        return this.http.post<TdmProgram>(url, program.getJSON(), {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
     }
 
 }
