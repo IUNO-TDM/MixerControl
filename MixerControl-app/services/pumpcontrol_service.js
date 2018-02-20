@@ -325,19 +325,32 @@ const updatePumpAmount = function (pumpNumber, amount, callback) {
 };
 
 pumpcontrol_service.startProgram = function (productionQueue, recipe) {
-    const options = buildOptionsForRequest(
-        'PUT',
-        {},
-        recipe.program,
-        '/program/' + recipe['productCode']
-    );
 
-    request(options, function (e, r, data) {
-        const err = logger.logRequestAndResponse(e, options, r, data);
+    // Make sure all components are set on the pumpcontrol before running the program
+    async.eachSeries(pumpNumbers, function (item, callback) {
+        storage.getItem('component' + item).then(
+            function (compId) {
+                if (compId) {
+                    updateIngredient(item, compId, function () {
+                        callback();
+                    });
+                }
+            });
+    }, function done() {
+        const options = buildOptionsForRequest(
+            'PUT',
+            {},
+            recipe.program,
+            '/program/' + recipe['productCode']
+        );
 
-        if (err) {
-            pumpcontrol_service.emit('pumpControlError', err);
-        }
+        request(options, function (e, r, data) {
+            const err = logger.logRequestAndResponse(e, options, r, data);
+
+            if (err) {
+                pumpcontrol_service.emit('pumpControlError', err);
+            }
+        });
     });
 };
 
