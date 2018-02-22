@@ -20,28 +20,28 @@ export class AdminService {
     }
 
 
-    resumeProduction(): Observable<number> {
+    resumeProduction(): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}production/resume`;
 
-        return this.http.post(url, {}, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+        return this.http.post(url, {}, {responseType: 'text', observe: 'response'});
     }
 
-    pauseProduction(): Observable<any> {
+    pauseProduction(): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}production/pause`;
 
-        return this.http.post(url, {}, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+        return this.http.post(url, {}, {responseType: 'text', observe: 'response'});
     }
 
-    startProcessing(): Observable<Number> {
+    startProcessing(): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}production/startConfirm`;
-        return this.http.post(url, {}, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+        return this.http.post(url, {}, {responseType: 'text', observe: 'response'});
     }
 
-    setServiceMode(active: boolean): Observable<Number> {
+    setServiceMode(active: boolean): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}pumps/service`;
         const body = active ? 'true' : 'false';
 
-        return this.http.post(url, body, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+        return this.http.post(url, body, {responseType: 'text', observe: 'response'});
     }
 
     getPumps(): Observable<Pump[]> {
@@ -49,18 +49,18 @@ export class AdminService {
         return this.http.get<Pump[]>(url);
     }
 
-    setPump(pumpId: string, componentId: string): Observable<number> {
+    setPump(pumpId: string, componentId: string): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}pumps/${pumpId}`;
         const body = componentId;
 
-        return this.http.post(url, body, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+        return this.http.put(url, body, {responseType: 'text', observe: 'response'});
     }
 
-    activatePump(pumpId: string, activate: boolean): Observable<number> {
+    activatePump(pumpId: string, activate: boolean): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}pumps/${pumpId}/active`;
         const body = activate ? 'true' : 'false';
 
-        return this.http.post(url, body, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+        return this.http.post(url, body, {responseType: 'text', observe: 'response'});
     }
 
     getStandardAmounts(): Observable<object> {
@@ -68,21 +68,21 @@ export class AdminService {
         return this.http.get(url);
     }
 
-    resetComponent(pumpId: string, amount: string): Observable<number> {
+    resetComponent(pumpId: string, amount: string): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}pumps/${pumpId}/amount`;
 
-        return this.http.post(url, amount, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+        return this.http.post(url, amount, {responseType: 'text', observe: 'response'});
     }
 
-    setStandardAmount(pumpId: string, amount: string): Observable<number> {
+    setStandardAmount(pumpId: string, amount: string): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}pumps/${pumpId}/standardAmount`;
 
-        return this.http.post(url, amount, {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+        return this.http.post(url, amount, {responseType: 'text', observe: 'response'});
     }
 
-    runProgram(program: TdmProgram): Observable<number> {
+    runProgram(program: TdmProgram): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}program`;
-        return this.http.post<TdmProgram>(url, program.getJSON(), {observe: 'response'}).map((response: HttpResponse<Object>) => response.status);
+        return this.http.post(url, program.getJSON(), {responseType: 'text', observe: 'response'});
     }
 
 }
