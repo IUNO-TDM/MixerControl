@@ -56,9 +56,13 @@ export class RecipeFilterPipe implements PipeTransform {
          */
 
         if (filteredDrinks.length <= 0 && exclude && exclude.length >= 8) {
-            filteredDrinks.push(drinks.find(function (drink) {
+            const special = drinks.find(function (drink) {
                 return drink.id == 'c9fcefb2-3869-44b0-9f10-e466b3bc1919';
-            }));
+            });
+
+            if (special) {
+                filteredDrinks.push();
+            }
         }
 
         return filteredDrinks;
