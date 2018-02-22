@@ -31,7 +31,7 @@ export class AdminRecipeComponent implements OnInit {
 
     ngOnInit() {
 
-        this.componentService.getComponents(false).subscribe(components => this.components = components);
+        this.componentService.getComponents(true).subscribe(components => this.components = components);
 
         this.pcModeConnection = this.productionSocketService.getUpdates('pumpControlMode')
             .subscribe(state => {
