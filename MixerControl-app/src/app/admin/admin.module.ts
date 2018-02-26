@@ -8,64 +8,64 @@ import {AdminProductionComponent} from './admin-production/admin-production.comp
 import {AdminRecipeComponent} from './admin-recipe/admin-recipe.component';
 import {AdminServiceComponent} from './admin-service/admin-service.component';
 import {
-  MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatListModule, MatMenuModule,
-  MatRadioModule, MatSelectModule, MatSliderModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule
+    MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatListModule, MatMenuModule,
+    MatRadioModule, MatSelectModule, MatSliderModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule
 } from '@angular/material';
 import {CdkTableModule} from '@angular/cdk/table';
 import {OrdersSocket} from '../services/orders-socket.service';
 import {ProductionSocket} from '../services/production-socket.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {JuiceProgramConfiguratorModule} from '../juice-program-configurator/juice-program-configurator.module';
 import {HttpClientModule} from '@angular/common/http';
 import {AdminComponent} from './admin.component';
 import {InternetconnectionModule} from '../internetconnection/internetconnection.module';
 import {FormsModule} from '@angular/forms';
 import {routing} from "./admin.routing";
-import { AdminWalletComponent } from './admin-wallet/admin-wallet.component';
+import {AdminWalletComponent} from './admin-wallet/admin-wallet.component';
+import {CocktailConfiguratorModule, ComponentService} from 'cocktail-configurator'
 
 @NgModule({
-  declarations: [
-    AdminComponent,
-    AdminAmountDialogComponent,
-    AdminComponentDialogComponent,
-    AdminComponentComponent,
-    AdminOrdersComponent,
-    AdminProductionComponent,
-    AdminRecipeComponent,
-    AdminServiceComponent,
-    AdminWalletComponent,
-  ], imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatRadioModule,
-    MatMenuModule,
-    MatToolbarModule,
-    MatTableModule,
-    CdkTableModule,
-    MatDialogModule,
-    MatIconModule,
-    MatListModule,
-    MatTabsModule,
-    MatSelectModule,
-    MatSliderModule,
-    HttpClientModule,
-    FlexLayoutModule,
-    JuiceProgramConfiguratorModule,
-    InternetconnectionModule,
-    routing
+    declarations: [
+        AdminComponent,
+        AdminAmountDialogComponent,
+        AdminComponentDialogComponent,
+        AdminComponentComponent,
+        AdminOrdersComponent,
+        AdminProductionComponent,
+        AdminRecipeComponent,
+        AdminServiceComponent,
+        AdminWalletComponent,
+    ], imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatRadioModule,
+        MatMenuModule,
+        MatToolbarModule,
+        MatTableModule,
+        CdkTableModule,
+        MatDialogModule,
+        MatIconModule,
+        MatListModule,
+        MatTabsModule,
+        MatSelectModule,
+        MatSliderModule,
+        HttpClientModule,
+        FlexLayoutModule,
+        InternetconnectionModule,
+        CocktailConfiguratorModule,
+        routing
 
-  ],
-  entryComponents: [
-    AdminComponentDialogComponent,
-    AdminAmountDialogComponent
-  ],
-  providers: [ProductionSocket, OrdersSocket],
+    ],
+    entryComponents: [
+        AdminComponentDialogComponent,
+        AdminAmountDialogComponent
+    ],
+    providers: [ProductionSocket, OrdersSocket, ComponentService],
 })
 export class AdminModule {
 }

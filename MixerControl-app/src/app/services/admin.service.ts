@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Pump} from '../models/Pump';
-import {TdmProgram} from '../juice-program-configurator/models/tdmprogram';
 import {Observable} from 'rxjs/Observable';
 import {Balance} from '../models/Balance';
 import {HttpClient, HttpResponse} from '@angular/common/http';
@@ -79,10 +78,10 @@ export class AdminService {
 
         return this.http.post(url, amount, {responseType: 'text', observe: 'response'});
     }
-
-    runProgram(program: TdmProgram): Observable<HttpResponse<Object>> {
-        const url = `${this.adminUrl}program`;
-        return this.http.post(url, program.getJSON(), {responseType: 'text', observe: 'response'});
-    }
+    //
+    // runProgram(program: TdmProgram): Observable<HttpResponse<Object>> {
+    //     const url = `${this.adminUrl}program`;
+    //     return this.http.post(url, program.getJSON(), {responseType: 'text', observe: 'response'});
+    // }
 
 }
