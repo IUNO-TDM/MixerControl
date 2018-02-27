@@ -14,6 +14,11 @@ export class AdminService {
     }
 
 
+    hasStartButton(): Observable<boolean> {
+      const url = `${this.adminUrl}startbutton`;
+      return this.http.get<boolean>(url);
+    }
+
     getWalletBalance(): Observable<Balance> {
         const url = `${this.adminUrl}wallet/balance`;
         return this.http.get<Balance>(url);

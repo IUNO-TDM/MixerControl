@@ -243,8 +243,11 @@
                 </mat-list>
               </div>
             </mat-card-content>
-            <mat-card-actions>
+            <mat-card-actions *ngIf="!hasStartButton">
               <button mat-raised-button color="primary" (click)="ProductionStart()">Getränk zubereiten</button>
+            </mat-card-actions>
+            <mat-card-actions *ngIf="hasStartButton">
+              Jetzt kann die Starttaste betätigt werden
             </mat-card-actions>
           </mat-card>
         </div>

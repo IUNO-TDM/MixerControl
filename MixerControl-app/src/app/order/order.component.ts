@@ -18,6 +18,7 @@ import {OrdersSocketService} from '../services/orders-socket.service';
 import {ProductionSocketService} from '../services/production-socket.service';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
+import {AdminService} from "../services/admin.service";
 
 
 @Component({
@@ -25,7 +26,7 @@ import {Observable} from 'rxjs/Observable';
   selector: 'my-order',
   templateUrl: 'order.template.html',
   styleUrls: ['./order.component.css'],
-  providers: [DrinkService, UserService, OrderService, OrdersSocketService, ProductionSocketService]
+  providers: [DrinkService, UserService, OrderService, OrdersSocketService, ProductionSocketService, AdminService]
 })
 
 export class OrderComponent implements OnInit, OnDestroy {
@@ -45,6 +46,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   orderProgressConnection: Subscription;
   showDialog = false;
   orderURL = 'NULL';
+  hasStartButton = false;
 
   displayedColumns = ['Pos', 'Menge', 'Artikel', 'UnterPosPreis', 'Preis', 'Gesamt'];
   dataSource: ExampleDataSource | null;
@@ -79,6 +81,7 @@ export class OrderComponent implements OnInit, OnDestroy {
               private orderService: OrderService,
               private productionSocketService: ProductionSocketService,
               private ordersSocketService: OrdersSocketService,
+              private adminService: AdminService,
               private dialog: MatDialog) {
 
   }
@@ -211,6 +214,10 @@ export class OrderComponent implements OnInit, OnDestroy {
       }
     });
     this.productionSocketService.joinRoom('queue');
+
+    this.adminService.hasStartButton().subscribe(hasStartButton =>{
+      this.hasStartButton = hasStartButton;
+    })
 
   }
 
