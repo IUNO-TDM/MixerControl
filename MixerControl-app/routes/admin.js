@@ -181,8 +181,7 @@ router.post('/pumps/service', function (req, res, next) {
 });
 
 router.post('/program', function(req, res, next) {
-    const machineProgram = programConverter.convertProgramToMachineProgram(req.body);
-    const machineProgramString = JSON.stringify(machineProgram);
+    const machineProgramString = JSON.stringify(req.body);
 
     pumpcontrol_service.startProgram(production_queue, {
         productCode: 0,

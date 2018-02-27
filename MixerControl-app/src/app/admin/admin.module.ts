@@ -24,7 +24,9 @@ import {InternetconnectionModule} from '../internetconnection/internetconnection
 import {FormsModule} from '@angular/forms';
 import {routing} from "./admin.routing";
 import {AdminWalletComponent} from './admin-wallet/admin-wallet.component';
-import {CocktailConfiguratorModule, ComponentService} from 'cocktail-configurator'
+
+import {CocktailConfiguratorModule} from 'cocktail-configurator'
+import {ComponentService} from 'tdm-common'
 
 @NgModule({
     declarations: [
@@ -65,7 +67,10 @@ import {CocktailConfiguratorModule, ComponentService} from 'cocktail-configurato
         AdminComponentDialogComponent,
         AdminAmountDialogComponent
     ],
-    providers: [ProductionSocket, OrdersSocket, ComponentService],
+    providers: [ProductionSocket, OrdersSocket, ComponentService, {
+        provide: 'componentSourceUrl',
+        useValue: '/api/components'
+    }],
 })
 export class AdminModule {
 }

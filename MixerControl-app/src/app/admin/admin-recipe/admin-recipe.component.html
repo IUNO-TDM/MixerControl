@@ -1,11 +1,11 @@
-<div class="section">
-    <app-component-list></app-component-list>
-    <beaker [cocktail]="cocktail"></beaker>
-    <ingredients-listing [cocktail]="cocktail"></ingredients-listing>
+<div class="section" fxLayout="row">
+    <cocktail-component-list></cocktail-component-list>
+    <cocktail-beaker [cocktail]="cocktail"></cocktail-beaker>
+    <cocktail-ingredients-listing [cocktail]="cocktail"></cocktail-ingredients-listing>
 </div>
 
 <div class="section">
-    <button (click)="onProduce()" [disabled]="pcMode !='idle' || juiceProgramConfigurator.getErrorText().length > 0" mat-raised-button color="primary" class="mat-elevation-z1">
+    <button (click)="onProduce()" [disabled]="pcMode !='idle'" mat-raised-button color="primary" class="mat-elevation-z1">
         Produzieren
     </button>
 </div>
