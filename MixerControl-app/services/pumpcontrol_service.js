@@ -31,8 +31,6 @@ pumpNumbers.forEach(clearAmountWarning);
 const PumpControlService = function () {
     console.log('a new instance of pumpControlservice');
     initStorage();
-
-
 };
 
 const initStorage = function () {
@@ -70,6 +68,31 @@ util.inherits(PumpControlService, EventEmitter);
 
 const wsclient = new WebSocketClient();
 pumpcontrol_service.websocketclient = wsclient;
+
+let hasStartButton = false;
+let hasCabinetSwitch = false;
+let hasJuiceDoorSwitch = false;
+let hasStartButtonIllumination = false;
+
+pumpcontrol_service.hasStartButton = function () {
+  return hasStartButton;
+};
+
+pumpcontrol_service.hasCabinetSwitch = function () {
+  return hasCabinetSwitch;
+};
+
+pumpcontrol_service.hasJuiceDoorSwitch = function () {
+  return hasJuiceDoorSwitch;
+};
+
+pumpcontrol_service.hasStartButtonIllumination = function () {
+  return hasStartButtonIllumination;
+};
+
+pumpcontrol_service.setStartButtonIllumination = function (enabled) {
+  pumpcontrol_service.setGpioOutputEnabled('start_button_illumination',enabled);
+};
 
 const initIngredients = function () {
     jms_connector.getAllComponents(function (e, components) {
@@ -127,6 +150,33 @@ const state_machine = new machina.Fsm({
         connected: {
             _onEnter: function () {
                 initIngredients();
+                pumpcontrol_service.getGpio((err, data)=>{
+                  hasJuiceDoorSwitch = false;
+                  hasStartButtonIllumination = false;
+                  hasCabinetSwitch = false;
+                  hasStartButton = false;
+                  if(!err){
+                    for(let io of data){
+                      switch (io.name){
+                        case 'cabinet_door_switch':
+                          hasCabinetSwitch = true;
+                          break;
+                        case 'juice_door_switch':
+                          hasJuiceDoorSwitch = true;
+                          break;
+                        case 'start_button':
+                          hasStartButton = true;
+                          break;
+                        case 'start_button_illumination':
+                          hasStartButtonIllumination = true;
+                          pumpcontrol_service.setStartButtonIllumination(false);
+                          break;
+                        default:
+                          console.debug('unknown pin:' + io)
+                      }
+                    }
+                  }
+                });
             },
             connectionLoss: "connectionLost",
             disconnect: "stopped"
@@ -200,6 +250,8 @@ const onWebSocketMessage = function (message) {
         } else if (messageObject.hasOwnProperty('amountWarning')) {
             pumpcontrol_service.emit('amountWarning', messageObject.amountWarning);
             pumpAmountWarnings[messageObject.amountWarning.pumpNr] = messageObject.amountWarning;
+        } else if (messageObject.hasOwnProperty('gpio')){
+            pumpcontrol_service.emit('gpio', messageObject.gpio);
         } else {
             console.log("Unrecognized message from PumpControl: " + JSON.stringify(message));
         }
@@ -409,6 +461,65 @@ pumpcontrol_service.setServicePump = function (pumpNumber, on) {
     request(options, function (e, r, data) {
         logger.logRequestAndResponse(e, options, r, data);
     });
+};
+
+pumpcontrol_service.getGpio = function (callback) {
+  const options = buildOptionsForRequest(
+    'GET',
+    {},
+    null,
+    '/gpio'
+  );
+
+  request(options, function (e, r, data) {
+    const err = logger.logRequestAndResponse(e, options, r, data);
+
+    callback(err, data);
+  });
+};
+
+pumpcontrol_service.getGpioInputValue = function (name, callback) {
+  const options = buildOptionsForRequest(
+    'GET',
+    {},
+    null,
+    '/gpio/'+ name + '/inputvalue'
+  );
+
+  request(options, function (e, r, data) {
+    const err = logger.logRequestAndResponse(e, options, r, data);
+
+    callback(err, data);
+  });
+};
+
+
+pumpcontrol_service.getGpioOutputEnabled = function (name, callback) {
+  const options = buildOptionsForRequest(
+    'GET',
+    {},
+    null,
+    '/gpio/'+ name + '/outputenabled'
+  );
+
+  request(options, function (e, r, data) {
+    const err = logger.logRequestAndResponse(e, options, r, data);
+
+    callback(err, data);
+  });
+};
+
+pumpcontrol_service.setGpioOutputEnabled = function (name, enabled) {
+  const options = buildOptionsForRequest(
+    'PUT',
+    {},
+    enabled ? 'true' : 'false',
+    '/gpio/' + name + '/outputenabled'
+  );
+
+  request(options, function (e, r, data) {
+    logger.logRequestAndResponse(e, options, r, data);
+  });
 };
 
 function buildOptionsForRequest(method, qs, body, path) {

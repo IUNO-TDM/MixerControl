@@ -40,6 +40,10 @@ router.get('/wallet/balance', function(req, res, next){
   });
 });
 
+router.get('/startbutton', function(req, res, next){
+  res.send(pumpcontrol_service.hasStartButtonIllumination());
+});
+
 router.get('/pumps', function (req, res, next) {
 
     jms_connector.getAllComponents(function (e, components) {
