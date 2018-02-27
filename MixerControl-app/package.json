@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node ./bin/www",
-    "build": "ng build --prod && cp -r ./src/custom_assets/* ./dist/assets/",
+    "build": "ng build --prod && cp -r ./src/custom_assets/ ./dist/assets/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
