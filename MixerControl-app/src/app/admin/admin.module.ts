@@ -69,7 +69,7 @@ import {ComponentService} from 'tdm-common'
     ],
     providers: [ProductionSocket, OrdersSocket, ComponentService, {
         provide: 'componentSourceUrl',
-        useValue: '/api/components'
+        useValue: '/api/components?filtered=true'
     }],
 })
 export class AdminModule {
