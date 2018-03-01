@@ -22,12 +22,11 @@ export class AdminRecipeComponent implements OnInit {
     components: CocktailComponent[] = [];
 
 
-    constructor(
-        private componentService: ComponentService,
-        private adminService: AdminService,
-        private productionSocketService: ProductionSocketService
-        ) {
+    constructor(private componentService: ComponentService,
+                private adminService: AdminService,
+                private productionSocketService: ProductionSocketService) {
         this.cocktail = new Cocktail();
+        this.cocktail.amount = 100;
     }
 
     ngOnInit() {
@@ -35,10 +34,19 @@ export class AdminRecipeComponent implements OnInit {
             .subscribe(state => {
                 this.pcMode = state;
             });
+        this.productionSocketService.joinRoom('pumpControlMode');
+    }
+
+    ngOnDestroy(): void {
+        if (this.pcModeConnection) {
+            this.pcModeConnection.unsubscribe();
+        }
     }
 
     onProduce() {
-        this.adminService.runProgram(this.cocktail).subscribe(status => {});
+        this.adminService.runProgram(this.cocktail).subscribe(status => {
+        });
     }
+
 
 }
