@@ -7,6 +7,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import 'hammerjs';
+import {InternetconnectionModule} from "./internetconnection/internetconnection.module";
 @NgModule({
   declarations: [
     AppComponent
@@ -16,6 +17,8 @@ import 'hammerjs';
     AppRoutingModule,
     // BrowserAnimationsModule,
     NoopAnimationsModule,
+
+    InternetconnectionModule,
   ],
   bootstrap: [AppComponent]
 })

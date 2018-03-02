@@ -10,6 +10,7 @@ var OrderDB = require('../database/orderDB');
 const async = require('async');
 var licenseService = require('../websocket/license_client');
 let lastProgress = 0;
+var licenseManagerAdapter = require('../adapter/license_manager_adapter');
 
 function onOrderNamespaceConnect(socket) {
   logger.info('[socket_io_controller] a user connected: ' + socket.id);
@@ -179,6 +180,26 @@ function registerInternetConnectionEvents(connectionNamespace) {
   licenseService.on('connectionState', function (state) {
     connectionNamespace.to('connectionState').emit('connectionState', state);
   });
+
+  licenseContainerState = false;
+
+  //TODO Polling is not ideal. A Websocket interface to licensemanager would be better
+  const intervalObj = setInterval(() => {
+    licenseManagerAdapter.getHsmId((err, hsmId)=>{
+      if(err || !hsmId || hsmId === "" ){
+        if(licenseContainerState == true){
+          licenseContainerState = false;
+          connectionNamespace.to("licenseContainerState").emit("licenseContainerState", false);
+        }
+      }else {
+        if(licenseContainerState == false){
+          licenseContainerState = true;
+          connectionNamespace.to("licenseContainerState").emit("licenseContainerState", true);
+        }
+      }
+    });
+  }, 20000);
+
 }
 
 function onInternetConnectionNamespaceConnect(socket) {
@@ -189,6 +210,16 @@ function onInternetConnectionNamespaceConnect(socket) {
 
     if (roomId == "connectionState") {
       socket.emit("connectionState", licenseService.getConnectionStatus());
+    } else if (roomId == "licenseContainerState") {
+      licenseManagerAdapter.getHsmId((err, hsmId)=>{
+        if(err || !hsmId || hsmId === "" ){
+          socket.emit("licenseContainerState", false);
+        }else {
+          socket.emit("licenseContainerState", true);
+        }
+
+      });
+
     }
 
   });
