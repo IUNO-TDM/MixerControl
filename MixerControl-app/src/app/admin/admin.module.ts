@@ -58,7 +58,7 @@ import {ComponentService} from 'tdm-common'
     MatSliderModule,
     HttpClientModule,
     FlexLayoutModule,
-    JuiceProgramConfiguratorModule,
+    CocktailConfiguratorModule,
     routing
     ],
     entryComponents: [
