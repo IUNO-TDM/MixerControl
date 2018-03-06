@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node ./bin/www",
-    "build": "ng build --prod && cp -r ./src/custom_assets/ ./dist/assets/",
+    "build": "ng build --prod --build-optimizer && cp -r ./src/custom_assets/ ./dist/assets/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -28,7 +28,7 @@
     "angular2-qrscanner": "1.0.1",
     "async": "^2.1.5",
     "body-parser": "^1.18.2",
-    "cocktail-configurator": "https://github.com/IUNO-TDM/CocktailConfigurator/releases/download/v0.0.4-alpha/cocktail-configurator-0.0.4.tgz",
+    "cocktail-configurator": "https://github.com/IUNO-TDM/CocktailConfigurator/releases/download/v0.0.5-alpha/cocktail-configurator-0.0.5.tgz",
     "cookie-parser": "~1.4.3",
     "core-js": "^2.5.1",
     "express": "^4.16.2",
