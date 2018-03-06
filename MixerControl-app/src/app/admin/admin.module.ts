@@ -25,7 +25,7 @@ import {FormsModule} from '@angular/forms';
 import {routing} from "./admin.routing";
 import {AdminWalletComponent} from './admin-wallet/admin-wallet.component';
 
-import {CocktailConfiguratorModule} from 'cocktail-configurator'
+import {CocktailConfiguratorModule, DragAndDropService} from 'cocktail-configurator'
 import {ComponentService} from 'tdm-common'
 
 @NgModule({
@@ -67,7 +67,7 @@ import {ComponentService} from 'tdm-common'
         AdminComponentDialogComponent,
         AdminAmountDialogComponent
     ],
-    providers: [ProductionSocket, OrdersSocket, ComponentService, {
+    providers: [ProductionSocket, OrdersSocket, ComponentService, DragAndDropService, {
         provide: 'componentSourceUrl',
         useValue: '/api/components?filtered=true'
     }],

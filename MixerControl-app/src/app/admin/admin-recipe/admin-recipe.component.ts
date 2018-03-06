@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {Cocktail} from 'tdm-common'
 import {CocktailComponent} from 'tdm-common'
 import {ComponentService} from 'tdm-common'
-import {DragAndDropService} from 'cocktail-configurator'
+import {BeakerComponent, DragAndDropService} from 'cocktail-configurator'
 
 @Component({
     selector: 'app-admin-recipe',
@@ -15,6 +15,7 @@ import {DragAndDropService} from 'cocktail-configurator'
     providers: [AdminService, ProductionSocketService, DragAndDropService]
 })
 export class AdminRecipeComponent implements OnInit {
+    @ViewChild(BeakerComponent) beaker: BeakerComponent;
 
     pcModeConnection: Subscription;
     pcMode: string;
@@ -27,6 +28,10 @@ export class AdminRecipeComponent implements OnInit {
                 private productionSocketService: ProductionSocketService) {
         this.cocktail = new Cocktail();
         this.cocktail.amount = 100;
+        componentService.setRecommendComponentIds([
+            '198f1571-4846-4467-967a-00427ab0208d',
+            '570a5df0-a044-4e22-b6e6-b10af872d75c'
+        ])
     }
 
     ngOnInit() {
@@ -35,6 +40,7 @@ export class AdminRecipeComponent implements OnInit {
                 this.pcMode = state;
             });
         this.productionSocketService.joinRoom('pumpControlMode');
+        this.beaker.setEditMode(true);
     }
 
     ngOnDestroy(): void {
@@ -46,6 +52,10 @@ export class AdminRecipeComponent implements OnInit {
     onProduce() {
         this.adminService.runProgram(this.cocktail).subscribe(status => {
         });
+    }
+
+    onToggleEdit() {
+        this.beaker.setEditMode(!this.beaker.editMode);
     }
 
 

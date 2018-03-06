@@ -1,11 +1,14 @@
 <div class="section" fxLayout="row">
-    <cocktail-component-list></cocktail-component-list>
+    <!--<cocktail-component-list></cocktail-component-list>-->
     <cocktail-beaker [cocktail]="cocktail"></cocktail-beaker>
-    <cocktail-ingredients-listing [cocktail]="cocktail"></cocktail-ingredients-listing>
+    <cocktail-ingredients-listing *ngIf="cocktail.layers.length > 0" [cocktail]="cocktail"></cocktail-ingredients-listing>
 </div>
 
 <div class="section">
-    <button (click)="onProduce()" [disabled]="pcMode !='idle'" mat-raised-button color="primary" class="mat-elevation-z1">
+    <button *ngIf="cocktail.layers.length > 0" (click)="onToggleEdit()" mat-raised-button color="primary" class="mat-elevation-z1">
+        {{beaker.editMode? 'Speichern' : 'Editieren'}}
+    </button>
+    <button *ngIf="!beaker.editMode" (click)="onProduce()" [disabled]="pcMode !='idle'" mat-raised-button color="primary" class="mat-elevation-z1">
         Produzieren
     </button>
 </div>
