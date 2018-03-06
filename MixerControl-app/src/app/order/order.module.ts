@@ -27,7 +27,6 @@ import {NgQrScannerModule} from 'angular2-qrscanner';
     routing,
     FormsModule,
     HttpClientModule,
-    InternetconnectionModule,
     MatButtonModule,
     MatCardModule,
     MatRadioModule,
