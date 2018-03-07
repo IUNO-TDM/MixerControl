@@ -8,7 +8,7 @@
     <button *ngIf="cocktail.layers.length > 0" (click)="onToggleEdit()" mat-raised-button color="primary" class="mat-elevation-z1">
         {{beaker.editMode? 'Speichern' : 'Editieren'}}
     </button>
-    <button *ngIf="!beaker.editMode" (click)="onProduce()" [disabled]="pcMode !='idle'" mat-raised-button color="primary" class="mat-elevation-z1">
+    <button *ngIf="!beaker.editMode" (click)="onProduce()" [disabled]="pcMode !='idle' && pcMode != 'error'" mat-raised-button color="primary" class="mat-elevation-z1">
         Produzieren
     </button>
 </div>

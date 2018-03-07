@@ -244,7 +244,7 @@
               </div>
             </mat-card-content>
             <mat-card-actions *ngIf="!hasStartButton">
-              <button mat-raised-button color="primary" [disabled]="pcMode !='idle'" (click)="ProductionStart()">Getränk zubereiten</button>
+              <button mat-raised-button color="primary" [disabled]="pcMode !='idle' && pcMode != 'error'" (click)="ProductionStart()">Getränk zubereiten</button>
             </mat-card-actions>
             <mat-card-actions *ngIf="hasStartButton">
               Jetzt kann die Starttaste betätigt werden
