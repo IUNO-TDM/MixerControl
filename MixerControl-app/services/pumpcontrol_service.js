@@ -250,8 +250,8 @@ const onWebSocketMessage = function (message) {
         } else if (messageObject.hasOwnProperty('amountWarning')) {
             pumpcontrol_service.emit('amountWarning', messageObject.amountWarning);
             pumpAmountWarnings[messageObject.amountWarning.pumpNr] = messageObject.amountWarning;
-        } else if (messageObject.hasOwnProperty('gpio')){
-            pumpcontrol_service.emit('gpio', messageObject.gpio);
+        } else if (messageObject.hasOwnProperty('input')){
+            pumpcontrol_service.emit('input', messageObject.input);
         } else {
             console.log("Unrecognized message from PumpControl: " + JSON.stringify(message));
         }
@@ -468,53 +468,24 @@ pumpcontrol_service.getGpio = function (callback) {
     'GET',
     {},
     null,
-    '/gpio'
+    '/io-description'
   );
+
+  options.json = true;
 
   request(options, function (e, r, data) {
     const err = logger.logRequestAndResponse(e, options, r, data);
-
     callback(err, data);
   });
 };
 
-pumpcontrol_service.getGpioInputValue = function (name, callback) {
-  const options = buildOptionsForRequest(
-    'GET',
-    {},
-    null,
-    '/gpio/'+ name + '/inputvalue'
-  );
-
-  request(options, function (e, r, data) {
-    const err = logger.logRequestAndResponse(e, options, r, data);
-
-    callback(err, data);
-  });
-};
-
-
-pumpcontrol_service.getGpioOutputEnabled = function (name, callback) {
-  const options = buildOptionsForRequest(
-    'GET',
-    {},
-    null,
-    '/gpio/'+ name + '/outputenabled'
-  );
-
-  request(options, function (e, r, data) {
-    const err = logger.logRequestAndResponse(e, options, r, data);
-
-    callback(err, data);
-  });
-};
 
 pumpcontrol_service.setGpioOutputEnabled = function (name, enabled) {
   const options = buildOptionsForRequest(
     'PUT',
     {},
-    enabled ? 'true' : 'false',
-    '/gpio/' + name + '/outputenabled'
+    enabled ? 'on' : 'off',
+    '/io/' + name
   );
 
   request(options, function (e, r, data) {

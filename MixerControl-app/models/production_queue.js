@@ -296,4 +296,13 @@ pumpcontrol_service.on('pumpControlMode', function (mode) {
   }
 });
 
+
+pumpcontrol_service.on('input', function (input) {
+  if(input.name == 'start_button'){
+    if(input.value == true){
+      state_machine.startConfirmed();
+    }
+  }
+});
+
 module.exports = production_queue;
