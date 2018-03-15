@@ -97,18 +97,30 @@ pumpcontrol_service.setStartButtonIllumination = function (enabled) {
 const initIngredients = function () {
     jms_connector.getAllComponents(function (e, components) {
         if (!e) {
-            async.eachSeries(pumpNumbers, function (item, callback) {
+            async.mapSeries(pumpNumbers, function (item, callback) {
                 storage.getItem('component' + item).then(
                     function (compId) {
                         if (!componentExists(components, compId)) {
                             storage.removeItem('component' + item);
+                            callback();
                         }
                         else {
                             updateIngredient(item, compId, function () {
-                                callback();
+                                callback(null,compId);
                             });
                         }
                     });
+            }, function(err, comps){
+              const protocol = {
+                eventType: 'components',
+                timestamp: new Date().toISOString(),
+                payload: {
+                  components: comps
+                }
+              };
+              jms_connector.createProtocol(protocol, function(err, cb){
+                //TODO: React
+              })
             });
         }
     });
