@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/timer';
 import {Drink} from '../models/Drink';
 import {User} from '../models/User';
 import {Order} from '../models/Order';
@@ -72,6 +73,9 @@ export class OrderComponent implements OnInit, OnDestroy {
             drink: new Drink
         }
     };
+
+    redirectTimerSubscription: Subscription;
+    redirectTimerObservable: Observable<any>;
 
     @ViewChild('order') orderDiv;
     @ViewChild('payment') paymentDiv;
@@ -173,13 +177,20 @@ export class OrderComponent implements OnInit, OnDestroy {
                     this.ordersSocketService.getUpdates('state')
                         .subscribe(state => {
                             if (state.orderNumber === this.orderToBeDisplayed.orderNumber) {
-                                if (state !== 'waitingPayment') {
+                                if (state.toState !== 'waitingPayment') {
                                     if (this.qrDialogRef) {
                                         this.qrDialogRef.close();
                                     }
                                     if (this.scanDialogRef) {
                                         this.scanDialogRef.close();
                                     }
+                                }
+                                if (state.toState === 'productionFinished') {
+                                  this.redirectTimerObservable = Observable.timer(10000, 50000);
+                                  this.redirectTimerSubscription = this.redirectTimerObservable.subscribe(x => {
+                                    this.router.navigateByUrl('/');
+                                    this.redirectTimerSubscription.unsubscribe();
+                                  });
                                 }
                                 this.refreshStepCards(state);
                                 return this.orderState = state;
