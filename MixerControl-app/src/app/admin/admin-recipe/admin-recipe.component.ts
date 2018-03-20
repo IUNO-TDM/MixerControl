@@ -40,7 +40,7 @@ export class AdminRecipeComponent implements OnInit {
                 this.pcMode = state;
             });
         this.productionSocketService.joinRoom('pumpControlMode');
-        this.beaker.setEditMode(true);
+        // this.beaker.setEditMode(true);
     }
 
     ngOnDestroy(): void {
