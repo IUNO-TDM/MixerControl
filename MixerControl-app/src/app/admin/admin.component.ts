@@ -1,7 +1,7 @@
 /**
  * Created by goergch on 28.02.17.
  */
-import { Component,ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 @Component({
     moduleId: module.id,
     selector: 'my-admin',

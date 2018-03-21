@@ -45,3 +45,14 @@
   url(../fonts/MaterialIcons-Regular.woff) format('woff'),
   url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 }
+
+
+@font-face {
+  font-family: 'Emojione';
+  font-style: normal;
+  font-weight: 400;
+  src: local('emojione'),
+  local('emojione'),
+  url(../fonts/emojione.woff2) format('woff2'),
+  url(../fonts/emojione.woff) format('woff');
+}

@@ -54,6 +54,7 @@ npm i
 
 private config erstellen
 pm2 config json erstellen
+npm install -g @angular/cli
 ng build --env=prod
 
 
@@ -167,5 +168,6 @@ mkdir /opt/jdk
 
 git clone https://github.com/IUNO-TDM/PaymentService.git
 cd PaymentService
+Wallet Seed übernehmen: pom.xml anpassen: <walletSeed>.....</walletSeed>
 mvn clean package jetty:run
 ````

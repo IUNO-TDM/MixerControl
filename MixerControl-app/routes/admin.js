@@ -1,14 +1,17 @@
 /**
  * Created by goergch on 23.01.17.
  */
-var express = require('express');
-var router = express.Router();
-var logger = require('../global/logger');
-var production_queue = require('../models/production_queue');
-var pumpcontrol_service = require('../services/pumpcontrol_service');
-
+const express = require('express');
+const router = express.Router();
+const logger = require('../global/logger');
+const production_queue = require('../models/production_queue');
+const pumpcontrol_service = require('../services/pumpcontrol_service');
+const programConverter = require('../services/program_converter');
 const async = require('async');
-var jms_connector = require('../adapter/juice_machine_service_adapter');
+const jms_connector = require('../adapter/juice_machine_service_adapter');
+
+const payment_connector = require('../adapter/payment_service_adapter');
+
 router.post('/production/startConfirm', function (req, res, next) {
     production_queue.startConfirmed();
     res.sendStatus(200);
@@ -23,6 +26,22 @@ router.post('/production/resume', function (req, res, next) {
     production_queue.resumeProduction();
     res.sendStatus(200);
 
+});
+
+router.get('/wallet/balance', function(req, res, next){
+  payment_connector.getWalletBalance(function(e,balance){
+    if(e){
+      res.status(500).send(e);
+    } else if(!balance){
+      res.sendStatus(500);
+    }else {
+      res.status(200).send(balance);
+    }
+  });
+});
+
+router.get('/startbutton', function(req, res, next){
+  res.send(pumpcontrol_service.hasStartButtonIllumination());
 });
 
 router.get('/pumps', function (req, res, next) {
@@ -164,4 +183,17 @@ router.post('/pumps/service', function (req, res, next) {
     res.sendStatus(200);
 
 });
+
+router.post('/program', function(req, res, next) {
+    const machineProgramString = JSON.stringify(req.body);
+
+    pumpcontrol_service.startProgram(production_queue, {
+        productCode: 0,
+        program: machineProgramString
+    });
+
+    res.sendStatus(200);
+});
+
+
 module.exports = router;
