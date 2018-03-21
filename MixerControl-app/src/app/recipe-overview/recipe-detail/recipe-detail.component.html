@@ -29,7 +29,7 @@
       <div fxFlex="auto">
         <mat-card>
           <h4>Zutaten:</h4>
-          <div fxLayout="row" fxLayoutGap="5px" fxLayoutWrap class="component-list">
+          <div fxLayout="row true" class="component-list">
             <div *ngFor="let comp of drink.components" class="component">{{comp.name}}</div>
           </div>
         </mat-card>
