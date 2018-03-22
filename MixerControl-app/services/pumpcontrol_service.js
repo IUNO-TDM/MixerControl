@@ -63,6 +63,25 @@ const initStorage = function () {
 
 };
 
+const sendProtocol = function(){
+  async.mapSeries(pumpNumbers,function(item, callback){
+    storage.getItem('component' + item).then(function(compId){
+      callback(null, compId);
+    });
+  }, function(err, components){
+    const protocol = {
+      eventType: 'components',
+      timestamp: new Date().toISOString(),
+      payload: {
+        components: components
+      }
+    };
+    jms_connector.createProtocol(protocol, function(err, cb){
+      //TODO: React
+    })
+  })
+}
+
 const pumpcontrol_service = new PumpControlService();
 util.inherits(PumpControlService, EventEmitter);
 
@@ -97,22 +116,36 @@ pumpcontrol_service.setStartButtonIllumination = function (enabled) {
 const initIngredients = function () {
     jms_connector.getAllComponents(function (e, components) {
         if (!e) {
-            async.eachSeries(pumpNumbers, function (item, callback) {
+            async.mapSeries(pumpNumbers, function (item, callback) {
                 storage.getItem('component' + item).then(
                     function (compId) {
                         if (!componentExists(components, compId)) {
                             storage.removeItem('component' + item);
+                            callback();
                         }
                         else {
                             updateIngredient(item, compId, function () {
-                                callback();
+                                callback(null,compId);
                             });
                         }
                     });
+            }, function(err, comps){
+              const protocol = {
+                eventType: 'components',
+                timestamp: new Date().toISOString(),
+                payload: {
+                  components: comps
+                }
+              };
+              jms_connector.createProtocol(protocol, function(err, cb){
+                //TODO: React
+              })
             });
         }
     });
 };
+
+
 
 const componentExists = function (components, id) {
     for (var i = 0; i < components.length; i++) {
@@ -297,12 +330,14 @@ pumpcontrol_service.setIngredient = function (pumpNumber, ingredient, callback) 
     storage.setItemSync('component' + pumpNumber, ingredient);
 
     updateIngredient(pumpNumber, ingredient, callback);
+    sendProtocol();
 
 };
 pumpcontrol_service.getStorageIngredient = function (pumpNumber) {
     return storage.getItemSync('component' + pumpNumber);
 
 };
+pumpcontrol_service.get
 
 pumpcontrol_service.getConfiguredComponents = function () {
     const components = [];
@@ -361,6 +396,9 @@ const updateIngredient = function (pumpNumber, componentUUID, callback) {
         callback(err);
     });
 };
+
+
+
 const updatePumpAmount = function (pumpNumber, amount, callback) {
     const options = buildOptionsForRequest(
         'PUT',
