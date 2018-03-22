@@ -36,7 +36,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
     panelClass: 'custom-overlay-pane-class',
     hasBackdrop: true,
     backdropClass: '',
-    width: '',
+    width: '400px',
     height: '',
     position: {
       top: '',
