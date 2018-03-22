@@ -1,74 +1,44 @@
-import { Injectable } from '@angular/core';
-import { Headers, Http, Response, RequestOptions } from '@angular/http';
+import {Injectable} from '@angular/core';
 
-import 'rxjs/add/operator/toPromise';
-import { Observable } from "rxjs/Rx";
+import 'rxjs/add/operator/map';
+import {Observable} from 'rxjs/Rx';
 
 import {Order} from '../models/Order';
+import {AdressValuePair} from '../models/AdressValuePair';
+
+import {HttpClient, HttpResponse} from '@angular/common/http';
 
 @Injectable()
 export class OrderService {
-  private ordersUrl = 'api/orders/';  // URL to web api
+    private ordersUrl = 'api/orders/';  // URL to web api
 
-  constructor(private http: Http) { }
+    constructor(private http: HttpClient) {
+    }
 
-  getOrder(id: string): Promise<Order> {
-    let url = `${this.ordersUrl}/${id}`;
-    return this.http
-      .get(url)
-      .toPromise()
-      .then(response => {
-        let order =  response.json() as Order;
-        console.log(order);
-        return order;
-      })
-      .catch(this.handleError);
-  }
+    getOrder(id: string): Observable<Order> {
+        const url = `${this.ordersUrl}/${id}`;
+        return this.http.get<Order>(url);
+    }
 
 
-  createOrder(order: Order): Promise<string>{
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    let body = JSON.stringify(order);
-    return this.http.post(this.ordersUrl, body, options).
-      toPromise().then(response => response.headers.get("Location"));
-  }
+    createOrder(order: Order): Observable<Order> {
+        return this.http.post<Order>(this.ordersUrl, order);
+    }
 
-  getPaymentRequest(id: string): Promise<string> {
-    let url = `${this.ordersUrl}${id}/PaymentRequest`;
-    return this.http
-      .get(url)
-      .toPromise()
-      .then(response => {
-        let paymentRequest =  response.text();
-        console.log(paymentRequest);
-        return paymentRequest;
-      })
-      .catch(this.handleError);
-  }
+    getPaymentRequest(id: string): Observable<string> {
+        const url = `${this.ordersUrl}${id}/PaymentRequest`;
+        return this.http.get(url).map(resp => resp['PaymentRequest']);
+    }
 
-  sendPayment(id: string, payment: string): Promise<Response>{
-    let headers = new Headers({ 'Content-Type': 'text/plain' });
-    let options = new RequestOptions({ headers: headers });
-    let url = `${this.ordersUrl}${id}/Payment`;
+    sendPayment(id: string, payment: string): Observable<AdressValuePair> {
+        const url = `${this.ordersUrl}${id}/Payment`;
 
-    return this.http.put(url,payment, options).toPromise().then(response => {
-      return response;
-    }).catch(this.handleError)
-  }
+        return this.http.put<AdressValuePair>(url, payment);
+    }
 
-  sendProductionStart(id: string): Promise<Response>{
-    let headers = new Headers({ 'Content-Type': 'text/plain' });
-    let options = new RequestOptions({ headers: headers });
-    let url = `${this.ordersUrl}${id}/productionStart`;
+    sendProductionStart(id: string): Observable<HttpResponse<Object>> {
+        const url = `${this.ordersUrl}${id}/productionStart`;
 
-    return this.http.put(url,"true", options).toPromise();
-  }
-
-
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
-    return Promise.reject( error);
-  }
+        return this.http.put(url, 'true', {observe: 'response'});
+    }
 }

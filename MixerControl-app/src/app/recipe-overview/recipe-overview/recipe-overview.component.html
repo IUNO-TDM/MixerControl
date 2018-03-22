@@ -1,0 +1,68 @@
+<mat-drawer-container>
+
+  <mat-drawer mode="side" opened="true">
+    <div fxFlex="auto" fxLayout="column" fxLayoutAlign="  space-between center">
+      <mat-card class="filter-card">
+        <h3>Vorlieben:</h3>
+        <div fxLayout="column" fxLayoutGap="5px">
+          <div *ngFor="let comp of components" fxLayout="row" fxLayoutAlign="space-between">
+            <div>{{comp.name}}</div>
+            <mat-button-toggle-group [(ngModel)]="componentSelection[comp.id]" (change)="filterChanged()"
+                                     >
+              <mat-button-toggle value="i" matTooltip="Nur Getränke mit {{comp.name}}"  matTooltipPosition="after" MatTooltipTouchendHideDelay="2000">
+                😋
+              </mat-button-toggle>
+              <mat-button-toggle value="n" matTooltip="Getränke dürfen {{comp.name}} beinhalten" matTooltipPosition="after" MatTooltipTouchendHideDelay="2000">
+                😶
+              </mat-button-toggle>
+              <mat-button-toggle value="e" matTooltip="Nur Getränke ohne {{comp.name}}" matTooltipPosition="after" MatTooltipTouchendHideDelay="2000">
+                🤢
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+        <br>
+        <div fxLayout="column" fxLayoutAlign="center">
+          <button mat-button (click)="resetFilter()" [disabled]="!resetEnabled">Filter löschen</button>
+          {{(drinks|recipeFilter: filterData).length}} Drink{{(drinks|recipeFilter: filterData).length == 1?'':'s'}} sind mit diesen Vorlieben verfügbar
+        </div>
+
+      </mat-card>
+
+      <div fxFlex="*" fxLayout="column" fxLayoutAlign="center center">
+        <div fxFlex="250px" class="logo-space" fxLayout="column" fxLayoutAlign="space-between">
+          <div fxFlex="*">
+            <img src="./assets/gefoerdert_vom_BMBF.svg">
+          </div>
+          <div fxFlex="*">
+            <img src="./assets/CodeMeter_inside.svg">
+          </div>
+          <div fxFlex="*">
+            <img src="./assets/powered_by_axoom_vertical.svg">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="scrolling-container">
+      <div fxLayout="row true" class="container" fxLayoutAlign="space-around">
+
+        <mat-card *ngFor="let drink of drinks | recipeFilter: filterData" class="recipecard" (click)="cardClick(drink)">
+          <!--<mat-card-content>-->
+          <h3 class="recipe-title">{{drink.title}}</h3>
+
+          <!--<img mat-card-image [style.background-color]="drinkColors[drink.id]"  src="/api/drinks/{{drink.id}}/image">-->
+          <img mat-card-image [style.background-color]="drinkColors[drink.id]" src="/api/drinks/{{drink.id}}/image">
+          <div fxLayout="row" fxLayoutAlign="left center" fxLayoutGap="10px">
+            <div fxFlex="60px"><img mat-card-avatar src="/api/users/{{drink.authorId}}/image"></div>
+            <div fxFlex="*">{{users[drink.authorId].firstname}} {{users[drink.authorId].lastname}}</div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

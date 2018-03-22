@@ -1,0 +1,17 @@
+<div class="section" fxLayout="row" fxLayoutGap="30px">
+    <!--<cocktail-component-list></cocktail-component-list>-->
+    <cocktail-beaker [editMode]="true" style="height:400px" [cocktail]="cocktail" fxFlex="320px"></cocktail-beaker>
+    <cocktail-ingredients-listing fxFlex="320px"
+                                  [cocktail]="cocktail"></cocktail-ingredients-listing>
+</div>
+
+<div class="section">
+    <button *ngIf="cocktail.layers.length > 0" (click)="onToggleEdit()" mat-raised-button color="primary"
+            class="mat-elevation-z1">
+        {{beaker.editMode? 'Speichern' : 'Editieren'}}
+    </button>
+    <button *ngIf="!beaker.editMode" (click)="onProduce()" [disabled]="pcMode !='idle' && pcMode != 'error'"
+            mat-raised-button color="primary" class="mat-elevation-z1">
+        Produzieren
+    </button>
+</div>

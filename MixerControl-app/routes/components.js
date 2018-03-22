@@ -54,8 +54,9 @@ router.get('/', function (req, res, next) {
                 }
             });
         }
-
-        res.json(components);
+        else {
+            res.json(components);
+        }
 
     });
 
