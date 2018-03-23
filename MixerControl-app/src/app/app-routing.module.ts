@@ -1,10 +1,6 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { DrinkListComponent } from './drink/drink-list.component';
-import { DrinkDetailComponent } from './drink/drink-detail.component';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 
-import { OrderComponent } from './order/order.component';
-import {AdminComponent} from "./admin/admin.component";
 const routes: Routes = [
   {
     path: '',
@@ -13,20 +9,17 @@ const routes: Routes = [
   },
   {
     path: 'drinks',
-    component: DrinkListComponent
-  },
-  {
-    path: 'drinks/:id',
-    component: DrinkDetailComponent
+    loadChildren: './recipe-overview/recipe-overview.module#RecipeOverviewModule'
   },
   {
     path: 'orders/:id',
-    component: OrderComponent
+    loadChildren: './order/order.module#OrderModule'
+
   }
   ,
   {
     path: 'admin',
-    component: AdminComponent
+    loadChildren: './admin/admin.module#AdminModule'
   }
 ];
 
@@ -34,5 +27,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
-export const routedComponents = [DrinkListComponent,DrinkDetailComponent, OrderComponent, AdminComponent];
+export class AppRoutingModule {
+}

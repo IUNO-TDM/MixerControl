@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Socket } from 'ng-socket-io';
-import {Observable} from "rxjs/Observable";
+import {Injectable} from '@angular/core';
+import {Socket} from 'ng-socket-io';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class OrdersSocket extends Socket {
 
   constructor() {
-    super({ url: window.location.protocol+'//'+window.location.hostname+':'+ window.location.port +'/orders', options: {} });
+    super({
+      url: window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/orders',
+      options: {}
+    });
   }
 
 }
@@ -14,10 +17,11 @@ export class OrdersSocket extends Socket {
 @Injectable()
 export class OrdersSocketService {
 
-  constructor(private socket: OrdersSocket) { }
+  constructor(private socket: OrdersSocket) {
+  }
 
-  joinRoom(room: string){
-    this.socket.emit("room", room);
+  joinRoom(room: string) {
+    this.socket.emit('room', room);
   }
 
   getUpdates(subject: string): Observable<any> {

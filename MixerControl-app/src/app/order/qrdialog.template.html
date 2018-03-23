@@ -5,7 +5,11 @@
     <ngx-qrcode *ngIf="paymentRequest && paymentRequest!==''" [qrc-element-type]="elementType" [qrc-value]="paymentRequest"></ngx-qrcode>
     <p *ngIf="errorMessage && errorMessage!==''">{{errorMessage}}</p>
   </div>
-
+  <div fxLayout="row" fxLayoutAlign="center" *ngIf="balance && balance.spendable < data.drink.licensefee">
+    <p class="warningText">Achtung. Im Bitcoinwallet ist aktuell für eine schnelle Abarbeitung des
+      Lizenzkaufs über diese Methode nicht genug Guthaben vorhanden. Es funktioniert - kann aber bis zu 20 Minuten dauern!<br>
+      Die Empfehlung ist, zuerst eine Zahlung per Coupon durchzuführen</p>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>

@@ -9,8 +9,6 @@ const config = require('../config/config_loader');
 const pumpControl = require('../services/pumpcontrol_service');
 const juiceMachineService = require('../adapter/juice_machine_service_adapter');
 
-
-
 /**
  * Functions
  */
@@ -22,7 +20,7 @@ String.prototype.format = function () {
     });
 };
 
-router.get('/',  function (req, res, next) {
+router.get('/', function (req, res, next) {
 
     let components = pumpControl.getConfiguredComponents();
 
@@ -32,6 +30,9 @@ router.get('/',  function (req, res, next) {
             logger.crit(e);
             next(e);
             return;
+        }
+        for (let i in recipes) {
+            recipes[i].retailPrice = config.RETAIL_PRICE;
         }
 
         res.json(recipes);

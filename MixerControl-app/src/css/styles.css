@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
-@import 'fonts.css';
 
 html {
   /*font-size: 50%;*/
@@ -11,15 +10,17 @@ body{
 
 }
 
-.container{
-  width: 100%;
-  margin-bottom: 55px;
+.app-container{
+  position: absolute;
+  top: 80px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 5px;
   /*overflow: hidden;*/
 }
 
-.containerInner{
-  overflow:visible;
-}
+
 .loader {
   background-position: center center;
   background-repeat: no-repeat;
@@ -33,7 +34,7 @@ a:hover {
   color: #000; }
 
 header {
-  background-image: url('../assets/header.png');
+  background-image: url('/assets/header.png');
   background-size: cover;
   background-color: blue;
   height: 80px;
@@ -45,6 +46,7 @@ header .projectTitle {
   font-family: 'open_sanslight';
   text-decoration: none;
 }
+
 
 @media only screen and (max-width: 350px) {
   header .projectTitle{
@@ -135,3 +137,8 @@ header .projectTitle {
 .mat-expansion-panel-header{
   max-height: 40px !important;
 }
+
+body{
+  margin: 0px;
+}
+

@@ -1,0 +1,46 @@
+<div class="background" [ngStyle]="setStyles()">
+  <div class="dialog-container" fxLayoutAlign="row" fxLayoutGap="10px">
+
+    <img class="drinkimg" src="/api/drinks/{{drink.id}}/image">
+    <div class="detail" fxFlex="*" fxLayout="column" fxLayoutAlign="space-between">
+      <div fxFlex="auto">
+        <mat-card>
+          <mat-card-title class="recipe-title">
+            {{drink.title}}
+          </mat-card-title>
+          <mat-dialog-content>
+            {{drink.description}}
+          </mat-dialog-content>
+        </mat-card>
+      </div>
+
+      <div fxFlex="auto">
+        <mat-card>
+          <div fxLayout="row" fxLayoutAlign="left center" fxLayoutGap="10px">
+            <div fxFlex="80px"><img mat-card-avatar src="/api/users/{{drink.authorId}}/image"></div>
+
+            <div fxFlex="*">{{user.firstname}} {{user.lastname}}</div>
+          </div>
+          <p>Lizenzgebühr: {{drink.licensefee/100000}} IUNO</p>
+          <p>Zubereitungsgebühr: {{(drink.retailPrice-drink.licensefee)/100000}} IUNO</p>
+          <p>Gesamtpreis: {{drink.retailPrice/100000}} IUNO</p>
+        </mat-card>
+      </div>
+      <div fxFlex="auto">
+        <mat-card>
+          <h4>Zutaten:</h4>
+          <div fxLayout="row true" class="component-list">
+            <div *ngFor="let comp of drink.components" class="component">{{comp.name}}</div>
+          </div>
+        </mat-card>
+      </div>
+
+
+      <div fxFlex="50px" fxLayout="row" fxLayoutAlign="center">
+
+        <button mat-raised-button color="accent" (click)="order()">Kostenpflichtig bestellen</button>
+      </div>
+    </div>
+
+  </div>
+</div>

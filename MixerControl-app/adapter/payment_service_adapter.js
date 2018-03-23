@@ -78,6 +78,28 @@ self.getBip21 = function (invoice, callback) {
     });
 };
 
+self.getWalletBalance = function (callback) {
+
+  if (typeof(callback) !== 'function') {
+    callback = function () {
+      logger.info('[payment_service_adapter] Callback not registered');
+    }
+  }
+
+  const options = buildOptionsForRequest('GET', {}, null, '/v1/wallet/balance');
+
+  request(options, function (e, r, data) {
+
+    const err = logger.logRequestAndResponse(e, options, r, data);
+    if (err || !data) {
+      callback(err, null);
+    } else {
+
+      callback(null, data);
+    }
+  });
+};
+
 
 self.redeemCoupon = function (invoice, couponKey, callback) {
     if (!invoice || !couponKey) {

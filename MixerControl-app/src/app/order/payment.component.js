@@ -1,6 +1,7 @@
 "use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
@@ -27,31 +28,30 @@ let PaymentComponent = class PaymentComponent {
             lastOnBottom: true
         };
     }
+
     ngOnInit() {
-        this.route.params.
-            switchMap((params) => this.orderService.getPaymentRequest(params['id']))
+        this.route.params.switchMap((params) => this.orderService.getPaymentRequest(params['id']))
             .then(paymentRequest => this.paymentRequest = paymentRequest);
     }
+
     onRead(text) {
-        //TODO remove this logging later
-        console.log("Scanned QR-Code: " + text);
         this.route.params.subscribe((params) => {
             this.orderService.sendPayment(params['id'], text)
                 .then(response => {
-                if (response.status != 200) {
+                    if (response.status != 200) {
+                        this.qrScannerComponent.startScanning();
+                    }
+                    console.log(response);
+                }, err => {
+                    console.log(err);
                     this.qrScannerComponent.startScanning();
-                }
-                console.log(response);
-            }, err => {
-                console.log(err);
-                this.qrScannerComponent.startScanning();
-                this._service.alert("Fehler beim QR-Code lesen", "Bitte probieren Sie es noch einmal.");
-            });
+                    this._service.alert("Fehler beim QR-Code lesen", "Bitte probieren Sie es noch einmal.");
+                });
         });
     }
 };
 __decorate([
-    core_1.ViewChild(angular2_qrscanner_1.QrScannerComponent), 
+    core_1.ViewChild(angular2_qrscanner_1.QrScannerComponent),
     __metadata('design:type', angular2_qrscanner_1.QrScannerComponent)
 ], PaymentComponent.prototype, "qrScannerComponent", void 0);
 PaymentComponent = __decorate([
@@ -60,7 +60,7 @@ PaymentComponent = __decorate([
         selector: 'my-payment',
         templateUrl: 'payment.template.html',
         providers: [order_service_1.OrderService]
-    }), 
+    }),
     __metadata('design:paramtypes', [router_1.ActivatedRoute, order_service_1.OrderService, angular2_notifications_1.NotificationsService])
 ], PaymentComponent);
 exports.PaymentComponent = PaymentComponent;
