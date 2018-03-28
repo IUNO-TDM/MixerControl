@@ -108,7 +108,6 @@ license_service.socket.on('updateAvailable', function (data) {
 });
 
 license_service.registerUpdates = function () {
-    license_service.socket.emit('clientId', CONFIG.OAUTH_CREDENTIALS.CLIENT_ID);
     licenseManager.getHsmId(function (err, hsmId) {
         if (err || !hsmId) {
             logger.warn('[license_client] Could not register for license updates! Missing HSM ID');
