@@ -31,6 +31,9 @@ export class AdminRecipeComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.componentService.setComponentSourceUrl('/api/components?filtered=true');
+        this.componentService.setRecommendComponentIds([]);
+
         this.pcModeConnection = this.productionSocketService.getUpdates('pumpControlMode')
             .subscribe(state => {
                 this.pcMode = state;
