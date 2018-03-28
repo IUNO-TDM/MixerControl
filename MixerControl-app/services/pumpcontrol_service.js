@@ -63,25 +63,6 @@ const initStorage = function () {
 
 };
 
-const sendProtocol = function(){
-  async.mapSeries(pumpNumbers,function(item, callback){
-    storage.getItem('component' + item).then(function(compId){
-      callback(null, compId);
-    });
-  }, function(err, components){
-    const protocol = {
-      eventType: 'components',
-      timestamp: new Date().toISOString(),
-      payload: {
-        components: components
-      }
-    };
-    jms_connector.createProtocol(protocol, function(err, cb){
-      //TODO: React
-    })
-  })
-}
-
 const pumpcontrol_service = new PumpControlService();
 util.inherits(PumpControlService, EventEmitter);
 
@@ -94,23 +75,23 @@ let hasJuiceDoorSwitch = false;
 let hasStartButtonIllumination = false;
 
 pumpcontrol_service.hasStartButton = function () {
-  return hasStartButton;
+    return hasStartButton;
 };
 
 pumpcontrol_service.hasCabinetSwitch = function () {
-  return hasCabinetSwitch;
+    return hasCabinetSwitch;
 };
 
 pumpcontrol_service.hasJuiceDoorSwitch = function () {
-  return hasJuiceDoorSwitch;
+    return hasJuiceDoorSwitch;
 };
 
 pumpcontrol_service.hasStartButtonIllumination = function () {
-  return hasStartButtonIllumination;
+    return hasStartButtonIllumination;
 };
 
 pumpcontrol_service.setStartButtonIllumination = function (enabled) {
-  pumpcontrol_service.setGpioOutputEnabled('start_button_illumination',enabled);
+    pumpcontrol_service.setGpioOutputEnabled('start_button_illumination', enabled);
 };
 
 const initIngredients = function () {
@@ -125,26 +106,22 @@ const initIngredients = function () {
                         }
                         else {
                             updateIngredient(item, compId, function () {
-                                callback(null,compId);
+                                callback(null, compId);
                             });
                         }
                     });
-            }, function(err, comps){
-              const protocol = {
-                eventType: 'components',
-                timestamp: new Date().toISOString(),
-                payload: {
-                  components: comps
+            }, function (err, comps) {
+                if (err) {
+                    logger.warn(err);
                 }
-              };
-              jms_connector.createProtocol(protocol, function(err, cb){
-                //TODO: React
-              })
+
+                if (comps) {
+                    logger.debug('[pumpcontrol_service] initial components: ' + JSON.stringify(comps))
+                }
             });
         }
     });
 };
-
 
 
 const componentExists = function (components, id) {
@@ -183,32 +160,32 @@ const state_machine = new machina.Fsm({
         connected: {
             _onEnter: function () {
                 initIngredients();
-                pumpcontrol_service.getGpio((err, data)=>{
-                  hasJuiceDoorSwitch = false;
-                  hasStartButtonIllumination = false;
-                  hasCabinetSwitch = false;
-                  hasStartButton = false;
-                  if(!err){
-                    for(let io of data){
-                      switch (io.name){
-                        case 'cabinet_door_switch':
-                          hasCabinetSwitch = true;
-                          break;
-                        case 'juice_door_switch':
-                          hasJuiceDoorSwitch = true;
-                          break;
-                        case 'start_button':
-                          hasStartButton = true;
-                          break;
-                        case 'start_button_illumination':
-                          hasStartButtonIllumination = true;
-                          pumpcontrol_service.setStartButtonIllumination(false);
-                          break;
-                        default:
-                          console.debug('unknown pin:' + io)
-                      }
+                pumpcontrol_service.getGpio((err, data) => {
+                    hasJuiceDoorSwitch = false;
+                    hasStartButtonIllumination = false;
+                    hasCabinetSwitch = false;
+                    hasStartButton = false;
+                    if (!err) {
+                        for (let io of data) {
+                            switch (io.name) {
+                                case 'cabinet_door_switch':
+                                    hasCabinetSwitch = true;
+                                    break;
+                                case 'juice_door_switch':
+                                    hasJuiceDoorSwitch = true;
+                                    break;
+                                case 'start_button':
+                                    hasStartButton = true;
+                                    break;
+                                case 'start_button_illumination':
+                                    hasStartButtonIllumination = true;
+                                    pumpcontrol_service.setStartButtonIllumination(false);
+                                    break;
+                                default:
+                                    console.debug('unknown pin:' + io)
+                            }
+                        }
                     }
-                  }
                 });
             },
             connectionLoss: "connectionLost",
@@ -283,7 +260,7 @@ const onWebSocketMessage = function (message) {
         } else if (messageObject.hasOwnProperty('amountWarning')) {
             pumpcontrol_service.emit('amountWarning', messageObject.amountWarning);
             pumpAmountWarnings[messageObject.amountWarning.pumpNr] = messageObject.amountWarning;
-        } else if (messageObject.hasOwnProperty('input')){
+        } else if (messageObject.hasOwnProperty('input')) {
             pumpcontrol_service.emit('input', messageObject.input);
         } else {
             console.log("Unrecognized message from PumpControl: " + JSON.stringify(message));
@@ -330,14 +307,12 @@ pumpcontrol_service.setIngredient = function (pumpNumber, ingredient, callback) 
     storage.setItemSync('component' + pumpNumber, ingredient);
 
     updateIngredient(pumpNumber, ingredient, callback);
-    sendProtocol();
 
 };
 pumpcontrol_service.getStorageIngredient = function (pumpNumber) {
     return storage.getItemSync('component' + pumpNumber);
 
 };
-pumpcontrol_service.get
 
 pumpcontrol_service.getConfiguredComponents = function () {
     const components = [];
@@ -396,7 +371,6 @@ const updateIngredient = function (pumpNumber, componentUUID, callback) {
         callback(err);
     });
 };
-
 
 
 const updatePumpAmount = function (pumpNumber, amount, callback) {
@@ -502,33 +476,33 @@ pumpcontrol_service.setServicePump = function (pumpNumber, on) {
 };
 
 pumpcontrol_service.getGpio = function (callback) {
-  const options = buildOptionsForRequest(
-    'GET',
-    {},
-    null,
-    '/io-description'
-  );
+    const options = buildOptionsForRequest(
+        'GET',
+        {},
+        null,
+        '/io-description'
+    );
 
-  options.json = true;
+    options.json = true;
 
-  request(options, function (e, r, data) {
-    const err = logger.logRequestAndResponse(e, options, r, data);
-    callback(err, data);
-  });
+    request(options, function (e, r, data) {
+        const err = logger.logRequestAndResponse(e, options, r, data);
+        callback(err, data);
+    });
 };
 
 
 pumpcontrol_service.setGpioOutputEnabled = function (name, enabled) {
-  const options = buildOptionsForRequest(
-    'PUT',
-    {},
-    enabled ? 'on' : 'off',
-    '/io/' + name
-  );
+    const options = buildOptionsForRequest(
+        'PUT',
+        {},
+        enabled ? 'on' : 'off',
+        '/io/' + name
+    );
 
-  request(options, function (e, r, data) {
-    logger.logRequestAndResponse(e, options, r, data);
-  });
+    request(options, function (e, r, data) {
+        logger.logRequestAndResponse(e, options, r, data);
+    });
 };
 
 function buildOptionsForRequest(method, qs, body, path) {
