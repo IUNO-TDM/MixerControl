@@ -6,6 +6,9 @@ var logger = require('../global/logger');
 
 const jms_connector = require('../adapter/juice_machine_service_adapter');
 
+const configuration_persist = require('../global/configuration_persist');
+const CONFIG = require('../config/config_loader');
+
 var ProductionQueue = function () {
 };
 const production_queue = new ProductionQueue();
@@ -218,20 +221,21 @@ state_machine.on('transition', function (data) {
   // console.log("ProductionQueue statechange " + data.toState );
   production_queue.emit('state', data.toState, queue[0]);
 
-  let protocol = {
-    eventType: 'productionState',
-    timestamp: new Date().toISOString(),
-    payload:{
-      state: data.toState
+  if(configuration_persist.getKey(CONFIG.STATISTICS_ENABLED_KEY,CONFIG.STATISTICS_ENABLED_DEFAULT)){
+    let protocol = {
+      eventType: 'productionState',
+      timestamp: new Date().toISOString(),
+      payload:{
+        state: data.toState
+      }
+    };
+    if(queue[0]){
+      protocol.payload.recipeId = queue[0].drinkId
     }
-  };
-  if(queue[0]){
-    protocol.payload.recipeId = queue[0].drinkId
+    jms_connector.createProtocol(protocol, function (err, cb) {
+      //TODO react on failure
+    })
   }
-  jms_connector.createProtocol(protocol, function (err, cb) {
-    //TODO react on failure
-  })
-
 });
 
 pumpcontrol_service.on('serviceState', function (state) {
