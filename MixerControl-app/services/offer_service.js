@@ -48,6 +48,21 @@ self.requestOfferForOrder = function (stateMachine, order) {
     });
 };
 
+self.requestLicenseUpdateForOrder = (stateMachine, order) => {
+    licenseManager.getHsmId(function (err, hsmId) {
+        if (err || !hsmId) {
+            logger.crit('[offer_service] Could not get the hsmId from the dongle. Setting error state for order');
+            return stateMachine.error(order);
+        }
+
+        juiceMachineService.requestLicenseUpdate(order.offerId, hsmId, (err) => {
+            if (err) {
+                logger.warn('[offer_service] request license update failed');
+            }
+        });
+    });
+};
+
 function calculateRetailPriceForeOffer(offer) {
     //Here could be a fancy algorithm
     // But as every Drink costs the same at the moment, we just take the config value

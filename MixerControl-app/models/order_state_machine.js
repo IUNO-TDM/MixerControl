@@ -2,13 +2,10 @@
  * Created by goergch on 25.01.17.
  */
 
-const CONFIG = require('../config/config_loader');
-
 const machina = require('machina');
 const production_queue = require('../models/production_queue');
 const logger = require('../global/logger');
 const payment_service = require('../adapter/payment_service_adapter');
-const orderDB = require('../database/orderDB');
 const offerService = require('../services/offer_service');
 
 const stateMachine = new machina.BehavioralFsm({
@@ -68,16 +65,24 @@ const stateMachine = new machina.BehavioralFsm({
             }
         },
         waitingLicenseAvailable: {
-            _onEnter: function (client) {
+            _onEnter: function (order) {
+                stateMachine.licenseTimeout = setInterval(() => {
+                    offerService.requestLicenseUpdateForOrder(this, order);
+                }, 10000);
             },
-            licenseAvailable: "waitingLicense",
-            licenseArrived: function (client) {
-                this.deferUntilTransition(client);
-                this.transition(client, 'waitingLicense');
+            licenseAvailable: function (order) {
+                clearInterval(stateMachine.licenseTimeout);
+                this.transition(order, 'waitingLicense');
+            },
+            licenseArrived: function (order) {
+                clearInterval(stateMachine.licenseTimeout);
+                this.deferUntilTransition(order);
+                this.transition(order, 'waitingLicense');
 
             },
-            onError: function (client) {
-                this.transition(client, "error");
+            onError: function (order) {
+                clearInterval(stateMachine.licenseTimeout);
+                this.transition(order, "error");
             }
         },
         waitingLicense: {
@@ -107,7 +112,7 @@ const stateMachine = new machina.BehavioralFsm({
             readyForProduction: "readyForProduction",
             pause: "orderPaused",
             onError: function (client) {
-                this.transition(client, "error");this.transition(client, "error");
+                this.transition(client, "error");
             }
         },
         readyForProduction: {

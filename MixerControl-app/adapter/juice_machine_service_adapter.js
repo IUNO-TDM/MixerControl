@@ -396,4 +396,22 @@ self.createProtocol = function (protocol, callback) {
     );
 };
 
+self.requestLicenseUpdate = function (offerUUID, hsmId, callback) {
+
+    buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        `/offers/${offerUUID}/request_license_update`,
+        {},
+        function (err, options) {
+            options.body = {hsmId: hsmId};
+            doRequest(options, (e) => {
+                callback(e);
+            });
+        }
+    );
+};
+
 module.exports = self;
