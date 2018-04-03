@@ -315,7 +315,7 @@ self.savePaymentForOffer = function (offerId, bip70, callback) {
     );
 };
 
-self.getLicenseUpdate = function(hsmId, context, callback) {
+self.getLicenseUpdate = function (hsmId, context, callback) {
     if (typeof(callback) !== 'function') {
         return logger.info('[juice_machine_service_adapter] Callback not registered');
     }
@@ -344,7 +344,7 @@ self.getLicenseUpdate = function(hsmId, context, callback) {
     );
 };
 
-self.confirmLicenseUpdate = function(hsmId, context, callback) {
+self.confirmLicenseUpdate = function (hsmId, context, callback) {
     if (typeof(callback) !== 'function') {
         return logger.info('[juice_machine_service_adapter] Callback not registered');
     }
@@ -374,26 +374,26 @@ self.confirmLicenseUpdate = function(hsmId, context, callback) {
 };
 
 self.createProtocol = function (protocol, callback) {
-  if (typeof(callback) !== 'function') {
-    callback = function () {
-      logger.info('Callback not registered');
+    if (typeof(callback) !== 'function') {
+        callback = function () {
+            logger.info('Callback not registered');
+        }
     }
-  }
 
-  buildOptionsForRequest(
-    'POST',
-    CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
-    CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-    CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-    '/protocols/' + CONFIG.OAUTH_CREDENTIALS.CLIENT_ID,
-    {},
-    function (err, options) {
-      options.body = protocol;
-      doRequest(options, function (e, r, jsonData) {
-        callback(e, jsonData);
-      });
-    }
-  );
+    buildOptionsForRequest(
+        'POST',
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        '/protocols/' + CONFIG.OAUTH_CREDENTIALS.CLIENT_ID,
+        {},
+        function (err, options) {
+            options.body = protocol;
+            doRequest(options, function (e, r, jsonData) {
+                callback(e, jsonData);
+            });
+        }
+    );
 };
 
 module.exports = self;
