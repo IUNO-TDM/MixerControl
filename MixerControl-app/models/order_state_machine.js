@@ -24,7 +24,7 @@ const stateMachine = new machina.BehavioralFsm({
 
         waitingOffer: {
             _onEnter: function (order) {
-                console.log("Ordernumber " + order.orderNumber + " is now state waitingOffer ");
+                logger.info("Ordernumber " + order.orderNumber + " is now state waitingOffer ");
 
                 offerService.requestOfferForOrder(this, order);
             },
@@ -35,7 +35,7 @@ const stateMachine = new machina.BehavioralFsm({
         },
         waitingPaymentRequest: {
             _onEnter: function (order) {
-                console.log("Ordernumber " + order.orderNumber + " is now state waitingPaymentRequest ");
+                logger.info("Ordernumber " + order.orderNumber + " is now state waitingPaymentRequest ");
 
                 payment_service.createLocalInvoiceForOrder(this, order);
             },
@@ -46,7 +46,7 @@ const stateMachine = new machina.BehavioralFsm({
         },
         waitingPayment: {
             _onEnter: function (client) {
-                console.log("Ordernumber " + client.orderNumber + " is now state waitingPayment ");
+                logger.info("Ordernumber " + client.orderNumber + " is now state waitingPayment ");
             },
             paymentArrived: "waitingLicenseAvailable",
 
