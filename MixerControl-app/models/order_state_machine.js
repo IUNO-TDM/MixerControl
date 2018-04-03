@@ -66,22 +66,22 @@ const stateMachine = new machina.BehavioralFsm({
         },
         waitingLicenseAvailable: {
             _onEnter: function (order) {
-                stateMachine.licenseTimeout = setInterval(() => {
+                order.licenseTimeout = setInterval(() => {
                     offerService.requestLicenseUpdateForOrder(this, order);
                 }, 10000);
             },
             licenseAvailable: function (order) {
-                clearInterval(stateMachine.licenseTimeout);
+                clearInterval(order.licenseTimeout);
                 this.transition(order, 'waitingLicense');
             },
             licenseArrived: function (order) {
-                clearInterval(stateMachine.licenseTimeout);
+                clearInterval(order.licenseTimeout);
                 this.deferUntilTransition(order);
                 this.transition(order, 'waitingLicense');
 
             },
             onError: function (order) {
-                clearInterval(stateMachine.licenseTimeout);
+                clearInterval(order.licenseTimeout);
                 this.transition(order, "error");
             }
         },
