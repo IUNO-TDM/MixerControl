@@ -13,6 +13,7 @@ import {RecipeFilterPipe} from './recipe-overview/recipe-filter-pipe';
 import {FormsModule} from '@angular/forms';
 import {routing} from './recipe-overview.routing';
 import {HttpClientModule} from '@angular/common/http';
+import {UICarouselModule} from 'ui-carousel';
 
 @NgModule({
     imports: [
@@ -28,6 +29,7 @@ import {HttpClientModule} from '@angular/common/http';
         MatIconModule,
         MatTooltipModule,
         routing,
+      UICarouselModule,
       HttpClientModule,
 
     ],

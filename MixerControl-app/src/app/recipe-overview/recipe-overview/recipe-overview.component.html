@@ -8,14 +8,17 @@
           <div *ngFor="let comp of components" fxLayout="row" fxLayoutAlign="space-between">
             <div>{{comp.name}}</div>
             <mat-button-toggle-group [(ngModel)]="componentSelection[comp.id]" (change)="filterChanged()"
-                                     >
-              <mat-button-toggle value="i" matTooltip="Nur Getränke mit {{comp.name}}"  matTooltipPosition="after" MatTooltipTouchendHideDelay="2000">
+            >
+              <mat-button-toggle value="i" matTooltip="Nur Getränke mit {{comp.name}}" matTooltipPosition="after"
+                                 MatTooltipTouchendHideDelay="2000">
                 😋
               </mat-button-toggle>
-              <mat-button-toggle value="n" matTooltip="Getränke dürfen {{comp.name}} beinhalten" matTooltipPosition="after" MatTooltipTouchendHideDelay="2000">
+              <mat-button-toggle value="n" matTooltip="Getränke dürfen {{comp.name}} beinhalten"
+                                 matTooltipPosition="after" MatTooltipTouchendHideDelay="2000">
                 😶
               </mat-button-toggle>
-              <mat-button-toggle value="e" matTooltip="Nur Getränke ohne {{comp.name}}" matTooltipPosition="after" MatTooltipTouchendHideDelay="2000">
+              <mat-button-toggle value="e" matTooltip="Nur Getränke ohne {{comp.name}}" matTooltipPosition="after"
+                                 MatTooltipTouchendHideDelay="2000">
                 🤢
               </mat-button-toggle>
             </mat-button-toggle-group>
@@ -24,22 +27,28 @@
         <br>
         <div fxLayout="column" fxLayoutAlign="center">
           <button mat-button (click)="resetFilter()" [disabled]="!resetEnabled">Filter löschen</button>
-          {{(drinks|recipeFilter: filterData).length}} Drink{{(drinks|recipeFilter: filterData).length == 1?'':'s'}} sind mit diesen Vorlieben verfügbar
+          {{(drinks|recipeFilter: filterData).length}} Drink{{(drinks|recipeFilter: filterData).length == 1?'':'s'}}
+          sind mit diesen Vorlieben verfügbar
         </div>
 
       </mat-card>
 
       <div fxFlex="*" fxLayout="column" fxLayoutAlign="center center">
         <div fxFlex="250px" class="logo-space" fxLayout="column" fxLayoutAlign="space-between">
-          <div fxFlex="*">
-            <img src="./assets/gefoerdert_vom_BMBF.svg">
-          </div>
-          <div fxFlex="*">
-            <img src="./assets/CodeMeter_inside.svg">
-          </div>
-          <div fxFlex="*">
-            <img src="./assets/powered_by_axoom_vertical.svg">
-          </div>
+          <ui-carousel [infinite]="true" [fade]="false" [speed]="300" [arrows]="false" [dots]="false" [autoPlaySpeed]="5000">
+            <ui-carousel-item>
+              <img class="logoimg" src="./assets/gefoerdert_vom_BMBF.svg">
+            </ui-carousel-item>
+            <ui-carousel-item>
+              <img class="logoimg" src="./assets/TruLogo.svg">
+            </ui-carousel-item>
+            <ui-carousel-item>
+              <img class="logoimg" src="./assets/powered_by_axoom_vertical.svg">
+            </ui-carousel-item>
+            <ui-carousel-item>
+              <img class="logoimg" src="./assets/CodeMeter_inside.svg">
+            </ui-carousel-item>
+          </ui-carousel>
         </div>
 
       </div>

@@ -49,6 +49,7 @@
     "socket.io": "^1.7.4",
     "ssl-root-cas": "^1.2.4",
     "tdm-common": "https://github.com/IUNO-TDM/TDM-Common/releases/download/v0.0.4-alpha/tdm-common-0.0.4.tgz",
+    "ui-carousel": "^0.2.0",
     "websocket": "^1.0.24",
     "winston": "^2.4.0",
     "zone.js": "^0.8.18"
