@@ -13,7 +13,9 @@ import {Subscription} from 'rxjs/Subscription';
 
 export class InternetConnectionComponent implements OnInit, OnDestroy {
   state = true;
+  containerstate = true;
   internetConnectionSocketServiceConnection: Subscription;
+  licenseContainerSocketServiceConnection: Subscription;
 
   constructor(private internetConnectionSocketService: InternetConnectionSocketService) {
 
@@ -25,12 +27,22 @@ export class InternetConnectionComponent implements OnInit, OnDestroy {
       this.internetConnectionSocketService
         .getUpdates('connectionState')
         .subscribe(state => this.state = state);
+
+    this.licenseContainerSocketServiceConnection =
+      this.internetConnectionSocketService
+        .getUpdates('licenseContainerState')
+        .subscribe(state => this.containerstate = state);
     this.internetConnectionSocketService.joinRoom('connectionState');
+    this.internetConnectionSocketService.joinRoom('licenseContainerState');
   }
 
   ngOnDestroy() {
     if (this.internetConnectionSocketServiceConnection) {
       this.internetConnectionSocketServiceConnection.unsubscribe();
+    }
+
+    if (this.licenseContainerSocketServiceConnection) {
+      this.licenseContainerSocketServiceConnection.unsubscribe();
     }
   }
 }
