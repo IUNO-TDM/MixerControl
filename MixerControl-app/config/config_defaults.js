@@ -68,5 +68,8 @@ self.OAUTH_CREDENTIALS = {
 
 self.RETAIL_PRICE = 2 * 100000; //1 IUNO = 100.000 satoshi
 
+self.STATISTICS_ENABLED_KEY = "StatisticsEnabled";
+self.STATISTICS_ENABLED_DEFAULT = false;
+
 
 module.exports = self;

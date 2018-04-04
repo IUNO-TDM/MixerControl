@@ -9,7 +9,7 @@ import {AdminRecipeComponent} from './admin-recipe/admin-recipe.component';
 import {AdminServiceComponent} from './admin-service/admin-service.component';
 import {
     MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatListModule, MatMenuModule,
-    MatRadioModule, MatSelectModule, MatSliderModule,
+    MatRadioModule, MatSelectModule, MatSliderModule, MatSlideToggleModule,
     MatTableModule,
     MatTabsModule,
     MatToolbarModule
@@ -56,6 +56,7 @@ import {ComponentService} from 'tdm-common'
     MatTabsModule,
     MatSelectModule,
     MatSliderModule,
+    MatSlideToggleModule,
     HttpClientModule,
     FlexLayoutModule,
     CocktailConfiguratorModule,

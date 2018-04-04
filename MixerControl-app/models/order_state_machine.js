@@ -2,13 +2,10 @@
  * Created by goergch on 25.01.17.
  */
 
-const CONFIG = require('../config/config_loader');
-
 const machina = require('machina');
 const production_queue = require('../models/production_queue');
 const logger = require('../global/logger');
 const payment_service = require('../adapter/payment_service_adapter');
-const orderDB = require('../database/orderDB');
 const offerService = require('../services/offer_service');
 
 const stateMachine = new machina.BehavioralFsm({
@@ -27,7 +24,7 @@ const stateMachine = new machina.BehavioralFsm({
 
         waitingOffer: {
             _onEnter: function (order) {
-                console.log("Ordernumber " + order.orderNumber + " is now state waitingOffer ");
+                logger.info("Ordernumber " + order.orderNumber + " is now state waitingOffer ");
 
                 offerService.requestOfferForOrder(this, order);
             },
@@ -38,7 +35,7 @@ const stateMachine = new machina.BehavioralFsm({
         },
         waitingPaymentRequest: {
             _onEnter: function (order) {
-                console.log("Ordernumber " + order.orderNumber + " is now state waitingPaymentRequest ");
+                logger.info("Ordernumber " + order.orderNumber + " is now state waitingPaymentRequest ");
 
                 payment_service.createLocalInvoiceForOrder(this, order);
             },
@@ -49,7 +46,7 @@ const stateMachine = new machina.BehavioralFsm({
         },
         waitingPayment: {
             _onEnter: function (client) {
-                console.log("Ordernumber " + client.orderNumber + " is now state waitingPayment ");
+                logger.info("Ordernumber " + client.orderNumber + " is now state waitingPayment ");
             },
             paymentArrived: "waitingLicenseAvailable",
 
@@ -68,16 +65,24 @@ const stateMachine = new machina.BehavioralFsm({
             }
         },
         waitingLicenseAvailable: {
-            _onEnter: function (client) {
+            _onEnter: function (order) {
+                order.licenseTimeout = setInterval(() => {
+                    offerService.requestLicenseUpdateForOrder(this, order);
+                }, 10000);
             },
-            licenseAvailable: "waitingLicense",
-            licenseArrived: function (client) {
-                this.deferUntilTransition(client);
-                this.transition(client, 'waitingLicense');
+            licenseAvailable: function (order) {
+                clearInterval(order.licenseTimeout);
+                this.transition(order, 'waitingLicense');
+            },
+            licenseArrived: function (order) {
+                clearInterval(order.licenseTimeout);
+                this.deferUntilTransition(order);
+                this.transition(order, 'waitingLicense');
 
             },
-            onError: function (client) {
-                this.transition(client, "error");
+            onError: function (order) {
+                clearInterval(order.licenseTimeout);
+                this.transition(order, "error");
             }
         },
         waitingLicense: {
@@ -107,7 +112,7 @@ const stateMachine = new machina.BehavioralFsm({
             readyForProduction: "readyForProduction",
             pause: "orderPaused",
             onError: function (client) {
-                this.transition(client, "error");this.transition(client, "error");
+                this.transition(client, "error");
             }
         },
         readyForProduction: {

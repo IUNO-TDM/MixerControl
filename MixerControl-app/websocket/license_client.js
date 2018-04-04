@@ -39,9 +39,7 @@ util.inherits(LicenseService, EventEmitter);
 license_service.socket = io(CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE
         .PROTOCOL + '://' + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST
     + ":" + CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT + "/licenses", {
-    extraHeaders: {
-
-    }
+    extraHeaders: {}
 });
 
 license_service.socket.on('connect', function () {
@@ -94,16 +92,15 @@ license_service.socket.on('updateAvailable', function (data) {
             return;
         }
         orderStateMachine.licenseAvailable(order);
-        if (order) {
-            updateCMDongle(data.hsmId, function (err) {
-                if (err) {
-                    orderStateMachine.error(order)
-                }
 
-                orderStateMachine.licenseArrived(order);
-            });
+        updateCMDongle(data.hsmId, function (err) {
+            if (err) {
+                orderStateMachine.error(order)
+            }
 
-        }
+            orderStateMachine.licenseArrived(order);
+        });
+
     }
 });
 
@@ -131,8 +128,10 @@ license_service.getConnectionStatus = function () {
 
 function updateCMDongle(hsmId, callback) {
     if (license_service.isUpdating) {
-        logger.warn('[license_service] Update cycle is already running.');
-        return callback(new Error('Update cycle already running'));
+        logger.warn('[license_service] Update cycle is already running. Retry after 10 seconds');
+        return setTimeout(() => {
+            updateCMDongle(hsmId, callback);
+        }, 10000);
     }
 
     license_service.isUpdating = true;
