@@ -28,7 +28,7 @@
     "angular2-qrscanner": "1.0.3",
     "async": "^2.1.5",
     "body-parser": "^1.18.2",
-    "cocktail-configurator": "https://github.com/IUNO-TDM/CocktailConfigurator/releases/download/v0.0.12-alpha/cocktail-configurator-0.0.12.tgz",
+    "cocktail-configurator": "https://github.com/IUNO-TDM/CocktailConfigurator/releases/download/v0.0.13-alpha/cocktail-configurator-0.0.13.tgz",
     "cookie-parser": "~1.4.3",
     "core-js": "^2.5.1",
     "express": "^4.16.2",

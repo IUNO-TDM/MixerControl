@@ -61,12 +61,13 @@ export class AdminRecipeComponent implements OnInit {
 
     selectComponent(callback: (component: CocktailComponent) => any) {
         let dialogRef = this.dialog.open(ComponentListDialogComponent, {
-            width: '250px',
+            width: '300px',
             data: {
                 showRecommended: this.showRecommendedComponents,
                 showInstalled: this.showInstalledComponents,
                 showAvailable: this.showAvailableComponents,
-            }
+            },
+            autoFocus: false
         });
 
         dialogRef.afterClosed().subscribe(result => {
