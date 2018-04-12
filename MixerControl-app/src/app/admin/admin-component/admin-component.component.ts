@@ -17,7 +17,7 @@ import {Subscription} from 'rxjs/Subscription';
   moduleId: module.id,
   selector: 'my-admin-component',
   templateUrl: 'admin-component.template.html',
-  providers: [ComponentService, AdminService, ProductionSocketService]
+  providers: [AdminService, ProductionSocketService, ComponentService]
 })
 
 export class AdminComponentComponent implements OnInit, OnDestroy {
