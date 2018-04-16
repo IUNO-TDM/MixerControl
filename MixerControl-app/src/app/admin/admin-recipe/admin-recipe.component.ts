@@ -75,7 +75,6 @@ export class AdminRecipeComponent implements OnInit {
                 callback(result)
             }
         });
-        callback(this.components[0])
     }
 
 }
