@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {OrderService} from '../services/order.service';
 import {QrScannerComponent} from 'angular2-qrscanner';
@@ -35,7 +35,7 @@ import {Router} from '@angular/router';
   `,
   providers: [OrderService, DrinkService]
 })
-export class ScanDialogComponent implements OnInit, AfterViewInit {
+export class ScanDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   drink: Drink;
   paymentRequest = '^234567890ß';
   elementType: 'url' | 'canvas' | 'img' = 'url';
@@ -64,14 +64,18 @@ export class ScanDialogComponent implements OnInit, AfterViewInit {
     this.startScanning();
   }
 
+  ngOnDestroy() {
+    this.stopScanning();
+  }
+
 
   startScanning() {
-    this.qrScannerComponent.startScanning(null);
 
     this.qrScannerComponent.capturedQr.subscribe(result => {
       this.decodedOutput(result);
-      this.qrScannerComponent.stopScanning();
     });
+    this.qrScannerComponent.startScanning(null);
+
   }
 
   stopScanning() {
@@ -91,7 +95,9 @@ export class ScanDialogComponent implements OnInit, AfterViewInit {
             const config = new MatSnackBarConfig();
             this.snackBar.open('Der Coupon hat mit ' + avPair.coin / 100000 +
               ' IUNO zu wenig Guthaben', '', {duration: 5000});
-            this.startScanning();
+            setTimeout(() => {
+              this.startScanning();
+            },3000);
           } else {
             const config = new MatSnackBarConfig();
             this.snackBar.open('Auf dem Coupon verbleibt ein Guthaben von ' +
@@ -114,19 +120,28 @@ export class ScanDialogComponent implements OnInit, AfterViewInit {
           } else if (error2.status === 422) {
             const config = new MatSnackBarConfig();
             this.snackBar.open('Ungültiger Coupon', 'OK', {duration: 5000});
-            this.startScanning();
+            setTimeout(() => {
+              this.startScanning();
+            },3000);
+
           } else if (error2.status === 409) {
             const config = new MatSnackBarConfig();
             this.snackBar.open('Dieser Coupon wurde bereits für diesen Auftrag eingescannt.', '',
               {duration: 5000});
-            this.startScanning();
+            setTimeout(() => {
+              this.startScanning();
+            },3000);
           } else {
             this.snackBar.open(error2, '', {duration: 5000});
-            this.startScanning();
+            setTimeout(() => {
+              this.startScanning();
+            },3000);
           }
         } else {
           this.snackBar.open(error2, '', {duration: 5000});
-          this.startScanning();
+          setTimeout(() => {
+            this.startScanning();
+          },3000);
         }
       });
 
