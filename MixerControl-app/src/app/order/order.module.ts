@@ -20,6 +20,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxQRCodeModule} from 'ngx-qrcode2';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {NgQrScannerModule} from 'angular2-qrscanner';
+import { OrderSnackBarComponent } from './order-snack-bar/order-snack-bar.component';
 
 @NgModule({
   imports: [
@@ -47,8 +48,8 @@ import {NgQrScannerModule} from 'angular2-qrscanner';
     FlexLayoutModule,
     MatGridListModule,
   ],
-  declarations: [OrderComponent, QrDialogComponent, ScanDialogComponent],
-  entryComponents: [QrDialogComponent, ScanDialogComponent],
+  declarations: [OrderComponent, QrDialogComponent, ScanDialogComponent, OrderSnackBarComponent],
+  entryComponents: [QrDialogComponent, ScanDialogComponent, OrderSnackBarComponent],
 
   providers: [ProductionSocket, OrdersSocket],
 })
