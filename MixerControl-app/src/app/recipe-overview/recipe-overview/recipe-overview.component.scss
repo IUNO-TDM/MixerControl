@@ -38,8 +38,15 @@
 .recipe-title{
   text-align: center;
   hyphens: auto;
-  word-break: break-all;
+  word-break: break-word;
   word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 20px;
+  max-height: 40px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
 
 }
 
