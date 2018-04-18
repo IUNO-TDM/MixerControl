@@ -1,10 +1,11 @@
-import {Component, Inject, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {OrderService} from '../services/order.service';
 import {QrScannerComponent} from 'angular2-qrscanner';
 import {DrinkService} from '../services/drink.service';
 import {Drink} from '../models/Drink';
 import {Router} from '@angular/router';
+import {OrderSnackBarComponent} from "./order-snack-bar/order-snack-bar.component";
 
 @Component({
   selector: 'scan-dialog',
@@ -35,7 +36,7 @@ import {Router} from '@angular/router';
   `,
   providers: [OrderService, DrinkService]
 })
-export class ScanDialogComponent implements OnInit, AfterViewInit {
+export class ScanDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   drink: Drink;
   paymentRequest = '^234567890ß';
   elementType: 'url' | 'canvas' | 'img' = 'url';
@@ -64,14 +65,18 @@ export class ScanDialogComponent implements OnInit, AfterViewInit {
     this.startScanning();
   }
 
+  ngOnDestroy() {
+    this.stopScanning();
+  }
+
 
   startScanning() {
-    this.qrScannerComponent.startScanning(null);
 
     this.qrScannerComponent.capturedQr.subscribe(result => {
       this.decodedOutput(result);
-      this.qrScannerComponent.stopScanning();
     });
+    this.qrScannerComponent.startScanning(null);
+
   }
 
   stopScanning() {
@@ -83,19 +88,35 @@ export class ScanDialogComponent implements OnInit, AfterViewInit {
     console.log('Scanned QR-Code: ' + text);
     this.orderService.sendPayment(this.data.order.orderNumber, text)
       .subscribe(avPair => {
-        console.log(this.drink);
-        console.log(avPair);
         if (this.drink) {
-          console.log('dfghjkl');
-          if (avPair.coin < this.drink.retailPrice) {
+          if (avPair.coin === 0) {
             const config = new MatSnackBarConfig();
-            this.snackBar.open('Der Coupon hat mit ' + avPair.coin / 100000 +
-              ' IUNO zu wenig Guthaben', '', {duration: 5000});
-            this.startScanning();
+            config.data = {message: 'Dieser Coupon wurde bereits verwendet und ist entwertet.\nBitte noch einen Coupon scannen!'};
+            config.duration = 5000;
+            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+            setTimeout(() => {
+              this.startScanning();
+            },3000);
+          } else if (avPair.coin < this.drink.retailPrice) {
+            const config = new MatSnackBarConfig();
+            config.data = {message: 'Auf dem Coupon waren nur ' + avPair.coin / 100000 + ' IUNO.\nBitte noch einen Coupon scannen!'};
+            config.duration = 5000;
+            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+            setTimeout(() => {
+              this.startScanning();
+            },3000);
+          } else if ((avPair.coin === this.drink.retailPrice)) {
+            const config = new MatSnackBarConfig();
+            config.data = {message: 'Coupon erfolgreich zum Bezahlen genutzt.\nDer Coupon ist nun leer!'};
+            config.duration = 5000;
+            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+            this.dialogRef.close();
           } else {
             const config = new MatSnackBarConfig();
-            this.snackBar.open('Auf dem Coupon verbleibt ein Guthaben von ' +
-              (avPair.coin - this.drink.retailPrice) / 100000 + ' IUNO', '', {duration: 5000});
+            config.data = {message: 'Coupon erfolgreich zum Bezahlen genutzt.\nAuf dem Coupon verbleiben '
+              + (avPair.coin - this.drink.retailPrice) / 100000 + ' IUNO!'};
+            config.duration = 5000;
+            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
             this.dialogRef.close();
           }
         } else {
@@ -108,25 +129,46 @@ export class ScanDialogComponent implements OnInit, AfterViewInit {
         if (error2.status) {
           if (error2.status === 404) {
             const config = new MatSnackBarConfig();
-            const snackBarRef = this.snackBar.open('Der Zahlungsauftrag ist im PaymentService nicht vorhanden',
-              'Neuer Auftrag', {duration: 5000});
+            config.data = {message: 'Der Zahlungsauftrag ist im PaymentService nicht vorhanden', action: 'Neuer Auftrag'};
+            config.duration = 5000;
+            const snackBarRef = this.snackBar.openFromComponent(OrderSnackBarComponent, config);
             snackBarRef.onAction().subscribe(() => this.router.navigateByUrl('/drink/' + this.drink.id));
           } else if (error2.status === 422) {
             const config = new MatSnackBarConfig();
-            this.snackBar.open('Ungültiger Coupon', 'OK', {duration: 5000});
-            this.startScanning();
+            config.data = {message: 'Ungültiger Coupon'};
+            config.duration = 5000;
+            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+            setTimeout(() => {
+              this.startScanning();
+            },3000);
+
           } else if (error2.status === 409) {
             const config = new MatSnackBarConfig();
-            this.snackBar.open('Dieser Coupon wurde bereits für diesen Auftrag eingescannt.', '',
-              {duration: 5000});
-            this.startScanning();
-          } else {
-            this.snackBar.open(error2, '', {duration: 5000});
-            this.startScanning();
+            config.data = {message: 'Dieser Coupon wurde bereits für diesen Auftrag eingescannt'};
+            config.duration = 5000;
+            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+
+            setTimeout(() => {
+              this.startScanning();
+            },3000);
+          } else if (error2.message){
+            const config = new MatSnackBarConfig();
+            config.data = {message: error2.message};
+            config.duration = 5000;
+            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+
+            setTimeout(() => {
+              this.startScanning();
+            },3000);
           }
         } else {
-          this.snackBar.open(error2, '', {duration: 5000});
-          this.startScanning();
+          const config = new MatSnackBarConfig();
+          config.data = {message: error2};
+          config.duration = 5000;
+          this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+          setTimeout(() => {
+            this.startScanning();
+          },3000);
         }
       });
 

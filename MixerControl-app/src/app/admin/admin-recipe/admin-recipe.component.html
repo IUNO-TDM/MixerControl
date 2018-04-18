@@ -1,6 +1,6 @@
 <div class="section" fxLayout="row" fxLayoutGap="30px">
     <!--<cocktail-component-list></cocktail-component-list>-->
-    <cocktail-beaker [editMode]="true" style="height:400px" [cocktail]="cocktail" fxFlex="320px"></cocktail-beaker>
+    <cocktail-beaker [editMode]="true" (onSelectComponent)="selectComponent($event)" style="height:400px" [cocktail]="cocktail" fxFlex="320px"></cocktail-beaker>
     <cocktail-ingredients-listing fxFlex="320px"
                                   [cocktail]="cocktail"></cocktail-ingredients-listing>
 </div>
