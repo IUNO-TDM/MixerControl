@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatSnackBarConfig, MatSnackBarRef} from '@angular/material';
 import {OrderService} from '../services/order.service';
 import {QrScannerComponent} from 'angular2-qrscanner';
 import {DrinkService} from '../services/drink.service';
@@ -44,6 +44,8 @@ export class ScanDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(QrScannerComponent)
   private qrScannerComponent: QrScannerComponent;
 
+  rescanTimer: number;
+
   constructor(public dialogRef: MatDialogRef<ScanDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private orderService: OrderService,
@@ -62,25 +64,50 @@ export class ScanDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    this.qrScannerComponent.capturedQr.subscribe(result => {
+      this.decodedOutput(result);
+    });
     this.startScanning();
   }
 
   ngOnDestroy() {
+    this.clearRescanTimer();
     this.stopScanning();
   }
 
 
   startScanning() {
-
-    this.qrScannerComponent.capturedQr.subscribe(result => {
-      this.decodedOutput(result);
-    });
     this.qrScannerComponent.startScanning(null);
 
   }
 
   stopScanning() {
     this.qrScannerComponent.stopScanning();
+  }
+
+
+  setRescanTimer(timeout: number) {
+    this.clearRescanTimer();
+    this.rescanTimer = setTimeout(() => {
+      this.startScanning();
+    }, timeout);
+  }
+
+  clearRescanTimer() {
+    if (this.rescanTimer) {
+      clearTimeout(this.rescanTimer);
+      this.rescanTimer = 0;
+    }
+  }
+
+  createSnackBar(duration: number, message: string, action?: string): MatSnackBarRef<any> {
+    const config = new MatSnackBarConfig();
+    config.data = {message: message};
+    if (action) {
+      config.data['action'] = action;
+    }
+    config.duration = duration;
+    return this.snackBar.openFromComponent(OrderSnackBarComponent, config);
   }
 
   decodedOutput(text: string) {
@@ -90,33 +117,18 @@ export class ScanDialogComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(avPair => {
         if (this.drink) {
           if (avPair.coin === 0) {
-            const config = new MatSnackBarConfig();
-            config.data = {message: 'Dieser Coupon wurde bereits verwendet und ist entwertet.\nBitte noch einen Coupon scannen!'};
-            config.duration = 5000;
-            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
-            setTimeout(() => {
-              this.startScanning();
-            },3000);
+            this.createSnackBar(5000, 'Dieser Coupon wurde bereits verwendet und ist entwertet.\nBitte einen anderen Coupon scannen!');
+            this.setRescanTimer(3000);
           } else if (avPair.coin < this.drink.retailPrice) {
-            const config = new MatSnackBarConfig();
-            config.data = {message: 'Auf dem Coupon waren nur ' + avPair.coin / 100000 + ' IUNO.\nBitte noch einen Coupon scannen!'};
-            config.duration = 5000;
-            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
-            setTimeout(() => {
-              this.startScanning();
-            },3000);
+            this.createSnackBar(5000, 'Auf dem Coupon waren nur ' + avPair.coin / 100000 + ' IUNO.\nBitte noch einen Coupon scannen!');
+            this.setRescanTimer(3000);
           } else if ((avPair.coin === this.drink.retailPrice)) {
-            const config = new MatSnackBarConfig();
-            config.data = {message: 'Coupon erfolgreich zum Bezahlen genutzt.\nDer Coupon ist nun leer!'};
-            config.duration = 5000;
-            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+            this.createSnackBar(5000, 'Coupon erfolgreich zum Bezahlen genutzt.\nDer Coupon ist nun leer!');
             this.dialogRef.close();
           } else {
-            const config = new MatSnackBarConfig();
-            config.data = {message: 'Coupon erfolgreich zum Bezahlen genutzt.\nAuf dem Coupon verbleiben '
-              + (avPair.coin - this.drink.retailPrice) / 100000 + ' IUNO!'};
-            config.duration = 5000;
-            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+            this.createSnackBar(5000, 'Coupon erfolgreich zum Bezahlen genutzt.\nAuf dem Coupon verbleiben '
+              + (avPair.coin - this.drink.retailPrice) / 100000 + ' IUNO!');
+
             this.dialogRef.close();
           }
         } else {
@@ -128,47 +140,25 @@ export class ScanDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(error2);
         if (error2.status) {
           if (error2.status === 404) {
-            const config = new MatSnackBarConfig();
-            config.data = {message: 'Der Zahlungsauftrag ist im PaymentService nicht vorhanden', action: 'Neuer Auftrag'};
-            config.duration = 5000;
-            const snackBarRef = this.snackBar.openFromComponent(OrderSnackBarComponent, config);
+            const snackBarRef = this.createSnackBar(20000, 'Der Zahlungsauftrag ist im PaymentService nicht vorhanden', 'Neuer Auftrag');
             snackBarRef.onAction().subscribe(() => this.router.navigateByUrl('/drink/' + this.drink.id));
           } else if (error2.status === 422) {
-            const config = new MatSnackBarConfig();
-            config.data = {message: 'Ungültiger Coupon'};
-            config.duration = 5000;
-            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
-            setTimeout(() => {
-              this.startScanning();
-            },3000);
+            this.createSnackBar(5000, 'Ungültiger Coupon');
+            this.setRescanTimer(3000);
 
           } else if (error2.status === 409) {
-            const config = new MatSnackBarConfig();
-            config.data = {message: 'Dieser Coupon wurde bereits für diesen Auftrag eingescannt'};
-            config.duration = 5000;
-            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
-
-            setTimeout(() => {
-              this.startScanning();
-            },3000);
-          } else if (error2.message){
-            const config = new MatSnackBarConfig();
-            config.data = {message: error2.message};
-            config.duration = 5000;
-            this.snackBar.openFromComponent(OrderSnackBarComponent, config);
-
-            setTimeout(() => {
-              this.startScanning();
-            },3000);
+            this.createSnackBar(5000, 'Dieser Coupon wurde bereits für diesen Auftrag eingescannt');
+            this.setRescanTimer(3000);
+          } else if (error2.message) {
+            this.createSnackBar(5000, error2.message);
+            this.setRescanTimer(3000);
           }
         } else {
           const config = new MatSnackBarConfig();
           config.data = {message: error2};
           config.duration = 5000;
           this.snackBar.openFromComponent(OrderSnackBarComponent, config);
-          setTimeout(() => {
-            this.startScanning();
-          },3000);
+          this.setRescanTimer(3000);
         }
       });
 
