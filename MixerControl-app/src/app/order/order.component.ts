@@ -254,6 +254,9 @@ export class OrderComponent implements OnInit, OnDestroy {
         if (this.pcModeConnection) {
             this.pcModeConnection.unsubscribe();
         }
+        if (this.redirectTimerSubscription) {
+          this.redirectTimerSubscription.unsubscribe();
+        }
     }
 
     ProductionStart() {

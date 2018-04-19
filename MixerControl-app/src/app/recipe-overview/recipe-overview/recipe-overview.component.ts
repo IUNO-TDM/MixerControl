@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RecipeDetailComponent} from '../recipe-detail/recipe-detail.component';
 import {MatButtonToggleChange, MatDialog, MatDialogRef} from '@angular/material';
-import {ComponentService} from '../../services/component.service';
+import {ComponentService} from 'tdm-common';
 import {DrinkService} from '../../services/drink.service';
 import {UserService} from '../../services/user.service';
 import * as models from '../../models/models';
@@ -55,13 +55,14 @@ export class RecipeOverviewComponent implements OnInit {
 
   ngOnInit() {
     this.getDrinks();
-    this.componentService.getComponents(true).subscribe(components => {
+    this.componentService.installedComponents.subscribe(components => {
       for (const comp of components) {
         this.componentSelection[comp.id] = 'n';
       }
       this.components = components;
-
     });
+
+
   }
 
   cardClick(drink: any) {

@@ -4,7 +4,6 @@
 
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import * as models from '../../models/models';
-import {ComponentService} from '../../services/component.service';
 import {AdminService} from '../../services/admin.service';
 import {Component as ModelComponent} from '../../models/Component';
 import {AdminComponentDialogComponent} from '../admin-component-dialog/admin-component-dialog.component';
@@ -17,7 +16,7 @@ import {Subscription} from 'rxjs/Subscription';
   moduleId: module.id,
   selector: 'my-admin-component',
   templateUrl: 'admin-component.template.html',
-  providers: [ComponentService, AdminService, ProductionSocketService]
+  providers: [AdminService, ProductionSocketService]
 })
 
 export class AdminComponentComponent implements OnInit, OnDestroy {
@@ -71,7 +70,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(private componentService: ComponentService, private adminService: AdminService,
+  constructor( private adminService: AdminService,
               private productionSocketService: ProductionSocketService,
               private dialog: MatDialog) {
   }
@@ -91,7 +90,6 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
   }
 
   loadContent() {
-    this.componentService.getComponents(false).subscribe(components => this.components = components);
     this.adminService.getPumps().subscribe(pumps => this.pumps = pumps);
     this.adminService.getStandardAmounts().subscribe(amounts => this.standardAmounts = amounts);
 
