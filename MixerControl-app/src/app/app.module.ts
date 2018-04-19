@@ -8,19 +8,20 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import 'hammerjs';
 import {InternetconnectionModule} from "./internetconnection/internetconnection.module";
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    // BrowserAnimationsModule,
-    NoopAnimationsModule,
 
-    InternetconnectionModule,
-  ],
-  bootstrap: [AppComponent]
+@NgModule({
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        // BrowserAnimationsModule,
+        NoopAnimationsModule,
+
+        InternetconnectionModule,
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

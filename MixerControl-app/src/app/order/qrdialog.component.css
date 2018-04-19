@@ -1,11 +1,10 @@
-.qrWrapper{
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+.qrWrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
-
-.warningText{
-  max-width: 600px;
-  color: red;
+.warningText {
+    max-width: 600px;
+    color: red;
 }

@@ -36,7 +36,7 @@ router.post('/', function (req, res, next) {
             osm.init(order);
 
             var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-            res.set('Location', fullUrl +'/'+ orderNumber);
+            res.set('Location', fullUrl + '/' + orderNumber);
             res.status(201);
             res.send(OrderDB.getOrder(orderNumber).strip());
         }
@@ -72,7 +72,7 @@ router.get('/:id/paymentRequest', function (req, res, next) {
     }
 
     if (order.paymentRequest !== undefined) {
-        res.send({PaymentRequest:order.paymentRequest});
+        res.send({PaymentRequest: order.paymentRequest});
     } else {
         res.sendStatus(404);
     }
@@ -102,7 +102,7 @@ router.put('/:id/payment', function (req, res, next) {
                 if (data) {
                     res.json(data);
                 }
-                else if(err) {
+                else if (err) {
                     res.json(err);
                 }
                 else {

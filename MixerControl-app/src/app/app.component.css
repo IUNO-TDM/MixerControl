@@ -1,6 +1,6 @@
-.top_right{
-  position: fixed;
-  top: 90px;
-  right: 10px;
-  z-index: 1;
+.top_right {
+    position: fixed;
+    top: 90px;
+    right: 10px;
+    z-index: 1;
 }

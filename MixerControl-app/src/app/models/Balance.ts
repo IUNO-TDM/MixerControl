@@ -1,4 +1,4 @@
 export class Balance {
-  spendable: number;
-  estimated: number;
+    spendable: number;
+    estimated: number;
 }

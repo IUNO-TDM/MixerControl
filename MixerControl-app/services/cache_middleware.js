@@ -3,8 +3,8 @@
  */
 
 module.exports = function Cache(seconds) {
-    return function(req, res, next) {
-        res.set ("Cache-Control", "public, max-age=" + seconds);
+    return function (req, res, next) {
+        res.set("Cache-Control", "public, max-age=" + seconds);
         next();
     }
 };

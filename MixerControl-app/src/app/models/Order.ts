@@ -1,10 +1,7 @@
-
-import * as models from './models';
-
 export class Order {
-  drinkId: string;
+    drinkId: string;
 
-  orderName?: string;
-  orderNumber?: number;
+    orderName?: string;
+    orderNumber?: number;
 
 }

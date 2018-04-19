@@ -3,13 +3,13 @@
  */
 
 var IFTTT = require('node-ifttt-maker'),
- ifttt = new IFTTT('xxx');
+    ifttt = new IFTTT('xxx');
 
 
 var pumpcontrol_service = require('../services/pumpcontrol_service');
 
-pumpcontrol_service.on('amountWarning', function(warning){
-    if (!warning.warningCleared){
+pumpcontrol_service.on('amountWarning', function (warning) {
+    if (!warning.warningCleared) {
         // ifttt.request({
         //     event: 'iuno_amountWarning',
         //     method: 'PUT',

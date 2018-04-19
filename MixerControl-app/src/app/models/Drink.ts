@@ -1,27 +1,25 @@
-
-
 import * as models from './models';
 
 export class Drink {
-  id?: string;
+    id?: string;
 
-  title?: string;
+    title?: string;
 
-  description?: string;
+    description?: string;
 
 
-  authorId?: string;
+    authorId?: string;
 
-  licensefee?: number;
-  retailPrice?: number;
+    licensefee?: number;
+    retailPrice?: number;
 
-  imageref?: string;
+    imageref?: string;
 
-  productId?: string;
+    productId?: string;
 
-  program?: string;
+    program?: string;
 
-  components?: models.Component[] = [];
+    components?: models.Component[] = [];
 
-  backgroundColor?: string;
+    backgroundColor?: string;
 }

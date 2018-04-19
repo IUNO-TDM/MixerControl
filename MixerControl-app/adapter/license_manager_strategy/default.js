@@ -83,7 +83,7 @@ self.getLicenseInformationForProductCodeOnHsm = function (productCode, hsmId, ca
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PROTOCOL,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.HOST,
         CONFIG.HOST_SETTINGS.LICENSE_MANAGER.PORT,
-        '/cmdongles/'+ hsmId + '/products/' + productCode + '/licensecount',
+        '/cmdongles/' + hsmId + '/products/' + productCode + '/licensecount',
         {}
     );
 
@@ -94,7 +94,7 @@ self.getLicenseInformationForProductCodeOnHsm = function (productCode, hsmId, ca
     });
 };
 
-self.getHsmId = function(callback) {
+self.getHsmId = function (callback) {
     if (typeof(callback) !== 'function') {
         return logger.crit('[license_manager_adapter] missing callback');
     }

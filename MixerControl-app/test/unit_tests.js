@@ -23,7 +23,7 @@ var executeScriptsInPath = function (dirPath) {
                 }
 
                 if (stat.isFile()) {
-                    if(filePath === __filename) {
+                    if (filePath === __filename) {
                         return;
                     }
                     require(filePath);

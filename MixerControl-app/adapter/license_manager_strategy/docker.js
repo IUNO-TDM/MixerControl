@@ -1,4 +1,3 @@
-
 const logger = require('../../global/logger');
 
 const self = require('./default');
@@ -17,7 +16,7 @@ self.getLicenseInformationForProductCodeOnHsm = function (productCode, hsmId, ca
     callback(null, 9999);
 };
 
-self.getHsmId = function(callback) {
+self.getHsmId = function (callback) {
     callback(null, '9-9999999');
 };
 
