@@ -17,7 +17,6 @@ String.prototype.format = function () {
 };
 
 
-
 router.get('/:id', function (req, res, next) {
     var userId = req.params['id'];
 

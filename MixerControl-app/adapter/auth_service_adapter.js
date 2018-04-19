@@ -6,8 +6,7 @@
 const logger = require('../global/logger');
 const CONFIG = require('../config/config_loader');
 const request = require('request');
-const self = {
-};
+const self = {};
 
 function buildOptionsForRequest(method, protocol, host, port, path, qs) {
 
@@ -21,7 +20,6 @@ function buildOptionsForRequest(method, protocol, host, port, path, qs) {
         }
     }
 }
-
 
 
 self.getAccessToken = function (callback) {
@@ -45,9 +43,7 @@ self.getAccessToken = function (callback) {
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.HOST,
         CONFIG.HOST_SETTINGS.OAUTH_SERVER.PORT,
         '/oauth/token',
-        {
-
-        }
+        {}
     );
 
     options.form = {
@@ -80,7 +76,7 @@ self.getAccessToken = function (callback) {
 
 };
 
-self.invalidateToken = function() {
-  self.token = null;
+self.invalidateToken = function () {
+    self.token = null;
 };
 module.exports = self;

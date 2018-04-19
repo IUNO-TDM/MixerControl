@@ -6,7 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var rootCas = require('ssl-root-cas/latest').create();
 require('https').globalAgent.options.ca = rootCas;
-const storage = require('node-persist');storage.initSync();
+const storage = require('node-persist');
+storage.initSync();
 var drinks = require('./routes/drinks');
 var users = require('./routes/users');
 var orders = require('./routes/orders');
@@ -20,19 +21,12 @@ var ifttt_controller = require('./controller/ifttt_controller');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-var CACHE_MAX_AGE = 60*60*24;
-
 app.use(express.static(path.join(__dirname, 'dist')));
-
-app.use('/img', express.static(__dirname + '/public/img', {maxAge: CACHE_MAX_AGE}));
 
 app.use('/api/drinks', drinks);
 app.use('/api/users', users);

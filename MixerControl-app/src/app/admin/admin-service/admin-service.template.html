@@ -2,38 +2,39 @@
 <p>PumpControl service state: {{pcServiceState}}</p>
 <p>PumpControl mode: {{pcMode}}</p>
 
-<mat-slide-toggle [checked]="statisticsEnabled" (change)="statisticsEnabledChanged($event)" labelPosition="before">Nutzungsdaten an den
-  Marktplatz senden
+<mat-slide-toggle [checked]="statisticsEnabled" (change)="statisticsEnabledChanged($event)" labelPosition="before">
+    Nutzungsdaten an den
+    Marktplatz senden
 </mat-slide-toggle>
 
 <div *ngIf="pcMode =='idle'">
-  <button mat-raised-button (click)="ActivateService()">Activate Service Mode</button>
+    <button mat-raised-button (click)="ActivateService()">Activate Service Mode</button>
 </div>
 <div *ngIf="pcMode =='service'">
-  <button mat-raised-button (click)="DeactivateService()">Deactivate Service Mode</button>
-  <table class="table table-striped">
-    <tbody>
-    <tr>
-      <td>All Pumps</td>
-      <td>
-        <button mat-raised-button (click)="SetAllPumps(true)">On</button>
-      </td>
-      <td>
-        <button mat-raised-button (click)="SetAllPumps(false)">Off</button>
-      </td>
+    <button mat-raised-button (click)="DeactivateService()">Deactivate Service Mode</button>
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <td>All Pumps</td>
+            <td>
+                <button mat-raised-button (click)="SetAllPumps(true)">On</button>
+            </td>
+            <td>
+                <button mat-raised-button (click)="SetAllPumps(false)">Off</button>
+            </td>
 
-    </tr>
-    <tr *ngFor="let pump of pumps">
-      <td>{{pump.nr}}</td>
-      <td>
-        <button mat-raised-button (click)="SetPump(pump.nr,true)">On</button>
-      </td>
-      <td>
-        <button mat-raised-button (click)="SetPump(pump.nr,false)">Off</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+        </tr>
+        <tr *ngFor="let pump of pumps">
+            <td>{{pump.nr}}</td>
+            <td>
+                <button mat-raised-button (click)="SetPump(pump.nr,true)">On</button>
+            </td>
+            <td>
+                <button mat-raised-button (click)="SetPump(pump.nr,false)">Off</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
 
 </div>

@@ -2,24 +2,24 @@
 
 <mat-dialog-content>
 
-  <mat-checkbox [(ngModel)]="reset">Eine frische Flasche wurde eingesetzt</mat-checkbox>
-  <p>bisherige Flaschengröße: {{oldAmount}}</p>
+    <mat-checkbox [(ngModel)]="reset">Eine frische Flasche wurde eingesetzt</mat-checkbox>
+    <p>bisherige Flaschengröße: {{oldAmount}}</p>
 
 
-  <mat-slider min="500" max="2000" step="50" [(ngModel)]="amount" thumbLabel tickInterval="50"></mat-slider>
-  <input [(ngModel)]="amount" type="number">
+    <mat-slider min="500" max="2000" step="50" [(ngModel)]="amount" thumbLabel tickInterval="50"></mat-slider>
+    <input [(ngModel)]="amount" type="number">
 
 
 </mat-dialog-content>
 
 <mat-dialog-actions>
 
-  <button
-    mat-raised-button color="primary" (click)="Accept()">bestätigen
-  </button>
-  <button
-    mat-raised-button
-    color="primary" mat-dialog-close="">abbrechen
-  </button>
+    <button
+            mat-raised-button color="primary" (click)="Accept()">bestätigen
+    </button>
+    <button
+            mat-raised-button
+            color="primary" mat-dialog-close="">abbrechen
+    </button>
 
 </mat-dialog-actions>

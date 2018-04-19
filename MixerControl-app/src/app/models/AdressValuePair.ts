@@ -1,4 +1,4 @@
 export class AdressValuePair {
-  address: string;
-  coin: number;
+    address: string;
+    coin: number;
 }

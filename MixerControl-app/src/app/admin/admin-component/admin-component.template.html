@@ -1,20 +1,20 @@
 <table class="table table-striped">
-    <mat-list  *ngIf="pumps">
-      <mat-list-item *ngFor="let pump of pumps">
+    <mat-list *ngIf="pumps">
+        <mat-list-item *ngFor="let pump of pumps">
 
-        <!--<ng-template #othercontent>battery_full</ng-template>-->
-        <mat-icon mat-list-icon>battery_full</mat-icon>
-        <p mat-line>{{pump.nr}}</p>
-        <p>{{pump.component.name}}</p>
-        <button mat-button (click)="ChangeComponent(pump)" >Ändern</button>
-        <p *ngIf="standardAmounts && standardAmounts[pump.nr]">Menge: {{standardAmounts[pump.nr]}}ml</p>
-        <div *ngIf="warnings[pump.nr] && warnings[pump.nr].amountWarningLimit">
-          {{warnings[pump.nr].amountWarningLimit}}ml
-          <mat-icon mat-list-icon>warning</mat-icon>
-        </div>
+            <!--<ng-template #othercontent>battery_full</ng-template>-->
+            <mat-icon mat-list-icon>battery_full</mat-icon>
+            <p mat-line>{{pump.nr}}</p>
+            <p>{{pump.component.name}}</p>
+            <button mat-button (click)="ChangeComponent(pump)">Ändern</button>
+            <p *ngIf="standardAmounts && standardAmounts[pump.nr]">Menge: {{standardAmounts[pump.nr]}}ml</p>
+            <div *ngIf="warnings[pump.nr] && warnings[pump.nr].amountWarningLimit">
+                {{warnings[pump.nr].amountWarningLimit}}ml
+                <mat-icon mat-list-icon>warning</mat-icon>
+            </div>
 
-        <button mat-button (click)="ResetAmount(pump)">Flasche getauscht</button>
-      </mat-list-item>
+            <button mat-button (click)="ResetAmount(pump)">Flasche getauscht</button>
+        </mat-list-item>
 
 
     </mat-list>

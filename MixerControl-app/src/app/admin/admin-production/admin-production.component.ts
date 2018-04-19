@@ -2,7 +2,7 @@
  * Created by goergch on 01.03.17.
  */
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AdminService} from '../../services/admin.service';
 import {Order} from '../../models/models';
 
@@ -58,7 +58,8 @@ export class AdminProductionComponent implements OnInit, OnDestroy {
     PauseProduction(): void {
         this.adminService.pauseProduction().subscribe(status => {
             console.log(status)
-        });;
+        });
+        ;
     }
 
     StartProcessing(): void {

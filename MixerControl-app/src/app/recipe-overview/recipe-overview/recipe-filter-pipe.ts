@@ -1,6 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {Drink} from '../../models/Drink';
-import async from 'async';
 
 @Pipe({
     name: 'recipeFilter'

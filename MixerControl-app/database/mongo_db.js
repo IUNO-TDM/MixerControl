@@ -89,7 +89,7 @@ function replacePlaceholder(object) {
         }
         return object;
     }
-    catch(ex) {
+    catch (ex) {
         return object;
     }
 }

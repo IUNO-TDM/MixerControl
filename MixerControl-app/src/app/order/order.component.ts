@@ -1,7 +1,4 @@
-import {
-    Component, OnInit, Inject, OnDestroy, ViewChild, QueryList, ElementRef, ContentChildren,
-    ViewChildren, forwardRef
-} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/timer';
@@ -12,7 +9,7 @@ import {DrinkService} from '../services/drink.service';
 import {UserService} from '../services/user.service';
 import {OrderService} from '../services/order.service';
 import {DataSource} from '@angular/cdk/collections';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatGridTile, MatGridList} from '@angular/material';
+import {MatDialog, MatDialogRef} from '@angular/material';
 import {QrDialogComponent} from './qrdialog.component';
 import {ScanDialogComponent} from './scannerdialog.component';
 import {OrdersSocketService} from '../services/orders-socket.service';
@@ -186,11 +183,11 @@ export class OrderComponent implements OnInit, OnDestroy {
                                     }
                                 }
                                 if (state.toState === 'productionFinished') {
-                                  this.redirectTimerObservable = Observable.timer(10000, 50000);
-                                  this.redirectTimerSubscription = this.redirectTimerObservable.subscribe(x => {
-                                    this.router.navigateByUrl('/');
-                                    this.redirectTimerSubscription.unsubscribe();
-                                  });
+                                    this.redirectTimerObservable = Observable.timer(10000, 50000);
+                                    this.redirectTimerSubscription = this.redirectTimerObservable.subscribe(x => {
+                                        this.router.navigateByUrl('/');
+                                        this.redirectTimerSubscription.unsubscribe();
+                                    });
                                 }
                                 this.refreshStepCards(state);
                                 return this.orderState = state;
@@ -235,8 +232,8 @@ export class OrderComponent implements OnInit, OnDestroy {
 
         this.pcModeObservable = this.productionSocketService.getUpdates('pumpControlMode');
         this.pcModeConnection = this.pcModeObservable.subscribe(state => {
-                this.pcMode = state;
-            });
+            this.pcMode = state;
+        });
         this.productionSocketService.joinRoom('pumpControlMode');
     }
 
@@ -255,7 +252,7 @@ export class OrderComponent implements OnInit, OnDestroy {
             this.pcModeConnection.unsubscribe();
         }
         if (this.redirectTimerSubscription) {
-          this.redirectTimerSubscription.unsubscribe();
+            this.redirectTimerSubscription.unsubscribe();
         }
     }
 

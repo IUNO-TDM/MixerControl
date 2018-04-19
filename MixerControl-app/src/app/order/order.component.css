@@ -1,244 +1,242 @@
 
 .stepIconTileContent {
-  /*padding-top: 100%;*/
+    /*padding-top: 100%;*/
 }
 
 .stepIcons {
-  width: 80vw;
-  /*margin: 0 auto 2rem;*/
-  max-width: 900px;
-}
-.orderStateDetails {
-  width: 80%;
-  max-width: 900px;
+    width: 80vw;
+    /*margin: 0 auto 2rem;*/
+    max-width: 900px;
 }
 
+.orderStateDetails {
+    width: 80%;
+    max-width: 900px;
+}
 
 .orderStepsCard {
-  min-height: 280px;
+    min-height: 280px;
 }
 
-.orderStepsList{
-  width: 70%;
-  max-width: 400px;
+.orderStepsList {
+    width: 70%;
+    max-width: 400px;
 }
 
-.orderStepsListContainer{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.orderStepsListContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
 }
 
+@media only screen and (max-width: 600px) {
+    .stepIcons {
+        width: 100%;
+    }
 
-@media only screen and (max-width: 600px){
-  .stepIcons{
-    width: 100%;
-  }
-  .orderStateDetails{
-    width: 100%;
-  }
-  .orderStepsList{
-    width:100%;
-  }
+    .orderStateDetails {
+        width: 100%;
+    }
+
+    .orderStepsList {
+        width: 100%;
+    }
 }
-
-
 
 .cardContent {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  /*align-items: center;*/
-  justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+    justify-content: space-around;
 }
 
 .orderTableCard {
-  max-width: 900px;
+    max-width: 900px;
 }
 
 .buttonHorizontalCenter {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .orderSteps {
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  /*align-content: center;*/
-  text-align: center;
-  font-family: 'open_sanslight';
-  height: 100%;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*align-content: center;*/
+    text-align: center;
+    font-family: 'open_sanslight';
+    height: 100%;
 
 }
 
 .stepIconTileContent img {
-  opacity: 0.3;
-  max-width: 100%;
-  max-height: 100%;
+    opacity: 0.3;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .centered {
-  flex: 0 0 70%;
+    flex: 0 0 70%;
 }
 
 .priceWidthClass {
-  flex: 0 0 100px;
-  text-align: right;
+    flex: 0 0 100px;
+    text-align: right;
 }
 
 .customWidthClass {
-  flex: 0 0 50px;
-  text-align: left;
+    flex: 0 0 50px;
+    text-align: left;
 }
 
 .titleWidthClass {
-  flex: 1 0 100px;
-  min-width: 100px;
-  text-align: left;
+    flex: 1 0 100px;
+    min-width: 100px;
+    text-align: left;
 }
 
 .orderStepsFrame {
-  padding-bottom: 2rem;
-  /*min-width: 650px;*/
-  text-align: center;
+    padding-bottom: 2rem;
+    /*min-width: 650px;*/
+    text-align: center;
 }
 
 .step {
-  /*background-position: left center;*/
-  /*background-repeat: no-repeat;*/
-  padding-left: 3rem;
-  /*padding-bottom: 1rem;*/
-  /*padding-top: 1rem;*/
-  /*background-size: 3rem ;*/
-  text-decoration: underline;
-  text-align: left;
-  width: 100%;
+    /*background-position: left center;*/
+    /*background-repeat: no-repeat;*/
+    padding-left: 3rem;
+    /*padding-bottom: 1rem;*/
+    /*padding-top: 1rem;*/
+    /*background-size: 3rem ;*/
+    text-decoration: underline;
+    text-align: left;
+    width: 100%;
 
 }
 
 .orderStepIcon {
-  height: 30px;
+    height: 30px;
 }
 
 .orderStepsFrame .sumPrice {
-  text-align: right;
-  margin-right: 1rem;
-  font-style: oblique;
+    text-align: right;
+    margin-right: 1rem;
+    font-style: oblique;
 }
 
 .stepIcons .licensepayment {
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
 }
 
 .stepIcons .license {
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
 }
 
 .stepIcons .payment {
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
 }
 
 .stepIcons .production {
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
 }
 
 .stepIcons .arrow {
-  background-image: url('../../assets/lnr-arrow.svg');
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-position: center;
+    background-image: url('../../assets/lnr-arrow.svg');
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
 }
 
 .stepIcons .step0 img {
-  opacity: 0.2;
-  transform: scale(0.9);
+    opacity: 0.2;
+    transform: scale(0.9);
 }
 
 .stepIcons .step1 img {
-  opacity: 1;
-  transform: scale(1);
+    opacity: 1;
+    transform: scale(1);
 }
 
 .stepIcons .step2 img {
-  opacity: 1;
-  animation: wobble 2s infinite
+    opacity: 1;
+    animation: wobble 2s infinite
 }
 
 .stepIcons .step3 img {
-  opacity: 0.7;
-  transform: scale(0.9);
+    opacity: 0.7;
+    transform: scale(0.9);
 }
 
 @keyframes woop {
-  0% {
-    transform: scale(1.0);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1.0);
-  }
+    0% {
+        transform: scale(1.0);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1.0);
+    }
 }
 
 @keyframes wobble {
-  0% {
-    transform: rotate(0deg);
-  }
-  5% {
-    transform: rotate(-8deg);
-  }
-  10% {
-    transform: rotate(8deg);
-  }
-  15% {
-    transform: rotate(-8deg);
-  }
-  20% {
-    transform: rotate(8deg);
-  }
-  25% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    5% {
+        transform: rotate(-8deg);
+    }
+    10% {
+        transform: rotate(8deg);
+    }
+    15% {
+        transform: rotate(-8deg);
+    }
+    20% {
+        transform: rotate(8deg);
+    }
+    25% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
 }
 
 .orderSteps .off {
-  opacity: 0.2;
-  text-decoration: none;
+    opacity: 0.2;
+    text-decoration: none;
 }
 
 .orderSteps .done {
-  text-decoration: none;
-  /*background-image: url('../../assets/lnr-check.svg');*/
+    text-decoration: none;
+    /*background-image: url('../../assets/lnr-check.svg');*/
 }
 
-.orderTableContainer{
-  overflow: scroll;
+.orderTableContainer {
+    overflow: scroll;
 }
 
-
-.order-container{
-  width: 100%;
-  height: 100%;
+.order-container {
+    width: 100%;
+    height: 100%;
 }
 
-.step-icons-container{
-  width:100%;
-  height: calc(0.19*80vw);
-  max-height: calc(0.19*900px);
+.step-icons-container {
+    width: 100%;
+    height: calc(0.19 * 80vw);
+    max-height: calc(0.19 * 900px);
 }

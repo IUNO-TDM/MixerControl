@@ -1,13 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AdminService } from '../../services/admin.service';
-import { ProductionSocketService } from '../../services/production-socket.service';
-import { Subscription } from 'rxjs/Subscription';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {AdminService} from '../../services/admin.service';
+import {ProductionSocketService} from '../../services/production-socket.service';
+import {Subscription} from 'rxjs/Subscription';
 
-import { Cocktail } from 'tdm-common'
-import { CocktailComponent } from 'tdm-common'
-import { ComponentService } from 'tdm-common'
-import { BeakerComponent, DragAndDropService, ComponentListDialogComponent } from 'cocktail-configurator'
-import { MatDialog } from '@angular/material';
+import {Cocktail, CocktailComponent, ComponentService} from 'tdm-common'
+import {BeakerComponent, ComponentListDialogComponent, DragAndDropService} from 'cocktail-configurator'
+import {MatDialog} from '@angular/material';
 
 @Component({
     selector: 'app-admin-recipe',
@@ -28,9 +26,9 @@ export class AdminRecipeComponent implements OnInit {
     showAvailableComponents = false
 
     constructor(private componentService: ComponentService,
-        public dialog: MatDialog,
-        private adminService: AdminService,
-        private productionSocketService: ProductionSocketService) {
+                public dialog: MatDialog,
+                private adminService: AdminService,
+                private productionSocketService: ProductionSocketService) {
         this.cocktail = new Cocktail();
         this.cocktail.amount = 100;
     }
