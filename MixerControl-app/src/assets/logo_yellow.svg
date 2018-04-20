@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg6"
+   version="1.1"
+   style="width: auto; height: 100%;"
+   viewBox="0 0 171.17 30">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>AXOOM</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <title
+     id="title2">AXOOM</title>
+  <path
+     style="fill:#fce233;fill-opacity:1"
+     id="path4"
+     fill="#ffffff"
+     d="M83.79,23.8a8.77,8.77,0,0,1-8.64-8.87,8.64,8.64,0,1,1,17.28,0,8.77,8.77,0,0,1-8.64,8.87m0-23.8A14.76,14.76,0,0,0,69.24,14.93a14.55,14.55,0,1,0,29.09,0A14.76,14.76,0,0,0,83.79,0M119,23.8a8.77,8.77,0,0,1-8.64-8.87,8.64,8.64,0,1,1,17.28,0A8.77,8.77,0,0,1,119,23.8M119,0a14.76,14.76,0,0,0-14.54,14.93,14.55,14.55,0,1,0,29.09,0A14.76,14.76,0,0,0,119,0M19.86,5.88l-2-5H11.74l-2,5L0,29.38H6.23L14.77,8.57l8.49,20.62,0,0.19h6.23ZM52.92,15.1L63.19,4.57,58.94,0.21,48.68,10.75,38.41,0.21,34.17,4.57,44.43,15.1,34.19,25.62,38.43,30,48.68,19.46,58.94,30l4.24-4.36Zm113-14.25-2.5,2.24-7.24,7.28-7.37-7.28-2.45-2.24h-6V29.38h5.71V8.64l9.69,9.73,0.14-.07,0.05,0.22,9.52-9.87V29.38h5.71V0.86h-5.3Z" />
+</svg>
