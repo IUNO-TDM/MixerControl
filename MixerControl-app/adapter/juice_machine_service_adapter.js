@@ -289,32 +289,6 @@ self.getOfferForId = function (id, callback) {
     );
 };
 
-self.savePaymentForOffer = function (offerId, bip70, callback) {
-    if (typeof(callback) !== 'function') {
-        callback = function () {
-            logger.info('Callback not registered');
-        }
-    }
-
-    buildOptionsForRequest(
-        'POST',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/offers/' + offerId + '/payment',
-        {},
-        function (err, options) {
-            options.body = {
-                paymentBIP70: bip70
-            };
-
-            doRequest(options, function (e, r, jsonData) {
-                callback(e);
-            });
-        }
-    );
-};
-
 self.getLicenseUpdate = function (hsmId, context, callback) {
     if (typeof(callback) !== 'function') {
         return logger.info('[juice_machine_service_adapter] Callback not registered');
