@@ -261,34 +261,6 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
     );
 };
 
-self.getOfferForId = function (id, callback) {
-    if (typeof(callback) !== 'function') {
-        callback = function () {
-            logger.info('Callback not registered');
-        }
-    }
-
-    buildOptionsForRequest(
-        'GET',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/offers/' + id,
-        {},
-        function (err, options) {
-            doRequest(options, function (e, r, jsonData) {
-                let offer;
-                if (helper.isObject(jsonData)) {
-                    //TODO: Parse json data into objects to validate the content
-                    offer = jsonData;
-                }
-
-                callback(e, offer);
-            });
-        }
-    );
-};
-
 self.getLicenseUpdate = function (hsmId, context, callback) {
     if (typeof(callback) !== 'function') {
         return logger.info('[juice_machine_service_adapter] Callback not registered');
