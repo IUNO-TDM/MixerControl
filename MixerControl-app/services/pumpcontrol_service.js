@@ -388,7 +388,7 @@ const updatePumpAmount = function (pumpNumber, amount, callback) {
     });
 };
 
-pumpcontrol_service.startProgram = function (productionQueue, recipe) {
+pumpcontrol_service.startProgram = function (productionQueue, program, productCode) {
 
     // Make sure all components are set on the pumpcontrol before running the program
     async.eachSeries(pumpNumbers, function (item, callback) {
@@ -404,8 +404,8 @@ pumpcontrol_service.startProgram = function (productionQueue, recipe) {
         const options = buildOptionsForRequest(
             'PUT',
             {},
-            recipe.program,
-            '/program/' + recipe['productCode']
+            program,
+            `/program/${productCode}`
         );
 
         request(options, function (e, r, data) {

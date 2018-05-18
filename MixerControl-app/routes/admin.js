@@ -190,10 +190,7 @@ router.post('/pumps/service', function (req, res, next) {
 router.post('/program', function (req, res, next) {
     const machineProgramString = JSON.stringify(req.body);
 
-    pumpcontrol_service.startProgram(production_queue, {
-        productCode: 0,
-        program: machineProgramString
-    });
+    pumpcontrol_service.startProgram(production_queue, machineProgramString, 0);
 
     res.sendStatus(200);
 });
