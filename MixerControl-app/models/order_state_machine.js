@@ -7,6 +7,7 @@ const production_queue = require('../models/production_queue');
 const logger = require('../global/logger');
 const payment_service = require('../adapter/payment_service_adapter');
 const offerService = require('../services/offer_service');
+const jms = require('../adapter/juice_machine_service_adapter');
 
 const stateMachine = new machina.BehavioralFsm({
     initialize: function (options) {
@@ -86,7 +87,20 @@ const stateMachine = new machina.BehavioralFsm({
             }
         },
         waitingLicense: {
-            licenseArrived: "enqueueForProduction",
+            licenseArrived: function (order) {
+                //TODO: Maybe we should introduce a new state for downloading the encrypted recipe
+                logger.debug('[order_state_machine] License arrived => Now downloading the encrypted recipe');
+                jms.getRecipeProgramForId(order.drinkId, order.offerId, (err, program) => {
+
+                    if (err) {
+                        return this.transition(order, "error");
+                    }
+
+                    order.recipe['program'] = program;
+
+                    this.transition(order, "enqueueForProduction");
+                });
+            },
             onError: function (client) {
                 this.transition(client, "error");
             }
