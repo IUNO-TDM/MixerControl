@@ -142,6 +142,32 @@ self.getRecipeForId = function (id, callback) {
     );
 };
 
+self.getRecipeProgramForId = function (id, offerId, callback) {
+
+    if (typeof(callback) !== 'function') {
+        callback = function () {
+            logger.info('Callback not registered');
+        }
+    }
+
+    buildOptionsForRequest(
+        'GET',
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
+        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
+        `/recipes/${id}/program`,
+        {
+            offerId: offerId
+        },
+        function (err, options) {
+            doRequest(options, function (e, r, program) {
+
+                callback(e, program);
+            });
+        }
+    );
+};
+
 self.getRecipeImageForId = function (id, callback) {
     if (typeof(callback) !== 'function') {
         callback = function () {
@@ -161,10 +187,11 @@ self.getRecipeImageForId = function (id, callback) {
 
             doRequest(options, function (e, r, data) {
 
-                callback(e, {
-                    imageBuffer: data,
-                    contentType: r.headers['content-type']
-                });
+                callback(e,
+                    r && data ? {
+                        imageBuffer: data,
+                        contentType: r.headers['content-type']
+                    } : null);
             });
         }
     );
@@ -256,60 +283,6 @@ self.requestOfferForOrders = function (hsmId, orderList, callback) {
                 }
 
                 callback(e, offer);
-            });
-        }
-    );
-};
-
-self.getOfferForId = function (id, callback) {
-    if (typeof(callback) !== 'function') {
-        callback = function () {
-            logger.info('Callback not registered');
-        }
-    }
-
-    buildOptionsForRequest(
-        'GET',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/offers/' + id,
-        {},
-        function (err, options) {
-            doRequest(options, function (e, r, jsonData) {
-                let offer;
-                if (helper.isObject(jsonData)) {
-                    //TODO: Parse json data into objects to validate the content
-                    offer = jsonData;
-                }
-
-                callback(e, offer);
-            });
-        }
-    );
-};
-
-self.savePaymentForOffer = function (offerId, bip70, callback) {
-    if (typeof(callback) !== 'function') {
-        callback = function () {
-            logger.info('Callback not registered');
-        }
-    }
-
-    buildOptionsForRequest(
-        'POST',
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PROTOCOL,
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
-        CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
-        '/offers/' + offerId + '/payment',
-        {},
-        function (err, options) {
-            options.body = {
-                paymentBIP70: bip70
-            };
-
-            doRequest(options, function (e, r, jsonData) {
-                callback(e);
             });
         }
     );

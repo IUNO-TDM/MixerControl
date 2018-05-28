@@ -1,34 +1,34 @@
-var machina = require('machina');
+const machina = require('machina');
 const EventEmitter = require('events').EventEmitter;
 const util = require('util');
 
-var logger = require('../global/logger');
+const logger = require('../global/logger');
 
 const jms_connector = require('../adapter/juice_machine_service_adapter');
 
 const configuration_persist = require('../global/configuration_persist');
 const CONFIG = require('../config/config_loader');
 
-var ProductionQueue = function () {
+const ProductionQueue = function () {
 };
 const production_queue = new ProductionQueue();
 util.inherits(ProductionQueue, EventEmitter);
-var queue = [];
-var pumpcontrol_service = require('../services/pumpcontrol_service');
+const queue = [];
+const pumpcontrol_service = require('../services/pumpcontrol_service');
 pumpcontrol_service.on('gpio', (data) => {
-        if (data.name == 'start_button') {
+        if (data.name === 'start_button') {
             production_queue.startConfirmed();
         }
 
     }
 );
 
-var sendProductionQueueUpdate = function () {
+const sendProductionQueueUpdate = function () {
     production_queue.emit('queueChange', production_queue.getStrippedQueue());
 };
 
 
-var state_machine = new machina.Fsm({
+const state_machine = new machina.Fsm({
 
     namespace: "productionqueue",
     intialState: "uninitialized",
@@ -42,10 +42,10 @@ var state_machine = new machina.Fsm({
         },
         waitingPump: {
             pumpControlConnected: function () {
-                if (pumpcontrol_service.getMode() == 'service') {
+                if (pumpcontrol_service.getMode() === 'service') {
                     this.transition("pumpControlServiceMode");
                 }
-                if (queue.length == 0) {
+                if (queue.length === 0) {
                     this.transition("waitingOrder");
                 } else {
                     this.transition("waitingStart");
@@ -82,11 +82,14 @@ var state_machine = new machina.Fsm({
         startProcessing: {
             _onEnter: function () {
                 if (queue[0]) {
+                    const queueItem = queue[0];
                     try {
-                        pumpcontrol_service.startProgram(this, queue[0].recipe);
+                        pumpcontrol_service.startProgram(this, queueItem.recipe['program'], queueItem.recipe['productCode']);
                     }
                     catch (err) {
                         logger.crit(err);
+                        queue.push(queueItem);
+                        logger.info('[production_queue] added the queue item at the and of the queue and transit to state error processing');
                         this.transition("errorProcessing");
                     }
                 } else {
@@ -107,10 +110,10 @@ var state_machine = new machina.Fsm({
         },
         finished: {
             _onEnter: function () {
-                order = queue.shift();
+                const order = queue.shift();
                 sendProductionQueueUpdate();
                 console.log("ProductionQueueFinished: Removed first order: " + order.orderNumber);
-                if (queue.length == 0) {
+                if (queue.length === 0) {
                     this.transition("waitingOrder");
                 } else {
                     this.transition("waitingStart");
@@ -119,10 +122,10 @@ var state_machine = new machina.Fsm({
         },
         errorProcessing: {
             _onEnter: function () {
-                var order = queue.shift();
+                const order = queue.shift();
                 sendProductionQueueUpdate();
                 console.log("ProductionQueueError: Removed first order: " + order.orderNumber);
-                if (queue.length == 0) {
+                if (queue.length === 0) {
                     this.transition("waitingOrder");
                 } else {
                     this.transition("waitingStart");
@@ -136,7 +139,7 @@ var state_machine = new machina.Fsm({
 
             },
             productionResume: function () {
-                if (queue.length == 0) {
+                if (queue.length === 0) {
                     this.transition("waitingOrder");
                 } else {
                     this.transition("waitingStart");
@@ -147,7 +150,7 @@ var state_machine = new machina.Fsm({
         },
         pumpControlServiceMode: {
             pumpControlIdle: function () {
-                if (queue.length == 0) {
+                if (queue.length === 0) {
                     this.transition("waitingOrder");
                 } else {
                     this.transition("waitingStart");
@@ -239,14 +242,14 @@ state_machine.on('transition', function (data) {
 });
 
 pumpcontrol_service.on('serviceState', function (state) {
-    if (state == 'connected') {
+    if (state === 'connected') {
         state_machine.pumpControlConnected();
     } else {
         state_machine.pumpControlDisconnected();
     }
 });
 production_queue.addOrderToQueue = function (order) {
-    if (queue.indexOf(order) != -1) {
+    if (queue.indexOf(order) !== -1) {
         console.log("Order with ordernumber " + order.orderNumber + " is already in queue");
         return false;
     } else {
@@ -275,7 +278,7 @@ production_queue.startConfirmed = function (order) {
         console.log("admin confirmed the first order start");
         state_machine.startConfirmed();
     }
-    if (queue[0] == order) {
+    if (queue[0] === order) {
         state_machine.startConfirmed();
         return true;
     } else {
@@ -291,35 +294,35 @@ production_queue.init = function () {
 
 production_queue.getQueue = function () {
     return queue;
-}
+};
 
 production_queue.getStrippedQueue = function () {
-    var rv = [];
-    for (var i = 0; i < queue.length; i++) {
-        var o = queue[i].strip();
+    const rv = [];
+    for (let i = 0; i < queue.length; i++) {
+        const o = queue[i].strip();
         o.queuePlace = i;
         rv.push(o);
     }
     return rv;
-}
+};
 
 production_queue.getState = function () {
     return state_machine.compositeState();
-}
+};
 
 
 pumpcontrol_service.on('pumpControlMode', function (mode) {
-    if (mode == 'idle') {
+    if (mode === 'idle') {
         state_machine.pumpControlIdle();
-    } else if (mode == 'service') {
+    } else if (mode === 'service') {
         state_machine.pumpControlService();
     }
 });
 
 
 pumpcontrol_service.on('input', function (input) {
-    if (input.name == 'start_button') {
-        if (input.value == true) {
+    if (input.name === 'start_button') {
+        if (input.value === true) {
             state_machine.startConfirmed();
         }
     }
