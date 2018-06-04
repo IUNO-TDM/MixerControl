@@ -8,7 +8,7 @@ import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class DrinkService {
-    private drinksUrl = 'api/drinks';  // URL to web api
+    private drinksUrl = '/api/drinks';  // URL to web api
 
     constructor(private http: HttpClient) {
     }

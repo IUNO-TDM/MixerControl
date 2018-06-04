@@ -10,7 +10,7 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 
 @Injectable()
 export class OrderService {
-    private ordersUrl = 'api/orders/';  // URL to web api
+    private ordersUrl = '/api/orders/';  // URL to web api
 
     constructor(private http: HttpClient) {
     }

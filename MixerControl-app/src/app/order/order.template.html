@@ -6,7 +6,7 @@
     </div>
     <div fxFlex class="orderStateContainer" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="15px">
         <div *ngIf="drink && orderToBeDisplayed">
-            <h1>Auftrag {{orderToBeDisplayed.orderNumber}}: {{drink.title}}</h1>
+            <h1 i18n="title">Auftrag {{orderToBeDisplayed.orderNumber}}: {{drink.title}}</h1>
 
         </div>
         <div fxFlex="nogrow" fxFlexOffset="50px" class="step-icons-container" fxLayout="row"
@@ -39,23 +39,23 @@
                             <mat-list class="orderStepsList">
                                 <mat-list-item>
                                     <mat-icon mat-list-icon>play_arrow</mat-icon>
-                                    <p mat-line>Lizenzkauf wird initiiert</p>
+                                    <p mat-line i18n="progress item">Lizenzkauf wird initiiert</p>
                                 </mat-list-item>
                                 <mat-list-item>
                                     <!--<mat-icon mat-list-icon>done</mat-icon>-->
-                                    <p mat-line>Getränk bezahlen</p>
+                                    <p mat-line i18n="progress item">Getränk bezahlen</p>
                                 </mat-list-item>
                                 <mat-list-item>
                                     <!--<mat-icon mat-list-icon>done</mat-icon>-->
-                                    <p mat-line>Lizenzgebühr bezahlen</p>
+                                    <p mat-line i18n="progress item">Lizenzgebühr bezahlen</p>
                                 </mat-list-item>
                                 <mat-list-item>
                                     <!--<mat-icon mat-list-icon>done</mat-icon>-->
-                                    <p mat-line>Lizenz vom Marktplatz laden</p>
+                                    <p mat-line i18n="progress item">Lizenz vom Marktplatz laden</p>
                                 </mat-list-item>
                                 <mat-list-item>
                                     <!--<mat-icon mat-list-icon>done</mat-icon>-->
-                                    <p mat-line>Getränk zubereiten</p>
+                                    <p mat-line i18n="progress item">Getränk zubereiten</p>
                                 </mat-list-item>
 
                             </mat-list>
@@ -67,26 +67,29 @@
             <div class="orderSteps" *ngSwitchCase="'waitingPayment'">
                 <div class="orderStepsFrame">
                     <mat-card class="orderTableCard">
-                        <mat-card-header>Rechnung</mat-card-header>
+                        <mat-card-header i18n="title">Rechnung</mat-card-header>
                         <mat-card-content class="orderTableContainer">
                             <mat-table class="orderTable" #table [dataSource]="dataSource">
                                 <ng-container matColumnDef="Pos">
-                                    <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'"> Pos
-                                    </mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Pos</mat-header-cell>
                                     <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Pos}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Menge">
-                                    <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'"> Menge
-                                    </mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Menge</mat-header-cell>
                                     <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.Menge}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Artikel">
-                                    <mat-header-cell *matHeaderCellDef [ngClass]="'titleWidthClass'"> Artikel
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [ngClass]="'titleWidthClass'"> {{row.Artikel}}
-                                    </mat-cell>
+                                    <mat-header-cell *matHeaderCellDef [ngClass]="'titleWidthClass'" i18n="table header">Artikel</mat-header-cell>
+                                    <mat-cell *matCellDef="let row" [ngClass]="'titleWidthClass'">
+                                        <ng-container [ngSwitch]="row.Artikel">
+                                            <ng-container *ngSwitchCase="'@@@marketplaceCommission@@@'" i18n="invoice item">*Marktplatzprovision</ng-container>
+                                            <ng-container *ngSwitchCase="'@@@usageLicense@@@'" i18n="invoice item">*Nutzungslizenz</ng-container>
+                                            <ng-container *ngSwitchCase="'@@@preparation@@@'" i18n="invoice item">*Zubereitung</ng-container>
+                                            <ng-container *ngSwitchDefault>{{row.Artikel}}</ng-container>
+                                        </ng-container>
+                                        </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="UnterPosPreis">
                                     <mat-header-cell *matHeaderCellDef [ngClass]="'priceWidthClass'"></mat-header-cell>
@@ -95,15 +98,13 @@
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Preis">
-                                    <mat-header-cell *matHeaderCellDef [ngClass]="'priceWidthClass'"> Preis
-                                    </mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef [ngClass]="'priceWidthClass'" i18n="table header">Preis</mat-header-cell>
                                     <mat-cell *matCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Preis}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="Gesamt">
-                                    <mat-header-cell *matHeaderCellDef [ngClass]="'priceWidthClass'"> Gesamt
-                                    </mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef [ngClass]="'priceWidthClass'" i18n="table header">Gesamt</mat-header-cell>
                                     <mat-cell *matCellDef="let row" [ngClass]="'priceWidthClass'"> {{row.Gesamt}}
                                     </mat-cell>
                                 </ng-container>
@@ -112,14 +113,11 @@
                                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                             </mat-table>
                         </mat-card-content>
-                        <div class="sumPrice" *ngIf="drink">zu bezahlen: {{drink.retailPrice / 100000}} IUNO</div>
+                        <div class="sumPrice" *ngIf="drink" i18n="table summary">zu bezahlen: {{drink.retailPrice / 100000}} IUNO</div>
                         <mat-card-actions>
                             <div class="buttonHorizontalCenter">
-                                <button mat-raised-button color="primary" (click)="ShowPaymentModalQR()">Wallet App
-                                </button>
-                                <button mat-raised-button color="primary" (click)="ShowPaymentModalScan()">Coupon
-                                    scannen
-                                </button>
+                                <button mat-raised-button color="primary" (click)="ShowPaymentModalQR()" i18n="button">Wallet App</button>
+                                <button mat-raised-button color="primary" (click)="ShowPaymentModalScan()" i18n="button">Coupon scannen</button>
                             </div>
                         </mat-card-actions>
                     </mat-card>
@@ -136,23 +134,23 @@
                                 <mat-list class="orderStepsList">
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzkauf getätigt</p>
+                                        <p mat-line i18n="progress item">Lizenzkauf getätigt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Getränk bezahlt</p>
+                                        <p mat-line i18n="progress item">Getränk bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>play_arrow</mat-icon>
-                                        <p mat-line>Lizenzgebühr wird bezahlt</p>
+                                        <p mat-line i18n="progress item">Lizenzgebühr wird bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <!--<mat-icon mat-list-icon>done</mat-icon>-->
-                                        <p mat-line>Lizenz vom Marktplatz laden</p>
+                                        <p mat-line i18n="progress item">Lizenz vom Marktplatz laden</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <!--<mat-icon mat-list-icon>done</mat-icon>-->
-                                        <p mat-line>Getränk zubereiten</p>
+                                        <p mat-line i18n="progress item">Getränk zubereiten</p>
                                     </mat-list-item>
 
                                 </mat-list>
@@ -171,23 +169,23 @@
                                 <mat-list class="orderStepsList">
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzkauf getätigt</p>
+                                        <p mat-line i18n="progress item">Lizenzkauf getätigt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Getränk bezahlt</p>
+                                        <p mat-line i18n="progress item">Getränk bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzgebühr bezahlt</p>
+                                        <p mat-line i18n="progress item">Lizenzgebühr bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>play_arrow</mat-icon>
-                                        <p mat-line>Lizenz vom Marktplatz laden</p>
+                                        <p mat-line i18n="progress item">Lizenz vom Marktplatz laden</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <!--<mat-icon mat-list-icon>done</mat-icon>-->
-                                        <p mat-line>Getränk zubereiten</p>
+                                        <p mat-line i18n="progress item">Getränk zubereiten</p>
                                     </mat-list-item>
                                 </mat-list>
                             </div>
@@ -203,29 +201,29 @@
                                 <mat-list class="orderStepsList">
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzkauf getätigt</p>
+                                        <p mat-line i18n="progress item">Lizenzkauf getätigt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Getränk bezahlt</p>
+                                        <p mat-line i18n="progress item">Getränk bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzgebühr bezahlt</p>
+                                        <p mat-line i18n="progress item">Lizenzgebühr bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenz eingespielt</p>
+                                        <p mat-line i18n="progress item">Lizenz eingespielt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>pause</mat-icon>
-                                        <p mat-line>Getränk zubereiten</p>
+                                        <p mat-line i18n="progress item">Getränk zubereiten</p>
                                     </mat-list-item>
                                 </mat-list>
                             </div>
-                            <p *ngIf="queuePlace>0"> Auftrag in Warteschlangenposition {{queuePlace}}</p>
-                            <p *ngIf="queuePlace==0"> Servicemodus aktiv. Ihr Auftrag ist der nächste.</p>
-                            <p *ngIf="queuePlace<0"> Auftrag in der Warteschlange</p>
+                            <p *ngIf="queuePlace>0" i18n="progress detail"> Auftrag in Warteschlangenposition {{queuePlace}}</p>
+                            <p *ngIf="queuePlace==0" i18n="progress detail"> Servicemodus aktiv. Ihr Auftrag ist der nächste.</p>
+                            <p *ngIf="queuePlace<0" i18n="progress detail"> Auftrag in der Warteschlange</p>
                         </mat-card-content>
                     </mat-card>
                 </div>
@@ -238,35 +236,31 @@
                                 <mat-list class="orderStepsList">
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzkauf getätigt</p>
+                                        <p mat-line i18n="progress item">Lizenzkauf getätigt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Getränk bezahlt</p>
+                                        <p mat-line i18n="progress item">Getränk bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzgebühr bezahlt</p>
+                                        <p mat-line i18n="progress item">Lizenzgebühr bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenz eingespielt</p>
+                                        <p mat-line i18n="progress item">Lizenz eingespielt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>play_circle_outline</mat-icon>
-                                        <p mat-line>Getränk kann zubereitet werden</p>
+                                        <p mat-line i18n="progress item">Getränk kann zubereitet werden</p>
                                     </mat-list-item>
                                 </mat-list>
                             </div>
                         </mat-card-content>
                         <mat-card-actions *ngIf="!hasStartButton">
-                            <button mat-raised-button color="primary" [disabled]="pcMode !='idle' && pcMode != 'error'"
-                                    (click)="ProductionStart()">Getränk zubereiten
-                            </button>
+                            <button mat-raised-button color="primary" [disabled]="pcMode !='idle' && pcMode != 'error'" (click)="ProductionStart()" i18n="button">Getränk zubereiten</button>
                         </mat-card-actions>
-                        <mat-card-actions *ngIf="hasStartButton">
-                            Jetzt kann die Starttaste betätigt werden
-                        </mat-card-actions>
+                        <mat-card-actions *ngIf="hasStartButton" i18n="button">Jetzt kann die Starttaste betätigt werden</mat-card-actions>
                     </mat-card>
                 </div>
             </div>
@@ -278,23 +272,23 @@
                                 <mat-list class="orderStepsList">
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzkauf getätigt</p>
+                                        <p mat-line i18n="progress item">Lizenzkauf getätigt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Getränk bezahlt</p>
+                                        <p mat-line i18n="progress item">Getränk bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzgebühr bezahlt</p>
+                                        <p mat-line i18n="progress item">Lizenzgebühr bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenz eingespielt</p>
+                                        <p mat-line i18n="progress item">Lizenz eingespielt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>play_arrow</mat-icon>
-                                        <p mat-line>Getränk wird zubereitet</p>
+                                        <p mat-line i18n="progress item">Getränk wird zubereitet</p>
                                     </mat-list-item>
                                 </mat-list>
                             </div>
@@ -310,23 +304,23 @@
                                 <mat-list class="orderStepsList">
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzkauf getätigt</p>
+                                        <p mat-line i18n="progress item">Lizenzkauf getätigt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Getränk bezahlt</p>
+                                        <p mat-line i18n="progress item">Getränk bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzgebühr bezahlt</p>
+                                        <p mat-line i18n="progress item">Lizenzgebühr bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenz eingespielt</p>
+                                        <p mat-line i18n="progress item">Lizenz eingespielt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>play_arrow</mat-icon>
-                                        <p mat-line>Getränk wird zubereitet</p>
+                                        <p mat-line i18n="progress item">Getränk wird zubereitet</p>
                                     </mat-list-item>
                                 </mat-list>
                             </div>
@@ -345,30 +339,30 @@
                                 <mat-list class="orderStepsList">
                                     <mat-list-item>
                                         <mat-icon mat-list-icon="">done</mat-icon>
-                                        <p mat-line>Lizenzkauf getätigt</p>
+                                        <p mat-line i18n="progress item">Lizenzkauf getätigt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Getränk bezahlt</p>
+                                        <p mat-line i18n="progress item">Getränk bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenzgebühr bezahlt</p>
+                                        <p mat-line i18n="progress item">Lizenzgebühr bezahlt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Lizenz eingespielt</p>
+                                        <p mat-line i18n="progress item">Lizenz eingespielt</p>
                                     </mat-list-item>
                                     <mat-list-item>
                                         <mat-icon mat-list-icon>done</mat-icon>
-                                        <p mat-line>Getränk zubereitet</p>
+                                        <p mat-line i18n="progress item">Getränk zubereitet</p>
                                     </mat-list-item>
 
                                 </mat-list>
                             </div>
                         </mat-card-content>
                         <mat-card-actions>
-                            <button mat-raised-button color="primary" (click)="Home()">Neues Getränk bestellen</button>
+                            <button mat-raised-button color="primary" (click)="Home()" i18n="button">Neues Getränk bestellen</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -382,10 +376,10 @@
                             <mat-grid-tile>
                             </mat-grid-tile>
                             <mat-grid-tile colspan="4">
-                                <div class="step production">Leider gab es einen Fehler</div>
+                                <div class="step production" i18n="error">Leider gab es einen Fehler</div>
                             </mat-grid-tile>
                         </mat-grid-list>
-                        <p>Bitte melden Sie sich beim Standpersonal.</p>
+                        <p i18n="error">Bitte melden Sie sich beim Standpersonal.</p>
                         <!--</mat-card-content>-->
                     </mat-card>
                 </div>

@@ -21,14 +21,14 @@
 
                         <div fxFlex="*">{{user.firstname}} {{user.lastname}}</div>
                     </div>
-                    <p>Lizenzgebühr: {{drink.licensefee/100000}} IUNO</p>
-                    <p>Zubereitungsgebühr: {{(drink.retailPrice-drink.licensefee)/100000}} IUNO</p>
-                    <p>Gesamtpreis: {{drink.retailPrice/100000}} IUNO</p>
+                    <p><ng-container i18n>Lizenzgebühr:</ng-container> {{drink.licensefee/100000}} IUNO</p>
+                    <p><ng-container i18n>Zubereitungsgebühr:</ng-container> {{(drink.retailPrice-drink.licensefee)/100000}} IUNO</p>
+                    <p><ng-container i18n>Gesamtpreis:</ng-container> {{drink.retailPrice/100000}} IUNO</p>
                 </mat-card>
             </div>
             <div fxFlex="auto">
                 <mat-card>
-                    <h4>Zutaten:</h4>
+                    <h4 i18n="title">Zutaten:</h4>
                     <div fxLayout="row true" class="component-list">
                         <div *ngFor="let comp of drink.components" class="component">{{comp.name}}</div>
                     </div>
@@ -38,7 +38,7 @@
 
             <div fxFlex="50px" fxLayout="row" fxLayoutAlign="center">
 
-                <button mat-raised-button color="accent" (click)="order()">Kostenpflichtig bestellen</button>
+                <button mat-raised-button color="accent" (click)="order()" i18n="button">Kostenpflichtig bestellen</button>
             </div>
         </div>
 
