@@ -12,6 +12,7 @@ import {AdminAmountDialogComponent} from '../admin-amount-dialog/admin-amount-di
 import {ProductionSocketService} from '../../services/production-socket.service';
 import {Subscription} from 'rxjs/Subscription';
 import {DataSource} from '@angular/cdk/collections';
+import { ComponentService } from 'tdm-common';
 
 @Component({
     moduleId: module.id,
@@ -73,6 +74,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
 
     constructor(private adminService: AdminService,
+        private componentService: ComponentService,
                 private productionSocketService: ProductionSocketService,
                 private dialog: MatDialog) {
     }
@@ -129,6 +131,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
             // this.lastAfterClosedResult = result;
             if (result) {
                 this.adminService.setPump(pump.nr, result).subscribe(() => this.loadContent());
+                this.componentService.updateComponents()
             }
             this.componentDialogRef = null;
         });

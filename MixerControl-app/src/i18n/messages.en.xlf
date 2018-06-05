@@ -114,7 +114,7 @@
         <source>Menge</source>
         
         <note priority="1" from="description">table header</note>
-      <target state="translated">Amount</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">79</context></context-group></trans-unit><trans-unit id="a01f9c1b44e2b023eb2b83a56184cfb2d8c03dbc" datatype="html">
+      <target state="translated">Amount</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">79</context></context-group></trans-unit><trans-unit id="a01f9c1b44e2b023eb2b83a56184cfb2d8c03dbc" datatype="html">
         <source>Artikel</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/order/order.component.ts</context>
@@ -375,7 +375,7 @@
         <source>Zutat</source>
         
         <note priority="1" from="description">table header</note>
-      <target state="translated">Component</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="b50728e7d5c49a002dc87528cf335ef3220248e6" datatype="html">
+      <target state="translated">Component</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="b50728e7d5c49a002dc87528cf335ef3220248e6" datatype="html">
         <source>Zutat ändern</source>
         
         <note priority="1" from="description">button</note>
@@ -478,6 +478,24 @@
           <context context-type="linenumber">31</context>
         </context-group>
         <note priority="1" from="description">button</note>
-      <target state="translated">Off</target></trans-unit></body>
+      <target state="translated">Off</target></trans-unit><trans-unit id="6f9cbb28bdc23b92465369626d0b78e5e19f77b0" datatype="html">
+        <source>Zutat per&lt;br>Drag &amp; Drop&lt;br>hinzufügen.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      <target state="translated">Add ingredient by&lt;br>drag &amp; drop.</target></trans-unit><trans-unit id="09cade1c8e483a96553bda8009dbfc391f43f7be" datatype="html">
+        <source>Hier tippen um Zutat&lt;br>hinzuzufügen.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      <target state="translated">Tap here to&lt;br>add ingredient.</target></trans-unit><trans-unit id="49d7e39875153c37e6197dad6c97a71d600edc1f" datatype="html">
+        <source>Es wurden noch keine Zutaten&lt;br>hinzugefügt.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      <target state="translated">No ingredients have been&lt;br>added yet.</target></trans-unit></body>
   </file>
 </xliff>

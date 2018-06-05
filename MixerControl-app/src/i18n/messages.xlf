@@ -119,6 +119,10 @@
           <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
           <context context-type="linenumber">10</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
         <note priority="1" from="description">table header</note>
       </trans-unit>
       <trans-unit id="77134c293828bbe6d663d26f75252663f46c7ca4" datatype="html">
@@ -126,6 +130,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
           <context context-type="linenumber">14</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">12</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/order/order.component.ts</context>
@@ -227,6 +235,27 @@
           <context context-type="linenumber">11</context>
         </context-group>
         <note priority="1" from="description">table header</note>
+      </trans-unit>
+      <trans-unit id="6f9cbb28bdc23b92465369626d0b78e5e19f77b0" datatype="html">
+        <source>Zutat per&lt;br>Drag &amp; Drop&lt;br>hinzufügen.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="09cade1c8e483a96553bda8009dbfc391f43f7be" datatype="html">
+        <source>Hier tippen um Zutat&lt;br>hinzuzufügen.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="49d7e39875153c37e6197dad6c97a71d600edc1f" datatype="html">
+        <source>Es wurden noch keine Zutaten&lt;br>hinzugefügt.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="5c559b755be8bc8fe0c0b8be9d84e29717883ba9" datatype="html">
         <source>Zustand der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{pqState}}"/></source>
