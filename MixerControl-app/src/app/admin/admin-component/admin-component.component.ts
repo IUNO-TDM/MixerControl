@@ -7,10 +7,11 @@ import * as models from '../../models/models';
 import {AdminService} from '../../services/admin.service';
 import {Component as ModelComponent} from '../../models/Component';
 import {AdminComponentDialogComponent} from '../admin-component-dialog/admin-component-dialog.component';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {AdminAmountDialogComponent} from '../admin-amount-dialog/admin-amount-dialog.component';
 import {ProductionSocketService} from '../../services/production-socket.service';
 import {Subscription} from 'rxjs/Subscription';
+import {DataSource} from '@angular/cdk/collections';
 
 @Component({
     moduleId: module.id,
@@ -25,7 +26,8 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
     amountWarningConnection: Subscription;
     standardAmounts = {};
     warnings = {};
-
+    displayedColumns = ['id', 'component', 'amount', 'buttons'];
+    dataSource = new MatTableDataSource(this.pumps)
     selectedValue: ModelComponent[] = null;
 
 
@@ -90,7 +92,10 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
     }
 
     loadContent() {
-        this.adminService.getPumps().subscribe(pumps => this.pumps = pumps);
+        this.adminService.getPumps().subscribe(pumps => {
+            this.pumps = pumps
+            this.dataSource = new MatTableDataSource(this.pumps)
+        });
         this.adminService.getStandardAmounts().subscribe(amounts => this.standardAmounts = amounts);
 
     }

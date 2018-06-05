@@ -1,0 +1,8 @@
+.admin-content {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+::ng-deep .mat-row:hover {
+    background-color: #F3F3FF;
+  }

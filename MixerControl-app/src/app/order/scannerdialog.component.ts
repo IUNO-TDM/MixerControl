@@ -9,31 +9,7 @@ import {OrderSnackBarComponent} from "./order-snack-bar/order-snack-bar.componen
 
 @Component({
     selector: 'scan-dialog',
-    template: `
-
-    <h2 mat-dialog-title>Den Coupon vor die Kamera halten</h2>
-
-    <mat-dialog-content>
-      <div style="width:640px; height:480px; ">
-        <qr-scanner
-          [debug]="false"
-          [canvasWidth]="640"
-          [canvasHeight]="480"
-          [stopAfterScan]="true"
-          [updateTime]="500"></qr-scanner>
-      </div>
-
-    </mat-dialog-content>
-
-    <mat-dialog-actions>
-      <button
-        mat-raised-button
-        color="primary"
-        mat-dialog-close>schließen
-      </button>
-
-    </mat-dialog-actions>
-  `,
+    templateUrl: './scannerdialog.component.html',
     providers: [OrderService, DrinkService]
 })
 export class ScanDialogComponent implements OnInit, AfterViewInit, OnDestroy {

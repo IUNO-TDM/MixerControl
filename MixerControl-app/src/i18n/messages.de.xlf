@@ -112,12 +112,9 @@
         <note priority="1" from="description">table header</note>
       <target state="final">Pos</target></trans-unit><trans-unit id="77134c293828bbe6d663d26f75252663f46c7ca4" datatype="html">
         <source>Menge</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/order/order.component.ts</context>
-          <context context-type="linenumber">79</context>
-        </context-group>
+        
         <note priority="1" from="description">table header</note>
-      <target state="final">Menge</target></trans-unit><trans-unit id="a01f9c1b44e2b023eb2b83a56184cfb2d8c03dbc" datatype="html">
+      <target state="final">Menge</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">79</context></context-group></trans-unit><trans-unit id="a01f9c1b44e2b023eb2b83a56184cfb2d8c03dbc" datatype="html">
         <source>Artikel</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/order/order.component.ts</context>
@@ -262,6 +259,198 @@
           <context context-type="linenumber">382</context>
         </context-group>
         <note priority="1" from="description">error</note>
-      <target state="final">Bitte melden Sie sich beim Standpersonal.</target></trans-unit></body>
+      <target state="final">Bitte melden Sie sich beim Standpersonal.</target></trans-unit><trans-unit id="ece90e622b1f599e0d54e3b880ab234e49eee67b" datatype="html">
+        <source>Diesen QR-Code mit einer Bitcoin Wallet App abscannen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/qrdialog.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="final">Diesen QR-Code mit einer Bitcoin Wallet App abscannen</target></trans-unit><trans-unit id="28d2d8903d51e2af2759b1088b4e48e8d8c04290" datatype="html">
+        <source>Achtung. Im Bitcoinwallet ist aktuell für eine schnelle Abarbeitung des
+            Lizenzkaufs über diese Methode nicht genug Guthaben vorhanden. Es funktioniert - kann aber bis zu 20 Minuten
+            dauern!<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
+            Die Empfehlung ist, zuerst eine Zahlung per Coupon durchzuführen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/qrdialog.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">warning</note>
+      <target state="final">Achtung. Im Bitcoinwallet ist aktuell für eine schnelle Abarbeitung des
+            Lizenzkaufs über diese Methode nicht genug Guthaben vorhanden. Es funktioniert - kann aber bis zu 20 Minuten
+            dauern!<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
+            Die Empfehlung ist, zuerst eine Zahlung per Coupon durchzuführen</target></trans-unit><trans-unit id="1ead0ad1063d0c9e005fe56c9529aef4c1ef9d21" datatype="html">
+        <source>Schließen</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="final">Schließen</target><context-group purpose="location"><context context-type="sourcefile">app/order/qrdialog.component.ts</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/scannerdialog.component.ts</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="3c0361681f19b53a6c8cde3cd3460b67872b5529" datatype="html">
+        <source>Den Coupon vor die Kamera halten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/scannerdialog.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="final">Den Coupon vor die Kamera halten</target></trans-unit><trans-unit id="d473e0f684a60db45d6f31e993f693f74290e056" datatype="html">
+        <source>Service</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="final">Service</target></trans-unit><trans-unit id="c0d4baf68f21ee9c4246d66f0ac828c5b73ae745" datatype="html">
+        <source>Wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="final">Wallet</target></trans-unit><trans-unit id="61193bb866be74400072ada288c340c489779a12" datatype="html">
+        <source>Aufträge</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="final">Aufträge</target></trans-unit><trans-unit id="65e1acdbb44b5a58f0daca61c584c5fe0c0a2c95" datatype="html">
+        <source>Produktion</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="final">Produktion</target></trans-unit><trans-unit id="f26eb46945cbe6a65dd22c19a8ee9c43d3b7f435" datatype="html">
+        <source>Zutaten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="final">Zutaten</target></trans-unit><trans-unit id="e06aa9c84c6a631540e59e35057f1db24373fa43" datatype="html">
+        <source>Rezept</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="final">Rezept</target></trans-unit><trans-unit id="e63427fa57eca204900891bbff011d25c80506c5" datatype="html">
+        <source>Auftragenummer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">table header</note>
+      <target state="final">Auftragenummer</target></trans-unit><trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
+        <source>Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <note priority="1" from="description">table header</note>
+      <target state="final">Status</target></trans-unit><trans-unit id="715262ef5fba97de569a6f20218f076ab128118a" datatype="html">
+        <source>Getränke-ID</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="final">Getränke-ID</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">12</context></context-group></trans-unit><trans-unit id="e5a795950a259aa059579d6efc2d2a101f47919b" datatype="html">
+        <source>Getränkename</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="final">Getränkename</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">16</context></context-group></trans-unit><trans-unit id="9a394a4ca5a1bb659eb4ce330f5cd97fb5c52eba" datatype="html">
+        <source>Produktion anhalten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="final">Produktion anhalten</target></trans-unit><trans-unit id="91bb9b22c2777c055bf97ef891ae1971cf63303f" datatype="html">
+        <source>Produktion fortsetzen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="final">Produktion fortsetzen</target></trans-unit><trans-unit id="7cbd43513813ff4b6b62e6f10ffc425dd24d716f" datatype="html">
+        <source>Produktion starten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="final">Produktion starten</target></trans-unit><trans-unit id="af2375622b10a23bcfaaa85615ca4ae8af868ab4" datatype="html">
+        <source>Auftragsnummer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">table header</note>
+      <target state="final">Auftragsnummer</target></trans-unit><trans-unit id="bdd8e989491bfb1d0ee27998d7d4475d014b8d99" datatype="html">
+        <source>Status der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{state}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      <target state="final">Status der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{state}}"/></target></trans-unit><trans-unit id="6ab7f976effdb96ecb47d38fa760528605f4d98f" datatype="html">
+        <source>Pumpe</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">table header</note>
+      <target state="final">Pumpe</target></trans-unit><trans-unit id="a0e4087927b592497bd24dc5f123a37830a55533" datatype="html">
+        <source>Zutat</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <note priority="1" from="description">table header</note>
+      <target state="final">Zutat</target></trans-unit><trans-unit id="b50728e7d5c49a002dc87528cf335ef3220248e6" datatype="html">
+        <source>Zutat ändern</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="final">Zutat ändern</target></trans-unit><trans-unit id="30773b3402b3fe034eaae2caa3ca263ddc23e5dc" datatype="html">
+        <source>Flasche getauscht</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="final">Flasche getauscht</target></trans-unit><trans-unit id="8368d6c52c007b7f0762a497cd95e2d25736e197" datatype="html">
+        <source>Flasche tauschen für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="final">Flasche tauschen für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/></target></trans-unit><trans-unit id="262644bbd19569739a9f713d693ccbe0ea81d92f" datatype="html">
+        <source>Eine frische Flasche wurde eingesetzt</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">checkbox</note>
+      <target state="final">Eine frische Flasche wurde eingesetzt</target></trans-unit><trans-unit id="d80712e1bd495a3ac7116fe528f84ad3dbbb7f6f" datatype="html">
+        <source>Bisherige Flaschengröße: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      <target state="final">Bisherige Flaschengröße: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/></target></trans-unit><trans-unit id="e7ce938fb391974423000e90a423c35a24715f7a" datatype="html">
+        <source>Bestätigen</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="final">Bestätigen</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context><context context-type="linenumber">18</context></context-group></trans-unit><trans-unit id="1b24932d0f2269e4b41d0f936fdb5de1b94da401" datatype="html">
+        <source>Abbrechen</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="final">Abbrechen</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context><context context-type="linenumber">19</context></context-group></trans-unit><trans-unit id="f813ff46e075ae096de1b796855975b8d1f49aab" datatype="html">
+        <source>Komponente für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/> ändern</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="final">Komponente für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/> ändern</target></trans-unit></body>
   </file>
 </xliff>
