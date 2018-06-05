@@ -1,24 +1,27 @@
-<mat-table class="ordersTable" #table [dataSource]="dataSource">
-    <ng-container matColumnDef="OrderNr">
-        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Auftragenummer</mat-header-cell>
-        <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"><a [routerLink]="['/orders/', row.OrderNr]">{{row.OrderNr}}</a>
-        </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="DrinkId">
-        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Getränke-ID</mat-header-cell>
-        <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'">{{row.DrinkId}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="DrinkName">
-        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Getränkename</mat-header-cell>
-        <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkName}}</mat-cell>
-    </ng-container>
+<mat-card class="admin-card">
+    <mat-card-content>
+        <mat-table class="ordersTable" #table [dataSource]="dataSource">
+            <ng-container matColumnDef="OrderNr">
+                <mat-header-cell fxFlex="10" *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Auftragenummer</mat-header-cell>
+                <mat-cell fxFlex="10" *matCellDef="let row" [ngClass]="'customWidthClass'">
+                    <a [routerLink]="['/orders/', row.OrderNr]">{{row.OrderNr}}</a>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="DrinkId">
+                <mat-header-cell fxFlex="35" *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Getränke-ID</mat-header-cell>
+                <mat-cell fxFlex="35" *matCellDef="let row" [ngClass]="'customWidthClass'">{{row.DrinkId}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="DrinkName">
+                <mat-header-cell fxFlex="40" *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Getränkename</mat-header-cell>
+                <mat-cell fxFlex="40" *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkName}}</mat-cell>
+            </ng-container>
 
-    <ng-container matColumnDef="State">
-        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Status</mat-header-cell>
-        <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.State}}</mat-cell>
-    </ng-container>
-
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+            <ng-container matColumnDef="State">
+                <mat-header-cell fxFlex="15" *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Status</mat-header-cell>
+                <mat-cell fxFlex="15" *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.State}}</mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </mat-card-content>
+</mat-card>

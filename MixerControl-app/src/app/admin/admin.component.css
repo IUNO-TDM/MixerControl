@@ -1,6 +1,10 @@
-.admin-content {
+::ng-deep .admin-content {
   max-width: 1024px;
   margin: 0 auto;
+}
+
+::ng-deep .admin-card {
+  margin: 1em;
 }
 
 ::ng-deep .mat-row:hover {

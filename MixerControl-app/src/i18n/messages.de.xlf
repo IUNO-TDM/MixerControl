@@ -114,7 +114,7 @@
         <source>Menge</source>
         
         <note priority="1" from="description">table header</note>
-      <target state="final">Menge</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">79</context></context-group></trans-unit><trans-unit id="a01f9c1b44e2b023eb2b83a56184cfb2d8c03dbc" datatype="html">
+      <target state="final">Menge</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">79</context></context-group></trans-unit><trans-unit id="a01f9c1b44e2b023eb2b83a56184cfb2d8c03dbc" datatype="html">
         <source>Artikel</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/order/order.component.ts</context>
@@ -334,89 +334,56 @@
         <note priority="1" from="description">tab item</note>
       <target state="final">Rezept</target></trans-unit><trans-unit id="e63427fa57eca204900891bbff011d25c80506c5" datatype="html">
         <source>Auftragenummer</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context>
-          <context context-type="linenumber">3</context>
-        </context-group>
+        
         <note priority="1" from="description">table header</note>
-      <target state="final">Auftragenummer</target></trans-unit><trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
+      <target state="final">Auftragenummer</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
         <source>Status</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context>
-          <context context-type="linenumber">17</context>
-        </context-group>
+        
         <note priority="1" from="description">table header</note>
-      <target state="final">Status</target></trans-unit><trans-unit id="715262ef5fba97de569a6f20218f076ab128118a" datatype="html">
+      <target state="final">Status</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="715262ef5fba97de569a6f20218f076ab128118a" datatype="html">
         <source>Getränke-ID</source>
         
         <note priority="1" from="description">table header</note>
-      <target state="final">Getränke-ID</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">12</context></context-group></trans-unit><trans-unit id="e5a795950a259aa059579d6efc2d2a101f47919b" datatype="html">
+      <target state="final">Getränke-ID</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">15</context></context-group></trans-unit><trans-unit id="e5a795950a259aa059579d6efc2d2a101f47919b" datatype="html">
         <source>Getränkename</source>
         
         <note priority="1" from="description">table header</note>
-      <target state="final">Getränkename</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">16</context></context-group></trans-unit><trans-unit id="9a394a4ca5a1bb659eb4ce330f5cd97fb5c52eba" datatype="html">
+      <target state="final">Getränkename</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">19</context></context-group></trans-unit><trans-unit id="9a394a4ca5a1bb659eb4ce330f5cd97fb5c52eba" datatype="html">
         <source>Produktion anhalten</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
-          <context context-type="linenumber">2</context>
-        </context-group>
+        
         <note priority="1" from="description">button</note>
-      <target state="final">Produktion anhalten</target></trans-unit><trans-unit id="91bb9b22c2777c055bf97ef891ae1971cf63303f" datatype="html">
+      <target state="final">Produktion anhalten</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="91bb9b22c2777c055bf97ef891ae1971cf63303f" datatype="html">
         <source>Produktion fortsetzen</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
-          <context context-type="linenumber">3</context>
-        </context-group>
+        
         <note priority="1" from="description">button</note>
-      <target state="final">Produktion fortsetzen</target></trans-unit><trans-unit id="7cbd43513813ff4b6b62e6f10ffc425dd24d716f" datatype="html">
+      <target state="final">Produktion fortsetzen</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">6</context></context-group></trans-unit><trans-unit id="7cbd43513813ff4b6b62e6f10ffc425dd24d716f" datatype="html">
         <source>Produktion starten</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
+        
         <note priority="1" from="description">button</note>
-      <target state="final">Produktion starten</target></trans-unit><trans-unit id="af2375622b10a23bcfaaa85615ca4ae8af868ab4" datatype="html">
+      <target state="final">Produktion starten</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">7</context></context-group></trans-unit><trans-unit id="af2375622b10a23bcfaaa85615ca4ae8af868ab4" datatype="html">
         <source>Auftragsnummer</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
-          <context context-type="linenumber">8</context>
-        </context-group>
+        
         <note priority="1" from="description">table header</note>
-      <target state="final">Auftragsnummer</target></trans-unit><trans-unit id="bdd8e989491bfb1d0ee27998d7d4475d014b8d99" datatype="html">
+      <target state="final">Auftragsnummer</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="bdd8e989491bfb1d0ee27998d7d4475d014b8d99" datatype="html">
         <source>Status der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{state}}"/></source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      <target state="final">Status der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{state}}"/></target></trans-unit><trans-unit id="6ab7f976effdb96ecb47d38fa760528605f4d98f" datatype="html">
+        
+      <target state="final">Status der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{state}}"/></target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">3</context></context-group></trans-unit><trans-unit id="6ab7f976effdb96ecb47d38fa760528605f4d98f" datatype="html">
         <source>Pumpe</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
-          <context context-type="linenumber">3</context>
-        </context-group>
+        
         <note priority="1" from="description">table header</note>
-      <target state="final">Pumpe</target></trans-unit><trans-unit id="a0e4087927b592497bd24dc5f123a37830a55533" datatype="html">
+      <target state="final">Pumpe</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="a0e4087927b592497bd24dc5f123a37830a55533" datatype="html">
         <source>Zutat</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
-          <context context-type="linenumber">7</context>
-        </context-group>
+        
         <note priority="1" from="description">table header</note>
-      <target state="final">Zutat</target></trans-unit><trans-unit id="b50728e7d5c49a002dc87528cf335ef3220248e6" datatype="html">
+      <target state="final">Zutat</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="b50728e7d5c49a002dc87528cf335ef3220248e6" datatype="html">
         <source>Zutat ändern</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
+        
         <note priority="1" from="description">button</note>
-      <target state="final">Zutat ändern</target></trans-unit><trans-unit id="30773b3402b3fe034eaae2caa3ca263ddc23e5dc" datatype="html">
+      <target state="final">Zutat ändern</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">26</context></context-group></trans-unit><trans-unit id="30773b3402b3fe034eaae2caa3ca263ddc23e5dc" datatype="html">
         <source>Flasche getauscht</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context>
-          <context context-type="linenumber">24</context>
-        </context-group>
+        
         <note priority="1" from="description">button</note>
-      <target state="final">Flasche getauscht</target></trans-unit><trans-unit id="8368d6c52c007b7f0762a497cd95e2d25736e197" datatype="html">
+      <target state="final">Flasche getauscht</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">27</context></context-group></trans-unit><trans-unit id="8368d6c52c007b7f0762a497cd95e2d25736e197" datatype="html">
         <source>Flasche tauschen für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context>
@@ -440,17 +407,77 @@
         <source>Bestätigen</source>
         
         <note priority="1" from="description">button</note>
-      <target state="final">Bestätigen</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context><context context-type="linenumber">18</context></context-group></trans-unit><trans-unit id="1b24932d0f2269e4b41d0f936fdb5de1b94da401" datatype="html">
+      <target state="final">Bestätigen</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context><context context-type="linenumber">19</context></context-group></trans-unit><trans-unit id="1b24932d0f2269e4b41d0f936fdb5de1b94da401" datatype="html">
         <source>Abbrechen</source>
         
         <note priority="1" from="description">button</note>
-      <target state="final">Abbrechen</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context><context context-type="linenumber">19</context></context-group></trans-unit><trans-unit id="f813ff46e075ae096de1b796855975b8d1f49aab" datatype="html">
+      <target state="final">Abbrechen</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context><context context-type="linenumber">18</context></context-group></trans-unit><trans-unit id="f813ff46e075ae096de1b796855975b8d1f49aab" datatype="html">
         <source>Komponente für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/> ändern</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="description">title</note>
-      <target state="final">Komponente für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/> ändern</target></trans-unit></body>
+      <target state="final">Komponente für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/> ändern</target></trans-unit><trans-unit id="5c559b755be8bc8fe0c0b8be9d84e29717883ba9" datatype="html">
+        <source>Zustand der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{pqState}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      <target state="final">Zustand der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{pqState}}"/></target></trans-unit><trans-unit id="a5eb59e1ae5c3e40aae9d05ce09955d66371459b" datatype="html">
+        <source>PumpControl Betriebszustand: <x id="INTERPOLATION" equiv-text="{{pcServiceState}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      <target state="final">PumpControl Betriebszustand: <x id="INTERPOLATION" equiv-text="{{pcServiceState}}"/></target></trans-unit><trans-unit id="1bef3283a5acd1a786ea38d47edd4ed63fcc2bfa" datatype="html">
+        <source>PumpControl-Modus: <x id="INTERPOLATION" equiv-text="{{pcMode}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      <target state="final">PumpControl-Modus: <x id="INTERPOLATION" equiv-text="{{pcMode}}"/></target></trans-unit><trans-unit id="86ccc431d955a6a6479d1a04457148adc1807bdd" datatype="html">
+        <source>Nutzungsdaten an den Marktplatz senden</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      <target state="final">Nutzungsdaten an den Marktplatz senden</target></trans-unit><trans-unit id="96b3d6f1e01e6d5d0d6f25b0d9e13fbefdc39a57" datatype="html">
+        <source>Servicemodus aktivieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="final">Servicemodus aktivieren</target></trans-unit><trans-unit id="2c9efc411ae3b3ae69d3846f20c7848dc71337e7" datatype="html">
+        <source>Servicemodus deaktivieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="final">Servicemodus deaktivieren</target></trans-unit><trans-unit id="8c0d3e308b86963c1cf5043097e31a913c51f885" datatype="html">
+        <source>An</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="final">An</target></trans-unit><trans-unit id="2b7896245c8d45d53065936ebab6ce4f867bcca1" datatype="html">
+        <source>Aus</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="final">Aus</target></trans-unit></body>
   </file>
 </xliff>

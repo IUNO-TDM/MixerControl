@@ -1,29 +1,34 @@
-<mat-table class="pumpsTable" #table [dataSource]="dataSource">
-    <ng-container matColumnDef="id">
-        <mat-header-cell fxFlex="10" *matHeaderCellDef i18n="table header">Pumpe</mat-header-cell>
-        <mat-cell fxFlex="10" *matCellDef="let pump"><mat-icon mat-list-icon>battery_full</mat-icon> {{pump.nr}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="component">
-        <mat-header-cell fxFlex="30" *matHeaderCellDef i18n="table header">Zutat</mat-header-cell>
-        <mat-cell fxFlex="30" *matCellDef="let pump">{{pump.component.name}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="amount">
-        <mat-header-cell fxFlex="20" *matHeaderCellDef i18n="table header">Menge</mat-header-cell>
-        <mat-cell fxFlex="20" *matCellDef="let pump">
-            <p *ngIf="standardAmounts && standardAmounts[pump.nr]">{{standardAmounts[pump.nr]}} ml</p>
-            <div *ngIf="warnings[pump.nr] && warnings[pump.nr].amountWarningLimit">
-                {{warnings[pump.nr].amountWarningLimit}} ml
-                <mat-icon mat-list-icon>warning</mat-icon>
-            </div>
-        </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="buttons">
-        <mat-header-cell fxFlex *matHeaderCellDef></mat-header-cell>
-        <mat-cell fxFlex *matCellDef="let pump">
-                <button mat-button color="primary" (click)="ChangeComponent(pump)" i18n="button">Zutat ändern</button>
-                <button mat-button color="primary" (click)="ResetAmount(pump)" i18n="button">Flasche getauscht</button>
-        </mat-cell>
-    </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+<mat-card class="admin-card">
+    <mat-card-content>
+        <mat-table class="pumpsTable" #table [dataSource]="dataSource">
+            <ng-container matColumnDef="id">
+                <mat-header-cell fxFlex="10" *matHeaderCellDef i18n="table header">Pumpe</mat-header-cell>
+                <mat-cell fxFlex="10" *matCellDef="let pump">
+                    <mat-icon mat-list-icon>battery_full</mat-icon> {{pump.nr}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="component">
+                <mat-header-cell fxFlex="30" *matHeaderCellDef i18n="table header">Zutat</mat-header-cell>
+                <mat-cell fxFlex="30" *matCellDef="let pump">{{pump.component.name}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+                <mat-header-cell fxFlex="20" *matHeaderCellDef i18n="table header">Menge</mat-header-cell>
+                <mat-cell fxFlex="20" *matCellDef="let pump">
+                    <p *ngIf="standardAmounts && standardAmounts[pump.nr]">{{standardAmounts[pump.nr]}} ml</p>
+                    <div *ngIf="warnings[pump.nr] && warnings[pump.nr].amountWarningLimit">
+                        {{warnings[pump.nr].amountWarningLimit}} ml
+                        <mat-icon mat-list-icon>warning</mat-icon>
+                    </div>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="buttons">
+                <mat-header-cell fxFlex *matHeaderCellDef></mat-header-cell>
+                <mat-cell fxFlex *matCellDef="let pump">
+                    <button mat-button color="primary" (click)="ChangeComponent(pump)" i18n="button">Zutat ändern</button>
+                    <button mat-button color="primary" (click)="ResetAmount(pump)" i18n="button">Flasche getauscht</button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </mat-card-content>
+</mat-card>

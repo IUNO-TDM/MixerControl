@@ -1,22 +1,27 @@
-<p i18n>Status der Produktionswarteschlange: {{state}}</p>
-<button mat-raised-button *ngIf="state == 'waitingOrder' || state == 'waitingStart'" (click)="PauseProduction()" i18n="button">Produktion anhalten</button>
-<button mat-raised-button *ngIf="state == 'productionPaused'" (click)="ResumeProduction()" i18n="button">Produktion fortsetzen</button>
-<button mat-raised-button *ngIf="state == 'waitingStart'" (click)="StartProcessing()" i18n="button">Produktion starten</button>
+<mat-card class="admin-card">
+    <mat-card-content>
+        <p i18n>Status der Produktionswarteschlange: {{state}}</p>
+        <button mat-raised-button color="primary" *ngIf="state == 'waitingOrder' || state == 'waitingStart'" (click)="PauseProduction()"
+            i18n="button">Produktion anhalten</button>
+        <button mat-raised-button color="primary" *ngIf="state == 'productionPaused'" (click)="ResumeProduction()" i18n="button">Produktion fortsetzen</button>
+        <button mat-raised-button color="primary" *ngIf="state == 'waitingStart'" (click)="StartProcessing()" i18n="button">Produktion starten</button>
 
-<mat-table class="productionTable" #table [dataSource]="dataSource">
-    <ng-container matColumnDef="OrderNr">
-        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Auftragsnummer</mat-header-cell>
-        <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.OrderNr}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="DrinkId">
-        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Getränke-ID</mat-header-cell>
-        <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkId}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="DrinkName">
-        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Getränkename</mat-header-cell>
-        <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkName}}</mat-cell>
-    </ng-container>
+        <mat-table class="productionTable" #table [dataSource]="dataSource">
+            <ng-container matColumnDef="OrderNr">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Auftragsnummer</mat-header-cell>
+                <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.OrderNr}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="DrinkId">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Getränke-ID</mat-header-cell>
+                <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkId}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="DrinkName">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Getränkename</mat-header-cell>
+                <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.DrinkName}}</mat-cell>
+            </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </mat-card-content>
+</mat-card>
