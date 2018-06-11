@@ -1,7 +1,5 @@
 <div *ngIf="balance && balance.spendable && balance.estimated">
-    Guthaben im Wallet der Maschine:<br>
-    {{balance.spendable / 100000}} IUNO kann die Maschine nutzen<br>
-    {{balance.estimated / 100000}} IUNO sind inklusive noch unbestätigter Transaktionen vohanden
-
-
+    <ng-container i18n>Guthaben im Wallet der Maschine:</ng-container><br>
+    <ng-container i18n>{{balance.spendable / 100000}} IUNO kann die Maschine nutzen</ng-container><br>
+    <ng-container i18n>{{balance.estimated / 100000}} IUNO sind inklusive noch unbestätigter Transaktionen vorhanden</ng-container>
 </div>

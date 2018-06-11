@@ -16,12 +16,11 @@
 
         <div class="section" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px">
             <button *ngIf="cocktail.layers.length > 0" (click)="onToggleEdit()" mat-raised-button color="primary" class="mat-elevation-z1">
-                {{beaker.editMode? 'Speichern' : 'Editieren'}}
+                    <ng-container *ngIf="beaker.editMode" i18n="button">Speichern</ng-container>
+                    <ng-container *ngIf="!beaker.editMode" i18n="button">Editieren</ng-container>
             </button>
             <button *ngIf="!beaker.editMode" (click)="onProduce()" [disabled]="pcMode !='idle' && pcMode != 'error'" mat-raised-button
-                color="primary" class="mat-elevation-z1">
-                Produzieren
-            </button>
+                color="primary" class="mat-elevation-z1" i18n="button">Produzieren</button>
         </div>
     </mat-card-content>
 </mat-card>

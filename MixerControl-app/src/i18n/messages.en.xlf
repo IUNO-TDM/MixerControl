@@ -496,6 +496,45 @@
           <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
           <context context-type="linenumber">12</context>
         </context-group>
-      <target state="translated">No ingredients have been&lt;br>added yet.</target></trans-unit></body>
+      <target state="translated">No ingredients have been&lt;br>added yet.</target></trans-unit><trans-unit id="05d6def11b80c405276ad18c4fc5183e8cea4f75" datatype="html">
+        <source>Speichern</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Save</target></trans-unit><trans-unit id="cb6d97f17dff028e8202cfdd991dc4488ac15b98" datatype="html">
+        <source>Editieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Edit</target></trans-unit><trans-unit id="699ddfc1f769b79eee8808f908bc8e1524df48ba" datatype="html">
+        <source>Produzieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Produce</target></trans-unit><trans-unit id="6c3391929e528bd931787affca452f1b429c598c" datatype="html">
+        <source>Guthaben im Wallet der Maschine:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-wallet/admin-wallet.component.ts</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      <target state="translated">Credit balance in the wallet of the machine:</target></trans-unit><trans-unit id="ef585936ffc2c693d794a23f7300533011406db9" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{balance.spendable / 100000}}"/> IUNO kann die Maschine nutzen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-wallet/admin-wallet.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      <target state="translated"><x id="INTERPOLATION" equiv-text="{{balance.spendable / 100000}}"/> IUNO can be used by the machine</target></trans-unit><trans-unit id="4f39df2d3b2e3255b920f76eac205bae852e30da" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{balance.estimated / 100000}}"/> IUNO sind inklusive noch unbestätigter Transaktionen vorhanden</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-wallet/admin-wallet.component.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      <target state="translated"><x id="INTERPOLATION" equiv-text="{{balance.estimated / 100000}}"/> IUNO are available including unconfirmed transactions</target></trans-unit></body>
   </file>
 </xliff>
