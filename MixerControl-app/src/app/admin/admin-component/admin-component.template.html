@@ -8,7 +8,7 @@
             </ng-container>
             <ng-container matColumnDef="component">
                 <mat-header-cell fxFlex="30" *matHeaderCellDef i18n="table header">Zutat</mat-header-cell>
-                <mat-cell fxFlex="30" *matCellDef="let pump">{{pump.component.name}}</mat-cell>
+                <mat-cell fxFlex="30" *matCellDef="let pump">{{getComponentName(pump.componentId)}}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="amount">
                 <mat-header-cell fxFlex="20" *matHeaderCellDef i18n="table header">Menge</mat-header-cell>

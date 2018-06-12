@@ -19,8 +19,17 @@ String.prototype.format = function () {
     });
 };
 
+function getLanguageFromRequest(req) {
+    var language = req.query['lang']
+    if (!language) {
+        language = 'en'
+    }
+    return language
+}
+
 router.get('/', function (req, res, next) {
-    jms_connector.getAllComponents(function (e, components) {
+    const language = getLanguageFromRequest(req)
+    jms_connector.getAllComponents(language, function (e, components) {
         if (e) {
             logger.crit(e);
             next(e);

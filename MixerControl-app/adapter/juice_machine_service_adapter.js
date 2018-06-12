@@ -82,7 +82,7 @@ self.getAllRecipes = function (components, callback) {
 };
 
 
-self.getAllComponents = function (callback) {
+self.getAllComponents = function (language, callback) {
 
     if (typeof(callback) !== 'function') {
 
@@ -97,7 +97,7 @@ self.getAllComponents = function (callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/components',
-        {},
+        {lang: this.language},
         function (err, options) {
             doRequest(options, function (e, r, jsonData) {
                 let components;

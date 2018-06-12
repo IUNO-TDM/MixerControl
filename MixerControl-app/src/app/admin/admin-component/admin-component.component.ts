@@ -12,7 +12,7 @@ import {AdminAmountDialogComponent} from '../admin-amount-dialog/admin-amount-di
 import {ProductionSocketService} from '../../services/production-socket.service';
 import {Subscription} from 'rxjs/Subscription';
 import {DataSource} from '@angular/cdk/collections';
-import { ComponentService } from 'tdm-common';
+import { ComponentService, CocktailComponent } from 'tdm-common';
 
 @Component({
     moduleId: module.id,
@@ -22,7 +22,7 @@ import { ComponentService } from 'tdm-common';
 })
 
 export class AdminComponentComponent implements OnInit, OnDestroy {
-    components: models.Component[];
+    components: CocktailComponent[];
     pumps: models.Pump[];
     amountWarningConnection: Subscription;
     standardAmounts = {};
@@ -48,7 +48,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
         },
         data: {
             pumpNr: '',
-            oldComponent: new ModelComponent
+            componentId: ''
         }
     };
 
@@ -77,6 +77,9 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
         private componentService: ComponentService,
                 private productionSocketService: ProductionSocketService,
                 private dialog: MatDialog) {
+                    componentService.availableComponents.subscribe(components => {
+                        this.components = components
+                    })
     }
 
     ngOnInit(): void {
@@ -124,7 +127,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
     ChangeComponent(pump: models.Pump) {
         this.componentDialogConfig.data.pumpNr = pump.nr;
-        this.componentDialogConfig.data.oldComponent = pump.component;
+        this.componentDialogConfig.data.componentId = pump.componentId;
         this.componentDialogRef = this.dialog.open(AdminComponentDialogComponent, this.componentDialogConfig);
 
         this.componentDialogRef.afterClosed().subscribe((result: string) => {
@@ -135,5 +138,19 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
             }
             this.componentDialogRef = null;
         });
+    }
+
+    getComponentName(id: string) {
+        var componentName="unknown"
+        var component = this.components.find(component => {
+            if (component.id === id) {
+                return true
+            }
+            return false
+        })
+        if (component) {
+            componentName = component.name
+        }
+        return componentName
     }
 }
