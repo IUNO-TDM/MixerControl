@@ -10,7 +10,6 @@ import {CocktailComponent} from "tdm-common/app/model/cocktail";
 })
 export class AdminComponentDialogComponent implements OnInit {
     pumpNr = 1;
-    initialComponentId = '';
     components: CocktailComponent[];
     recommendedComponents: CocktailComponent[];
     visibleComponents: CocktailComponent[] = [];
@@ -23,9 +22,7 @@ export class AdminComponentDialogComponent implements OnInit {
                 private componentService: ComponentService) {
 
         this.pumpNr = data.pumpNr;
-        this.initialComponentId = data.componentId
-        // this.oldComponent = data.oldComponent;
-        this.selectedValue = this.initialComponentId;
+        this.selectedValue = data.componentId;
     }
 
     ngOnInit() {
