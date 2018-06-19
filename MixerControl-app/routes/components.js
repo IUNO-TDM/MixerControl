@@ -19,16 +19,8 @@ String.prototype.format = function () {
     });
 };
 
-function getLanguageFromRequest(req) {
-    var language = req.query['lang']
-    if (!language) {
-        language = 'en'
-    }
-    return language
-}
-
 router.get('/', function (req, res, next) {
-    const language = getLanguageFromRequest(req)
+    var language = req.cookies.language;
     jms_connector.getAllComponents(language, function (e, components) {
         if (e) {
             logger.crit(e);

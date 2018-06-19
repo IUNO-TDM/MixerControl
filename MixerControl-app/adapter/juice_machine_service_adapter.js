@@ -45,7 +45,7 @@ function doRequest(options, callback) {
 }
 
 
-self.getAllRecipes = function (components, callback) {
+self.getAllRecipes = function (language, components, callback) {
 
     if (typeof(callback) !== 'function') {
 
@@ -60,7 +60,10 @@ self.getAllRecipes = function (components, callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/recipes',
-        {'components': components},
+        {
+            'components': components,
+            lang: language
+        },
         function (err, options) {
             if (err) {
                 return callback(err);
@@ -97,7 +100,7 @@ self.getAllComponents = function (language, callback) {
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.HOST,
         CONFIG.HOST_SETTINGS.JUICE_MACHINE_SERVICE.PORT,
         '/components',
-        {lang: this.language},
+        {lang: language},
         function (err, options) {
             doRequest(options, function (e, r, jsonData) {
                 let components;
