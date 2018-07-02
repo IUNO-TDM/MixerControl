@@ -8,7 +8,7 @@ import {Cocktail} from 'tdm-common';
 
 @Injectable()
 export class AdminService {
-    private adminUrl = 'api/admin/';  // URL to web api
+    private adminUrl = '/api/admin/';  // URL to web api
 
     constructor(private http: HttpClient) {
     }

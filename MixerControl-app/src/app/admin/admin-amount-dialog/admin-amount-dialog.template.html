@@ -1,9 +1,9 @@
-<h2 mat-dialog-title> Flasche tauschen für Pumpe {{pumpNr}}</h2>
+<h2 mat-dialog-title i18n="title">Flasche tauschen für Pumpe {{pumpNr}}</h2>
 
 <mat-dialog-content>
 
-    <mat-checkbox [(ngModel)]="reset">Eine frische Flasche wurde eingesetzt</mat-checkbox>
-    <p>bisherige Flaschengröße: {{oldAmount}}</p>
+    <mat-checkbox [(ngModel)]="reset" i18n="checkbox">Eine frische Flasche wurde eingesetzt</mat-checkbox>
+    <p i18n>Bisherige Flaschengröße: {{oldAmount}}</p>
 
 
     <mat-slider min="500" max="2000" step="50" [(ngModel)]="amount" thumbLabel tickInterval="50"></mat-slider>
@@ -14,12 +14,7 @@
 
 <mat-dialog-actions>
 
-    <button
-            mat-raised-button color="primary" (click)="Accept()">bestätigen
-    </button>
-    <button
-            mat-raised-button
-            color="primary" mat-dialog-close="">abbrechen
-    </button>
+    <button mat-raised-button color="primary" mat-dialog-close="" i18n="button">Abbrechen</button>
+    <button mat-raised-button color="primary" (click)="Accept()" i18n="button">Bestätigen</button>
 
 </mat-dialog-actions>

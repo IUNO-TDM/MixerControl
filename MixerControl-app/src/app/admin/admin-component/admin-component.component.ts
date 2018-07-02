@@ -7,10 +7,12 @@ import * as models from '../../models/models';
 import {AdminService} from '../../services/admin.service';
 import {Component as ModelComponent} from '../../models/Component';
 import {AdminComponentDialogComponent} from '../admin-component-dialog/admin-component-dialog.component';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {AdminAmountDialogComponent} from '../admin-amount-dialog/admin-amount-dialog.component';
 import {ProductionSocketService} from '../../services/production-socket.service';
 import {Subscription} from 'rxjs/Subscription';
+import {DataSource} from '@angular/cdk/collections';
+import { ComponentService, CocktailComponent } from 'tdm-common';
 
 @Component({
     moduleId: module.id,
@@ -20,12 +22,13 @@ import {Subscription} from 'rxjs/Subscription';
 })
 
 export class AdminComponentComponent implements OnInit, OnDestroy {
-    components: models.Component[];
+    components: CocktailComponent[];
     pumps: models.Pump[];
     amountWarningConnection: Subscription;
     standardAmounts = {};
     warnings = {};
-
+    displayedColumns = ['id', 'component', 'amount', 'buttons'];
+    dataSource = new MatTableDataSource(this.pumps)
     selectedValue: ModelComponent[] = null;
 
 
@@ -45,7 +48,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
         },
         data: {
             pumpNr: '',
-            oldComponent: new ModelComponent
+            componentId: ''
         }
     };
 
@@ -71,8 +74,12 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
 
     constructor(private adminService: AdminService,
+        private componentService: ComponentService,
                 private productionSocketService: ProductionSocketService,
                 private dialog: MatDialog) {
+                    componentService.availableComponents.subscribe(components => {
+                        this.components = components
+                    })
     }
 
     ngOnInit(): void {
@@ -90,7 +97,10 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
     }
 
     loadContent() {
-        this.adminService.getPumps().subscribe(pumps => this.pumps = pumps);
+        this.adminService.getPumps().subscribe(pumps => {
+            this.pumps = pumps
+            this.dataSource = new MatTableDataSource(this.pumps)
+        });
         this.adminService.getStandardAmounts().subscribe(amounts => this.standardAmounts = amounts);
 
     }
@@ -117,15 +127,30 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
     ChangeComponent(pump: models.Pump) {
         this.componentDialogConfig.data.pumpNr = pump.nr;
-        this.componentDialogConfig.data.oldComponent = pump.component;
+        this.componentDialogConfig.data.componentId = pump.componentId;
         this.componentDialogRef = this.dialog.open(AdminComponentDialogComponent, this.componentDialogConfig);
 
         this.componentDialogRef.afterClosed().subscribe((result: string) => {
             // this.lastAfterClosedResult = result;
             if (result) {
                 this.adminService.setPump(pump.nr, result).subscribe(() => this.loadContent());
+                this.componentService.updateComponents()
             }
             this.componentDialogRef = null;
         });
+    }
+
+    getComponentName(id: string) {
+        var componentName="unknown"
+        var component = this.components.find(component => {
+            if (component.id === id) {
+                return true
+            }
+            return false
+        })
+        if (component) {
+            componentName = component.name
+        }
+        return componentName
     }
 }

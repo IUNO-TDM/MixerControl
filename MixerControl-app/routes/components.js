@@ -20,7 +20,8 @@ String.prototype.format = function () {
 };
 
 router.get('/', function (req, res, next) {
-    jms_connector.getAllComponents(function (e, components) {
+    var language = req.cookies.language;
+    jms_connector.getAllComponents(language, function (e, components) {
         if (e) {
             logger.crit(e);
             next(e);

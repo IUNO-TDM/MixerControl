@@ -58,16 +58,16 @@ h3 {
   width: 100%;
 }
 
-mat-drawer {
-  width: 20vw;
-  background-color: #fafafa;
-  overflow: hidden;
+// mat-drawer {
+//   width: 20vw;
+//   background-color: #fafafa;
+//   overflow: hidden;
 
-}
+// }
 
-mat-drawer-container {
-  height: 100%;
-}
+// mat-drawer-container {
+//   height: 100%;
+// }
 
 .filter-card {
   margin-right: 10px;
@@ -75,11 +75,11 @@ mat-drawer-container {
   background-color: #f9f9f9;
 }
 
-.logo-space img {
-  object-fit: contain;
-  width: 100%;
-  height: 100%;
-}
+// .logo-space img {
+//   // object-fit: contain;
+//   width: 50%;
+//   height: 50%;
+// }
 
 mat-button-toggle {
   font-size: x-large;
@@ -91,9 +91,16 @@ mat-button-toggle {
 }
 
 .logo-space {
-  width: 70%;
+  // background-color: #f00;
+  // width: 10px;
+  // height: 10px;
+//   width: 70%;
 }
 
 .logoimg {
-  background-color: #fafafa;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  // background-color: #fafafa;
+  background-color: #fff;
 }

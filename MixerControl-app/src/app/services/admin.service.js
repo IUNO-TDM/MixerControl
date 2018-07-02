@@ -13,7 +13,7 @@ const http_1 = require('@angular/http');
 let AdminService = class AdminService {
     constructor(http) {
         this.http = http;
-        this.adminUrl = 'api/admin/'; // URL to web api
+        this.adminUrl = '/api/admin/'; // URL to web api
     }
     resumeProduction() {
         let url = `${this.adminUrl}production/resume`;

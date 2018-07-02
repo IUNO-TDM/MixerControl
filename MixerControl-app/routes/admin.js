@@ -50,37 +50,21 @@ router.get('/startbutton', function (req, res, next) {
 });
 
 router.get('/pumps', function (req, res, next) {
+    var comps = [];
+    const pumps = pumpcontrol_service.getPumpNumbers();
+    async.eachSeries(pumps, function (pumpNr, callback) {
+        const comp = pumpcontrol_service.getStorageIngredient(pumpNr);
+        comps.push({nr: pumpNr, componentId: comp});
+        callback();
+    }, function (err) {
 
-    jms_connector.getAllComponents(function (e, components) {
-        if (!e && components) {
-            var componentNameForId = function (components, id) {
-                for (var i = 0; i < components.length; i++) {
-                    if (components[i].id === id) {
-                        return components[i].name;
-                    }
-                }
-                return undefined;
-            };
-            var comps = [];
-            const pumps = pumpcontrol_service.getPumpNumbers();
-            async.eachSeries(pumps, function (pumpNr, callback) {
-                const comp = pumpcontrol_service.getStorageIngredient(pumpNr);
-                comps.push({nr: pumpNr, component: {id: comp, name: componentNameForId(components, comp)}});
-                callback();
-            }, function (err) {
-
-                if (!err) {
-                    res.json(comps)
-                } else {
-                    console.log(err);
-                    res.sendStatus(500);
-                }
-            });
+        if (!err) {
+            res.json(comps)
         } else {
+            console.log(err);
             res.sendStatus(500);
         }
-    });
-
+    })
 });
 
 router.put('/pumps/:id', function (req, res, next) {

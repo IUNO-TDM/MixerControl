@@ -18,9 +18,7 @@ import {RecipeDetailComponent} from './recipe-detail/recipe-detail.component';
 import {RecipeFilterPipe} from './recipe-overview/recipe-filter-pipe';
 import {FormsModule} from '@angular/forms';
 import {routing} from './recipe-overview.routing';
-import {HttpClientModule} from '@angular/common/http';
 import {UICarouselModule} from 'ng-carousel-iuno';
-import {ComponentService} from 'tdm-common';
 
 @NgModule({
     imports: [
@@ -37,15 +35,9 @@ import {ComponentService} from 'tdm-common';
         MatTooltipModule,
         routing,
         UICarouselModule,
-        HttpClientModule,
-
     ],
     declarations: [RecipeOverviewComponent, RecipeDetailComponent, RecipeFilterPipe],
     entryComponents: [RecipeDetailComponent],
-    providers: [
-        ComponentService,
-        {provide: 'componentSourceUrl', useValue: '/api/components'}
-    ]
 })
 export class RecipeOverviewModule {
 }

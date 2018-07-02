@@ -26,8 +26,6 @@ app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'dist')));
-
 app.use('/api/drinks', drinks);
 app.use('/api/users', users);
 app.use('/api/orders', orders);
@@ -38,10 +36,44 @@ app.all('/api/*', function (req, res, next) {
     res.sendStatus(404);
 });
 
-app.all('*', function (req, res, next) {
-    // Just send the index.html for other files to support HTML5Mode
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
+// ---------------------------------------------------------------------------
+//   Angular Routing
+// ---------------------------------------------------------------------------
+
+// This route automatically reads all available paths in the dist folder
+// and serves things like /de/polyfills.856a55e4e31639c9ec48.bundle.js
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// This route handles all requests to /de which are not served by the '/' rule.
+// These are especially routes which are angular internal routings.
+app.use('/de', function(req, res) {
+    res.cookie('language', 'de');
+    res.sendFile(path.join(__dirname, 'dist/de/index.html'));
+})
+
+// This route handles all requests to /en which are not served by the '/' rule.
+// These are especially routes which are angular internal routings.
+app.use('/en', function(req, res) {
+    res.cookie('language', 'en');
+    res.sendFile(path.join(__dirname, 'dist/en/index.html'));
+})
+
+// This route selects the preferred language of the browser
+// and redirects the client. If the preferred language is not
+// supported, the browser is redirected to 'en'.
+app.use('/', function(req, res, next) {
+    var preferredLanguage = req.acceptsLanguages('de', 'en')
+    if (!preferredLanguage) {
+        preferredLanguage = 'en'
+    }
+    var targetPath = path.join('/', preferredLanguage, req.path)
+    res.redirect(targetPath)
+})
+
+// app.all('*', function (req, res, next) {
+//     // Just send the index.html for other files to support HTML5Mode
+//     res.sendFile(path.join(__dirname, 'dist/index.html'));
+// });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

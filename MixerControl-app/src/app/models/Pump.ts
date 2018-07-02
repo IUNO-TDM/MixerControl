@@ -6,5 +6,5 @@ import * as models from './models';
 
 export class Pump {
     nr?: string;
-    component?: models.Component;
+    componentId?: string;
 }

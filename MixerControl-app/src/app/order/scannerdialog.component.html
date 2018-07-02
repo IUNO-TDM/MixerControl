@@ -1,0 +1,11 @@
+<h2 mat-dialog-title i18n="title">Den Coupon vor die Kamera halten</h2>
+
+<mat-dialog-content>
+    <div style="width:640px; height:480px; ">
+        <qr-scanner [debug]="false" [canvasWidth]="640" [canvasHeight]="480" [stopAfterScan]="true" [updateTime]="500"></qr-scanner>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" mat-dialog-close i18n="button">Schließen</button>
+</mat-dialog-actions>

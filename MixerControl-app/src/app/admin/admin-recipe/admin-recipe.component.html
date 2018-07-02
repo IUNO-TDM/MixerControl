@@ -1,18 +1,26 @@
-<div class="section" fxLayout="row" fxLayoutGap="30px">
-    <!--<cocktail-component-list></cocktail-component-list>-->
-    <cocktail-beaker [editMode]="true" (onSelectComponent)="selectComponent($event)" style="height:400px"
-                     [cocktail]="cocktail" fxFlex="320px"></cocktail-beaker>
-    <cocktail-ingredients-listing fxFlex="320px"
-                                  [cocktail]="cocktail"></cocktail-ingredients-listing>
-</div>
+<mat-card class="admin-card">
+    <mat-card-content>
+        <div class="section" fxLayout="row" fxLayoutGap="30px" fxLayoutAlign="center">
+            <!--<cocktail-component-list></cocktail-component-list>-->
+            <cocktail-beaker #beaker [editMode]="true" [cocktail]="cocktail" (onSelectComponent)="selectComponent($event)" style="width: 300px; height: 450px;"
+            i18n-dragComponentText i18n-touchComponentText dragComponentText="Zutat per<br>Drag & Drop<br>hinzufügen."
+            touchComponentText="Hier tippen um Zutat<br>hinzuzufügen."></cocktail-beaker>
 
-<div class="section">
-    <button *ngIf="cocktail.layers.length > 0" (click)="onToggleEdit()" mat-raised-button color="primary"
-            class="mat-elevation-z1">
-        {{beaker.editMode? 'Speichern' : 'Editieren'}}
-    </button>
-    <button *ngIf="!beaker.editMode" (click)="onProduce()" [disabled]="pcMode !='idle' && pcMode != 'error'"
-            mat-raised-button color="primary" class="mat-elevation-z1">
-        Produzieren
-    </button>
-</div>
+            <!-- <cocktail-beaker [editMode]="true" (onSelectComponent)="selectComponent($event)" style="height:400px" [cocktail]="cocktail"
+                fxFlex="320px"></cocktail-beaker> -->
+                <cocktail-ingredients-listing  fxFlex="320px" [cocktail]="cocktail" i18n-ingredientTitle i18n-amountTitle i18n-noIngredients ingredientTitle="Zutat"
+                amountTitle="Menge" noIngredients="Es wurden noch keine Zutaten<br>hinzugefügt."></cocktail-ingredients-listing>
+
+            <!-- <cocktail-ingredients-listing fxFlex="320px" [cocktail]="cocktail"></cocktail-ingredients-listing> -->
+        </div>
+
+        <div class="section" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px">
+            <button *ngIf="cocktail.layers.length > 0" (click)="onToggleEdit()" mat-raised-button color="primary" class="mat-elevation-z1">
+                    <ng-container *ngIf="beaker.editMode" i18n="button">Speichern</ng-container>
+                    <ng-container *ngIf="!beaker.editMode" i18n="button">Editieren</ng-container>
+            </button>
+            <button *ngIf="!beaker.editMode" (click)="onProduce()" [disabled]="pcMode !='idle' && pcMode != 'error'" mat-raised-button
+                color="primary" class="mat-elevation-z1" i18n="button">Produzieren</button>
+        </div>
+    </mat-card-content>
+</mat-card>

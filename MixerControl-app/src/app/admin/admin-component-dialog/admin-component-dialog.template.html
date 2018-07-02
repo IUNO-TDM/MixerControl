@@ -1,18 +1,13 @@
-<h2 mat-dialog-title>Komponente für Pumpe {{pumpNr}} ändern</h2>
+<h2 mat-dialog-title i18n="title">Komponente für Pumpe {{pumpNr}} ändern</h2>
 
 <mat-dialog-content>
-    <mat-select class="picker" placeholder="Komponente auswählen" name="Neue Komponente wählen"
-                [(ngModel)]="selectedValue">
-        <mat-optgroup *ngIf="recommendedComponents.length && queryString.length == 0"
-                      label="Vorgeschlagene Komponenten">
-            <mat-option *ngFor="let component of recommendedComponents" [value]="component.id">{{ component.name
-                }}
-            </mat-option>
+    <mat-select class="picker" placeholder="Komponente auswählen" name="Neue Komponente wählen" [(ngModel)]="selectedValue">
+        <mat-optgroup *ngIf="recommendedComponents.length && queryString.length == 0" label="Vorgeschlagene Komponenten">
+            <mat-option *ngFor="let component of recommendedComponents" [value]="component.id">{{component.name}}</mat-option>
         </mat-optgroup>
 
         <mat-optgroup label="Alle Komponenten">
-            <mat-option *ngFor="let component of visibleComponents" [value]="component.id">{{ component.name }}
-            </mat-option>
+            <mat-option *ngFor="let component of visibleComponents" [value]="component.id">{{component.name}}</mat-option>
         </mat-optgroup>
     </mat-select>
 
@@ -20,12 +15,7 @@
 
 <mat-dialog-actions class="actions">
 
-    <button
-            mat-raised-button color="primary" mat-dialog-close="{{selectedValue}}">akzeptieren
-    </button>
-    <button
-            mat-raised-button
-            color="primary" mat-dialog-close="">abbrechen
-    </button>
+        <button mat-raised-button color="primary" mat-dialog-close="" i18n="button">Abbrechen</button>
+        <button mat-raised-button color="primary" mat-dialog-close="{{selectedValue}}" i18n="button">Bestätigen</button>
 
 </mat-dialog-actions>
