@@ -1,45 +1,60 @@
 <div class="background" [ngStyle]="setStyles()">
     <div class="dialog-container" fxLayoutAlign="row" fxLayoutGap="10px">
 
-        <img class="drinkimg" src="/api/drinks/{{drink.id}}/image">
-        <div class="detail" fxFlex="*" fxLayout="column" fxLayoutAlign="space-between">
-            <div fxFlex="auto">
-                <mat-card>
-                    <mat-card-title class="recipe-title">
-                        {{drink.title}}
-                    </mat-card-title>
-                    <mat-dialog-content>
-                        {{drink.description}}
-                    </mat-dialog-content>
-                </mat-card>
+        <img fxFlex="50" class="drinkimg" src="/api/drinks/{{drink.id}}/image">
+        <div class="detail" fxFlex fxLayout="column">
+            <!-- <div fxFlex="auto"> -->
+            <mat-card fxFlex fxLayout="column" fxLayoutGap="20px">
+                <mat-card-title class="recipe-title">
+                    {{drink.title}}
+                </mat-card-title>
+                <mat-dialog-content fxFlex fxLayout="column" fxLayoutGap="20px">
+                    {{drink.description}}
+<hr>
+<div>
+                <h4 i18n="title">Zutaten:</h4>
+                <div fxLayout="row true" class="component-list">
+                    <div *ngFor="let comp of drink.components" class="component">{{comp.name}}</div>
+                </div>
+            </div>
+                <!-- </mat-card>
             </div>
 
             <div fxFlex="auto">
-                <mat-card>
+                <mat-card> -->
+                        <hr>
+                        <div>
                     <div fxLayout="row" fxLayoutAlign="left center" fxLayoutGap="10px">
-                        <div fxFlex="80px"><img mat-card-avatar src="/api/users/{{drink.authorId}}/image"></div>
+                        <div fxFlex="80px">
+                            <img mat-card-avatar src="/api/users/{{drink.authorId}}/image">
+                        </div>
 
                         <div fxFlex="*">{{user.firstname}} {{user.lastname}}</div>
                     </div>
-                    <p><ng-container i18n>Lizenzgebühr:</ng-container> {{drink.licensefee/100000}} IUNO</p>
-                    <p><ng-container i18n>Zubereitungsgebühr:</ng-container> {{(drink.retailPrice-drink.licensefee)/100000}} IUNO</p>
-                    <p><ng-container i18n>Gesamtpreis:</ng-container> {{drink.retailPrice/100000}} IUNO</p>
-                </mat-card>
+                    <p>
+                        <ng-container i18n>Lizenzgebühr:</ng-container> {{drink.licensefee/100000}} IUNO</p>
+                    <p>
+                        <ng-container i18n>Zubereitungsgebühr:</ng-container> {{(drink.retailPrice-drink.licensefee)/100000}} IUNO</p>
+                    <p>
+                        <ng-container i18n>Gesamtpreis:</ng-container> {{drink.retailPrice/100000}} IUNO</p>
+                </div>
+                <!-- </mat-card>
             </div>
             <div fxFlex="auto">
-                <mat-card>
-                    <h4 i18n="title">Zutaten:</h4>
-                    <div fxLayout="row true" class="component-list">
-                        <div *ngFor="let comp of drink.components" class="component">{{comp.name}}</div>
-                    </div>
-                </mat-card>
-            </div>
+                <mat-card> -->
+                <!-- </mat-card> -->
+                <!-- </div> -->
 
 
-            <div fxFlex="50px" fxLayout="row" fxLayoutAlign="center">
-
-                <button mat-raised-button color="accent" (click)="order()" i18n="button">Kostenpflichtig bestellen</button>
-            </div>
+                <!-- <div fxFlex="50px" fxLayout="row" fxLayoutAlign="center"> -->
+                <!-- <div fxFlex></div>
+                <button mat-raised-button color="accent" (click)="order()" i18n="button">Kostenpflichtig bestellen</button> -->
+                <!-- </div> -->
+            </mat-dialog-content>
+            <mat-dialog-actions>
+                    <button mat-raised-button color="accent" (click)="order()" i18n="button">Kostenpflichtig bestellen</button>
+            </mat-dialog-actions>
+        </mat-card>
         </div>
 
     </div>
