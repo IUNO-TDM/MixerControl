@@ -14,7 +14,7 @@ COPY MixerControl-app /usr/src/app
 # Install app dependencies
 RUN npm install
 RUN npm install -g @angular/cli --unsafe
-npm run build-i18n
+RUN npm run build-i18n
 
 EXPOSE 3000
 
