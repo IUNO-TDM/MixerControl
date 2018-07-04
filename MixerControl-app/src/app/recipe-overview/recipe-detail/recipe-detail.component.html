@@ -1,7 +1,8 @@
 <div class="background" [ngStyle]="setStyles()">
     <div class="dialog-container" fxLayoutAlign="row" fxLayoutGap="10px">
-
-        <img fxFlex="50" class="drinkimg" src="/api/drinks/{{drink.id}}/image">
+        <div fxFlex="50">
+            <img fxFlexFill class="drinkimg" src="/api/drinks/{{drink.id}}/image">
+        </div>
         <div class="detail" fxFlex fxLayout="column">
             <!-- <div fxFlex="auto"> -->
             <mat-card fxFlex fxLayout="column" fxLayoutGap="20px">
@@ -51,7 +52,7 @@
                 <button mat-raised-button color="accent" (click)="order()" i18n="button">Kostenpflichtig bestellen</button> -->
                 <!-- </div> -->
             </mat-dialog-content>
-            <mat-dialog-actions>
+            <mat-dialog-actions fxLayoutAlign="center">
                     <button mat-raised-button color="accent" (click)="order()" i18n="button">Kostenpflichtig bestellen</button>
             </mat-dialog-actions>
         </mat-card>
