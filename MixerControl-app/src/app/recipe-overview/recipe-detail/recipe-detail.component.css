@@ -7,6 +7,10 @@ mat-chip {
     margin: 5px;
 }
 
+.drinkimg_container {
+    overflow: hidden;
+}
+
 .drinkimg {
     object-fit: contain;
     transform: scale(1.7);

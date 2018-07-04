@@ -72,7 +72,7 @@
           <context context-type="linenumber">41</context>
         </context-group>
         <note priority="1" from="description">button</note>
-      <target state="translated">Order with costs</target></trans-unit><trans-unit id="7ac6a289be2a45114ebf0685178378647ea33cf4" datatype="html">
+      <target state="translated">Order now</target></trans-unit><trans-unit id="7ac6a289be2a45114ebf0685178378647ea33cf4" datatype="html">
         <source>Auftrag <x id="INTERPOLATION" equiv-text="{{orderToBeDisplayed.orderNumber}}"/>: <x id="INTERPOLATION_1" equiv-text="{{drink.title}}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/order/order.component.ts</context>
