@@ -5,12 +5,12 @@
   "scripts": {
     "ng": "ng",
     "start": "node ./bin/www",
-    "build": "ng build --prod --build-optimizer && cp -r ./src/custom_assets/* ./dist/assets/ 2>/dev/null || :",
+    "build": "npm run build-i18n",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "extract-i18n": "ng xi18n --output-path src/i18n && for i in de en; do xliffmerge --profile xliffmerge.json de $i; done",
-    "build-i18n": "for i in de en; do ng build --prod --build-optimizer --aot --base-href=/$i/ --outputPath=dist/$i --i18nFile=src/i18n/messages.$i.xlf --i18nFormat=xlf --locale=$i; done",
+    "build-i18n": "for i in de en; do ng build --prod --build-optimizer --aot --base-href=/$i/ --outputPath=dist/$i --i18nFile=src/i18n/messages.$i.xlf --i18nFormat=xlf --locale=$i && cp -r ./src/custom_assets/* ./dist/$i/assets/ 2>/dev/null || :; done",
     "build-i18n-single": "run() { ng build --prod --build-optimizer --aot --base-href=/$1/ --outputPath=dist/$1 --i18nFile=src/i18n/messages.$1.xlf --i18nFormat=xlf --locale=$1 $2 $3; }; run",
     "continuous-build-i18n-single": "run() { ng build -w --aot --base-href=/$1/ --outputPath=dist/$1 --i18nFile=src/i18n/messages.$1.xlf --i18nFormat=xlf --locale=$1; }; run"
   },
