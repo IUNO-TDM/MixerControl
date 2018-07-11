@@ -3,7 +3,7 @@ import {AdminService} from '../../services/admin.service';
 import {ProductionSocketService} from '../../services/production-socket.service';
 import {Subscription} from 'rxjs/Subscription';
 
-import {Cocktail, CocktailComponent, ComponentService} from 'tdm-common'
+import {TdmCocktailProgram, TdmCocktailComponent, TdmCocktailComponentService} from 'tdm-common'
 import {BeakerComponent, ComponentListDialogComponent, DragAndDropService} from 'cocktail-configurator'
 import {MatDialog} from '@angular/material';
 
@@ -11,25 +11,25 @@ import {MatDialog} from '@angular/material';
     selector: 'app-admin-recipe',
     templateUrl: './admin-recipe.component.html',
     styleUrls: ['./admin-recipe.component.css'],
-    providers: [AdminService, ProductionSocketService, DragAndDropService, ComponentService]
+    providers: [AdminService, ProductionSocketService, DragAndDropService, TdmCocktailComponentService]
 })
 export class AdminRecipeComponent implements OnInit {
     @ViewChild(BeakerComponent) beaker: BeakerComponent;
 
     pcModeConnection: Subscription;
     pcMode: string;
-    cocktail: Cocktail;
-    components: CocktailComponent[] = [];
+    cocktail: TdmCocktailProgram;
+    components: TdmCocktailComponent[] = [];
 
     showRecommendedComponents = false
     showInstalledComponents = true
     showAvailableComponents = false
 
-    constructor(private componentService: ComponentService,
+    constructor(private componentService: TdmCocktailComponentService,
                 public dialog: MatDialog,
                 private adminService: AdminService,
                 private productionSocketService: ProductionSocketService) {
-        this.cocktail = new Cocktail();
+        this.cocktail = new TdmCocktailProgram();
         this.cocktail.amount = 100;
     }
 
@@ -57,7 +57,7 @@ export class AdminRecipeComponent implements OnInit {
         this.beaker.setEditMode(!this.beaker.editMode);
     }
 
-    selectComponent(callback: (component: CocktailComponent) => any) {
+    selectComponent(callback: (component: TdmCocktailComponent) => any) {
         let dialogRef = this.dialog.open(ComponentListDialogComponent, {
             width: '300px',
             data: {
