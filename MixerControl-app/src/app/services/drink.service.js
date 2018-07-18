@@ -14,7 +14,7 @@ require('rxjs/add/operator/toPromise');
 let DrinkService = class DrinkService {
     constructor(http) {
         this.http = http;
-        this.drinksUrl = 'api/drinks'; // URL to web api
+        this.drinksUrl = '/api/drinks'; // URL to web api
     }
     getDrinks() {
         return this.http

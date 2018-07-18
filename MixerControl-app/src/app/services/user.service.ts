@@ -8,7 +8,7 @@ import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class UserService {
-    private usersUrl = 'api/users';  // URL to web api
+    private usersUrl = '/api/users';  // URL to web api
 
     constructor(private http: HttpClient) {
     }

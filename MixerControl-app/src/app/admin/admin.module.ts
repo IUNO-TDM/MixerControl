@@ -77,9 +77,7 @@ import {ComponentService} from 'tdm-common'
     providers: [
         ProductionSocket,
         OrdersSocket,
-        ComponentService,
         DragAndDropService,
-        {provide: 'componentSourceUrl', useValue: '/api/components'}
     ],
 })
 export class AdminModule {

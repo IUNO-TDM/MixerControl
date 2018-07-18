@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+    <trans-unit id="b5b6282d95d2374240f745659f7b7eb578f4712d" datatype="html">
+        <source>Vorlieben:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="translated">Preferences:</target></trans-unit><trans-unit id="55b31eacf3b853e76d8a71f7fda62775ac140590" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {Getränk ist mit diesen Vorlieben verfügbar} other {Getränke sind mit diesen Vorlieben verfügbar} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      <target state="translated">{VAR_PLURAL, plural, =1 {drink is available with these preferences} other {drinks are available with these preferences} }</target></trans-unit><trans-unit id="01b6e8784109fdadd703dc517f96552c979bf120" datatype="html">
+        <source>Filter löschen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Clear filter</target></trans-unit><trans-unit id="a22951ad090fab9014b27c73dbaf6c4b72e015bf" datatype="html">
+        <source>Nur Getränke mit <x id="INTERPOLATION" equiv-text="{{comp.name}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      <target state="translated">Only drinks with <x id="INTERPOLATION" equiv-text="{{comp.name}}"/></target></trans-unit><trans-unit id="2169d2db8204f8d6872c2d9d5aa8e21e7a78342b" datatype="html">
+        <source>Getränke dürfen <x id="INTERPOLATION" equiv-text="{{comp.name}}"/> beinhalten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      <target state="translated">Drinks may contain <x id="INTERPOLATION" equiv-text="{{comp.name}}"/></target></trans-unit><trans-unit id="2eb3bd1e692ea3a10db32878e430a989c0fdd2fc" datatype="html">
+        <source>Nur Getränke ohne <x id="INTERPOLATION" equiv-text="{{comp.name}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      <target state="translated">Only drinks without <x id="INTERPOLATION" equiv-text="{{comp.name}}"/></target></trans-unit><trans-unit id="5e3750473444ed0d4ff0bf794ebaf415db164c8e" datatype="html">
+        <source>Lizenzgebühr:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      <target state="translated">Licence fee:</target></trans-unit><trans-unit id="221ee98e7382367f1741ed3b76da2753f6fb6010" datatype="html">
+        <source>Zubereitungsgebühr:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      <target state="translated">Preparation fee:</target></trans-unit><trans-unit id="e1e106aaa41e402fe6d0090158217bf2392d2413" datatype="html">
+        <source>Gesamtpreis:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      <target state="translated">Total price:</target></trans-unit><trans-unit id="99ef08091fb4d2267254423538b4c516c5bee2a4" datatype="html">
+        <source>Zutaten:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="translated">Ingredients:</target></trans-unit><trans-unit id="759d234f071c0bdb75fa2606d563abb4169fcd1c" datatype="html">
+        <source>Kostenpflichtig bestellen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Order now</target></trans-unit><trans-unit id="7ac6a289be2a45114ebf0685178378647ea33cf4" datatype="html">
+        <source>Auftrag <x id="INTERPOLATION" equiv-text="{{orderToBeDisplayed.orderNumber}}"/>: <x id="INTERPOLATION_1" equiv-text="{{drink.title}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="translated">Order #<x id="INTERPOLATION" equiv-text="{{orderToBeDisplayed.orderNumber}}"/>: <x id="INTERPOLATION_1" equiv-text="{{drink.title}}"/></target></trans-unit><trans-unit id="7cf8e4f0635695f8a2dd4ff429d83a6b6740264c" datatype="html">
+        <source>Lizenzkauf wird initiiert</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      <target state="translated">License purchase is initiated</target><note from="description" priority="1">progress item</note></trans-unit><trans-unit id="ac99787ee81205be5467fa30ef639f77939524c5" datatype="html">
+        <source>Getränk bezahlen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      <target state="translated">Pay for drink</target><note from="description" priority="1">progress item</note></trans-unit><trans-unit id="fd89fc281b17bd10f200931ebf0a8bb0047d680d" datatype="html">
+        <source>Lizenzgebühr bezahlen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      <target state="translated">Pay license fee</target><note from="description" priority="1">progress item</note></trans-unit><trans-unit id="e53d1808ff99c607c21230afbfb8f210bae9bfe5" datatype="html">
+        <source>Lizenz vom Marktplatz laden</source>
+        
+      <target state="translated">Download license from the marketplace</target><note from="description" priority="1">progress item</note><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">54</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">149</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">184</context></context-group></trans-unit><trans-unit id="703d2aa3819fe20307630d3046dda8a88f1211a8" datatype="html">
+        <source>Getränk zubereiten</source>
+        
+      <target state="translated">Prepare drink</target><note from="description" priority="1">progress item</note><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">58</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">153</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">188</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">220</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">261</context></context-group></trans-unit><trans-unit id="29e2df9db8d472d3a74ae64b5f87ff33ec013a95" datatype="html">
+        <source>Pos</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Pos</target></trans-unit><trans-unit id="77134c293828bbe6d663d26f75252663f46c7ca4" datatype="html">
+        <source>Menge</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Amount</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">79</context></context-group></trans-unit><trans-unit id="a01f9c1b44e2b023eb2b83a56184cfb2d8c03dbc" datatype="html">
+        <source>Artikel</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Item</target></trans-unit><trans-unit id="7f18d9e7e949f788d606ea4314689a9f2f7ee9c5" datatype="html">
+        <source>Preis</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Price</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">101</context></context-group></trans-unit><trans-unit id="f367c2b1df4204a29bb4038483308defb5dc25a3" datatype="html">
+        <source>Gesamt</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Total</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">107</context></context-group></trans-unit><trans-unit id="200298daf4da145683034c4817868c3edd8956fd" datatype="html">
+        <source>zu bezahlen: <x id="INTERPOLATION" equiv-text="{{drink.retailPrice / 100000}}"/> IUNO</source>
+        
+        <note priority="1" from="description">table summary</note>
+      <target state="translated">to pay: <x id="INTERPOLATION" equiv-text="{{drink.retailPrice / 100000}}"/> IUNO</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">116</context></context-group></trans-unit><trans-unit id="9deb5cb326743a1a27c5106fb85fea1e7af11a51" datatype="html">
+        <source>Wallet App</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Wallet App</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">119</context></context-group></trans-unit><trans-unit id="6d0335768ec73ccf1332235ee9f4e449c83a448a" datatype="html">
+        <source>Coupon scannen</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Scan coupon</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">120</context></context-group></trans-unit><trans-unit id="cc1820bde05602a97b5a798796df954f091586c2" datatype="html">
+        <source>Rechnung</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="translated">Bill</target></trans-unit><trans-unit id="457c28be09305de0c4bdf1a3393d6223f0dc49b1" datatype="html">
+        <source>*Marktplatzprovision</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+        <note priority="1" from="description">invoice item</note>
+      <target state="translated">*Marketplace commission</target></trans-unit><trans-unit id="4aee8800d6ffff9653fb26d60b3b8396171058a5" datatype="html">
+        <source>*Nutzungslizenz</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+        <note priority="1" from="description">invoice item</note>
+      <target state="translated">*Usage license</target></trans-unit><trans-unit id="e46acf44803ca012efc461ee61bcfcb22ea0081a" datatype="html">
+        <source>*Zubereitung</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+        <note priority="1" from="description">invoice item</note>
+      <target state="translated">*Preparation</target></trans-unit><trans-unit id="652e36574f13b5e8e984ae997d54a05f8b71471f" datatype="html">
+        <source>Lizenzkauf getätigt</source>
+        
+        <note priority="1" from="description">progress item</note>
+      <target state="translated">License purchase completed</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">137</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">172</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">204</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">239</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">275</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">307</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">342</context></context-group></trans-unit><trans-unit id="e99059b5674c2cc67e03671e9f7e8e123f3f1340" datatype="html">
+        <source>Getränk bezahlt</source>
+        
+        <note priority="1" from="description">progress item</note>
+      <target state="translated">Drink paid</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">141</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">176</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">208</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">243</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">279</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">311</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">346</context></context-group></trans-unit><trans-unit id="1646eb04a66ac70665599454667c305385287281" datatype="html">
+        <source>Lizenzgebühr wird bezahlt</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">145</context>
+        </context-group>
+        <note priority="1" from="description">progress item</note>
+      <target state="translated">License fee is paid</target></trans-unit><trans-unit id="53c0de96dfb28c8868f2badb56936f2e9693e97f" datatype="html">
+        <source>Lizenzgebühr bezahlt</source>
+        
+        <note priority="1" from="description">progress item</note>
+      <target state="translated">License fee paid</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">180</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">212</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">247</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">283</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">315</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">350</context></context-group></trans-unit><trans-unit id="a98344c44b61e6d74a07bd7db32a5bdeddecb2fa" datatype="html">
+        <source>Lizenz eingespielt</source>
+        
+        <note priority="1" from="description">progress item</note>
+      <target state="translated">License downloaded</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">216</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">251</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">287</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">319</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">354</context></context-group></trans-unit><trans-unit id="12f50a86f4e5a6679a15aba95269e055b403a232" datatype="html">
+        <source> Auftrag in Warteschlangenposition <x id="INTERPOLATION" equiv-text="{{queuePlace}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">224</context>
+        </context-group>
+        <note priority="1" from="description">progress detail</note>
+      <target state="translated"> Order in queue position <x id="INTERPOLATION" equiv-text="{{queuePlace}}"/></target></trans-unit><trans-unit id="059618a73b8f861ed83f55d6e4c52851762e76d9" datatype="html">
+        <source> Servicemodus aktiv. Ihr Auftrag ist der nächste.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">225</context>
+        </context-group>
+        <note priority="1" from="description">progress detail</note>
+      <target state="translated"> Service mode active. Your order is the next.</target></trans-unit><trans-unit id="a30d221b38bd611ab764e28085a8a7f64abd0a96" datatype="html">
+        <source> Auftrag in der Warteschlange</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">226</context>
+        </context-group>
+        <note priority="1" from="description">progress detail</note>
+      <target state="translated"> Order in the queue</target></trans-unit><trans-unit id="77ba21467ad9cfe6fe09a0936765b23f58a3ec60" datatype="html">
+        <source>Getränk kann zubereitet werden</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">255</context>
+        </context-group>
+        <note priority="1" from="description">progress item</note>
+      <target state="translated">Drink can be prepared</target></trans-unit><trans-unit id="d034257035e6186e81c7be51cedabd11bf7ffb34" datatype="html">
+        <source>Jetzt kann die Starttaste betätigt werden</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">263</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Now the start button can be pressed</target></trans-unit><trans-unit id="ce90dd7123ebf8edc34ef2b00b9e7be9ef9ce262" datatype="html">
+        <source>Getränk wird zubereitet</source>
+        
+        <note priority="1" from="description">progress item</note>
+      <target state="translated">Drink is prepared</target><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">291</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/order.component.ts</context><context context-type="linenumber">323</context></context-group></trans-unit><trans-unit id="b290c93440524eaede1e522fd205b7bbeec5e058" datatype="html">
+        <source>Getränk zubereitet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">358</context>
+        </context-group>
+        <note priority="1" from="description">progress item</note>
+      <target state="translated">Drink prepared</target></trans-unit><trans-unit id="efe76d7dd31324db0460514665931722fcf0cb89" datatype="html">
+        <source>Neues Getränk bestellen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">365</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Order a new drink</target></trans-unit><trans-unit id="7cab0227f9ce82ca9bbee8c4116fe5a9ee41d19d" datatype="html">
+        <source>Leider gab es einen Fehler</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">379</context>
+        </context-group>
+        <note priority="1" from="description">error</note>
+      <target state="translated">Unfortunately, there was an error</target></trans-unit><trans-unit id="f186a5961b70e09086e5bd381232519876b59ee1" datatype="html">
+        <source>Bitte melden Sie sich beim Standpersonal.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/order.component.ts</context>
+          <context context-type="linenumber">382</context>
+        </context-group>
+        <note priority="1" from="description">error</note>
+      <target state="translated">Please contact the stand staff.</target></trans-unit><trans-unit id="ece90e622b1f599e0d54e3b880ab234e49eee67b" datatype="html">
+        <source>Diesen QR-Code mit einer Bitcoin Wallet App abscannen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/qrdialog.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="translated">Scan this QR code with a Bitcoin Wallet app</target></trans-unit><trans-unit id="28d2d8903d51e2af2759b1088b4e48e8d8c04290" datatype="html">
+        <source>Achtung. Im Bitcoinwallet ist aktuell für eine schnelle Abarbeitung des
+            Lizenzkaufs über diese Methode nicht genug Guthaben vorhanden. Es funktioniert - kann aber bis zu 20 Minuten
+            dauern!<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
+            Die Empfehlung ist, zuerst eine Zahlung per Coupon durchzuführen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/qrdialog.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">warning</note>
+      <target state="translated">Achtung. Im Bitcoinwallet ist aktuell für eine schnelle Abarbeitung des
+            Lizenzkaufs über diese Methode nicht genug Guthaben vorhanden. Es funktioniert - kann aber bis zu 20 Minuten
+            dauern!<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
+            The recommendation is to make a payment by coupon first</target></trans-unit><trans-unit id="1ead0ad1063d0c9e005fe56c9529aef4c1ef9d21" datatype="html">
+        <source>Schließen</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Close</target><context-group purpose="location"><context context-type="sourcefile">app/order/qrdialog.component.ts</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/order/scannerdialog.component.ts</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="3c0361681f19b53a6c8cde3cd3460b67872b5529" datatype="html">
+        <source>Den Coupon vor die Kamera halten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/order/scannerdialog.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="translated">Hold the coupon in front of the camera</target></trans-unit><trans-unit id="d473e0f684a60db45d6f31e993f693f74290e056" datatype="html">
+        <source>Service</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="translated">Service</target></trans-unit><trans-unit id="c0d4baf68f21ee9c4246d66f0ac828c5b73ae745" datatype="html">
+        <source>Wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="translated">Wallet</target></trans-unit><trans-unit id="61193bb866be74400072ada288c340c489779a12" datatype="html">
+        <source>Aufträge</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="translated">Orders</target></trans-unit><trans-unit id="65e1acdbb44b5a58f0daca61c584c5fe0c0a2c95" datatype="html">
+        <source>Produktion</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="translated">Production</target></trans-unit><trans-unit id="f26eb46945cbe6a65dd22c19a8ee9c43d3b7f435" datatype="html">
+        <source>Zutaten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="translated">Components</target></trans-unit><trans-unit id="e06aa9c84c6a631540e59e35057f1db24373fa43" datatype="html">
+        <source>Rezept</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin.component.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <note priority="1" from="description">tab item</note>
+      <target state="translated">Recipe</target></trans-unit><trans-unit id="e63427fa57eca204900891bbff011d25c80506c5" datatype="html">
+        <source>Auftragenummer</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Order #</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
+        <source>Status</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">State</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="715262ef5fba97de569a6f20218f076ab128118a" datatype="html">
+        <source>Getränke-ID</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Drink ID</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">15</context></context-group></trans-unit><trans-unit id="e5a795950a259aa059579d6efc2d2a101f47919b" datatype="html">
+        <source>Getränkename</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Drink name</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">19</context></context-group></trans-unit><trans-unit id="9a394a4ca5a1bb659eb4ce330f5cd97fb5c52eba" datatype="html">
+        <source>Produktion anhalten</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Pause production</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="91bb9b22c2777c055bf97ef891ae1971cf63303f" datatype="html">
+        <source>Produktion fortsetzen</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Resume production</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">6</context></context-group></trans-unit><trans-unit id="7cbd43513813ff4b6b62e6f10ffc425dd24d716f" datatype="html">
+        <source>Produktion starten</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Start production</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">7</context></context-group></trans-unit><trans-unit id="af2375622b10a23bcfaaa85615ca4ae8af868ab4" datatype="html">
+        <source>Auftragsnummer</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Order #</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="bdd8e989491bfb1d0ee27998d7d4475d014b8d99" datatype="html">
+        <source>Status der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{state}}"/></source>
+        
+      <target state="translated">Production queue state: <x id="INTERPOLATION" equiv-text="{{state}}"/></target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">3</context></context-group></trans-unit><trans-unit id="6ab7f976effdb96ecb47d38fa760528605f4d98f" datatype="html">
+        <source>Pumpe</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Pump</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="a0e4087927b592497bd24dc5f123a37830a55533" datatype="html">
+        <source>Zutat</source>
+        
+        <note priority="1" from="description">table header</note>
+      <target state="translated">Component</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="b50728e7d5c49a002dc87528cf335ef3220248e6" datatype="html">
+        <source>Zutat ändern</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Change component</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">26</context></context-group></trans-unit><trans-unit id="30773b3402b3fe034eaae2caa3ca263ddc23e5dc" datatype="html">
+        <source>Flasche getauscht</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Bottle exchanged</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component/admin-component.component.ts</context><context context-type="linenumber">27</context></context-group></trans-unit><trans-unit id="8368d6c52c007b7f0762a497cd95e2d25736e197" datatype="html">
+        <source>Flasche tauschen für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="translated">Replace bottle for pump <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/></target></trans-unit><trans-unit id="262644bbd19569739a9f713d693ccbe0ea81d92f" datatype="html">
+        <source>Eine frische Flasche wurde eingesetzt</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">checkbox</note>
+      <target state="translated">A fresh bottle was used</target></trans-unit><trans-unit id="d80712e1bd495a3ac7116fe528f84ad3dbbb7f6f" datatype="html">
+        <source>Bisherige Flaschengröße: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      <target state="translated">Previous bottle size: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/></target></trans-unit><trans-unit id="e7ce938fb391974423000e90a423c35a24715f7a" datatype="html">
+        <source>Bestätigen</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Accept</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context><context context-type="linenumber">19</context></context-group></trans-unit><trans-unit id="1b24932d0f2269e4b41d0f936fdb5de1b94da401" datatype="html">
+        <source>Abbrechen</source>
+        
+        <note priority="1" from="description">button</note>
+      <target state="translated">Cancel</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context><context context-type="linenumber">18</context></context-group></trans-unit><trans-unit id="f813ff46e075ae096de1b796855975b8d1f49aab" datatype="html">
+        <source>Komponente für Pumpe <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/> ändern</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      <target state="translated">Change component for pump <x id="INTERPOLATION" equiv-text="{{pumpNr}}"/></target></trans-unit><trans-unit id="5c559b755be8bc8fe0c0b8be9d84e29717883ba9" datatype="html">
+        <source>Zustand der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{pqState}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      <target state="translated">State of the production queue: <x id="INTERPOLATION" equiv-text="{{pqState}}"/></target></trans-unit><trans-unit id="a5eb59e1ae5c3e40aae9d05ce09955d66371459b" datatype="html">
+        <source>PumpControl Betriebszustand: <x id="INTERPOLATION" equiv-text="{{pcServiceState}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      <target state="translated">PumpControl Operating status: <x id="INTERPOLATION" equiv-text="{{pcServiceState}}"/></target></trans-unit><trans-unit id="1bef3283a5acd1a786ea38d47edd4ed63fcc2bfa" datatype="html">
+        <source>PumpControl-Modus: <x id="INTERPOLATION" equiv-text="{{pcMode}}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      <target state="translated">PumpControl mode: <x id="INTERPOLATION" equiv-text="{{pcMode}}"/></target></trans-unit><trans-unit id="86ccc431d955a6a6479d1a04457148adc1807bdd" datatype="html">
+        <source>Nutzungsdaten an den Marktplatz senden</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      <target state="translated">Send usage data to the marketplace</target></trans-unit><trans-unit id="96b3d6f1e01e6d5d0d6f25b0d9e13fbefdc39a57" datatype="html">
+        <source>Servicemodus aktivieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Activate service mode</target></trans-unit><trans-unit id="2c9efc411ae3b3ae69d3846f20c7848dc71337e7" datatype="html">
+        <source>Servicemodus deaktivieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Deactivate service mode</target></trans-unit><trans-unit id="8c0d3e308b86963c1cf5043097e31a913c51f885" datatype="html">
+        <source>An</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">On</target></trans-unit><trans-unit id="2b7896245c8d45d53065936ebab6ce4f867bcca1" datatype="html">
+        <source>Aus</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-service/admin-service.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Off</target></trans-unit><trans-unit id="6f9cbb28bdc23b92465369626d0b78e5e19f77b0" datatype="html">
+        <source>Zutat per&lt;br>Drag &amp; Drop&lt;br>hinzufügen.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      <target state="translated">Add ingredient by&lt;br>drag &amp; drop.</target></trans-unit><trans-unit id="09cade1c8e483a96553bda8009dbfc391f43f7be" datatype="html">
+        <source>Hier tippen um Zutat&lt;br>hinzuzufügen.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      <target state="translated">Tap here to&lt;br>add ingredient.</target></trans-unit><trans-unit id="49d7e39875153c37e6197dad6c97a71d600edc1f" datatype="html">
+        <source>Es wurden noch keine Zutaten&lt;br>hinzugefügt.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      <target state="translated">No ingredients have been&lt;br>added yet.</target></trans-unit><trans-unit id="05d6def11b80c405276ad18c4fc5183e8cea4f75" datatype="html">
+        <source>Speichern</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Save</target></trans-unit><trans-unit id="cb6d97f17dff028e8202cfdd991dc4488ac15b98" datatype="html">
+        <source>Editieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Edit</target></trans-unit><trans-unit id="699ddfc1f769b79eee8808f908bc8e1524df48ba" datatype="html">
+        <source>Produzieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-recipe/admin-recipe.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <note priority="1" from="description">button</note>
+      <target state="translated">Produce</target></trans-unit><trans-unit id="6c3391929e528bd931787affca452f1b429c598c" datatype="html">
+        <source>Guthaben im Wallet der Maschine:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-wallet/admin-wallet.component.ts</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      <target state="translated">Credit balance in the wallet of the machine:</target></trans-unit><trans-unit id="ef585936ffc2c693d794a23f7300533011406db9" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{balance.spendable / 100000}}"/> IUNO kann die Maschine nutzen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-wallet/admin-wallet.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      <target state="translated"><x id="INTERPOLATION" equiv-text="{{balance.spendable / 100000}}"/> IUNO can be used by the machine</target></trans-unit><trans-unit id="4f39df2d3b2e3255b920f76eac205bae852e30da" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{balance.estimated / 100000}}"/> IUNO sind inklusive noch unbestätigter Transaktionen vorhanden</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-wallet/admin-wallet.component.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      <target state="translated"><x id="INTERPOLATION" equiv-text="{{balance.estimated / 100000}}"/> IUNO are available including unconfirmed transactions</target></trans-unit></body>
+  </file>
+</xliff>

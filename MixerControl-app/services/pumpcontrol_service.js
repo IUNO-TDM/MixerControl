@@ -95,7 +95,7 @@ pumpcontrol_service.setStartButtonIllumination = function (enabled) {
 };
 
 const initIngredients = function () {
-    jms_connector.getAllComponents(function (e, components) {
+    jms_connector.getAllComponents("en", function (e, components) {
         if (!e) {
             async.mapSeries(pumpNumbers, function (item, callback) {
                 storage.getItem('component' + item).then(

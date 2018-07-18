@@ -23,8 +23,8 @@ String.prototype.format = function () {
 router.get('/', function (req, res, next) {
 
     let components = pumpControl.getConfiguredComponents();
-
-    juiceMachineService.getAllRecipes(components, function (e, recipes) {
+    const language = req.cookies.language
+    juiceMachineService.getAllRecipes(language, components, function (e, recipes) {
 
         if (e) {
             logger.crit(e);

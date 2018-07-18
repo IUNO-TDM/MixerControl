@@ -6,7 +6,7 @@ import {Component} from '@angular/core';
 @Component({
     moduleId: module.id,
     selector: 'my-admin',
-    templateUrl: 'admin.template.html',
+    templateUrl: 'admin.component.html',
     styleUrls: ['./admin.component.css']
 })
 

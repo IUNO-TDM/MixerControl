@@ -42,7 +42,7 @@ let AdminComponentComponent = class AdminComponentComponent {
                 pump = this.pumps[i];
             }
         }
-        this.adminService.setPump(nr, pump.component.id);
+        this.adminService.setPump(nr, pump.componentId);
         // I want to do something here for new selectedDevice, but what I
         // got here is always last selection, not the one I just select.
     }

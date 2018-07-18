@@ -17,6 +17,7 @@ import {ProductionSocketService} from '../services/production-socket.service';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
 import {AdminService} from "../services/admin.service";
+import { Statement } from '@angular/compiler';
 
 
 @Component({
@@ -189,6 +190,7 @@ export class OrderComponent implements OnInit, OnDestroy {
                                         this.redirectTimerSubscription.unsubscribe();
                                     });
                                 }
+                                // state.toState = 'productionFinished'
                                 this.refreshStepCards(state);
                                 return this.orderState = state;
                             }
@@ -324,7 +326,7 @@ export class ExampleDataSource extends DataSource<any> {
 
             let drinkPosition2: DrinkPosition;
             drinkPosition2 = new DrinkPosition();
-            drinkPosition2.Artikel = '*Marktplatzprovision';
+            drinkPosition2.Artikel = '@@@marketplaceCommission@@@';
             drinkPosition2.Pos = '';
             drinkPosition2.Menge = '';
             drinkPosition2.UnterPosPreis = String(drink.licensefee * 0.3 / 100000) + ' IUNO';
@@ -333,7 +335,7 @@ export class ExampleDataSource extends DataSource<any> {
 
             let drinkPosition3: DrinkPosition;
             drinkPosition3 = new DrinkPosition();
-            drinkPosition3.Artikel = '*Nutzungslizenz';
+            drinkPosition3.Artikel = '@@@usageLicense@@@';
             drinkPosition3.Pos = '';
             drinkPosition3.Menge = '';
             drinkPosition3.UnterPosPreis = String(drink.licensefee * 0.7 / 100000) + ' IUNO';
@@ -342,7 +344,7 @@ export class ExampleDataSource extends DataSource<any> {
 
             let drinkPosition4: DrinkPosition;
             drinkPosition4 = new DrinkPosition();
-            drinkPosition4.Artikel = '*Zubereitung';
+            drinkPosition4.Artikel = '@@@preparation@@@';
             drinkPosition4.Pos = '';
             drinkPosition4.Menge = '';
             drinkPosition4.UnterPosPreis = String((drink.retailPrice - drink.licensefee) / 100000) + ' IUNO';
