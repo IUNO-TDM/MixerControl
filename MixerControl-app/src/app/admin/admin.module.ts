@@ -34,7 +34,7 @@ import {routing} from "./admin.routing";
 import {AdminWalletComponent} from './admin-wallet/admin-wallet.component';
 
 import {CocktailConfiguratorModule, DragAndDropService} from 'cocktail-configurator'
-import {ComponentService} from 'tdm-common'
+import {TdmCocktailComponentService} from 'tdm-common'
 
 @NgModule({
     declarations: [

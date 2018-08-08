@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RecipeDetailComponent} from '../recipe-detail/recipe-detail.component';
 import {MatButtonToggleChange, MatDialog, MatDialogRef} from '@angular/material';
-import {ComponentService} from 'tdm-common';
+import {TdmCocktailComponentService} from 'tdm-common';
 import {DrinkService} from '../../services/drink.service';
 import {UserService} from '../../services/user.service';
 import * as models from '../../models/models';
@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
     selector: 'app-recipe-overview',
     templateUrl: './recipe-overview.component.html',
     styleUrls: ['./recipe-overview.component.scss'],
-    providers: [DrinkService, UserService, ComponentService]
+    providers: [DrinkService, UserService, TdmCocktailComponentService]
 })
 export class RecipeOverviewComponent implements OnInit {
 
@@ -44,7 +44,7 @@ export class RecipeOverviewComponent implements OnInit {
     testModel = 'n';
     resetEnabled = false;
 
-    constructor(private dialog: MatDialog, private componentService: ComponentService,
+    constructor(private dialog: MatDialog, private componentService: TdmCocktailComponentService,
                 private router: Router,
                 private drinkService: DrinkService,
                 private userService: UserService) {

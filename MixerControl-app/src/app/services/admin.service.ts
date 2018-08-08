@@ -3,7 +3,7 @@ import {Pump} from '../models/Pump';
 import {Observable} from 'rxjs/Observable';
 import {Balance} from '../models/Balance';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Cocktail} from 'tdm-common';
+import {TdmCocktailProgram} from 'tdm-common';
 
 
 @Injectable()
@@ -85,7 +85,7 @@ export class AdminService {
         return this.http.post(url, amount, {responseType: 'text', observe: 'response'});
     }
 
-    runProgram(cocktail: Cocktail): Observable<HttpResponse<Object>> {
+    runProgram(cocktail: TdmCocktailProgram): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}program`;
         return this.http.post(url, cocktail.getMachineProgram(), {responseType: 'text', observe: 'response'});
     }

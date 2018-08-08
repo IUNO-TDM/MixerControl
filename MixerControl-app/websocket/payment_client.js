@@ -54,7 +54,7 @@ payment_service.socket.on('connect', function () {
     });
 
 });
-payment_service.socket.on('StateChange', function (data) {
+payment_service.socket.on('PaymentStateChange', function (data) {
     const orderStateMachine = require('../models/order_state_machine');
     const state = JSON.parse(data);
 
