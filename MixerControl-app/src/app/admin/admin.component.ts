@@ -1,7 +1,8 @@
 /**
  * Created by goergch on 28.02.17.
  */
-import {Component} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -11,4 +12,15 @@ import {Component} from '@angular/core';
 })
 
 export class AdminComponent {
+    private fragment: string
+    index = 1
+
+    constructor(private route: ActivatedRoute) { }
+    
+    ngOnInit() {
+        this.route.fragment.subscribe(fragment => {
+            this.fragment = fragment;
+            this.index = +fragment
+        });
+    }
 }
