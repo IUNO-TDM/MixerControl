@@ -7,11 +7,13 @@ var mixerIO = io('http://localhost:3000/production', {
 
 mixerIO.on('connect', function() {
     console.log('mixer control connected')
+    document.getElementById('mixercontrol').classList.remove('starting')
     tryRedirect()
 })
 
 mixerIO.on('disconnect', function() {
     console.log('mixer control disconnected')
+    document.getElementById('mixercontrol').classList.add('starting')
 })
 
 
@@ -21,11 +23,13 @@ var paymentIO = io('http://localhost:8080/invoices', {
 
 paymentIO.on('connect', function() {
     console.log('payment service connected')
+    document.getElementById('paymentservice').classList.remove('starting')
     tryRedirect()
 })
 
 paymentIO.on('disconnect', function() {
     console.log('payment service disconnected')
+    document.getElementById('paymentservice').classList.add('starting')
 })
 
 

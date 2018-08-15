@@ -1,67 +1,46 @@
 .loading {
     font: 32px/1.5 Monospace;
     color: #000;
-    -webkit-perspective: 100px;
-            perspective: 100px;
+    perspective: 100px;
   }
   .loading > span {
-    -webkit-animation: flip 3s infinite;
-            animation: flip 3s infinite;
+    animation: flip 2.5s infinite;
     display: inline-block;
-    -webkit-transform-origin: 50% 50% -10px;
-            transform-origin: 50% 50% -10px;
-    -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
+    transform-origin: 50% 50% -10px;
+    transform-style: preserve-3d;
   }
   .loading > span:nth-child(1) {
-    -webkit-animation-delay: 0.05s;
             animation-delay: 0.05s;
   }
   .loading > span:nth-child(2) {
-    -webkit-animation-delay: 0.1s;
             animation-delay: 0.1s;
   }
   .loading > span:nth-child(3) {
-    -webkit-animation-delay: 0.15s;
             animation-delay: 0.15s;
   }
   .loading > span:nth-child(4) {
-    -webkit-animation-delay: 0.2s;
             animation-delay: 0.2s;
   }
   .loading > span:nth-child(5) {
-    -webkit-animation-delay: 0.25s;
             animation-delay: 0.25s;
   }
   .loading > span:nth-child(6) {
-    -webkit-animation-delay: 0.3s;
             animation-delay: 0.3s;
   }
   .loading > span:nth-child(7) {
-    -webkit-animation-delay: 0.35s;
             animation-delay: 0.35s;
   }
   .loading > span:nth-child(8) {
-    -webkit-animation-delay: 0.4s;
             animation-delay: 0.4s;
   }
   
-  @-webkit-keyframes flip {
-    to {
-      -webkit-transform: rotateX(1turn);
-              transform: rotateX(1turn);
-    }
-  }
   @keyframes flip{
-    60% {
-      transform: rotateX(1turn);
-    }
-    100% {
-      transform: rotateX(1turn);
-    }
+    0% { transform: rotateX(0turn); }
+    60% { transform: rotateX(1turn); }
+    100% { transform: rotateX(1turn); }
   }
 
-.cup {
+#cup {
     position: relative;
 }
 
@@ -80,15 +59,26 @@
     27% { left: 320px; top: 378px;  background: #000}
     28% { left: 320px; top: 378px;  background: #fff}
     30% { left: 320px; top: 378px;  background: #000}
-    50% { left: 320px; top: 378px; }
+    52% { left: 320px; top: 378px; }
     55% { left: 300px; top: 390px; }
     70% { left: 300px; top: 390px; }
     75% { left: 340px; top: 390px; }
     90% { left: 340px; top: 390px; }
-    95% { left: 320px; top: 378px; }
+    93% { left: 320px; top: 378px; }
     97% { left: 320px; top: 378px;  background: #000}
     98% { left: 320px; top: 378px;  background: #fff}
     100% { left: 320px; top: 378px;  background: #000}
+}
+
+.starting {
+  color: #1a595d;
+  animation: spin 1s linear infinite;
+  display: inline-flex;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 body {
@@ -99,4 +89,6 @@ body {
     align-items: center;
     background-color: #5f905f;
     margin: 0px;
+    font: 32px/1.5 Monospace;
+    color: #000;
 }
