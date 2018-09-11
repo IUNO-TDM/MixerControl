@@ -1,12 +1,12 @@
 <h2 mat-dialog-title i18n="title">Komponente für Pumpe {{pumpNr}} ändern</h2>
 
 <mat-dialog-content>
-    <mat-select class="picker" placeholder="Komponente auswählen" name="Neue Komponente wählen" [(ngModel)]="selectedValue">
-        <mat-optgroup *ngIf="recommendedComponents.length && queryString.length == 0" label="Vorgeschlagene Komponenten">
+    <mat-select fxLayoutAlign="center center" class="picker mat-elevation-z3" placeholder="Komponente auswählen" name="Neue Komponente wählen" [(ngModel)]="selectedValue">
+        <mat-optgroup *ngIf="recommendedComponents.length && queryString.length == 0" label="Vorgeschlagene Komponenten" i18n-label="selection header">
             <mat-option *ngFor="let component of recommendedComponents" [value]="component.id">{{component.name}}</mat-option>
         </mat-optgroup>
 
-        <mat-optgroup label="Alle Komponenten">
+        <mat-optgroup label="Alle Komponenten" i18n-label="selection header">
             <mat-option *ngFor="let component of visibleComponents" [value]="component.id">{{component.name}}</mat-option>
         </mat-optgroup>
     </mat-select>

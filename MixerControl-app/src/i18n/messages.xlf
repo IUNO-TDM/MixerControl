@@ -105,6 +105,22 @@
         </context-group>
         <note priority="1" from="description">title</note>
       </trans-unit>
+      <trans-unit id="a6b209bf77d2cb396b8e4392de1dbffdbd23a86d" datatype="html">
+        <source>Vorgeschlagene Komponenten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">selection header</note>
+      </trans-unit>
+      <trans-unit id="dcd247d6de74ff363c92b4d9177b7966f68c7e90" datatype="html">
+        <source>Alle Komponenten</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-component-dialog/admin-component-dialog.component.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <note priority="1" from="description">selection header</note>
+      </trans-unit>
       <trans-unit id="6ab7f976effdb96ecb47d38fa760528605f4d98f" datatype="html">
         <source>Pumpe</source>
         <context-group purpose="location">
@@ -777,40 +793,40 @@
         </context-group>
         <note priority="1" from="description">error</note>
       </trans-unit>
+      <trans-unit id="99ef08091fb4d2267254423538b4c516c5bee2a4" datatype="html">
+        <source>Zutaten:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <note priority="1" from="description">title</note>
+      </trans-unit>
       <trans-unit id="5e3750473444ed0d4ff0bf794ebaf415db164c8e" datatype="html">
         <source>Lizenzgebühr:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="221ee98e7382367f1741ed3b76da2753f6fb6010" datatype="html">
         <source>Zubereitungsgebühr:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="e1e106aaa41e402fe6d0090158217bf2392d2413" datatype="html">
         <source>Gesamtpreis:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">40</context>
         </context-group>
-      </trans-unit>
-      <trans-unit id="99ef08091fb4d2267254423538b4c516c5bee2a4" datatype="html">
-        <source>Zutaten:</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
-          <context context-type="linenumber">31</context>
-        </context-group>
-        <note priority="1" from="description">title</note>
       </trans-unit>
       <trans-unit id="759d234f071c0bdb75fa2606d563abb4169fcd1c" datatype="html">
         <source>Kostenpflichtig bestellen</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/recipe-overview/recipe-detail/recipe-detail.component.ts</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">56</context>
         </context-group>
         <note priority="1" from="description">button</note>
       </trans-unit>
@@ -818,7 +834,7 @@
         <source>Vorlieben:</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
-          <context context-type="linenumber">6</context>
+          <context context-type="linenumber">5</context>
         </context-group>
         <note priority="1" from="description">title</note>
       </trans-unit>
@@ -826,21 +842,28 @@
         <source>Nur Getränke mit <x id="INTERPOLATION" equiv-text="{{comp.name}}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2169d2db8204f8d6872c2d9d5aa8e21e7a78342b" datatype="html">
         <source>Getränke dürfen <x id="INTERPOLATION" equiv-text="{{comp.name}}"/> beinhalten</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2eb3bd1e692ea3a10db32878e430a989c0fdd2fc" datatype="html">
         <source>Nur Getränke ohne <x id="INTERPOLATION" equiv-text="{{comp.name}}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="55b31eacf3b853e76d8a71f7fda62775ac140590" datatype="html">
+        <source>{VAR_PLURAL, plural, =1 {Getränk ist mit diesen Vorlieben verfügbar} other {Getränke sind mit diesen Vorlieben verfügbar} }</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="01b6e8784109fdadd703dc517f96552c979bf120" datatype="html">
@@ -850,13 +873,6 @@
           <context context-type="linenumber">31</context>
         </context-group>
         <note priority="1" from="description">button</note>
-      </trans-unit>
-      <trans-unit id="55b31eacf3b853e76d8a71f7fda62775ac140590" datatype="html">
-        <source>{VAR_PLURAL, plural, =1 {Getränk ist mit diesen Vorlieben verfügbar} other {Getränke sind mit diesen Vorlieben verfügbar} }</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/recipe-overview/recipe-overview/recipe-overview.component.ts</context>
-          <context context-type="linenumber">32</context>
-        </context-group>
       </trans-unit>
     </body>
   </file>

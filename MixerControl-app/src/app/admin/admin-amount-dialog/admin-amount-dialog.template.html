@@ -3,11 +3,11 @@
 <mat-dialog-content>
 
     <mat-checkbox [(ngModel)]="reset" i18n="checkbox">Eine frische Flasche wurde eingesetzt</mat-checkbox>
-    <p i18n>Bisherige Flaschengröße: {{oldAmount}}</p>
+    <p i18n>Bisherige Flaschengröße: {{oldAmount}} ml</p>
 
 
     <mat-slider min="500" max="2000" step="50" [(ngModel)]="amount" thumbLabel tickInterval="50"></mat-slider>
-    <input [(ngModel)]="amount" type="number">
+    <input [(ngModel)]="amount" type="number"> ml
 
 
 </mat-dialog-content>
