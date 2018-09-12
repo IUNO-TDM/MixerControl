@@ -66,8 +66,8 @@
         </context-group>
         <note priority="1" from="description">checkbox</note>
       </trans-unit>
-      <trans-unit id="d80712e1bd495a3ac7116fe528f84ad3dbbb7f6f" datatype="html">
-        <source>Bisherige Flaschengröße: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/></source>
+      <trans-unit id="6cb7ab5d20182058bc9dbfea81f9f03b97f81bc9" datatype="html">
+        <source>Bisherige Flaschengröße: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/> ml</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context>
           <context context-type="linenumber">6</context>
@@ -173,11 +173,15 @@
         </context-group>
         <note priority="1" from="description">button</note>
       </trans-unit>
-      <trans-unit id="e63427fa57eca204900891bbff011d25c80506c5" datatype="html">
-        <source>Auftragenummer</source>
+      <trans-unit id="af2375622b10a23bcfaaa85615ca4ae8af868ab4" datatype="html">
+        <source>Auftragsnummer</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context>
           <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
+          <context context-type="linenumber">11</context>
         </context-group>
         <note priority="1" from="description">table header</note>
       </trans-unit>
@@ -243,14 +247,6 @@
           <context context-type="linenumber">7</context>
         </context-group>
         <note priority="1" from="description">button</note>
-      </trans-unit>
-      <trans-unit id="af2375622b10a23bcfaaa85615ca4ae8af868ab4" datatype="html">
-        <source>Auftragsnummer</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
-        <note priority="1" from="description">table header</note>
       </trans-unit>
       <trans-unit id="6f9cbb28bdc23b92465369626d0b78e5e19f77b0" datatype="html">
         <source>Zutat per&lt;br>Drag &amp; Drop&lt;br>hinzufügen.</source>
