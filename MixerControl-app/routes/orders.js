@@ -89,7 +89,7 @@ router.put('/:id/payment', function (req, res, next) {
     let data = req.body;
     if (invoice !== undefined) {
         if (data !== undefined) {
-            if (data.startsWith("http://iuno.axoom.cloud/?") { // legacy coupon format
+            if (data.startsWith("http://iuno.axoom.cloud/?")) { // legacy coupon format
                 data = data.substring(25);
             }
             else if (data.includes('#')) { // url anchor coupon format
