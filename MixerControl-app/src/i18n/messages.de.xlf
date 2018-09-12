@@ -302,11 +302,7 @@
           <context context-type="linenumber">15</context>
         </context-group>
         <note priority="1" from="description">tab item</note>
-      <target state="final">Rezept</target></trans-unit><trans-unit id="e63427fa57eca204900891bbff011d25c80506c5" datatype="html">
-        <source>Auftragenummer</source>
-        
-        <note priority="1" from="description">table header</note>
-      <target state="final">Auftragenummer</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
+      <target state="final">Rezept</target></trans-unit><trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
         <source>Status</source>
         
         <note priority="1" from="description">table header</note>
@@ -334,7 +330,7 @@
         <source>Auftragsnummer</source>
         
         <note priority="1" from="description">table header</note>
-      <target state="final">Auftragsnummer</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="bdd8e989491bfb1d0ee27998d7d4475d014b8d99" datatype="html">
+      <target state="final">Auftragsnummer</target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-orders/admin-orders.component.ts</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="bdd8e989491bfb1d0ee27998d7d4475d014b8d99" datatype="html">
         <source>Status der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{state}}"/></source>
         
       <target state="final">Status der Produktionswarteschlange: <x id="INTERPOLATION" equiv-text="{{state}}"/></target><context-group purpose="location"><context context-type="sourcefile">app/admin/admin-production/admin-production.component.ts</context><context context-type="linenumber">3</context></context-group></trans-unit><trans-unit id="6ab7f976effdb96ecb47d38fa760528605f4d98f" datatype="html">
@@ -367,13 +363,13 @@
           <context context-type="linenumber">5</context>
         </context-group>
         <note priority="1" from="description">checkbox</note>
-      <target state="final">Eine frische Flasche wurde eingesetzt</target></trans-unit><trans-unit id="d80712e1bd495a3ac7116fe528f84ad3dbbb7f6f" datatype="html">
-        <source>Bisherige Flaschengröße: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/></source>
+      <target state="final">Eine frische Flasche wurde eingesetzt</target></trans-unit><trans-unit id="6cb7ab5d20182058bc9dbfea81f9f03b97f81bc9" datatype="html">
+        <source>Bisherige Flaschengröße: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/> ml</source><target state="final">Bisherige Flaschengröße: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/> ml</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/admin/admin-amount-dialog/admin-amount-dialog.component.ts</context>
           <context context-type="linenumber">6</context>
         </context-group>
-      <target state="final">Bisherige Flaschengröße: <x id="INTERPOLATION" equiv-text="{{oldAmount}}"/></target></trans-unit><trans-unit id="e7ce938fb391974423000e90a423c35a24715f7a" datatype="html">
+      </trans-unit><trans-unit id="e7ce938fb391974423000e90a423c35a24715f7a" datatype="html">
         <source>Bestätigen</source>
         
         <note priority="1" from="description">button</note>

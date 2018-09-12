@@ -2,7 +2,7 @@
     <mat-card-content>
         <mat-table class="ordersTable" #table [dataSource]="dataSource">
             <ng-container matColumnDef="OrderNr">
-                <mat-header-cell fxFlex="10" *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Auftragenummer</mat-header-cell>
+                <mat-header-cell fxFlex="10" *matHeaderCellDef [ngClass]="'customWidthClass'" i18n="table header">Auftragsnummer</mat-header-cell>
                 <mat-cell fxFlex="10" *matCellDef="let row" [ngClass]="'customWidthClass'">
                     <a [routerLink]="['/orders/', row.OrderNr]">{{row.OrderNr}}</a>
                 </mat-cell>

@@ -89,8 +89,14 @@ router.put('/:id/payment', function (req, res, next) {
     let data = req.body;
     if (invoice !== undefined) {
         if (data !== undefined) {
-            if (data.startsWith("http://iuno.axoom.cloud/?") || data.startsWith("http://iuno.axoom.cloud/#")) {
+            if (data.startsWith("http://iuno.axoom.cloud/?")) { // legacy coupon format
                 data = data.substring(25);
+            }
+            else if (data.includes('#')) { // url anchor coupon format
+                data = data.split('#').pop() // get string after last hash which should be a coupon
+            }
+            else { // raw data is the coupon itself
+                // do nothing
             }
 
             payment_service.redeemCoupon(invoice, data, function (err, paymentResponse, data) {
