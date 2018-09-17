@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {ComponentService} from 'tdm-common';
-import {CocktailComponent} from "tdm-common/app/model/cocktail";
+import {TdmCocktailComponentService} from 'tdm-common';
+import {TdmCocktailComponent} from "tdm-common";
 
 @Component({
     selector: 'component-dialog',
@@ -10,16 +10,16 @@ import {CocktailComponent} from "tdm-common/app/model/cocktail";
 })
 export class AdminComponentDialogComponent implements OnInit {
     pumpNr = 1;
-    components: CocktailComponent[];
-    recommendedComponents: CocktailComponent[];
-    visibleComponents: CocktailComponent[] = [];
+    components: TdmCocktailComponent[];
+    recommendedComponents: TdmCocktailComponent[];
+    visibleComponents: TdmCocktailComponent[] = [];
     queryString = "";
 
     selectedValue: string;
 
     constructor(public dialogRef: MatDialogRef<AdminComponentDialogComponent>,
                 @Inject(MAT_DIALOG_DATA) public data: any,
-                private componentService: ComponentService) {
+                private componentService: TdmCocktailComponentService) {
 
         this.pumpNr = data.pumpNr;
         this.selectedValue = data.componentId;
@@ -34,7 +34,7 @@ export class AdminComponentDialogComponent implements OnInit {
         this.componentService.recommendedComponents.subscribe(c => {
             this.recommendedComponents = c;
             this.recommendedComponents.sort(
-                function (x: CocktailComponent, y: CocktailComponent) {
+                function (x: TdmCocktailComponent, y: TdmCocktailComponent) {
                     return x.name < y.name ? -1 : 1;
                 }
             );
@@ -47,7 +47,7 @@ export class AdminComponentDialogComponent implements OnInit {
         });
 
         visibles.sort(
-            function (x: CocktailComponent, y: CocktailComponent) {
+            function (x: TdmCocktailComponent, y: TdmCocktailComponent) {
                 return x.name < y.name ? -1 : 1;
             }
         );

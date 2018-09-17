@@ -12,7 +12,7 @@ import {AdminAmountDialogComponent} from '../admin-amount-dialog/admin-amount-di
 import {ProductionSocketService} from '../../services/production-socket.service';
 import {Subscription} from 'rxjs/Subscription';
 import {DataSource} from '@angular/cdk/collections';
-import { ComponentService, CocktailComponent } from 'tdm-common';
+import { TdmCocktailComponentService, TdmCocktailComponent } from 'tdm-common';
 
 @Component({
     moduleId: module.id,
@@ -22,7 +22,7 @@ import { ComponentService, CocktailComponent } from 'tdm-common';
 })
 
 export class AdminComponentComponent implements OnInit, OnDestroy {
-    components: CocktailComponent[];
+    components: TdmCocktailComponent[];
     pumps: models.Pump[];
     amountWarningConnection: Subscription;
     standardAmounts = {};
@@ -74,7 +74,7 @@ export class AdminComponentComponent implements OnInit, OnDestroy {
 
 
     constructor(private adminService: AdminService,
-        private componentService: ComponentService,
+        private componentService: TdmCocktailComponentService,
                 private productionSocketService: ProductionSocketService,
                 private dialog: MatDialog) {
                     componentService.availableComponents.subscribe(components => {

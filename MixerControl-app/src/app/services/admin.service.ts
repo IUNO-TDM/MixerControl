@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Pump} from '../models/Pump';
 import {Observable} from 'rxjs/Observable';
 import {Balance} from '../models/Balance';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Cocktail} from 'tdm-common';
+import {HttpClient, HttpResponse, HttpHeaders} from '@angular/common/http';
+import {TdmCocktailProgram} from 'tdm-common';
 
 
 @Injectable()
@@ -75,17 +75,27 @@ export class AdminService {
 
     resetComponent(pumpId: string, amount: string): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}pumps/${pumpId}/amount`;
-
-        return this.http.post(url, amount, {responseType: 'text', observe: 'response'});
+        let headers = new HttpHeaders({
+            'Content-Type': 'text/plain'
+        })
+        return this.http.post(url, amount, {
+            headers: headers,
+            responseType: 'text', observe: 'response'
+        });
     }
 
     setStandardAmount(pumpId: string, amount: string): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}pumps/${pumpId}/standardAmount`;
-
-        return this.http.post(url, amount, {responseType: 'text', observe: 'response'});
+        let headers = new HttpHeaders({
+            'Content-Type': 'text/plain'
+        })
+        return this.http.post(url, amount, {
+            headers: headers,
+            responseType: 'text', observe: 'response'
+        });
     }
 
-    runProgram(cocktail: Cocktail): Observable<HttpResponse<Object>> {
+    runProgram(cocktail: TdmCocktailProgram): Observable<HttpResponse<Object>> {
         const url = `${this.adminUrl}program`;
         return this.http.post(url, cocktail.getMachineProgram(), {responseType: 'text', observe: 'response'});
     }
