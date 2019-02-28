@@ -58,6 +58,7 @@ self.requestLicenseUpdateForOrder = (stateMachine, order) => {
         juiceMachineService.requestLicenseUpdate(order.offerId, hsmId, (err) => {
             if (err) {
                 logger.warn('[offer_service] request license update failed');
+                return stateMachine.error(order);
             }
         });
     });
