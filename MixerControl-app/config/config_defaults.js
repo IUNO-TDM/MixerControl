@@ -71,5 +71,7 @@ self.RETAIL_PRICE = 2 * 100000; //1 IUNO = 100.000 satoshi
 self.STATISTICS_ENABLED_KEY = "StatisticsEnabled";
 self.STATISTICS_ENABLED_DEFAULT = false;
 
+self.MAX_RETRIES_LICENSE_POLL = 50;
+
 
 module.exports = self;
