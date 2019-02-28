@@ -67,8 +67,16 @@ const stateMachine = new machina.BehavioralFsm({
         },
         waitingLicenseAvailable: {
             _onEnter: function (order) {
+                order.license_poll_retries = 50;
                 order.licenseTimeout = setInterval(() => {
                     offerService.requestLicenseUpdateForOrder(this, order);
+
+                    order.license_poll_retries -= 1;
+
+                    if (order.license_poll_retries <= 0) {
+                        this.transition(order, "error");
+                    }
+
                 }, 10000);
             },
             licenseAvailable: function (order) {
