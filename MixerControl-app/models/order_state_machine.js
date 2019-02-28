@@ -8,6 +8,7 @@ const logger = require('../global/logger');
 const payment_service = require('../adapter/payment_service_adapter');
 const offerService = require('../services/offer_service');
 const jms = require('../adapter/juice_machine_service_adapter');
+const config = require('../config/config_loader');
 
 const stateMachine = new machina.BehavioralFsm({
     initialize: function (options) {
@@ -67,7 +68,7 @@ const stateMachine = new machina.BehavioralFsm({
         },
         waitingLicenseAvailable: {
             _onEnter: function (order) {
-                order.license_poll_retries = 50;
+                order.license_poll_retries = config.MAX_RETRIES_LICENSE_POLL;
                 order.licenseTimeout = setInterval(() => {
                     offerService.requestLicenseUpdateForOrder(this, order);
 
